@@ -1,0 +1,38 @@
+package com.engine;
+
+import com.engine.Image;
+
+public interface Graphics {
+
+    Image newImage(String name, int width, int height);
+
+    Font newFont(String name, int size, boolean isBold);
+
+    void clear(int color);
+
+    void translate(int x, int y);
+
+    void scale(int x, int y);
+
+    void save();
+
+    void restore();
+
+    void drawImage(Image image);
+
+    void drawImage(Image image, int x, int y);
+
+    void setColor(int color);
+
+    void fillSquare(int x, int y, int size);
+
+    void drawSquare(int x, int y, int size);
+
+    void drawLine(int x1, int y1, int x2, int y2);
+
+    void drawText(String text, int x, int y);
+
+    int getWidth();
+
+    int getHeight();
+}
