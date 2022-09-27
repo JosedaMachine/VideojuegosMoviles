@@ -7,6 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Embedded JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -16,6 +17,8 @@
             <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/engineAndroid" />
             <option value="$PROJECT_DIR$/enginePC" />
+            <option value="$PROJECT_DIR$/examplePCReal" />
+            <option value="$PROJECT_DIR$/examplepc" />
           </set>
         </option>
       </GradleProjectSettings>
