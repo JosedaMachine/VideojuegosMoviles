@@ -48,5 +48,7 @@ public class MyScene {
 
     public void render(){
         renderClass.renderCircle(this.x, this.y, this.radius);
+        renderClass.renderText(this.x, this.y, "app/src/main/assets/fonts");
+        renderClass.renderImages(this.x, this.y, this.radius);
     }
 }

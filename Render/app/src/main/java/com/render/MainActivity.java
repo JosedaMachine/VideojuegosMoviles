@@ -5,12 +5,19 @@ import static android.opengl.ETC1.getWidth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         this.render = new MyRenderClass(this.renderView);
         scene.init(render);
         render.setScene(scene);
+
+
     }
 
     @Override
@@ -50,20 +59,42 @@ public class MainActivity extends AppCompatActivity {
         private int y;
         private int radius;
         private int speed;
+
+
         private Typeface tface;
+        private AssetManager assetManager;
+        protected Bitmap tom;
 
         private MyRenderClass renderClass;
 
         public MyScene(){
-            this.tface = Typeface.createFromAsset(getAssets(), "fonts/RamadhanMubarak.ttf");
+
             this.x=100;
             this.y=0;
             this.radius = 100;
             this.speed = 150;
+
+        }
+
+        public void loadImages(){
+            InputStream is = null;
+            try {
+                is = assetManager.open("images/tom.png");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            tom = BitmapFactory.decodeStream(is);
+        }
+
+        public void loadFonts(){
+            this.tface = Typeface.createFromAsset(assetManager, "fonts/RamadhanMubarak.ttf");
         }
 
         public void init(MyRenderClass renderClass){
             this.renderClass = renderClass;
+            assetManager = getAssets();
+            loadFonts();
+            loadImages();
         }
 
         public void update(double deltaTime){
@@ -87,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void render(){
             renderClass.renderCircle(this.x, this.y, this.radius);
-            renderClass.renderText(300, 200,"Sample Text", this.tface, 30);
-            renderClass.renderImage(300, 500);
+            renderClass.renderImages(0, 0, this.renderClass.getWidth(), this.renderClass.getHeight() ,this.tom);
+            renderClass.renderText(300, 150,"Felis Jueves!", this.tface, 200);
         }
     }
 
@@ -116,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
         public int getWidth(){
             return this.myView.getWidth();
+        }
+
+        public int getHeight(){
+            return this.myView.getHeight();
         }
 
         @Override
@@ -183,8 +218,11 @@ public class MainActivity extends AppCompatActivity {
             paint.setTextSize(size);
             canvas.drawText(text, x, y, paint);
         }
-        protected void renderImage(float x, float y){
 
+        protected void renderImages(int x, int y ,int width, int height , Bitmap image){
+            Paint paint = new Paint();
+            //canvas.drawBitmap(image, x, y, paint);
+            canvas.drawBitmap(image, new Rect(0,0,2500,1999), new Rect(x, y, width,height), paint);
         }
 
         protected void render() {

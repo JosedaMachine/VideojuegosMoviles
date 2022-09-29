@@ -1,11 +1,14 @@
 package com.examplejavareal;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.swing.JFrame;
 
@@ -114,6 +117,20 @@ public class MyRenderClass implements Runnable{
     }
 
     protected void renderCircle(float x, float y, float r){
+        this.graphics2D.setColor(Color.white);
+        this.graphics2D.fillOval((int)x, (int)y, (int)r*2, (int)r*2);
+        this.graphics2D.setPaintMode();
+    }
+    protected void renderText(float x, float y, String fontPath, String text){
+        //path a ruta del asset a partir de la raiz del proyecto
+        InputStream is = new FileInputStream(filePath)
+        Font awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
+        awtFont = awtFont.deriveFont(Font.BOLD, 40);
+        Graphics graphics = bufferStrategy.getDrawGraphics();
+        graphics.setFont(awtFont);
+        g.drawString(text, x, y);
+    }
+    protected void renderImages(float x, float y, float r){
         this.graphics2D.setColor(Color.white);
         this.graphics2D.fillOval((int)x, (int)y, (int)r*2, (int)r*2);
         this.graphics2D.setPaintMode();
