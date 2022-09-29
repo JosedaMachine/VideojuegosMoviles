@@ -1,5 +1,7 @@
 package com.render;
 
+import static android.opengl.ETC1.getWidth;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.AssetManager;
@@ -48,10 +50,12 @@ public class MainActivity extends AppCompatActivity {
         private int y;
         private int radius;
         private int speed;
+        private Typeface tface;
 
         private MyRenderClass renderClass;
 
         public MyScene(){
+            this.tface = Typeface.createFromAsset(getAssets(), "fonts/RamadhanMubarak.ttf");
             this.x=100;
             this.y=0;
             this.radius = 100;
@@ -83,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void render(){
             renderClass.renderCircle(this.x, this.y, this.radius);
-            renderClass.renderText(this.x, this.y,"algo");
+            renderClass.renderText(300, 200,"Sample Text", this.tface, 30);
+            renderClass.renderImage(300, 500);
         }
     }
 
@@ -172,12 +177,14 @@ public class MainActivity extends AppCompatActivity {
         protected void renderCircle(float x, float y, float r){
             canvas.drawCircle(x, y, r, this.paint);
         }
-        protected void renderText(float x, float y, String text){
-            Typeface tface = Typeface.createFromAsset(getAssets(), "fonts/RamadhanMubarak.ttf");
+        protected void renderText(float x, float y, String text, Typeface tface, int size){
             Paint paint = new Paint();
             paint.setTypeface(tface);
-            paint.setTextSize(30);
+            paint.setTextSize(size);
             canvas.drawText(text, x, y, paint);
+        }
+        protected void renderImage(float x, float y){
+
         }
 
         protected void render() {
