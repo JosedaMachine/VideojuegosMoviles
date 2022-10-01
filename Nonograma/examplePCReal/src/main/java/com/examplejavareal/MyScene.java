@@ -47,8 +47,8 @@ public class MyScene {
     }
 
     public void render(){
+        renderClass.renderImages(0, 0, renderClass.getWidth(), renderClass.getHeight(),"examplePCReal/assets/images/tom.png");
         renderClass.renderCircle(this.x, this.y, this.radius);
-        renderClass.renderText(this.x, this.y, "app/src/main/assets/fonts");
-        renderClass.renderImages(this.x, this.y, this.radius);
+        renderClass.renderText(200, 120, "examplePCReal/assets/fonts/OctoberRose.otf", "Feliz Jueves!", Color.BLACK, 80);
     }
 }

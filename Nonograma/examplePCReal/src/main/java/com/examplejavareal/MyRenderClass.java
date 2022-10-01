@@ -1,15 +1,21 @@
 package com.examplejavareal;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.awt.Font;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 //Clase interna encargada de obtener el SurfaceHolder y pintar con el canvas
@@ -116,21 +122,45 @@ public class MyRenderClass implements Runnable{
         this.scene = scene;
     }
 
-    protected void renderCircle(float x, float y, float r){
-        this.graphics2D.setColor(Color.white);
-        this.graphics2D.fillOval((int)x, (int)y, (int)r*2, (int)r*2);
-        this.graphics2D.setPaintMode();
-    }
-    protected void renderText(float x, float y, String fontPath, String text){
+    protected void renderText(float x, float y, String fontPath, String text, Color color, int size){
         //path a ruta del asset a partir de la raiz del proyecto
-        InputStream is = new FileInputStream(filePath)
-        Font awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
-        awtFont = awtFont.deriveFont(Font.BOLD, 40);
-        Graphics graphics = bufferStrategy.getDrawGraphics();
-        graphics.setFont(awtFont);
-        g.drawString(text, x, y);
+        InputStream is = null;
+        try {
+            is = new FileInputStream(fontPath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Font awtFont = null;
+        try {
+            awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        awtFont = awtFont.deriveFont(Font.TRUETYPE_FONT, size);
+//        Graphics graphics = bufferStrategy.getDrawGraphics();
+//        graphics.setFont(awtFont);
+        this.graphics2D.setColor(color);
+        this.graphics2D.setFont(awtFont);
+        this.graphics2D.drawString(text, x, y);
     }
-    protected void renderImages(float x, float y, float r){
+
+    protected void renderImages(float x, float y, int width, int height, String path) {
+        Image img = null;
+
+        try {
+            img = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Graphics graphics = bufferStrategy.getDrawGraphics();
+        graphics.drawImage(img, (int)x, (int)y, width, height,null);
+    }
+
+    protected void renderCircle(float x, float y, float r){
         this.graphics2D.setColor(Color.white);
         this.graphics2D.fillOval((int)x, (int)y, (int)r*2, (int)r*2);
         this.graphics2D.setPaintMode();
