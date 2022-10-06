@@ -16,7 +16,7 @@ public class NonogramaGame {
     //True cuando ocurra un movimiento y haya que comprobar
     boolean checkWin = false;
 
-    NonogramaGame(Engine engine) {
+    public NonogramaGame(Engine engine) {
         this.engine = engine;
     }
 
