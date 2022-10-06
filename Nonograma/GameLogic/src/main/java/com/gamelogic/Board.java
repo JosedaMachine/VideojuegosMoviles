@@ -13,11 +13,11 @@ public class Board {
         board = new TILE[x][y];
         height = y;
         width = x;
-        for (int i = 0; i < getHeight(); i++)
+        for (int i = 0; i < height; i++)
             Arrays.fill(board[i], TILE.EMPTY);
     }
 
-    void GenerateBoard() {
+    void generateBoard() {
         Random r = new Random();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -37,32 +37,37 @@ public class Board {
         return height;
     }
 
-    public TILE GetTile(int x, int y) {
+    public TILE getTile(int x, int y) {
         return board[x][y];
     }
 
-    public void SetTile(int x, int y, TILE tile) {
+    public void setTile(int x, int y, TILE tile) {
         board[x][y] = tile;
     }
 
-    public TILE[][] GetBoard() {
+    public TILE[][] getBoard() {
         return board;
     }
 
     public boolean isBoardMatched(Board other) {
-        TILE[][] otherBoard = other.GetBoard();
+        TILE[][] otherBoard = other.getBoard();
 
+        //Assume they are the same size (width and height)
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
-                
+                if(board[i][j] != otherBoard[i][j])
+                    return false;
             }
         }
-
         return true;
     }
 
     //TODO implement render
     public void render(Engine e){
-
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                //e.draw(board[i][j]);?????-?????
+            }
+        }
     }
 }

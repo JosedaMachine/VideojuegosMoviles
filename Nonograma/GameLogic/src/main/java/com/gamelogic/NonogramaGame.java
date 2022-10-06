@@ -2,16 +2,18 @@ package com.gamelogic;
 
 import com.engine.Engine;
 
-import java.awt.Graphics;
-
+//////////////////////////////// SCENE GAME //////////////////////////////////
 public class NonogramaGame {
     Engine engine;
 
+    //Tablero chuleta para comprobar
     Board checkBoard;
+    //Tablero que ve el jugador
     Board gameBoard;
 
+    //True cuando coincidan los tableros
     boolean hasWon = false;
-
+    //True cuando ocurra un movimiento y haya que comprobar
     boolean checkWin = false;
 
     NonogramaGame(Engine engine) {
@@ -20,7 +22,7 @@ public class NonogramaGame {
 
     void init(int x, int y){
         checkBoard = new Board(x, y);
-        checkBoard.GenerateBoard();
+        checkBoard.generateBoard();
 
         gameBoard = new Board(x, y);
     }
@@ -29,25 +31,31 @@ public class NonogramaGame {
         return hasWon;
     }
 
-    // TODO comprobar setTile
     boolean setTile(int x, int y, boolean click) {
-        gameBoard.GetTile(x, y);
-        //Comprobar cosa?
-        gameBoard.SetTile(x,y, TILE.FILL);
+        TILE tile = gameBoard.getTile(x, y);
+
+        if(tile == TILE.FILL)
+            gameBoard.setTile(x,y, TILE.FILL);
+        else
+            gameBoard.setTile(x,y, TILE.EMPTY);
+
         checkWin = true;
         return true;
     }
 
     void update(double deltaTime) {
         if(checkWin) {
-            //CheckWin();
+            hasWon = checkHasWon();
             checkWin = false;
         }
     }
 
     void render() {
         gameBoard.render(engine);
+    }
 
+    boolean checkHasWon() {
+        return checkBoard.isBoardMatched(gameBoard);
     }
 
 }
