@@ -9,5 +9,6 @@ java {
 
 dependencies {
     implementation project(':enginePC')
+    implementation project(':engine')
     implementation project(':GameLogic')
 }

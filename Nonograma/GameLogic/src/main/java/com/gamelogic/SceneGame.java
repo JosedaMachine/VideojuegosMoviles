@@ -1,11 +1,11 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.SceneBase;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
-public class NonogramaGame {
+public class SceneGame implements SceneBase {
     Engine engine;
-
     //Tablero chuleta para comprobar
     Board checkBoard;
     //Tablero que ve el jugador
@@ -16,8 +16,28 @@ public class NonogramaGame {
     //True cuando ocurra un movimiento y haya que comprobar
     boolean checkWin = false;
 
-    public NonogramaGame(Engine engine) {
+    public SceneGame(Engine engine) {
         this.engine = engine;
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        if(checkWin) {
+            hasWon = checkHasWon();
+            checkWin = false;
+        }
+    }
+
+    @Override
+    public void init() {
+        int x = 10, y = 10;
+        checkBoard = new Board(x, y);
+        checkBoard.generateBoard();
+    }
+
+    @Override
+    public void render() {
+        gameBoard.render(engine);
     }
 
     void init(int x, int y){
@@ -43,16 +63,6 @@ public class NonogramaGame {
         return true;
     }
 
-    void update(double deltaTime) {
-        if(checkWin) {
-            hasWon = checkHasWon();
-            checkWin = false;
-        }
-    }
-
-    void render() {
-        gameBoard.render(engine);
-    }
 
     boolean checkHasWon() {
         return checkBoard.isBoardMatched(gameBoard);

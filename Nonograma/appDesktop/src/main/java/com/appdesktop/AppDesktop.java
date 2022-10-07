@@ -1,7 +1,8 @@
 package com.appdesktop;
 
-import com.gamelogic.NonogramaGame;
-import com.enginepc.EnginePC;
+import com.gamelogic.SceneGame;
+import com.enginepc.*;
+import com.engine.*;
 import javax.swing.JFrame;
 
 public class AppDesktop {
@@ -15,9 +16,9 @@ public class AppDesktop {
         renderView.setVisible(true);
         EnginePC engine = new EnginePC(renderView);
 
-        No4aGame scene = new NonogramaGame(engine);
+        SceneBase scene = new SceneGame(engine);
 
         engine.setScene(scene);
-        engine.resume();
+//        engine.resume();
     }
 }
