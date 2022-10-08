@@ -1,12 +1,10 @@
 package com.engine;
 
-import com.engine.Image;
-
 public interface Graphics {
 
     Image newImage(String name, int width, int height);
 
-    Font newFont(String name, int size, boolean isBold);
+    IFont newFont(String name, int size, boolean isBold);
 
     void clear(int color);
 
@@ -23,6 +21,8 @@ public interface Graphics {
     void drawImage(Image image, int x, int y);
 
     void setColor(int color);
+
+    void setFont(IFont font);
 
     void fillSquare(int x, int y, int size);
 

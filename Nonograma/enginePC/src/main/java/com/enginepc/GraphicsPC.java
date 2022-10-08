@@ -1,18 +1,34 @@
 package com.enginepc;
 
-import com.engine.Font;
+import com.engine.IFont;
 import com.engine.Graphics;
 import com.engine.Image;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
+
+import javax.swing.JFrame;
+
 public class GraphicsPC implements Graphics {
+
+    private Graphics2D graphics2D;
+    private BufferStrategy bufferStrategy;
+
+    GraphicsPC(JFrame view){
+        bufferStrategy = view.getBufferStrategy();
+        graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+    }
+
     @Override
     public Image newImage(String name, int width, int height) {
         return null;
     }
 
     @Override
-    public Font newFont(String name, int size, boolean isBold) {
-        return null;
+    public IFont newFont(String name, int size, boolean isBold) {
+        return new FontPC(name , size, isBold);
     }
 
     @Override
@@ -52,7 +68,14 @@ public class GraphicsPC implements Graphics {
 
     @Override
     public void setColor(int color) {
+        Color c = Color.BLACK;
+        this.graphics2D.setColor(c);
+    }
 
+    @Override
+    public void setFont(IFont font) {
+        FontPC pcFont = (FontPC) font;
+        this.graphics2D.setFont(pcFont.currFont);
     }
 
     @Override
@@ -72,7 +95,7 @@ public class GraphicsPC implements Graphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-
+        this.graphics2D.drawString(text, x, y);
     }
 
     @Override
