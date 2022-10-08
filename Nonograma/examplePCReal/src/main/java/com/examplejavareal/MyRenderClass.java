@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -31,6 +34,8 @@ public class MyRenderClass implements Runnable{
 
     private MyScene scene;
 
+    private ArrayList<MouseEvent> eventList;
+
     public MyRenderClass(JFrame myView){
         this.myView = myView;
         this.myView.addComponentListener(new ComponentAdapter()
@@ -45,8 +50,36 @@ public class MyRenderClass implements Runnable{
             }
         });
 
+        this.myView.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                eventList.add(mouseEvent);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                eventList.add(mouseEvent);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+                eventList.add(mouseEvent);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                eventList.add(mouseEvent);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                eventList.add(mouseEvent);
+            }
+        });
+
         this.bufferStrategy = this.myView.getBufferStrategy();
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+        this.eventList = new ArrayList<>();
     }
 
     public int getWidth(){
@@ -84,7 +117,11 @@ public class MyRenderClass implements Runnable{
 
             // Informe de FPS
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+
+            this.proccessInput();
+
             this.update(elapsedTime);
+
             if (currentTime - informePrevio > 1000000000l) {
                 long fps = frames * 1000000000l / (currentTime - informePrevio);
                 System.out.println("" + fps + " fps");
@@ -107,6 +144,7 @@ public class MyRenderClass implements Runnable{
                 this.bufferStrategy.show();
             } while(this.bufferStrategy.contentsLost());
 
+            //
             /*
             // Posibilidad: cedemos algo de tiempo. Es una medida conflictiva...
             try { Thread.sleep(1); } catch(Exception e) {}
@@ -199,5 +237,12 @@ public class MyRenderClass implements Runnable{
             }
         }
     }
+
+    void proccessInput(){
+        for(int i = 0; i < eventList.size(); i++)
+            this.scene.input(eventList.get(i));
+        eventList.clear();
+    }
+
 }
 

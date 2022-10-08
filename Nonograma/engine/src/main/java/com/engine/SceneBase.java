@@ -7,4 +7,6 @@ public interface SceneBase {
     void render();
 
     void update(double deltaTime);
+
+    void input();
 }
