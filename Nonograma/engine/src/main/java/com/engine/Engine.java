@@ -5,4 +5,5 @@ public interface Engine {
     Input getInput();
     Audio getAudio();
     public void setScene(SceneBase scene);
+    public void resume();
 }

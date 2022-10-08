@@ -19,6 +19,6 @@ public class AppDesktop {
         SceneBase scene = new SceneGame(engine);
 
         engine.setScene(scene);
-//        engine.resume();
+        engine.resume();
     }
 }

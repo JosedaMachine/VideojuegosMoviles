@@ -8,15 +8,16 @@ import com.engine.SceneBase;
 
 import javax.swing.JFrame;
 
-public class EnginePC implements Engine{
+public class EnginePC implements Engine, Runnable{
 
+    GraphicsPC graphics;
     SceneBase currScene;
 
     public EnginePC(JFrame renderView){}
 
     @Override
     public Graphics getGraphics() {
-        return null;
+        return graphics;
     }
 
     @Override
@@ -33,5 +34,15 @@ public class EnginePC implements Engine{
     public void setScene(SceneBase scene) {
         currScene = scene;
         currScene.init();
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void run() {
+
     }
 }
