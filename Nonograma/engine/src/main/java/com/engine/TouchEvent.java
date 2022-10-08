@@ -2,7 +2,7 @@ package com.engine;
 
 //BUSCAR COMO SE MANEJA INPUT
 
-public class TouchEvent {
+public interface TouchEvent {
 
     /* *
     * Clase que representa la información de un toque sobre

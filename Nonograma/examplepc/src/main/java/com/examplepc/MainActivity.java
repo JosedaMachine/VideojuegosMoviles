@@ -13,11 +13,14 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         private int y;
         private int radius;
         private int speed;
-
+        private int numCircles = 1;
 
         private Typeface tface;
         private AssetManager assetManager;
@@ -117,9 +120,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void render(){
-            renderClass.renderCircle(this.x, this.y, this.radius);
-            renderClass.renderImages(0, 0, this.renderClass.getWidth(), this.renderClass.getHeight() ,this.tom);
-            renderClass.renderText(300, 150,"Felis Jueves!", this.tface, 200);
+            for(int i = 0; i < numCircles; i++)
+                renderClass.renderCircle(this.x + 20*i, this.y + 20* i, this.radius - 2 * i);
+//            renderClass.renderImages(0, 0, this.renderClass.getWidth(), this.renderClass.getHeight() ,this.tom);
+//            renderClass.renderText(300, 150,"Felis Jueves!", this.tface, 200);
+        }
+
+        public void input(MotionEvent event){
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                numCircles++;
+            }
         }
     }
 
@@ -138,10 +148,20 @@ public class MainActivity extends AppCompatActivity {
 
         private MyScene scene;
 
+        private ArrayList<MotionEvent> eventList;
+
         public MyRenderClass(SurfaceView myView){
             this.myView = myView;
             this.holder = this.myView.getHolder();
+            this.myView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    eventList.add(event);
+                    return true;
+                }
+            });
             this.paint = new Paint();
+            eventList = new ArrayList<>();
             this.paint.setColor(0xFFFFFFFF);
         }
 
@@ -179,6 +199,9 @@ public class MainActivity extends AppCompatActivity {
 
                 // Informe de FPS
                 double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+
+                this.processInput();
+
                 this.update(elapsedTime);
                 if (currentTime - informePrevio > 1000000000l) {
                     long fps = frames * 1000000000l / (currentTime - informePrevio);
@@ -255,6 +278,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
+
+        private void processInput(){
+            for(int i = 0; i < eventList.size(); i++)
+                this.scene.input(eventList.get(i));
+            eventList.clear();
         }
     }
 }
