@@ -20,7 +20,7 @@ public interface Graphics {
 
     void drawImage(Image image, int x, int y);
 
-    void drawImage(Image image, int x, int y, float scaleX, float scaleY)
+    void drawImage(Image image, int x, int y, float scaleX, float scaleY);
 
     void setColor(int color);
 
