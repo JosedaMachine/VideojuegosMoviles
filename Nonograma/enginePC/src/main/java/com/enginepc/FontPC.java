@@ -50,4 +50,6 @@ public class FontPC implements IFont {
     public boolean isBold() {
         return isBold;
     }
+
+    public Font getFont() { return currFont; }
 }

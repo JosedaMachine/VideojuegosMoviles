@@ -5,6 +5,7 @@ import com.engine.Graphics;
 import com.engine.Image;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -13,17 +14,19 @@ import javax.swing.JFrame;
 
 public class GraphicsPC implements Graphics {
 
+    private JFrame window;
     private Graphics2D graphics2D;
     private BufferStrategy bufferStrategy;
 
     GraphicsPC(JFrame view){
-        bufferStrategy = view.getBufferStrategy();
+        window = view;
+        bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
     }
 
     @Override
     public Image newImage(String name, int width, int height) {
-        return null;
+        return new ImagePC(name, width, height);
     }
 
     @Override
@@ -33,43 +36,56 @@ public class GraphicsPC implements Graphics {
 
     @Override
     public void clear(int color) {
-
+        this.graphics2D.setColor(new Color(color, true));
+        this.graphics2D.fillRect(0,0, this.getWidth(), this.getHeight());
+        //Se pierde el color previo
+        //Meter una variable del color para no perderlo?
     }
 
     @Override
     public void translate(int x, int y) {
-
+        //Sí, es así de fácil
+        graphics2D.translate(x, y);
     }
 
     @Override
-    public void scale(int x, int y) {
-
+    public void scale(double x, double y) {
+        //Este también es así de fácil
+        graphics2D.scale(x, y);
     }
 
     @Override
     public void save() {
-
+        //Qué se supone que hace esto
     }
 
     @Override
     public void restore() {
-
+        //Restaurar, entiendo
     }
 
     @Override
     public void drawImage(Image image) {
-
+        drawImage(image, 0, 0);
     }
 
     @Override
     public void drawImage(Image image, int x, int y) {
+        drawImage(image, x, y, 1, 1);
+    }
 
+    @Override
+    public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
+        ImagePC copy = (ImagePC) image;
+        int width = (int) (copy.getWidth() * scaleX);
+        int height = (int) (copy.getHeight() * scaleY);
+
+        graphics2D.drawImage(copy.getJavaImage(), x - width / 2, y - height / 2, width, height, null);
     }
 
     @Override
     public void setColor(int color) {
-        Color c = Color.BLACK;
-        this.graphics2D.setColor(c);
+        this.graphics2D.setColor(new Color(color, true));
     }
 
     @Override
@@ -80,17 +96,17 @@ public class GraphicsPC implements Graphics {
 
     @Override
     public void fillSquare(int x, int y, int size) {
-
+        this.graphics2D.fillRect(x, y, x + size, y + size);
     }
 
     @Override
     public void drawSquare(int x, int y, int size) {
-
+        this.graphics2D.drawRect(x, y, size, size);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-
+        this.graphics2D.drawLine(x1, y1, x2, y2);
     }
 
     @Override
@@ -100,11 +116,11 @@ public class GraphicsPC implements Graphics {
 
     @Override
     public int getWidth() {
-        return 0;
+        return window.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return window.getHeight();
     }
 }

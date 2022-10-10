@@ -10,7 +10,7 @@ public interface Graphics {
 
     void translate(int x, int y);
 
-    void scale(int x, int y);
+    void scale(double x, double y);
 
     void save();
 
@@ -19,6 +19,8 @@ public interface Graphics {
     void drawImage(Image image);
 
     void drawImage(Image image, int x, int y);
+
+    void drawImage(Image image, int x, int y, float scaleX, float scaleY)
 
     void setColor(int color);
 

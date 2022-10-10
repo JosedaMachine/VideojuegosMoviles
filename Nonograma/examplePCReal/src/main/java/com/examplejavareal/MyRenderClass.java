@@ -206,7 +206,7 @@ public class MyRenderClass implements Runnable{
 
     protected void render() {
         // "Borramos" el fondo.
-        this.graphics2D.setColor(Color.BLUE);
+        this.graphics2D.setColor(Color.BLACK);
         this.graphics2D.fillRect(0,0, this.getWidth(), this.getHeight());
         // Pintamos la escena
         this.scene.render();
