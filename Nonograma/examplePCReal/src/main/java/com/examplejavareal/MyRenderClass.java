@@ -19,6 +19,11 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 
 //Clase interna encargada de obtener el SurfaceHolder y pintar con el canvas
@@ -34,7 +39,21 @@ public class MyRenderClass implements Runnable{
 
     private MyScene scene;
 
+    private final String path = "examplePCReal/assets/sounds/";
+
     private ArrayList<MouseEvent> eventList;
+
+    private Clip clip;
+
+    private void playSound(String soundName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        File audioFile = new File(path+soundName);
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+        this.clip = AudioSystem.getClip();
+        this.clip.open(audioStream);
+        this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+        this.clip.setFramePosition(0);
+        this.clip.start();
+    }
 
     public MyRenderClass(JFrame myView){
         this.myView = myView;
@@ -54,6 +73,11 @@ public class MyRenderClass implements Runnable{
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
                 eventList.add(mouseEvent);
+                try {
+                    playSound("miau.wav");
+                } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
