@@ -4,9 +4,9 @@ public interface SceneBase {
 
     void init();
 
-    void render();
+    void render(IGraphics graphics);
 
     void update(double deltaTime);
 
-    void input();
+    void input(TouchEvent event);
 }

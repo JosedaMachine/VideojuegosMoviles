@@ -1,14 +1,16 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.IGraphics;
 import com.engine.SceneBase;
+import com.engine.TouchEvent;
 
 import java.awt.Button;
 import java.awt.Panel;
 import java.awt.TextField;
 
 //TODO Implemtar render y update para scene Game
-//TODO implement Scene
+//TODO Dejar la carrera
 public class SceneTitle implements SceneBase {
 
     private Engine engine;
@@ -19,7 +21,7 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void render() {
+    public void render(IGraphics graphics) {
 
     }
 
@@ -27,4 +29,11 @@ public class SceneTitle implements SceneBase {
     public void update(double deltaTime) {
 
     }
+
+    @Override
+    public void input(TouchEvent event) {
+
+    }
+
+
 }

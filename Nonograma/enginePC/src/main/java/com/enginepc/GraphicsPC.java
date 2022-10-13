@@ -1,18 +1,17 @@
 package com.enginepc;
 
 import com.engine.IFont;
-import com.engine.Graphics;
+import com.engine.IGraphics;
 import com.engine.Image;
+import com.engine.SceneBase;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-public class GraphicsPC implements Graphics {
+public class GraphicsPC implements IGraphics {
 
     private JFrame window;
     private Graphics2D graphics2D;
@@ -55,8 +54,24 @@ public class GraphicsPC implements Graphics {
     }
 
     @Override
+    public void render(SceneBase scene) {
+        do {
+            do {
+                try {
+                    clear(0);
+                    scene.render(this);
+                }
+                finally {
+                    graphics2D.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
+                }
+            } while(bufferStrategy.contentsRestored());
+            bufferStrategy.show();
+        } while(bufferStrategy.contentsLost());
+    }
+
+    @Override
     public void save() {
-        //Qué se supone que hace esto
+        //Guardar juego
     }
 
     @Override
@@ -123,4 +138,6 @@ public class GraphicsPC implements Graphics {
     public int getHeight() {
         return window.getHeight();
     }
+
+    public BufferStrategy getBufferStrategy(){return bufferStrategy;}
 }

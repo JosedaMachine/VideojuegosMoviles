@@ -1,6 +1,6 @@
 package com.engine;
 
-public interface Graphics {
+public interface IGraphics {
 
     Image newImage(String name, int width, int height);
 
@@ -11,6 +11,8 @@ public interface Graphics {
     void translate(int x, int y);
 
     void scale(double x, double y);
+
+    void render(SceneBase scene);
 
     void save();
 

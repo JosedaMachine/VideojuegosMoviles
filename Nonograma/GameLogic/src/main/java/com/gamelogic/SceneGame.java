@@ -1,7 +1,9 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.IGraphics;
 import com.engine.SceneBase;
+import com.engine.TouchEvent;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
@@ -29,6 +31,11 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
+    public void input(TouchEvent event) {
+
+    }
+
+    @Override
     public void init() {
         int x = 10, y = 10;
         checkBoard = new Board(x, y);
@@ -36,8 +43,8 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void render() {
-        gameBoard.render(engine);
+    public void render(IGraphics graphics) {
+        //gameBoard.render(engine);
     }
 
     void init(int x, int y){
@@ -67,5 +74,7 @@ public class SceneGame implements SceneBase {
     boolean checkHasWon() {
         return checkBoard.isBoardMatched(gameBoard);
     }
+
+
 
 }

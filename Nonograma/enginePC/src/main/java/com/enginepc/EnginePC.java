@@ -2,26 +2,48 @@ package com.enginepc;
 
 import com.engine.Audio;
 import com.engine.Engine;
-import com.engine.Graphics;
+import com.engine.IGraphics;
 import com.engine.Input;
 import com.engine.SceneBase;
+
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
 public class EnginePC implements Engine, Runnable{
 
-
     JFrame view;
     GraphicsPC graphics;
     SceneBase currScene;
+    boolean running;
+
+    BufferStrategy bufferStrategy_;
+    private Thread renderThread;
 
     public EnginePC(JFrame renderView){
         view = renderView;
+
+        int intentos = 100;
+        while(intentos-- > 0) {
+            try {
+                view.createBufferStrategy(2);
+                break;
+            }
+            catch(Exception e) {
+            }
+        } // while pidiendo la creación de la buffeStrategy
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
+
         graphics = new GraphicsPC(renderView);
+        bufferStrategy_ = graphics.getBufferStrategy();
     }
 
     @Override
-    public Graphics getGraphics() {
+    public IGraphics getGraphics() {
         return graphics;
     }
 
@@ -43,11 +65,62 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public void resume() {
+        if (!this.running) {
+            // Solo hacemos algo si no nos estábamos ejecutando ya
+            // (programación defensiva)
+            this.running = true;
+            // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
+            this.renderThread = new Thread(this);
+            this.renderThread.start();
+        }
+    }
 
+    @Override
+    public void pause() {
+        if (this.running) {
+            this.running = false;
+            while (true) {
+                try {
+                    this.renderThread.join();
+                    this.renderThread = null;
+                    break;
+                } catch (InterruptedException ie) {
+                    // Esto no debería ocurrir nunca...
+                }
+            }
+        }
+    }
+
+    @Override
+    public void update(double elapsedTime) {
+        currScene.update(elapsedTime);
     }
 
     @Override
     public void run() {
+        if (renderThread != Thread.currentThread()) {
+            // Evita que cualquiera que no sea esta clase llame a este Runnable en un Thread
+            // Programación defensiva
+            throw new RuntimeException("run() should not be called directly");
+        }
 
+        while(this.running && view.getWidth() == 0);
+
+        long lastFrameTime = System.nanoTime();
+        long informePrevio = lastFrameTime; // Informes de FPS
+
+        // Bucle de juego principal.
+        while(running) {
+            long currentTime = System.nanoTime();
+            long nanoElapsedTime = currentTime - lastFrameTime;
+            lastFrameTime = currentTime;
+
+            // Actualizamos
+            double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+            this.update(elapsedTime);
+
+            // Pintamos el frame
+            graphics.render(currScene);
+        }
     }
 }
