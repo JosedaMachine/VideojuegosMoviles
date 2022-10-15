@@ -2,6 +2,7 @@ package com.gamelogic;
 
 import com.engine.Engine;
 import com.engine.IGraphics;
+import com.engine.Image;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
@@ -43,8 +44,21 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
+    public void loadImages(IGraphics graphics){
+        System.out.println("Loading Resources...");
+        Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
+        graphics.loadImage(img, "Tom");
+    }
+
+    @Override
     public void render(IGraphics graphics) {
         //gameBoard.render(engine);
+        Image im = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
+//        im = graphics.getImage("Tom");
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        else
+            graphics.drawImage(im, graphics.getWidth()/2, graphics.getHeight()/2,graphics.getWidth(), graphics.getHeight());
     }
 
     void init(int x, int y){

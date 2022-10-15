@@ -24,6 +24,8 @@ public interface IGraphics {
 
     void drawImage(Image image, int x, int y, float scaleX, float scaleY);
 
+    void drawImage(Image image, int x, int y, int width, int height);
+
     void setColor(int color);
 
     void setFont(IFont font);
@@ -39,4 +41,8 @@ public interface IGraphics {
     int getWidth();
 
     int getHeight();
+
+    void loadImage(Image img, String key);
+
+    Image getImage(String key);
 }

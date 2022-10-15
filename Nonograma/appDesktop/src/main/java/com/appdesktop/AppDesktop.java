@@ -31,6 +31,8 @@ public class AppDesktop {
         SceneBase scene = new SceneGame(engine);
 
         engine.setScene(scene);
+        //Tambien se podrian cargar los recursos dentro del setscene
+        engine.loadResources();
         engine.resume();
     }
 }

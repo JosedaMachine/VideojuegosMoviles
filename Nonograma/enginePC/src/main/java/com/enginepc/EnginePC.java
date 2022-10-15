@@ -6,6 +6,7 @@ import com.engine.IGraphics;
 import com.engine.Input;
 import com.engine.SceneBase;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -18,7 +19,7 @@ public class EnginePC implements Engine, Runnable{
     SceneBase currScene;
     boolean running;
 
-    BufferStrategy bufferStrategy_;
+    BufferStrategy bufferStrategy;
     private Thread renderThread;
 
     public EnginePC(JFrame renderView){
@@ -39,7 +40,7 @@ public class EnginePC implements Engine, Runnable{
         }
 
         graphics = new GraphicsPC(renderView);
-        bufferStrategy_ = graphics.getBufferStrategy();
+        bufferStrategy = graphics.getBufferStrategy();
     }
 
     @Override
@@ -109,6 +110,7 @@ public class EnginePC implements Engine, Runnable{
         long lastFrameTime = System.nanoTime();
         long informePrevio = lastFrameTime; // Informes de FPS
 
+
         // Bucle de juego principal.
         while(running) {
             long currentTime = System.nanoTime();
@@ -119,8 +121,31 @@ public class EnginePC implements Engine, Runnable{
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
             this.update(elapsedTime);
 
-            // Pintamos el frame
-            graphics.render(currScene);
+            this.render();
         }
+        System.out.println("Out");
+    }
+
+    @Override
+    public void render() {
+        do {
+            do {
+                Graphics g = graphics.getBufferStrategy().getDrawGraphics();
+                try {
+                    graphics.clear(((Color) ColorPC.BLUE).getRGB());
+                    this.currScene.render(graphics);
+                }
+                finally{
+                    g.dispose();
+                }
+            } while(this.bufferStrategy.contentsRestored());
+
+            bufferStrategy.show();
+        } while(this.bufferStrategy.contentsLost());
+    }
+
+    @Override
+    public void loadResources() {
+        this.currScene.loadImages(graphics);
     }
 }

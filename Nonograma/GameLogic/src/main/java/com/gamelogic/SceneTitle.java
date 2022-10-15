@@ -37,5 +37,10 @@ public class SceneTitle implements SceneBase {
 
     }
 
+    @Override
+    public void loadImages(IGraphics graphics) {
+
+    }
+
 
 }

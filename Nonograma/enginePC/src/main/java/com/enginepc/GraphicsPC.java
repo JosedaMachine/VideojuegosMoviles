@@ -8,14 +8,17 @@ import com.engine.SceneBase;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
 public class GraphicsPC implements IGraphics {
 
-    private JFrame window;
-    private Graphics2D graphics2D;
-    private BufferStrategy bufferStrategy;
+    private final JFrame window;
+    private final Graphics2D graphics2D;
+    private final BufferStrategy bufferStrategy;
+
+    HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     GraphicsPC(JFrame view){
         window = view;
@@ -37,8 +40,6 @@ public class GraphicsPC implements IGraphics {
     public void clear(int color) {
         this.graphics2D.setColor(new Color(color, true));
         this.graphics2D.fillRect(0,0, this.getWidth(), this.getHeight());
-        //Se pierde el color previo
-        //Meter una variable del color para no perderlo?
     }
 
     @Override
@@ -53,6 +54,7 @@ public class GraphicsPC implements IGraphics {
         graphics2D.scale(x, y);
     }
 
+    //TODO: Delete
     @Override
     public void render(SceneBase scene) {
         do {
@@ -99,6 +101,12 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
+    public void drawImage(Image image, int x, int y, int width, int height) {
+        ImagePC copy = (ImagePC) image;
+        graphics2D.drawImage(copy.getJavaImage(), x - width / 2, y - height / 2, width, height, null);
+    }
+
+    @Override
     public void setColor(int color) {
         this.graphics2D.setColor(new Color(color, true));
     }
@@ -137,6 +145,16 @@ public class GraphicsPC implements IGraphics {
     @Override
     public int getHeight() {
         return window.getHeight();
+    }
+
+    @Override
+    public void loadImage(Image img, String key) {
+        imagesLoaded.put(key, img);
+    }
+
+    @Override
+    public Image getImage(String key) {
+        return imagesLoaded.get(key);
     }
 
     public BufferStrategy getBufferStrategy(){return bufferStrategy;}

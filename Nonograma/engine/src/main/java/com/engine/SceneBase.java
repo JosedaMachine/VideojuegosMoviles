@@ -9,4 +9,6 @@ public interface SceneBase {
     void update(double deltaTime);
 
     void input(TouchEvent event);
+
+    void loadImages(IGraphics graphics);
 }
