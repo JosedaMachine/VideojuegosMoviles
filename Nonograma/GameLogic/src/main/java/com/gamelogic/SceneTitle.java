@@ -17,7 +17,9 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void init() {
+
         engine.getGraphics().newFont("st",0,true);
+
     }
 
     @Override

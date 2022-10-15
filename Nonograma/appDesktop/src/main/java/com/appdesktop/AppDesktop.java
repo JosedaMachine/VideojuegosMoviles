@@ -4,6 +4,7 @@ import com.gamelogic.SceneGame;
 import com.enginepc.*;
 import com.engine.*;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -16,6 +17,9 @@ public class AppDesktop {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.7;
         double height = screenSize.getHeight() * 0.7;
+
+        ColorPC.Init();
+        Color black = (Color) ColorPC.BLACK;
 
         renderView.setSize((int) width, (int) height);
         renderView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
