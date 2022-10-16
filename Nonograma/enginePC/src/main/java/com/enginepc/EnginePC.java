@@ -14,9 +14,6 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-
-import jdk.internal.util.xml.impl.Input;
-
 public class EnginePC implements Engine, Runnable{
 
     JFrame view;
@@ -47,6 +44,8 @@ public class EnginePC implements Engine, Runnable{
 
         graphics = new GraphicsPC(renderView);
         bufferStrategy = graphics.getBufferStrategy();
+
+        input = new InputPC(renderView);
     }
 
     @Override

@@ -28,9 +28,9 @@ public class AppDesktop {
         renderView.setVisible(true);
         EnginePC engine = new EnginePC(renderView);
 
-        IGame scene = new Nonograma(engine);
+        IGame game = new Nonograma(engine);
 
-        engine.setGame(scene);
+        engine.setGame(game);
         //Tambien se podrian cargar los recursos dentro del setscene
         engine.loadResources();
         engine.resume();

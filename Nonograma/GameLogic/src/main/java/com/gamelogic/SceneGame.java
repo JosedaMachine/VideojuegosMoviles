@@ -1,10 +1,16 @@
 package com.gamelogic;
 
+import static com.engine.TouchEvent.ButtonID.LEFT_BUTTON;
+import static com.engine.TouchEvent.ButtonID.RIGHT_BUTTON;
+import static com.engine.TouchEvent.TouchEventType.TOUCH_EVENT;
+
 import com.engine.Engine;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
+
+import java.awt.event.MouseEvent;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
@@ -32,8 +38,14 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event) {
-
+    public void input(TouchEvent event_) {
+        if(event_.getType_() == TOUCH_EVENT ){
+            if(event_.getID_() == LEFT_BUTTON){
+                System.out.println("Izq " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
+            }else if(event_.getID_() == RIGHT_BUTTON){
+                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
+            }
+        }
     }
 
     @Override

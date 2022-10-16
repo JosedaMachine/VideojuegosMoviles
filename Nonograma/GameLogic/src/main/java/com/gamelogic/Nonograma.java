@@ -27,8 +27,7 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        currScene = new SceneTitle();
-        currScene.init();
+        changeScene(new SceneGame(engine));
     }
 
     @Override
@@ -43,7 +42,7 @@ public class Nonograma implements IGame {
 
     @Override
     public void processInput(TouchEvent event) {
-        //TODO
+        currScene.input(event);
     }
 
     // Se podría hacer esto en el init de cada escena pero
