@@ -3,20 +3,26 @@ package com.enginepc;
 import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IGraphics;
-import com.engine.Input;
 import com.engine.IGame;
+import com.engine.IInput;
+import com.engine.SceneBase;
+import com.engine.TouchEvent;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
+
+import jdk.internal.util.xml.impl.Input;
 
 public class EnginePC implements Engine, Runnable{
 
     JFrame view;
     GraphicsPC graphics;
     IGame currGame;
+    InputPC input;
     boolean running;
 
     BufferStrategy bufferStrategy;
@@ -49,7 +55,7 @@ public class EnginePC implements Engine, Runnable{
     }
 
     @Override
-    public Input getInput() {
+    public IInput getInput() {
         return null;
     }
 
@@ -119,6 +125,7 @@ public class EnginePC implements Engine, Runnable{
 
             // Actualizamos
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+            this.processInput();
             this.update(elapsedTime);
 
             this.render();
@@ -147,5 +154,14 @@ public class EnginePC implements Engine, Runnable{
     @Override
     public void loadResources() {
         this.currGame.loadImages(graphics);
+    }
+
+    @Override
+    public void processInput() {
+        ArrayList<TouchEvent> list =input.getEventList();
+        for (int i = 0; i < list.size(); i++){
+            this.currGame.processInput(list.get(i));
+        }
+        input.getEventList().clear();
     }
 }

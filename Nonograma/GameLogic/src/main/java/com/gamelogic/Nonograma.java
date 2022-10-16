@@ -3,6 +3,7 @@ package com.gamelogic;
 import com.engine.Engine;
 import com.engine.IGame;
 import com.engine.IGraphics;
+import com.engine.TouchEvent;
 
 public class Nonograma implements IGame {
     Engine engine;
@@ -37,7 +38,7 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void processInput() {
+    public void processInput(TouchEvent event) {
 
     }
 }

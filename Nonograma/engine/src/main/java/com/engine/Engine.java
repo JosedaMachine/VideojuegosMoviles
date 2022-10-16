@@ -2,7 +2,7 @@ package com.engine;
 
 public interface Engine {
     IGraphics getGraphics();
-    Input getInput();
+    IInput getInput();
     Audio getAudio();
     public void setGame(IGame game);
     public void resume();
@@ -10,4 +10,5 @@ public interface Engine {
     public void update(double elapsedTime);
     public void render();
     public void loadResources();
+    public void processInput();
 }

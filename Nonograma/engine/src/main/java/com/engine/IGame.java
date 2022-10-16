@@ -6,6 +6,6 @@ public interface IGame {
     void init();
     void update(double elapsedTime);
     void render(IGraphics graphics);
-    void processInput();
+    void processInput(TouchEvent event);
     void loadImages(IGraphics graphics);
 }
