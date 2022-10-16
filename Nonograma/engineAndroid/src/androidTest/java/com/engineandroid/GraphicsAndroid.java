@@ -38,7 +38,7 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public IFont newFont(String name, int size, boolean isBold) {
-        return null;
+        return new FontAndroid(assetManager, name, size, isBold);
     }
 
     @Override
