@@ -4,9 +4,11 @@ import com.engine.Engine;
 import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.TouchEvent;
+import com.engine.SceneBase;
 
 public class Nonograma implements IGame {
     Engine engine;
+    SceneBase currScene;
 
     public Nonograma(Engine engine){
         this.engine = engine;
@@ -39,6 +41,11 @@ public class Nonograma implements IGame {
 
     @Override
     public void processInput(TouchEvent event) {
+
+    }
+
+    @Override
+    public void loadImages(IGraphics graphics) {
 
     }
 }
