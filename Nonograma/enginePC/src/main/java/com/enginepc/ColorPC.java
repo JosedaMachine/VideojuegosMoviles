@@ -11,7 +11,7 @@ public class ColorPC extends IColor {
         IColor.RED = Color.red;
         IColor.BLUE = Color.blue;
         IColor.WHITE = Color.white;
-        IColor.GRAY = Color.GRAY;
+        IColor.GRAY = Color.gray;
     }
 
 }

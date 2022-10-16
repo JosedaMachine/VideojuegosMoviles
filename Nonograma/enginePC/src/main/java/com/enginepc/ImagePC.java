@@ -28,7 +28,7 @@ public class ImagePC implements Image {
         return image.getHeight(null);
     }
 
-    public java.awt.Image getJavaImage(){
+    public java.awt.Image getImage(){
         return image;
     }
 }

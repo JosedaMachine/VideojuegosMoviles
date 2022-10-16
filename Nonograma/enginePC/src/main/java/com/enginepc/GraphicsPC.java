@@ -97,13 +97,13 @@ public class GraphicsPC implements IGraphics {
         int width = (int) (copy.getWidth() * scaleX);
         int height = (int) (copy.getHeight() * scaleY);
 
-        graphics2D.drawImage(copy.getJavaImage(), x - width / 2, y - height / 2, width, height, null);
+        graphics2D.drawImage(copy.getImage(), x - width / 2, y - height / 2, width, height, null);
     }
 
     @Override
     public void drawImage(Image image, int x, int y, int width, int height) {
         ImagePC copy = (ImagePC) image;
-        graphics2D.drawImage(copy.getJavaImage(), x - width / 2, y - height / 2, width, height, null);
+        graphics2D.drawImage(copy.getImage(), x - width / 2, y - height / 2, width, height, null);
     }
 
     @Override
