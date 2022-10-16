@@ -1,6 +1,6 @@
 package com.appdesktop;
 
-import com.gamelogic.SceneGame;
+import com.gamelogic.Nonograma;
 import com.enginepc.*;
 import com.engine.*;
 
@@ -28,9 +28,9 @@ public class AppDesktop {
         renderView.setVisible(true);
         EnginePC engine = new EnginePC(renderView);
 
-        SceneBase scene = new SceneGame(engine);
+        IGame scene = new Nonograma(engine);
 
-        engine.setScene(scene);
+        engine.setGame(scene);
         //Tambien se podrian cargar los recursos dentro del setscene
         engine.loadResources();
         engine.resume();

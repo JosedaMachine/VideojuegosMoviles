@@ -4,7 +4,7 @@ import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IGraphics;
 import com.engine.Input;
-import com.engine.SceneBase;
+import com.engine.IGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,7 +16,7 @@ public class EnginePC implements Engine, Runnable{
 
     JFrame view;
     GraphicsPC graphics;
-    SceneBase currScene;
+    IGame currGame;
     boolean running;
 
     BufferStrategy bufferStrategy;
@@ -59,9 +59,9 @@ public class EnginePC implements Engine, Runnable{
     }
 
     @Override
-    public void setScene(SceneBase scene) {
-        currScene = scene;
-            currScene.init();
+    public void setGame(IGame game) {
+        currGame = game;
+        game.init();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public void update(double elapsedTime) {
-        currScene.update(elapsedTime);
+        currGame.update(elapsedTime);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class EnginePC implements Engine, Runnable{
                 Graphics g = graphics.getBufferStrategy().getDrawGraphics();
                 try {
                     graphics.clear(((Color) ColorPC.BLUE).getRGB());
-                    this.currScene.render(graphics);
+                    this.currGame.render(graphics);
                 }
                 finally{
                     g.dispose();
@@ -146,6 +146,6 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public void loadResources() {
-        this.currScene.loadImages(graphics);
+        this.currGame.loadImages(graphics);
     }
 }
