@@ -64,8 +64,10 @@ public class Board {
         return true;
     }
 
-    //TODO implement render
     public void render(Engine e){
+        //TODO: renderizar los números laterales
+
+        // Casillas (Iker)
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
                 //e.draw(board[i][j]);?????-?????
