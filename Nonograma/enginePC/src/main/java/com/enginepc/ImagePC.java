@@ -28,7 +28,13 @@ public class ImagePC implements Image {
         return image.getHeight(null);
     }
 
+    @Override
+    public boolean isLoaded() {
+        return image != null;
+    }
+
     public java.awt.Image getImage(){
         return image;
     }
+
 }

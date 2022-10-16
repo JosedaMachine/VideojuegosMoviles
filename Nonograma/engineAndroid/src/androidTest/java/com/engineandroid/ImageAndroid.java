@@ -28,11 +28,16 @@ public class ImageAndroid implements Image {
 
     @Override
     public int getWidth() {
-        return 0;
+        return image.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return image.getHeight();
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return image != null;
     }
 }
