@@ -1,8 +1,9 @@
 package com.engine;
 
+
 public interface IGame {
-    void changeScene();
-    int getScene();
+    void changeScene(SceneBase newScene);
+    SceneBase getScene();
     void init();
     void update(double elapsedTime);
     void render(IGraphics graphics);

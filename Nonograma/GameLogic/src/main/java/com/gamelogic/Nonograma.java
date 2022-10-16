@@ -15,37 +15,41 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void changeScene() {
-
+    public void changeScene(SceneBase newScene) {
+        currScene = newScene;
+        currScene.init();
     }
 
     @Override
-    public int getScene() {
-        return 0;
+    public SceneBase getScene() {
+        return currScene;
     }
 
     @Override
     public void init() {
-
+        currScene = new SceneTitle();
+        currScene.init();
     }
 
     @Override
     public void update(double elapsedTime) {
-
+        currScene.update(elapsedTime);
     }
 
     @Override
     public void render(IGraphics graphics) {
-
+        currScene.render(graphics);
     }
 
     @Override
     public void processInput(TouchEvent event) {
-
+        //TODO
     }
 
+    // Se podría hacer esto en el init de cada escena pero
+    // de momento lo hace el motor en cada app
     @Override
     public void loadImages(IGraphics graphics) {
-
+        currScene.loadImages(graphics);
     }
 }
