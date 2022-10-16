@@ -62,22 +62,22 @@ public class SceneGame implements SceneBase {
         //Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
         //graphics.loadImage(img, "Tom");
 
-        Image im = graphics.newImage("appDesktop/assets/images/emptysquare.png", 50, 50);
+        Image im = graphics.newImage("appDesktop/assets/images/emptysquare.png");
         if(im == null)
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
-        im = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
+        im = graphics.newImage("appDesktop/assets/images/crosssquare.png");
         if(im == null)
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "cross");
 
-        im = graphics.newImage("appDesktop/assets/images/wrongsquare.png", 50, 50);
+        im = graphics.newImage("appDesktop/assets/images/wrongsquare.png");
         if(im == null)
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "wrong");
 
-        im = graphics.newImage("appDesktop/assets/images/fillsquare.png", 50, 50);
+        im = graphics.newImage("appDesktop/assets/images/fillsquare.png");
         if(im == null)
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
@@ -97,7 +97,7 @@ public class SceneGame implements SceneBase {
 //        if(im == null)
 //            System.out.println("No se ha encontrado la imagen");
 //        else
-        Image newim = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
+        Image newim = graphics.newImage("appDesktop/assets/images/crosssquare.png");
         Image im = graphics.getImage("cross");
         graphics.drawImage(newim, graphics.getWidth()/2, graphics.getHeight()/2,graphics.getWidth(), graphics.getHeight());
     }
