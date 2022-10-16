@@ -6,5 +6,5 @@ public interface Image {
 
     int getWidth();
     int getHeight();
-
+    boolean isLoaded();
 }
