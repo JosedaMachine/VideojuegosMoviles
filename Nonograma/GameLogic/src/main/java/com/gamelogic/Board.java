@@ -1,6 +1,8 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.Image;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -67,7 +69,24 @@ public class Board {
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
                 //e.draw(board[i][j]);?????-?????
+
+                Image im = tileImage(e, board[i][j]);
+                e.getGraphics().drawImage(im,i*50, j*50, 1f,1f);
             }
         }
+    }
+
+    private Image tileImage(Engine e, TILE t){
+        switch (t){
+            case FILL:
+                return e.getGraphics().getImage("fill");
+            case CROSS:
+                return e.getGraphics().getImage("cross");
+            case EMPTY:
+                return e.getGraphics().getImage("empty");
+            case WRONG:
+                return e.getGraphics().getImage("wrong");
+        }
+        return null;
     }
 }

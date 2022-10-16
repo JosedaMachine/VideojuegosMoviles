@@ -58,19 +58,48 @@ public class SceneGame implements SceneBase {
     @Override
     public void loadImages(IGraphics graphics){
         System.out.println("Loading Resources...");
-        Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
-        graphics.loadImage(img, "Tom");
+
+        //Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
+        //graphics.loadImage(img, "Tom");
+
+        Image im = graphics.newImage("appDesktop/assets/images/emptysquare.png", 50, 50);
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "empty");
+
+        im = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "cross");
+
+        im = graphics.newImage("appDesktop/assets/images/wrongsquare.png", 50, 50);
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "wrong");
+
+        im = graphics.newImage("appDesktop/assets/images/fillsquare.png", 50, 50);
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "fill");
+
+        System.out.println("Resources Loaded");
     }
 
     @Override
     public void render(IGraphics graphics) {
         //gameBoard.render(engine);
-        Image im = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
-//        im = graphics.getImage("Tom");
-        if(im == null)
-            System.out.println("No se ha encontrado la imagen");
-        else
-            graphics.drawImage(im, graphics.getWidth()/2, graphics.getHeight()/2,graphics.getWidth(), graphics.getHeight());
+
+//        Image im = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
+//        Image im = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
+//        if(im == null)
+//            System.out.println("No se ha encontrado la imagen");
+//        graphics.loadImage(im, "cross");
+//        if(im == null)
+//            System.out.println("No se ha encontrado la imagen");
+//        else
+        Image newim = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
+        Image im = graphics.getImage("cross");
+        graphics.drawImage(newim, graphics.getWidth()/2, graphics.getHeight()/2,graphics.getWidth(), graphics.getHeight());
     }
 
     void init(int x, int y){
