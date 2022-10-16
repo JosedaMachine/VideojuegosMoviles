@@ -28,12 +28,12 @@ public class GraphicsAndroid implements IGraphics {
         this.paint = new Paint();
         this.paint.setColor(0xFFFFFFFF);
 
+        this.assetManager = view.getContext().getAssets();
     }
 
     @Override
-    public Image newImage(String name, int width, int height) {
-        //return new ImageAndroid();
-        return null;
+    public Image newImage(String name) {
+        return new ImageAndroid(assetManager, name);
     }
 
     @Override

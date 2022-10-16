@@ -2,7 +2,7 @@ package com.engine;
 
 public interface IGraphics {
 
-    Image newImage(String name, int width, int height);
+    Image newImage(String name);
 
     IFont newFont(String name, int size, boolean isBold);
 

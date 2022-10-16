@@ -27,8 +27,8 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public Image newImage(String name, int width, int height) {
-        return new ImagePC(name, width, height);
+    public Image newImage(String name) {
+        return new ImagePC(name);
     }
 
     @Override

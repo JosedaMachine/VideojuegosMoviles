@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class ImagePC implements Image {
     java.awt.Image image;
 
-    ImagePC(String name, int w, int h){
+    ImagePC(String name){
         try {
             image = ImageIO.read(new File(name));
         } catch (IOException e) {

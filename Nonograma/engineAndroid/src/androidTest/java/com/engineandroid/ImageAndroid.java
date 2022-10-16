@@ -15,7 +15,7 @@ public class ImageAndroid implements Image {
     ImageAndroid(AssetManager ass, String path){
         InputStream is = null;
         try {
-            is = ass.open("images/tom.png");
+            is = ass.open(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
