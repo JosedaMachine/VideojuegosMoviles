@@ -32,6 +32,9 @@ public class FontPC implements IFont {
         currFont = null;
         try {
             currFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            if(isBold_){
+                currFont = currFont.deriveFont(Font.BOLD);
+            }
         } catch (FontFormatException e) {
             e.printStackTrace();
         } catch (IOException e) {

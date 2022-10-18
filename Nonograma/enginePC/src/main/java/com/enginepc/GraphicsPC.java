@@ -40,6 +40,7 @@ public class GraphicsPC implements IGraphics {
     public void clear(int color) {
         this.graphics2D.setColor(new Color(color, true));
         this.graphics2D.fillRect(0,0, this.getWidth(), this.getHeight());
+        this.graphics2D.setPaintMode();
     }
 
     @Override
@@ -100,8 +101,10 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawImage(Image image, int x, int y, int width, int height) {
+        graphics2D.setPaintMode();
         ImagePC copy = (ImagePC) image;
         graphics2D.drawImage(copy.getImage(), x - width / 2, y - height / 2, width, height, null);
+        graphics2D.setPaintMode();
     }
 
     @Override
@@ -142,6 +145,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
+
         this.graphics2D.drawString(text, x, y);
     }
 
@@ -153,6 +157,21 @@ public class GraphicsPC implements IGraphics {
     @Override
     public int getHeight() {
         return window.getHeight();
+    }
+
+    @Override
+    public int getLogicWidth(int x) {
+        return 0;
+    }
+
+    @Override
+    public int getLogicHeight(int y) {
+        return 0;
+    }
+
+    @Override
+    public int parseRealLogic() {
+        return 0;
     }
 
     @Override

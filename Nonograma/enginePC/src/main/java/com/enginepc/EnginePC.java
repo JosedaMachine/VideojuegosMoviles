@@ -44,7 +44,7 @@ public class EnginePC implements Engine, Runnable{
         }
 
         graphics = new GraphicsPC(renderView);
-        bufferStrategy = graphics.getBufferStrategy();
+        bufferStrategy = renderView.getBufferStrategy();
 
         input = new InputPC(renderView);
     }

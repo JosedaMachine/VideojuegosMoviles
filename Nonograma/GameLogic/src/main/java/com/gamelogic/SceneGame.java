@@ -98,10 +98,10 @@ public class SceneGame implements SceneBase {
 //            System.out.println("No se ha encontrado la imagen");
 //        else
         Image newim = graphics.newImage("appDesktop/assets/images/tom.png");
-        Image newima = graphics.newImage("appDesktop/assets/images/crosssquare.png");
-//        Image im = graphics.getImage("cross");
+        //Image newima = graphics.newImage("appDesktop/assets/images/crosssquare.png");
+        Image im = graphics.getImage("cross");
         graphics.drawImage(newim, graphics.getWidth()/4 * 3, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
-        graphics.drawImage(newima, graphics.getWidth()/4, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
+        graphics.drawImage(im, graphics.getWidth()/4, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
     }
 
     void init(int x, int y){
