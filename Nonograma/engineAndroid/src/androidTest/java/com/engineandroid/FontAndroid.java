@@ -25,4 +25,8 @@ public class FontAndroid implements IFont {
     public boolean isBold() {
         return isBold;
     }
+
+    public Typeface getFont(){
+        return currFont;
+    }
 }

@@ -88,16 +88,14 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawImage(Image image, int x, int y) {
-        drawImage(image, x, y, 1, 1);
+        drawImage(image, x, y, 1.0f, 1.0f);
     }
 
     @Override
     public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
-        ImagePC copy = (ImagePC) image;
-        int width = (int) (copy.getWidth() * scaleX);
-        int height = (int) (copy.getHeight() * scaleY);
-
-        graphics2D.drawImage(copy.getImage(), x - width / 2, y - height / 2, width, height, null);
+        int width = (int) (image.getWidth() * scaleX);
+        int height = (int) (image.getHeight() * scaleY);
+        drawImage(image, x, y, width, height);
     }
 
     @Override
@@ -118,13 +116,23 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public void fillSquare(int x, int y, int size) {
-        this.graphics2D.fillRect(x, y, x + size, y + size);
+    public void fillRect(int x, int y, int size) {
+        fillRect(x, y, size, size);
     }
 
     @Override
-    public void drawSquare(int x, int y, int size) {
-        this.graphics2D.drawRect(x, y, size, size);
+    public void fillRect(int x, int y, int w, int h) {
+        this.graphics2D.fillRect(x, y, x + w, y + h);
+    }
+
+    @Override
+    public void drawRect(int x, int y, int size) {
+        drawRect(x, y, size, size);
+    }
+
+    @Override
+    public void drawRect(int x, int y, int w, int h) {
+        this.graphics2D.drawRect(x, y, w, h);
     }
 
     @Override
