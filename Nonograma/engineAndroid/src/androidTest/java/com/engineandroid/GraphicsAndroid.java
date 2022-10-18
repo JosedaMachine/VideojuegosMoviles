@@ -3,6 +3,7 @@ package com.engineandroid;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.fonts.Font;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -10,6 +11,8 @@ import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.SceneBase;
+
+import java.util.HashMap;
 
 public class GraphicsAndroid implements IGraphics {
 
@@ -19,6 +22,7 @@ public class GraphicsAndroid implements IGraphics {
     private Paint paint;
     private AssetManager assetManager;
 
+    HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     GraphicsAndroid(SurfaceView view){
         this.myView = view;
@@ -43,22 +47,27 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void clear(int color) {
-
+        canvas.drawColor(color);
     }
 
     @Override
     public void translate(int x, int y) {
-
+        canvas.translate(x, y);
     }
 
     @Override
     public void scale(double x, double y) {
-
+        canvas.scale((float)x, (float)y);
     }
 
+    public void preRender(){
+        canvas = holder.lockCanvas();
+    }
+
+    //TODO Cambiar para que no use el SCENEBASE
     @Override
     public void render(SceneBase scene) {
-
+        holder.unlockCanvasAndPost(canvas);
     }
 
     @Override
@@ -73,52 +82,68 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void drawImage(Image image) {
-
+        drawImage(image, 0, 0);
     }
 
     @Override
     public void drawImage(Image image, int x, int y) {
-
+        drawImage(image, x, y, 1.0f, 1.0f);
     }
 
     @Override
     public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
-
+        int width  = (int) ((image.getWidth()) * scaleX);
+        int height = (int) ((image.getHeight())* scaleY);
+        drawImage(image, x, y, width, height);
     }
 
     @Override
     public void drawImage(Image image, int x, int y, int width, int height) {
-
+        ImageAndroid anImage = (ImageAndroid) image;
+        canvas.drawBitmap(anImage.getScaledImage(width, height),x - width / 2.0f, y - height / 2.0f ,paint);
     }
 
     @Override
     public void setColor(int color) {
-
+        paint.setColor(color);
     }
 
     @Override
     public void setFont(IFont font) {
+        FontAndroid anFont = (FontAndroid) font;
+        paint.setTypeface(anFont.getFont());
+        paint.setTextSize(anFont.getSize());
+    }
 
+    //TODO no hay diferencia entre fill y draw en android??
+    @Override
+    public void fillRect(int x, int y, int size) {
+        drawRect(x, y, size, size);
     }
 
     @Override
-    public void fillSquare(int x, int y, int size) {
-
+    public void fillRect(int x, int y, int w, int h) {
+        drawRect(x, y, w, h);
     }
 
     @Override
-    public void drawSquare(int x, int y, int size) {
+    public void drawRect(int x, int y, int size) {
+        drawRect(x, y, size, size);
+    }
 
+    @Override
+    public void drawRect(int x, int y, int w, int h) {
+        canvas.drawRect(x - w / 2.0f, y - h / 2.0f, w, h, paint);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-
+        canvas.drawLine(x1, y1, x2, y2, paint);
     }
 
     @Override
     public void drawText(String text, int x, int y) {
-
+        canvas.drawText(text, x, y, paint);
     }
 
     @Override
@@ -133,11 +158,11 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void loadImage(Image img, String key) {
-
+        imagesLoaded.put(key, img);
     }
 
     @Override
     public Image getImage(String key) {
-        return null;
+        return imagesLoaded.get(key);
     }
 }

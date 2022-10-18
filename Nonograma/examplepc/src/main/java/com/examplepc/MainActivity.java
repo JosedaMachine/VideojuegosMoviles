@@ -251,8 +251,9 @@ public class MainActivity extends AppCompatActivity {
         protected void render() {
             // "Borramos" el fondo.
             this.canvas.drawColor(0xFF0000FF); // ARGB
-            scene.render();
+            //scene.render();
         }
+
 
         public void resume() {
             if (!this.running) {

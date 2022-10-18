@@ -40,4 +40,8 @@ public class ImageAndroid implements Image {
     public boolean isLoaded() {
         return image != null;
     }
+
+    public Bitmap getScaledImage(int width, int heigth){
+        return Bitmap.createScaledBitmap(image, width, heigth, true);
+    }
 }

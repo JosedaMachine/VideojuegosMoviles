@@ -30,9 +30,13 @@ public interface IGraphics {
 
     void setFont(IFont font);
 
-    void fillSquare(int x, int y, int size);
+    void fillRect(int x, int y, int size);
 
-    void drawSquare(int x, int y, int size);
+    void fillRect(int x, int y, int w, int h);
+
+    void drawRect(int x, int y, int size);
+
+    void drawRect(int x, int y, int w, int h);
 
     void drawLine(int x1, int y1, int x2, int y2);
 
