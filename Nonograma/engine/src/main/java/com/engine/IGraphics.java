@@ -46,6 +46,13 @@ public interface IGraphics {
 
     int getHeight();
 
+    // Para cambio de resoluución
+    int getLogicWidth(int x);
+    int getLogicHeight(int y);
+
+    int parseRealLogic();
+
+
     void loadImage(Image img, String key);
 
     Image getImage(String key);

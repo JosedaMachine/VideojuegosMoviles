@@ -28,6 +28,7 @@ public class EnginePC implements Engine, Runnable{
     public EnginePC(JFrame renderView){
         view = renderView;
 
+        //ESTO EL TICHER LO HACE EN GRAPHICSPC
         int intentos = 100;
         while(intentos-- > 0) {
             try {
