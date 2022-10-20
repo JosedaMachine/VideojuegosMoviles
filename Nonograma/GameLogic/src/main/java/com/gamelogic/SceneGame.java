@@ -53,6 +53,8 @@ public class SceneGame implements SceneBase {
         int x = 10, y = 10;
         checkBoard = new Board(x, y);
         checkBoard.generateBoard();
+
+        gameBoard = new Board(x, y);
     }
 
     @Override
@@ -87,21 +89,11 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
-        //gameBoard.render(engine);
+        gameBoard.render(engine);
 
-//        Image im = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
-//        Image im = graphics.newImage("appDesktop/assets/images/crosssquare.png", 50, 50);
-//        if(im == null)
-//            System.out.println("No se ha encontrado la imagen");
-//        graphics.loadImage(im, "cross");
-//        if(im == null)
-//            System.out.println("No se ha encontrado la imagen");
-//        else
-        Image newim = graphics.newImage("appDesktop/assets/images/tom.png");
-        //Image newima = graphics.newImage("appDesktop/assets/images/crosssquare.png");
-        Image im = graphics.getImage("cross");
-        graphics.drawImage(newim, graphics.getWidth()/4 * 3, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
-        graphics.drawImage(im, graphics.getWidth()/4, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
+        //Image newim = graphics.getImage("empty");
+
+        //graphics.drawImage(newim, graphics.getWidth()/4 * 3, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
     }
 
     void init(int x, int y){

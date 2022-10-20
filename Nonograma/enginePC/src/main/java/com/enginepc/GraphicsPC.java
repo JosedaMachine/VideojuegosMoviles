@@ -6,6 +6,7 @@ import com.engine.Image;
 import com.engine.SceneBase;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import javax.swing.JFrame;
 public class GraphicsPC implements IGraphics {
 
     private final JFrame window;
-    private final Graphics2D graphics2D;
+    private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
@@ -70,6 +71,15 @@ public class GraphicsPC implements IGraphics {
             } while(bufferStrategy.contentsRestored());
             bufferStrategy.show();
         } while(bufferStrategy.contentsLost());
+    }
+
+    public void prepare(int color){
+        this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+        this.clear(color);
+    }
+
+    public void finish(){
+        graphics2D.dispose();
     }
 
     @Override
@@ -185,4 +195,6 @@ public class GraphicsPC implements IGraphics {
     }
 
     public BufferStrategy getBufferStrategy(){return bufferStrategy;}
+
+    public Graphics getGraphics(){return this.graphics2D;}
 }

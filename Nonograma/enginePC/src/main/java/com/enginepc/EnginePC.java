@@ -137,13 +137,12 @@ public class EnginePC implements Engine, Runnable{
     public void render() {
         do {
             do {
-                Graphics g = graphics.getBufferStrategy().getDrawGraphics();
                 try {
-                    graphics.clear(((Color) ColorPC.BLUE).getRGB());
+                    graphics.prepare(((Color) ColorPC.BLUE).getRGB());
                     this.currGame.render(graphics);
                 }
                 finally{
-                    g.dispose();
+                    graphics.finish();
                 }
             } while(this.bufferStrategy.contentsRestored());
 
