@@ -157,6 +157,21 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
+    public int getLogicWidth(int x) {
+        return 0;
+    }
+
+    @Override
+    public int getLogicHeight(int y) {
+        return 0;
+    }
+
+    @Override
+    public int parseRealLogic() {
+        return 0;
+    }
+
+    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }
