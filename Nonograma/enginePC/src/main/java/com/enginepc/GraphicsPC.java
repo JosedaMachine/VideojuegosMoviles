@@ -113,7 +113,7 @@ public class GraphicsPC implements IGraphics {
     public void drawImage(Image image, int x, int y, int width, int height) {
         graphics2D.setPaintMode();
         ImagePC copy = (ImagePC) image;
-        graphics2D.drawImage(copy.getImage(), x - width / 2, y - height / 2, width, height, null);
+        graphics2D.drawImage(copy.getImage(), x, y, width, height, null);
         graphics2D.setPaintMode();
     }
 

@@ -74,6 +74,11 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "cross");
 
+        im = graphics.newImage("appDesktop/assets/images/tom.png");
+        if(im == null)
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "tom");
+
         im = graphics.newImage("appDesktop/assets/images/wrongsquare.png");
         if(im == null)
             System.out.println("No se ha encontrado la imagen");
@@ -89,11 +94,12 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
-        gameBoard.render(engine);
+        //gameBoard.render(engine);
+        checkBoard.render(engine);
 
-        //Image newim = graphics.getImage("empty");
+        //Image newim = graphics.getImage("cross");
 
-        //graphics.drawImage(newim, graphics.getWidth()/4 * 3, graphics.getHeight()/2,graphics.getWidth()/2, graphics.getHeight());
+        //graphics.drawImage(newim, 7, 30,newim.getWidth()*2, newim.getHeight()*2);
     }
 
     void init(int x, int y){

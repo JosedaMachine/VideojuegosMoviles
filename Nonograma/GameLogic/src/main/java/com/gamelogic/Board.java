@@ -15,8 +15,9 @@ public class Board {
         board = new TILE[x][y];
         height = y;
         width = x;
-        for (int i = 0; i < height; i++)
-            Arrays.fill(board[i], TILE.EMPTY);
+        for(int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                board[i][j] = TILE.EMPTY;
     }
 
     void generateBoard() {
@@ -66,14 +67,12 @@ public class Board {
 
     public void render(Engine e){
         //TODO: renderizar los números laterales
-
+        int offsetX = 7, offsetY = 30; //TODO: ???????????
         // Casillas (Iker)
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
-                //e.draw(board[i][j]);?????-?????
-
                 Image im = tileImage(e, board[i][j]);
-                e.getGraphics().drawImage(im,i*50, j*50, 1f,1f);
+                e.getGraphics().drawImage(im,i*im.getWidth()+ offsetX,j*im.getHeight()+ offsetY);
             }
         }
     }

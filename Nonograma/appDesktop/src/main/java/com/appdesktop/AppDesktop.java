@@ -16,7 +16,7 @@ public class AppDesktop {
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth() * 0.7;
-        double height = screenSize.getHeight() * 0.7;
+        double height = screenSize.getHeight() * 0.8;
 
         ColorPC.Init();
         Color black = (Color) ColorPC.BLACK;
