@@ -60,13 +60,13 @@ public class GraphicsAndroid implements IGraphics {
         canvas.scale((float)x, (float)y);
     }
 
-    public void preRender(){
+    public void lockCanvas() {
+        while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
+        clear(0);
     }
 
-    //TODO Cambiar para que no use el SCENEBASE
-    @Override
-    public void render(SceneBase scene) {
+    public void unlockCanvas(){
         holder.unlockCanvasAndPost(canvas);
     }
 
@@ -148,12 +148,12 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public int getWidth() {
-        return 0;
+        return myView.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return myView.getHeight();
     }
 
     @Override

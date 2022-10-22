@@ -56,7 +56,7 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public IInput getInput() {
-        return null;
+        return input;
     }
 
     @Override
@@ -127,7 +127,6 @@ public class EnginePC implements Engine, Runnable{
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
             this.processInput();
             this.update(elapsedTime);
-
             this.render();
         }
         System.out.println("Out");

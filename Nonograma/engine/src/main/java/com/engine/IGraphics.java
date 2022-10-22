@@ -12,8 +12,6 @@ public interface IGraphics {
 
     void scale(double x, double y);
 
-    void render(SceneBase scene);
-
     void save();
 
     void restore();

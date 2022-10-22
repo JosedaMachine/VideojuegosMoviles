@@ -5,32 +5,30 @@ import android.view.SurfaceView;
 
 import com.engine.*;
 
+import java.util.ArrayList;
+
 public class EngineAndroid implements Engine, Runnable{
 
     GraphicsAndroid graphics;
+    InputAndroid input;
     IGame currGame;
     private Thread renderThread;
-
-    //TODO hacer getters
-    private SurfaceView myView;
-    private SurfaceHolder holder;
 
     boolean running;
 
     public EngineAndroid(SurfaceView view){
-        myView = view;
         graphics = new GraphicsAndroid(view);
-        holder = myView.getHolder();
+//        input = new InputAndroid();
     }
 
     @Override
     public IGraphics getGraphics() {
-        return null;
+        return graphics;
     }
 
     @Override
     public IInput getInput() {
-        return null;
+        return input;
     }
 
     @Override
@@ -74,22 +72,28 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void update(double elapsedTime) {
-
+        currGame.update(elapsedTime);
     }
 
     @Override
     public void render() {
-
+        graphics.lockCanvas();
+        this.currGame.render(graphics);
+        graphics.unlockCanvas();
     }
 
     @Override
     public void loadResources() {
-
+        this.currGame.loadImages(graphics);
     }
 
     @Override
     public void processInput() {
-
+        ArrayList<TouchEvent> list =input.getEventList();
+        for (int i = 0; i < list.size(); i++){
+            this.currGame.processInput(list.get(i));
+        }
+        input.getEventList().clear();
     }
 
     @Override
@@ -102,7 +106,7 @@ public class EngineAndroid implements Engine, Runnable{
 
         // Si el Thread se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(this.running && this.myView.getWidth() == 0);
+        while(this.running && graphics.getWidth() == 0);
         // Espera activa. Sería más elegante al menos dormir un poco.
 
         long lastFrameTime = System.nanoTime();
@@ -118,20 +122,21 @@ public class EngineAndroid implements Engine, Runnable{
 
             // Informe de FPS
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+
+            this.processInput();
+
             this.update(elapsedTime);
+
             if (currentTime - informePrevio > 1000000000l) {
                 long fps = frames * 1000000000l / (currentTime - informePrevio);
-                System.out.println("" + fps + " fps");
+                //System.out.println("" + fps + " fps");
                 frames = 0;
                 informePrevio = currentTime;
             }
             ++frames;
 
             // Pintamos el frame
-            while (!this.holder.getSurface().isValid());
-            this.canvas = this.holder.lockCanvas();
-            this.render();
-            this.holder.unlockCanvasAndPost(canvas);
+            render();
         }
     }
 }

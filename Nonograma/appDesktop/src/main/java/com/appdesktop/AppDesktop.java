@@ -19,7 +19,6 @@ public class AppDesktop {
         double height = screenSize.getHeight() * 0.8;
 
         ColorPC.Init();
-        Color black = (Color) ColorPC.BLACK;
 
         renderView.setSize((int) width, (int) height);
         renderView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
