@@ -64,27 +64,27 @@ public class SceneGame implements SceneBase {
         //Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
         //graphics.loadImage(img, "Tom");
 
-        Image im = graphics.newImage("appDesktop/assets/images/emptysquare.png");
+        Image im = graphics.newImage("images/emptysquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
-        im = graphics.newImage("appDesktop/assets/images/crosssquare.png");
+        im = graphics.newImage("images/crosssquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "cross");
 
-        im = graphics.newImage("appDesktop/assets/images/tom.png");
+        im = graphics.newImage("images/tom.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "tom");
 
-        im = graphics.newImage("appDesktop/assets/images/wrongsquare.png");
+        im = graphics.newImage("images/wrongsquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "wrong");
 
-        im = graphics.newImage("appDesktop/assets/images/fillsquare.png");
+        im = graphics.newImage("images/fillsquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");

@@ -21,6 +21,8 @@ public class GraphicsPC implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
+    private String path = "appDesktop/assets/";
+
     GraphicsPC(JFrame view){
         window = view;
         bufferStrategy = window.getBufferStrategy();
@@ -29,12 +31,12 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public Image newImage(String name) {
-        return new ImagePC(name);
+        return new ImagePC(path + name);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean isBold) {
-        return new FontPC(name , size, isBold);
+        return new FontPC(path + name , size, isBold);
     }
 
     @Override
@@ -57,26 +59,25 @@ public class GraphicsPC implements IGraphics {
     }
 
     //TODO: Delete
-    @Override
-    public void render(SceneBase scene) {
-        do {
-            do {
-                try {
-                    clear(0);
-                    scene.render(this);
-                }
-                finally {
-                    graphics2D.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
-                }
-            } while(bufferStrategy.contentsRestored());
-            bufferStrategy.show();
-        } while(bufferStrategy.contentsLost());
-    }
-
-    public void prepare(int color){
-        this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
-        this.clear(color);
-    }
+//    public void render(SceneBase scene) {
+//        do {
+//            do {
+//                try {
+//                    clear(0);
+//                    scene.render(this);
+//                }
+//                finally {
+//                    graphics2D.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
+//                }
+//            } while(bufferStrategy.contentsRestored());
+//            bufferStrategy.show();
+//        } while(bufferStrategy.contentsLost());
+//    }
+//
+//    public void prepare(int color){
+//        this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+//        this.clear(color);
+//    }
 
     public void finish(){
         graphics2D.dispose();

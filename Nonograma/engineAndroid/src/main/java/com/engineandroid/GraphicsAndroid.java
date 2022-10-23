@@ -24,6 +24,8 @@ public class GraphicsAndroid implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
+    private String path = "";
+
     GraphicsAndroid(SurfaceView view){
         this.myView = view;
 
@@ -37,12 +39,12 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public Image newImage(String name) {
-        return new ImageAndroid(assetManager, name);
+        return new ImageAndroid(assetManager, path + name);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean isBold) {
-        return new FontAndroid(assetManager, name, size, isBold);
+        return new FontAndroid(assetManager, path + name, size, isBold);
     }
 
     @Override
