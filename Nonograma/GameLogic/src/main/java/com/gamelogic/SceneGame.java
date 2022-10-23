@@ -65,27 +65,27 @@ public class SceneGame implements SceneBase {
         //graphics.loadImage(img, "Tom");
 
         Image im = graphics.newImage("appDesktop/assets/images/emptysquare.png");
-        if(im == null)
+        if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
         im = graphics.newImage("appDesktop/assets/images/crosssquare.png");
-        if(im == null)
+        if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "cross");
 
         im = graphics.newImage("appDesktop/assets/images/tom.png");
-        if(im == null)
+        if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "tom");
 
         im = graphics.newImage("appDesktop/assets/images/wrongsquare.png");
-        if(im == null)
+        if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "wrong");
 
         im = graphics.newImage("appDesktop/assets/images/fillsquare.png");
-        if(im == null)
+        if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
