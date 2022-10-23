@@ -24,7 +24,7 @@ public class GraphicsAndroid implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    private String path = "";
+    private String path = "images/";
 
     GraphicsAndroid(SurfaceView view){
         this.myView = view;

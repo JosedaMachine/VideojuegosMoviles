@@ -8,5 +8,5 @@ public interface Audio {
 
     Sound newSound(String name);
 
-    Sound playSound(String name);
+    void playSound(String name);
 }

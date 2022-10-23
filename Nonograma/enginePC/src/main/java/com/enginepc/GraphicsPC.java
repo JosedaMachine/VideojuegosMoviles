@@ -21,7 +21,7 @@ public class GraphicsPC implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    private String path = "appDesktop/assets/";
+    private String path = "appDesktop/assets/images/";
 
     GraphicsPC(JFrame view){
         window = view;
@@ -74,10 +74,10 @@ public class GraphicsPC implements IGraphics {
 //        } while(bufferStrategy.contentsLost());
 //    }
 //
-//    public void prepare(int color){
-//        this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
-//        this.clear(color);
-//    }
+    public void prepare(int color){
+        this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+        this.clear(color);
+    }
 
     public void finish(){
         graphics2D.dispose();

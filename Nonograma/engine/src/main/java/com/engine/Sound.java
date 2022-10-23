@@ -6,5 +6,5 @@ public interface Sound {
 
     public abstract void pause();
 
-    public abstract void resume();
+    public boolean isLoaded();
 }
