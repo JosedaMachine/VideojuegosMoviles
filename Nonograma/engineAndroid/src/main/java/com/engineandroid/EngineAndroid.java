@@ -11,6 +11,7 @@ public class EngineAndroid implements Engine, Runnable{
 
     GraphicsAndroid graphics;
     InputAndroid input;
+    AudioAndroid audio;
     IGame currGame;
     private Thread renderThread;
 
@@ -18,7 +19,8 @@ public class EngineAndroid implements Engine, Runnable{
 
     public EngineAndroid(SurfaceView view){
         graphics = new GraphicsAndroid(view);
-//        input = new InputAndroid();
+        input = new InputAndroid(view);
+        audio = new AudioAndroid(view.getContext().getAssets());
     }
 
     @Override
@@ -33,7 +35,7 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public Audio getAudio() {
-        return null;
+        return audio;
     }
 
     @Override

@@ -20,6 +20,7 @@ public class EnginePC implements Engine, Runnable{
     GraphicsPC graphics;
     IGame currGame;
     InputPC input;
+    AudioPC audio;
     boolean running;
 
     BufferStrategy bufferStrategy;
@@ -47,6 +48,7 @@ public class EnginePC implements Engine, Runnable{
         bufferStrategy = renderView.getBufferStrategy();
 
         input = new InputPC(renderView);
+        audio = new AudioPC();
     }
 
     @Override
@@ -61,7 +63,7 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public Audio getAudio() {
-        return null;
+        return audio;
     }
 
     @Override
