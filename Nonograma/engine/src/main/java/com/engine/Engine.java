@@ -5,6 +5,8 @@ public interface Engine {
     IInput getInput();
     Audio getAudio();
     public void setGame(IGame game);
+    // TODO (no es todo pero pa tener en cuenta):
+    // En clase IGame tiene un getter (get IState)
     public void resume();
     public void pause();
     public void update(double elapsedTime);

@@ -76,6 +76,9 @@ public class GraphicsPC implements IGraphics {
 //
     public void prepare(int color){
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+        //TODO: Escalado resolucion
+        //this.graphics2D.scale(1,1);
+        //this.graphics2D.translate(1,1);
         this.clear(color);
     }
 

@@ -113,6 +113,7 @@ public class EnginePC implements Engine, Runnable{
             throw new RuntimeException("run() should not be called directly");
         }
 
+        //Espera a crear ventana
         while(this.running && view.getWidth() == 0);
 
         long lastFrameTime = System.nanoTime();
@@ -120,7 +121,7 @@ public class EnginePC implements Engine, Runnable{
 
 
         // Bucle de juego principal.
-        while(running) {
+        while(running && currGame != null) {
             long currentTime = System.nanoTime();
             long nanoElapsedTime = currentTime - lastFrameTime;
             lastFrameTime = currentTime;
