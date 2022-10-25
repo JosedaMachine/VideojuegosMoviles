@@ -17,7 +17,7 @@ public class InputPC implements IInput {
     private final ArrayList<TouchEvent> eventList;
 
     public InputPC(JFrame view){
-         eventList = new ArrayList<TouchEvent>();
+         eventList = new ArrayList<>();
 
          view.addMouseListener(new MouseAdapter(){
             @Override
@@ -68,4 +68,11 @@ public class InputPC implements IInput {
     public ArrayList<TouchEvent> getEventList() {
         return eventList;
     }
+
+    @Override
+    public void flushEvents() {
+        eventList.clear();
+    }
+
+
 }

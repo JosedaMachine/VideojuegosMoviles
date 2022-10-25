@@ -6,4 +6,5 @@ import java.util.ArrayList;
 
 public interface IInput {
     ArrayList<TouchEvent> getEventList();
+    void flushEvents();
 }
