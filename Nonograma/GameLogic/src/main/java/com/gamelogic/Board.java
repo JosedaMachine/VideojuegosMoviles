@@ -12,7 +12,7 @@ public class Board {
     private TILE[][] board;
     private final int rows;
     private final int cols;
-    private int width, height;
+    private int width, height, maxHorizontalFilled, maxVerticalFilled;
     private float relationX, relationY;
 
     private List<List<Integer>> adyancentsHorizontal;
@@ -47,38 +47,56 @@ public class Board {
                     board[i][j] = TILE.FILL;
             }
         }
-
+        maxHorizontalFilled = 0;
+        maxVerticalFilled = 0;
         for(int i = 0; i < rows; i++){
             List<Integer> adyacents = new ArrayList<>();
             int juntas = 0;
             for (int j = 0; j < cols; j++) {
                 if (board[i][j] == TILE.FILL){
                     juntas++;
+
+                    if(j + 1 == cols)
+                        adyacents.add(juntas);
                 }
-                else if(juntas != 0) {
+                else if(juntas != 0){
                     adyacents.add(juntas);
                     juntas = 0;
                 }
             }
-            adyancentsHorizontal.add(adyacents);
-        }
 
-        for(int i = 0; i < rows; i++){
-            List<Integer> adyacents = new ArrayList<>();
-            int juntas = 0;
-            for (int j = 0; j < cols; j++) {
-                if (board[i][j] == TILE.FILL){
-                    juntas++;
-                }
-                else{
-                    adyacents.add(juntas);
-                    juntas = 0;
-                }
+            if(adyacents.size() == 0) adyacents.add(0);
+            else if(adyacents.size() > maxVerticalFilled){
+                maxVerticalFilled = adyacents.size();
             }
             adyancentsVertical.add(adyacents);
         }
 
+        for (int j = 0; j < cols; j++) {
+            List<Integer> adyacents = new ArrayList<>();
+            int juntas = 0;
+            for(int i = 0; i < rows; i++){
+                if (board[i][j] == TILE.FILL){
+                    juntas++;
+
+                    if(i + 1 == rows)
+                        adyacents.add(juntas);
+                }
+                else if(juntas != 0){
+                    adyacents.add(juntas);
+                    juntas = 0;
+                }
+            }
+            if(adyacents.size() == 0) adyacents.add(0);
+            else if(adyacents.size() > maxHorizontalFilled){
+                maxHorizontalFilled = adyacents.size();
+            }
+            adyancentsHorizontal.add(adyacents);
+        }
+
+        System.out.println("H: " + maxHorizontalFilled);
         System.out.println(Arrays.toString(adyancentsHorizontal.toArray()));
+        System.out.println("V: " + maxVerticalFilled);
         System.out.println(Arrays.toString(adyancentsVertical.toArray()));
     }
 

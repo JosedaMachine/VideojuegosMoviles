@@ -50,7 +50,7 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void init() {
-        int x = 5, y = 5;
+        int x = 10, y = 10;
         checkBoard = new Board(x, y, 500, 500);
         checkBoard.generateBoard();
 
