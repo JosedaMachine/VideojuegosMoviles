@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 
 public class GraphicsPC implements IGraphics {
 
+    private int insetTop, insetLeft;
     private final JFrame window;
     private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
@@ -25,6 +26,9 @@ public class GraphicsPC implements IGraphics {
 
     GraphicsPC(JFrame view){
         window = view;
+
+        insetTop = view.getInsets().top;
+        insetLeft = view.getInsets().left;
         bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
     }
@@ -110,7 +114,7 @@ public class GraphicsPC implements IGraphics {
     public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
         int width = (int) (image.getWidth() * scaleX);
         int height = (int) (image.getHeight() * scaleY);
-        drawImage(image, x, y, width, height);
+        drawImage(image, x + insetLeft, y + insetTop, width, height);
     }
 
     @Override

@@ -50,11 +50,11 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void init() {
-        int x = 10, y = 10;
-        checkBoard = new Board(x, y);
+        int x = 5, y = 5;
+        checkBoard = new Board(x, y, 500, 500);
         checkBoard.generateBoard();
 
-        gameBoard = new Board(x, y);
+        gameBoard = new Board(x, y, 500, 500);
     }
 
     @Override
@@ -95,18 +95,11 @@ public class SceneGame implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         //gameBoard.render(engine);
-        checkBoard.render(engine);
+        checkBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
 
         //Image newim = graphics.getImage("cross");
 
         //graphics.drawImage(newim, 7, 30,newim.getWidth()*2, newim.getHeight()*2);
-    }
-
-    void init(int x, int y){
-        checkBoard = new Board(x, y);
-        checkBoard.generateBoard();
-
-        gameBoard = new Board(x, y);
     }
 
     boolean hasWon() {

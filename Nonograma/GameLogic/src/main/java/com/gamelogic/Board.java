@@ -3,33 +3,91 @@ package com.gamelogic;
 import com.engine.Engine;
 import com.engine.Image;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Board {
     private TILE[][] board;
-    private final int height;
-    private final int width;
+    private final int rows;
+    private final int cols;
+    private int width, height;
+    private float relationX, relationY;
 
-    Board(int x, int y) {
+    private List<List<Integer>> adyancentsHorizontal;
+    private List<List<Integer>> adyancentsVertical;
+
+
+    Board(int x, int y, int sizeX_, int sizeY_) {
         board = new TILE[x][y];
-        height = y;
-        width = x;
-        for(int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
+        rows = y;
+        cols = x;
+
+        width = sizeX_;
+        height = sizeY_;
+
+        relationX =  sizeX_ / cols;
+        relationY =  sizeY_ / rows;
+        for(int i = 0; i < cols; i++)
+            for (int j = 0; j < rows; j++)
                 board[i][j] = TILE.EMPTY;
     }
 
     void generateBoard() {
+        adyancentsHorizontal = new ArrayList<>();
+        adyancentsVertical = new ArrayList<>();
+
         Random r = new Random();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
                 int random = r.nextInt(10);
 
                 if (random <= 3 )
                     board[i][j] = TILE.FILL;
             }
         }
+
+        for(int i = 0; i < rows; i++){
+            List<Integer> adyacents = new ArrayList<>();
+            int juntas = 0;
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == TILE.FILL){
+                    juntas++;
+                }
+                else if(juntas != 0) {
+                    adyacents.add(juntas);
+                    juntas = 0;
+                }
+            }
+            adyancentsHorizontal.add(adyacents);
+        }
+
+        for(int i = 0; i < rows; i++){
+            List<Integer> adyacents = new ArrayList<>();
+            int juntas = 0;
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == TILE.FILL){
+                    juntas++;
+                }
+                else{
+                    adyacents.add(juntas);
+                    juntas = 0;
+                }
+            }
+            adyancentsVertical.add(adyacents);
+        }
+
+        System.out.println(Arrays.toString(adyancentsHorizontal.toArray()));
+        System.out.println(Arrays.toString(adyancentsVertical.toArray()));
+    }
+
+    public  int getCols(){
+        return cols;
+    }
+
+    public  int getRows(){
+        return rows;
     }
 
     public  int getWidth(){
@@ -56,8 +114,8 @@ public class Board {
         TILE[][] otherBoard = other.getBoard();
 
         //Assume they are the same size (width and height)
-        for(int i = 0; i < width; i++) {
-            for(int j = 0; j < height; j++) {
+        for(int i = 0; i < cols; i++) {
+            for(int j = 0; j < rows; j++) {
                 if(board[i][j] != otherBoard[i][j])
                     return false;
             }
@@ -65,14 +123,12 @@ public class Board {
         return true;
     }
 
-    public void render(Engine e){
+    public void render(Engine e, int x, int y){
         //TODO: renderizar los números laterales
-        int offsetX = 7, offsetY = 30; //TODO: ???????????
-        // Casillas (Iker)
-        for(int i = 0; i < width; i++) {
-            for(int j = 0; j < height; j++) {
+        for(int i = 0; i < cols; i++) {
+            for(int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j]);
-                e.getGraphics().drawImage(im,i*im.getWidth()+ offsetX,j*im.getHeight()+ offsetY);
+                e.getGraphics().drawImage(im, (int)(i* relationX) + x, (int)(j*relationY) + y,relationX/im.getWidth(),relationY/im.getHeight());
             }
         }
     }
