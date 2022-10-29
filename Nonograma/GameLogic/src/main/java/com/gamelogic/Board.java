@@ -2,6 +2,7 @@ package com.gamelogic;
 
 import com.engine.Engine;
 import com.engine.Image;
+import com.engine.SceneBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ public class Board {
     private final int cols;
     private int width, height, maxHorizontalFilled, maxVerticalFilled;
     private float relationX, relationY;
+    private int posX, posY;
 
     private List<List<Integer>> adyancentsHorizontal;
     private List<List<Integer>> adyancentsVertical;
@@ -29,6 +31,7 @@ public class Board {
 
         relationX =  sizeX_ / cols;
         relationY =  sizeY_ / rows;
+
         for(int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
                 board[i][j] = TILE.EMPTY;
@@ -142,13 +145,31 @@ public class Board {
     }
 
     public void render(Engine e, int x, int y){
+
+        //En caso de que se mueva el tablero o reescalado o algo por el estilo
+        if(x != posX) posX = x;
+        if(y != posY) posY = y;
+
         //TODO: renderizar los números laterales
         for(int i = 0; i < cols; i++) {
             for(int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j]);
-                e.getGraphics().drawImage(im, (int)(i* relationX) + x, (int)(j*relationY) + y,relationX/im.getWidth(),relationY/im.getHeight());
+                e.getGraphics().drawImage(im, (int)(i* relationX) + x, (int)(j*relationY) + y,
+                                        relationX/im.getWidth(),relationY/im.getHeight());
             }
         }
+    }
+
+    boolean calculcateIndexMatrix(int pixelX, int pixelY,SceneBase scene){
+        SceneGame sceneG = (SceneGame) scene;
+        if(( pixelX > posX && pixelX <= posX + width ) && ( pixelY > posY && pixelY <= posY + height )){
+            sceneG.i_index = (int) ((pixelX - posX)/(relationX));
+            sceneG.j_index = (int) ((pixelY - posY)/(relationY));
+//            System.out.println("Index X : " + sceneG.i_index +  " Index Y : " + sceneG.j_index);
+            return true;
+        }
+
+        return false;
     }
 
     private Image tileImage(Engine e, TILE t){
@@ -163,5 +184,13 @@ public class Board {
                 return e.getGraphics().getImage("wrong");
         }
         return null;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 }

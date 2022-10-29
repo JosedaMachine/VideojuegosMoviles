@@ -29,8 +29,10 @@ public class TouchEvent implements Comparable<TouchEvent>{
     }
 
     public enum ButtonID {
+        NO_BUTTON,
         LEFT_BUTTON,
         RIGHT_BUTTON,
+        MIDDLE_BUTTON
     }
 
     public TouchEvent(TouchEventType type, int posX, int posY, ButtonID id ){

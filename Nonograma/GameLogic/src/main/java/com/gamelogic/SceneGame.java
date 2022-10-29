@@ -20,6 +20,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     Board gameBoard;
 
+    public int i_index, j_index;
     //True cuando coincidan los tableros
     boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -27,6 +28,8 @@ public class SceneGame implements SceneBase {
 
     public SceneGame(Engine engine) {
         this.engine = engine;
+        i_index = 0;
+        j_index = 0;
     }
 
     @Override
@@ -35,25 +38,31 @@ public class SceneGame implements SceneBase {
             hasWon = checkHasWon();
             checkWin = false;
         }
+
     }
 
     @Override
     public void input(TouchEvent event_) {
-        if(event_.getType_() == TOUCH_EVENT ){
-            if(event_.getID_() == LEFT_BUTTON){
-                System.out.println("Izq " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
-            }else if(event_.getID_() == RIGHT_BUTTON){
-                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
+        if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+//            if(event_.getID_() == LEFT_BUTTON){
+//                System.out.println("Izq " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
+//            }else if(event_.getID_() == RIGHT_BUTTON){
+//                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
+//            }
+
+            if(gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_(), this)){
+                setTile(i_index, j_index, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
             }
+
         }
     }
 
     @Override
     public void init() {
-        int x = 10, y = 10;
+        loadImages(engine.getGraphics());
+        int x = 2, y = 2;
         checkBoard = new Board(x, y, 500, 500);
         checkBoard.generateBoard();
-
         gameBoard = new Board(x, y, 500, 500);
     }
 
@@ -95,7 +104,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         //gameBoard.render(engine);
-        checkBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
+        gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
 
         //Image newim = graphics.getImage("cross");
 
@@ -109,12 +118,12 @@ public class SceneGame implements SceneBase {
     boolean setTile(int x, int y, boolean click) {
         TILE tile = gameBoard.getTile(x, y);
 
-        if(tile == TILE.FILL)
+        if(tile == TILE.EMPTY)
             gameBoard.setTile(x,y, TILE.FILL);
         else
             gameBoard.setTile(x,y, TILE.EMPTY);
 
-        checkWin = true;
+//        checkWin = true;
         return true;
     }
 

@@ -16,31 +16,31 @@ public class InputPC implements IInput {
 
     private final ArrayList<TouchEvent> eventList;
 
-    public InputPC(JFrame view){
+    public InputPC(final JFrame view){
          eventList = new ArrayList<>();
 
          view.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                int posX = mouseEvent.getX();
-                int posY = mouseEvent.getY();
-                TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
-                TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-                                                  posX,
-                                                  posY,
-                                                  id);
-                eventList.add(touch);
-                TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-                                                    posX,
-                                                    posY,
-                                                    id);
-                eventList.add(release);
+//                int posX = mouseEvent.getX() - view.getInsets().left;
+//                int posY = mouseEvent.getY() - view.getInsets().top;
+//                TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
+//                TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
+//                                                  posX,
+//                                                  posY,
+//                                                  id);
+//                eventList.add(touch);
+//                TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
+//                                                    posX,
+//                                                    posY,
+//                                                    id);
+//                eventList.add(release);
             }
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                int posX = mouseEvent.getX();
-                int posY = mouseEvent.getY();
+                int posX = mouseEvent.getX() - view.getInsets().left;
+                int posY = mouseEvent.getY() - view.getInsets().top;
                 TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
                 TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
                         posX,
@@ -51,8 +51,8 @@ public class InputPC implements IInput {
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                int posX = mouseEvent.getX();
-                int posY = mouseEvent.getY();
+                int posX = mouseEvent.getX() - view.getInsets().left;
+                int posY = mouseEvent.getY() - view.getInsets().top;
                 TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
                 TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
                         posX,

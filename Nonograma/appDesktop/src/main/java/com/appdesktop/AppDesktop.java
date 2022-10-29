@@ -31,7 +31,7 @@ public class AppDesktop {
 
         engine.setGame(game);
         //Tambien se podrian cargar los recursos dentro del setscene
-        engine.loadResources();
+//        engine.loadResources();
         engine.resume();
     }
 }
