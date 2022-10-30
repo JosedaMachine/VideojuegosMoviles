@@ -131,6 +131,7 @@ public class Board {
         return board;
     }
 
+    // Comprueba si los tableros coinciden
     public boolean isBoardMatched(Board other) {
         TILE[][] otherBoard = other.getBoard();
 
@@ -151,18 +152,30 @@ public class Board {
         if(y != posY) posY = y;
 
         //TODO: renderizar los números laterales
-        for(int i = 0; i < cols; i++) {
-            for(int j = 0; j < rows; j++) {
-                Image im = tileImage(e, board[i][j]);
-                e.getGraphics().drawImage(im, (int)(i* relationX) + x, (int)(j*relationY) + y,
-                                        relationX/im.getWidth(),relationY/im.getHeight());
+
+        //dibujar numero de correctos
+        for(int m = 0; m < adyancentsHorizontal.size(); m++){
+            for (int n = 0; n <  adyancentsHorizontal.get(m).size(); n++){
+                e.getGraphics().drawText(adyancentsHorizontal.get(m).get(n).toString(),
+                        (int)(n* relationX) + x, (int)(m*relationY) + y);
             }
         }
+
+        // Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
+//        for(int i = 0; i < cols; i++) {
+//            for(int j = 0; j < rows; j++) {
+//                Image im = tileImage(e, board[i][j]);
+//                e.getGraphics().drawImage(im, (int)(i* relationX) + x, (int)(j*relationY) + y,
+//                                        relationX/im.getWidth(),relationY/im.getHeight());
+//            }
+//        }
     }
 
     boolean calculcateIndexMatrix(int pixelX, int pixelY,SceneBase scene){
         SceneGame sceneG = (SceneGame) scene;
+        // Comprueba si esta dentro del tablero
         if(( pixelX > posX && pixelX <= posX + width ) && ( pixelY > posY && pixelY <= posY + height )){
+            // Localiza posicion y selecciona el tile
             sceneG.i_index = (int) ((pixelX - posX)/(relationX));
             sceneG.j_index = (int) ((pixelY - posY)/(relationY));
 //            System.out.println("Index X : " + sceneG.i_index +  " Index Y : " + sceneG.j_index);

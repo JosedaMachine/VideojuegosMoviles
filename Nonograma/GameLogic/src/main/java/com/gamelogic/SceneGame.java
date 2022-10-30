@@ -5,6 +5,7 @@ import static com.engine.TouchEvent.ButtonID.RIGHT_BUTTON;
 import static com.engine.TouchEvent.TouchEventType.TOUCH_EVENT;
 
 import com.engine.Engine;
+import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.SceneBase;
@@ -60,7 +61,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        int x = 2, y = 2;
+        int x = 10, y = 10;
         checkBoard = new Board(x, y, 500, 500);
         checkBoard.generateBoard();
         gameBoard = new Board(x, y, 500, 500);
@@ -98,17 +99,15 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
+        IFont fo = graphics.newFont("RamadhanMubarak.ttf", 12, false);
+
         System.out.println("Resources Loaded");
     }
 
     @Override
     public void render(IGraphics graphics) {
-        //gameBoard.render(engine);
-        gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
-
-        //Image newim = graphics.getImage("cross");
-
-        //graphics.drawImage(newim, 7, 30,newim.getWidth()*2, newim.getHeight()*2);
+        //gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
+        checkBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
     }
 
     boolean hasWon() {

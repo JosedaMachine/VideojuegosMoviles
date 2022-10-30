@@ -22,7 +22,7 @@ public class GraphicsPC implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    private String path = "appDesktop/assets/images/";
+    private String path = "appDesktop/assets/";
 
     GraphicsPC(JFrame view){
         window = view;
@@ -35,12 +35,12 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public Image newImage(String name) {
-        return new ImagePC(path + name);
+        return new ImagePC(path + "images/" + name);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean isBold) {
-        return new FontPC(path + name , size, isBold);
+        return new FontPC(path + "fonts/"+ name , size, isBold);
     }
 
     @Override
