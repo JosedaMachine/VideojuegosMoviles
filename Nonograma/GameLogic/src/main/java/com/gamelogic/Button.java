@@ -8,7 +8,7 @@ import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.TouchEvent;
 
-public class Button {
+public abstract class Button {
     private Image backgroundImage = null;
     private IFont font = null;
     private String text;
@@ -48,20 +48,9 @@ public class Button {
         this.font = font;
     }
 
-    public void input(TouchEvent event_){
-        if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-//            if(event_.getID_() == LEFT_BUTTON){
-//                System.out.println("Izq " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
-//            }else if(event_.getID_() == RIGHT_BUTTON){
-//                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
-//            }
-            if(isInside(event_.getX_(),event_.getY_())){
-                game.changeScene(new SceneGame(engine));
-            }
-        }
-    }
+    public abstract void input(TouchEvent event_);
 
-    private boolean isInside(int pixelX, int pixelY){
+    public boolean isInside(int pixelX, int pixelY){
         return (pixelX > posX && pixelX <= posX + sizeX ) && ( pixelY > posY && pixelY <= posY + sizeY);
     }
 

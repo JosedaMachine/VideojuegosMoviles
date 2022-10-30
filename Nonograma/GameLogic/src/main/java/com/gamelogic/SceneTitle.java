@@ -27,8 +27,19 @@ public class SceneTitle implements SceneBase {
     public void init() {
         loadImages(engine.getGraphics());
         title = engine.getGraphics().newFont("RamadhanMubarak.ttf",100,true);
-        button = new Button("Jugar", engine.getGraphics().getWidth()/2, engine.getGraphics().getHeight()/2 - 200,
-                200, 100, engine.getGame(), engine);
+//        button = new Button("Jugar", engine.getGraphics().getWidth()/2, engine.getGraphics().getHeight()/2 - 200,
+//                200, 100, engine.getGame(), engine);
+        button = new Button("Jugar", engine.getGraphics().getWidth()/2,
+                engine.getGraphics().getHeight()/2 - 200,200, 100, engine.getGame(), engine) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(button.isInside(event_.getX_(),event_.getY_())){
+                        engine.getGame().changeScene(new SceneGame(engine));
+                    }
+                }
+            }
+        };
 
         button.setFont(title);
         button.setColor(IColor.BLACK);
