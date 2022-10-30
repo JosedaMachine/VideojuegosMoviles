@@ -128,7 +128,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void fillRect(int x, int y, int w, int h) {
-        this.graphics2D.fillRect(x, y, x + w, y + h);
+        this.graphics2D.fillRect(x+ insetLeft, y+ insetTop, x + w, y + h);
     }
 
     @Override
@@ -138,17 +138,17 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawRect(int x, int y, int w, int h) {
-        this.graphics2D.drawRect(x, y, w, h);
+        this.graphics2D.drawRect(x+ insetLeft, y+ insetTop, w, h);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        this.graphics2D.drawLine(x1, y1, x2, y2);
+        this.graphics2D.drawLine(x1+ insetLeft, y1+ insetTop, x2+ insetLeft, y2+ insetTop);
     }
 
     @Override
     public void drawText(String text, int x, int y) {
-        this.graphics2D.drawString(text, x, y);
+        this.graphics2D.drawString(text, x+ insetLeft, y+ insetTop);
     }
 
     @Override

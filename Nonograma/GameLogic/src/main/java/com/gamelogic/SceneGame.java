@@ -5,6 +5,7 @@ import static com.engine.TouchEvent.ButtonID.RIGHT_BUTTON;
 import static com.engine.TouchEvent.TouchEventType.TOUCH_EVENT;
 
 import com.engine.Engine;
+import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
@@ -99,7 +100,9 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
-        IFont fo = graphics.newFont("RamadhanMubarak.ttf", 12, false);
+        IFont fo = graphics.newFont("RamadhanMubarak.ttf", 300, false);
+        graphics.setFont(fo);
+        //
 
         System.out.println("Resources Loaded");
     }
@@ -107,6 +110,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         //gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
+        graphics.setColor(IColor.BLACK);
         checkBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
     }
 
