@@ -27,7 +27,9 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        changeScene(new SceneGame(engine));
+//        changeScene(new SceneGame(engine));
+        changeScene(new SceneTitle(engine));
+
     }
 
     @Override

@@ -62,22 +62,6 @@ public class GraphicsPC implements IGraphics {
         graphics2D.scale(x, y);
     }
 
-    //TODO: Delete
-//    public void render(SceneBase scene) {
-//        do {
-//            do {
-//                try {
-//                    clear(0);
-//                    scene.render(this);
-//                }
-//                finally {
-//                    graphics2D.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
-//                }
-//            } while(bufferStrategy.contentsRestored());
-//            bufferStrategy.show();
-//        } while(bufferStrategy.contentsLost());
-//    }
-//
     public void prepare(int color){
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         //TODO: Escalado resolucion
@@ -114,14 +98,14 @@ public class GraphicsPC implements IGraphics {
     public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
         int width = (int) (image.getWidth() * scaleX);
         int height = (int) (image.getHeight() * scaleY);
-        drawImage(image, x + insetLeft, y + insetTop, width, height);
+        drawImage(image, x , y , width, height);
     }
 
     @Override
     public void drawImage(Image image, int x, int y, int width, int height) {
         graphics2D.setPaintMode();
         ImagePC copy = (ImagePC) image;
-        graphics2D.drawImage(copy.getImage(), x, y, width, height, null);
+        graphics2D.drawImage(copy.getImage(), x+ insetLeft, y+ insetTop, width, height, null);
         graphics2D.setPaintMode();
     }
 
@@ -163,7 +147,6 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-
         this.graphics2D.drawString(text, x, y);
     }
 

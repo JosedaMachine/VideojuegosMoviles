@@ -52,7 +52,7 @@ public class MyScene {
 //        renderClass.renderImages(0, 0, renderClass.getWidth(), renderClass.getHeight(),"examplePCReal/assets/images/tom.png");
         for(int i = 0; i < numCircles; i++)
             renderClass.renderCircle(this.x + 20*i, this.y + 20* i, this.radius - 2 * i);
-//        renderClass.renderText(200, 120, "data/fonts/OctoberRose.otf", "Feliz Jueves!", Color.BLACK, 80);
+        renderClass.renderText(200, 120, "data/font/OctoberRose.otf", "Feliz Jueves!", Color.BLACK, 80);
     }
 
     public void input(MouseEvent event){
