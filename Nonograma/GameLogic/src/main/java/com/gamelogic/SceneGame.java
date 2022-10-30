@@ -9,6 +9,7 @@ import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
+import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
@@ -57,9 +58,9 @@ public class SceneGame implements SceneBase {
             //TODO Variable de fin de juego si tablero correcto
             //TODO hacer un width y height de la fuente
 
-            if(gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_(), this)){
-                setTile(i_index, j_index, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
-            }
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
+
+            setTile(index.first, index.second, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
 
         }
     }
@@ -116,7 +117,8 @@ public class SceneGame implements SceneBase {
     public void render(IGraphics graphics) {
         //gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
         graphics.setColor(IColor.BLACK);
-        checkBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
+        checkBoard.render(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+        gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
     }
 
     boolean hasWon() {
@@ -124,6 +126,8 @@ public class SceneGame implements SceneBase {
     }
 
     boolean setTile(int x, int y, boolean click) {
+        if(x <= 0 || y <= 0) return false;
+
         TILE tile = gameBoard.getTile(x, y);
 
         if(tile == TILE.EMPTY)
@@ -131,7 +135,6 @@ public class SceneGame implements SceneBase {
         else
             gameBoard.setTile(x,y, TILE.EMPTY);
 
-//        checkWin = true;
         return true;
     }
 

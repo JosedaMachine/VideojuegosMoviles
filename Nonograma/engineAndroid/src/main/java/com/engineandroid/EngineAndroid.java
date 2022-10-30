@@ -45,6 +45,11 @@ public class EngineAndroid implements Engine, Runnable{
     }
 
     @Override
+    public IGame getGame() {
+        return currGame;
+    }
+
+    @Override
     public void resume() {
         if (!this.running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya

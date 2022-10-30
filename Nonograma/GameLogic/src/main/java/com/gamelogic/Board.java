@@ -3,6 +3,7 @@ package com.gamelogic;
 import com.engine.Engine;
 import com.engine.Image;
 import com.engine.SceneBase;
+import com.engine.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,6 +144,10 @@ public class Board {
         return true;
     }
 
+    public boolean isTileMatched(int i, int j, Board other){
+        return board[i][j] == other.getBoard()[i][j];
+    }
+
     private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
         // dibujar cuadro lateral
         e.getGraphics().drawLine(alphaX, y + height - 1, x, y + height - 1);
@@ -180,7 +185,7 @@ public class Board {
         }
     }
 
-    private void drawBoard(Engine e, int x, int y) {
+    public void drawBoard(Engine e, int x, int y) {
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -208,21 +213,21 @@ public class Board {
 
         drawNums(e, x, y, alphaX, alphaY, numoffsetDom, numoffsetSec);
 
-        drawBoard(e, x, y);
+        //NO DEBERÍA RENDERIZAR EL TABLERO JUNTO CON LO DEMÁS
+        //drawBoard(e, x, y);
     }
 
-    boolean calculcateIndexMatrix(int pixelX, int pixelY, SceneBase scene) {
-        SceneGame sceneG = (SceneGame) scene;
+    Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {
         // Comprueba si esta dentro del tablero
         if ((pixelX > posX && pixelX <= posX + width) && (pixelY > posY && pixelY <= posY + height)) {
             // Localiza posicion y selecciona el tile
-            sceneG.i_index = (int) ((pixelX - posX) / (relationX));
-            sceneG.j_index = (int) ((pixelY - posY) / (relationY));
-//            System.out.println("Index X : " + sceneG.i_index +  " Index Y : " + sceneG.j_index);
-            return true;
+            int i_index = (int) ((pixelX - posX) / (relationX));
+            int j_index = (int) ((pixelY - posY) / (relationY));
+            System.out.println("Index X : " + i_index +  " Index Y : " + j_index);
+            return new Pair<>(i_index, j_index);
         }
 
-        return false;
+        return new Pair<>(-1, -1);
     }
 
     private Image tileImage(Engine e, TILE t) {
