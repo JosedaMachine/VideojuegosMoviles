@@ -1,5 +1,6 @@
 package com.enginepc;
 
+import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;

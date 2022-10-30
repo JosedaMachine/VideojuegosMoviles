@@ -1,6 +1,7 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
@@ -25,7 +26,7 @@ public class SceneTitle implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        title = engine.getGraphics().newFont("RamadhanMubarak.ttf",50,true);
+        title = engine.getGraphics().newFont("RamadhanMubarak.ttf",100,true);
 
     }
 
@@ -35,7 +36,8 @@ public class SceneTitle implements SceneBase {
         int size = 400;
         graphics.drawImage(im, (graphics.getWidth()/2) - (size/2), graphics.getHeight()/2, size, size);
         graphics.setFont(title);
-        graphics.drawText("Hola", graphics.getWidth()/2 , 200);
+        graphics.setColor(IColor.BLACK);
+        graphics.drawText("Nonograma", graphics.getWidth()/2 - 100, 200);
 
     }
 

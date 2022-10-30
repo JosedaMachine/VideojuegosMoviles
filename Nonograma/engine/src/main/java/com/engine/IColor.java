@@ -1,9 +1,9 @@
 package com.engine;
 
 public class IColor {
-    public static Object RED = null;
-    public static Object BLUE = null;
-    public static Object GRAY = null;
-    public static Object WHITE = null;
-    public static Object BLACK = null;
+    public static Integer RED = null;
+    public static Integer BLUE = null;
+    public static Integer GRAY = null;
+    public static Integer WHITE = null;
+    public static Integer BLACK = null;
 }

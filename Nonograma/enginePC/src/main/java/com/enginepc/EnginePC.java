@@ -2,6 +2,7 @@ package com.enginepc;
 
 import com.engine.Audio;
 import com.engine.Engine;
+import com.engine.IColor;
 import com.engine.IGraphics;
 import com.engine.IGame;
 import com.engine.IInput;
@@ -143,7 +144,7 @@ public class EnginePC implements Engine, Runnable{
         do {
             do {
                 try {
-                    graphics.prepare(((Color) ColorPC.BLUE).getRGB());
+                    graphics.prepare(IColor.BLUE);
                     this.currGame.render(graphics);
                 }
                 finally{
