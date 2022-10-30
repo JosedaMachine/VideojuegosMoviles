@@ -52,6 +52,11 @@ public class SceneGame implements SceneBase {
 //                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
 //            }
 
+            //TODO hacer un callback
+            //TODO Boton que evalue tablero ->casillas malas en rojo durante X segundos
+            //TODO Variable de fin de juego si tablero correcto
+            //TODO hacer un width y height de la fuente
+
             if(gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_(), this)){
                 setTile(i_index, j_index, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
             }
