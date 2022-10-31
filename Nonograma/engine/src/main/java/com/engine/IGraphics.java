@@ -40,6 +40,8 @@ public interface IGraphics {
 
     void drawText(String text, int x, int y);
 
+    Pair<Double, Double> getStringDimensions(String text);
+
     int getWidth();
 
     int getHeight();
