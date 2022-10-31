@@ -12,7 +12,6 @@ public abstract class Button {
     private Image backgroundImage = null;
     private IFont font = null;
     private String text;
-    private IGame game;
     private int color;
 
     private int posX;
@@ -20,16 +19,12 @@ public abstract class Button {
     private int sizeX;
     private int sizeY;
 
-    private Engine engine;
-
-    public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_, IGame game_, Engine engine_){
+    public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_){
         text = text_;
         posX = posX_;
         posY = posY_;
         sizeX = sizeX_;
         sizeY = sizeY_;
-        engine = engine_;
-        game = game_;
     }
 
     public void render(IGraphics graphics){

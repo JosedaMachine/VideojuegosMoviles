@@ -23,6 +23,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     Board gameBoard;
 
+    Button bttCheckWin;
     //True cuando coincidan los tableros
     boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -44,13 +45,6 @@ public class SceneGame implements SceneBase {
     @Override
     public void input(TouchEvent event_) {
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-//            if(event_.getID_() == LEFT_BUTTON){
-//                System.out.println("Izq " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
-//            }else if(event_.getID_() == RIGHT_BUTTON){
-//                System.out.println("Der " + "X: " +  event_.getX_()+  " Y: " + event_.getY_());
-//            }
-
-            //TODO hacer un callback
             //TODO Boton que evalue tablero ->casillas malas en rojo durante X segundos
             //TODO Variable de fin de juego si tablero correcto
             //TODO hacer un width y height de la fuente
@@ -66,9 +60,19 @@ public class SceneGame implements SceneBase {
     public void init() {
         loadImages(engine.getGraphics());
         int x = 10, y = 10;
+
+        //Tablero de solucion
         checkBoard = new Board(x, y, 500, 500);
         checkBoard.generateBoard();
+        //Tablero de juego
         gameBoard = new Board(x, y, 500, 500);
+
+        bttCheckWin = new Button("Finish", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
+            @Override
+            public void input(TouchEvent event_) {
+                checkWin = true;
+            }
+        };
     }
 
     @Override
@@ -137,6 +141,8 @@ public class SceneGame implements SceneBase {
 
 
     boolean checkHasWon() {
+
+
         return checkBoard.isBoardMatched(gameBoard);
     }
 
