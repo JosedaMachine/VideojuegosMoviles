@@ -206,7 +206,6 @@ public class Board {
                 Image im = tileImage(e, board[i][j]);
                 e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
                         relationX / im.getWidth(), (relationY) / im.getHeight());
-
             }
         }
     }
