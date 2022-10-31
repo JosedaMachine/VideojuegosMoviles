@@ -26,6 +26,7 @@ public class SceneGame implements SceneBase {
     boolean checkWin = false;
 
     private IFont numFont;
+    private IFont pixelFont;
 
     private static final double maxTime = 5; //s
     private double timer = maxTime;
@@ -132,13 +133,15 @@ public class SceneGame implements SceneBase {
 
         numFont = graphics.newFont("RamadhanMubarak.ttf", 20, false);
 
+        pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
+
         System.out.println("Resources Loaded");
     }
 
     @Override
     public void render(IGraphics graphics) {
         graphics.setColor(IColor.BLACK);
-        checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, numFont);
+        checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
         gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
         bttCheckWin.render(graphics);
