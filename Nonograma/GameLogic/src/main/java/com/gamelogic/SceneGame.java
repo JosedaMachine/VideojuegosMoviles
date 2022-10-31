@@ -55,13 +55,13 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        int x = 10, y = 10;
+        int rows = 5, cols = 10;
 
         //Tablero de solucion
-        checkBoard = new Board(x, y, 500, 500);
+        checkBoard = new Board(cols, rows, 500, 500);
         checkBoard.generateBoard();
         //Tablero de juego
-        gameBoard = new Board(x, y, 500, 500);
+        gameBoard = new Board(cols, rows, 500, 500);
 
         bttCheckWin = new Button("Finish", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
             @Override
@@ -110,9 +110,9 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
-        //gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
         graphics.setColor(IColor.BLACK);
         checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, numFont);
+        //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
         gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
     }
 
