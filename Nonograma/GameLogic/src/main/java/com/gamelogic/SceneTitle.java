@@ -5,6 +5,7 @@ import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
+import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
@@ -47,12 +48,14 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
-        Image im = graphics.getImage("cross");
-        int size = 400;
-        graphics.drawImage(im, (graphics.getWidth()/2) - (size/2), graphics.getHeight()/2, size, size);
+//        Image im = graphics.getImage("cross");
+//        int size = 400;
+//        graphics.drawImage(im, (graphics.getWidth()/2) - (size/2), graphics.getHeight()/2, size, size);
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
-        graphics.drawText("Nonograma", graphics.getWidth()/2 - 100, 100);
+        String title = "Nonograma";
+        Pair<Double, Double> dime = graphics.getStringDimensions(title);
+        graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
 
         button.render(graphics);
 

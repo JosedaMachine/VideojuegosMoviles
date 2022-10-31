@@ -1,14 +1,15 @@
 package com.enginepc;
 
-import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
-import com.engine.SceneBase;
+import com.engine.Pair;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 
@@ -117,14 +118,8 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void setFont(IFont font) {
-        FontPC pcFont = (FontPC) font;
-        this.graphics2D.setFont(pcFont.currFont);
-    }
-
-    @Override
-    public float getFontSize() {
-        //TODO: Esto no usa el getSize de IFont Igual tendria que haber un IFont en graphics
-        return this.graphics2D.getFont().getSize();
+        FontPC currFont = (FontPC) font;
+        this.graphics2D.setFont(currFont.getFont());
     }
 
     @Override
@@ -154,7 +149,14 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-        this.graphics2D.drawString(text, x+ insetLeft, y+ insetTop);
+        this.graphics2D.drawString(text, x+ insetLeft, y);
+    }
+
+    @Override
+    public Pair<Double, Double> getStringDimensions(String text) {
+        Rectangle2D r = graphics2D.getFontMetrics().getStringBounds(text, graphics2D);
+        System.out.println();
+        return new Pair<>(r.getWidth(), r.getHeight());
     }
 
     @Override

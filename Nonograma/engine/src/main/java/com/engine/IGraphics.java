@@ -28,8 +28,6 @@ public interface IGraphics {
 
     void setFont(IFont font);
 
-    float getFontSize();
-
     void fillRect(int x, int y, int size);
 
     void fillRect(int x, int y, int w, int h);
@@ -41,6 +39,8 @@ public interface IGraphics {
     void drawLine(int x1, int y1, int x2, int y2);
 
     void drawText(String text, int x, int y);
+
+    Pair<Double, Double> getStringDimensions(String text);
 
     int getWidth();
 

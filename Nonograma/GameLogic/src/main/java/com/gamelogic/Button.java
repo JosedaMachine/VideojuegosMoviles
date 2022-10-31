@@ -6,6 +6,7 @@ import com.engine.IFont;
 import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
+import com.engine.Pair;
 import com.engine.TouchEvent;
 
 public abstract class Button {
@@ -28,15 +29,17 @@ public abstract class Button {
     }
 
     public void render(IGraphics graphics){
+        if(backgroundImage != null)
+            graphics.drawImage(backgroundImage, posX - sizeX/2, posY - sizeY/2, sizeX, sizeY);
 
         if(font != null){
             graphics.setColor(color);
             graphics.setFont(font);
-            graphics.drawText(text, posX, posY);
+            Pair<Double, Double> dime = graphics.getStringDimensions(text);
+            graphics.drawText(text, (int) (posX - dime.first/2), (int) (posY + dime.second/2));
         }
 
-        if(backgroundImage != null)
-            graphics.drawImage(backgroundImage, posX, posY, sizeX, sizeY);
+
     }
 
     public void setFont(IFont font) {

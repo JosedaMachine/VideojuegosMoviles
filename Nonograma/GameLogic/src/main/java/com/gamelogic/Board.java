@@ -1,6 +1,8 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.IColor;
+import com.engine.IFont;
 import com.engine.Image;
 import com.engine.SceneBase;
 import com.engine.Pair;
@@ -160,7 +162,7 @@ public class Board {
         e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int offset, float fontSize) {
+    private void drawNums(Engine e, int x, int y, int offset, int fontSize) {
         int i, j;
         //Dibujar numero de correctos
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -182,7 +184,7 @@ public class Board {
                     e.getGraphics().drawText(num.toString(),
                             (int) (i * relationX) + x + (int)(relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
-                            y - (int) ((size-1-j) * (fontSize+offset/2)) - offset + (int)(fontSize/2));
+                            y - (int) ((size-1-j) * (fontSize+offset/2)) - offset + (fontSize/2));
             }
         }
     }
@@ -201,19 +203,21 @@ public class Board {
         }
     }
 
-    public void drawInforects(Engine e, int x, int y) {
+    public void drawInfoRects(Engine e, int x, int y, IFont font) {
 
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
 
-        float fontSize = e.getGraphics().getFontSize();
+        e.getGraphics().setFont(font);
+        e.getGraphics().setColor(IColor.BLACK);
+        int fontSize = font.getSize();
 
         final int numoffset = 20;
 
         //Posicion inicial de cuadro numerico
-        int alphaX = x - maxHorizontalFilled * (int)(fontSize+numoffset);
-        int alphaY = y - maxVerticalFilled * (int)(fontSize+numoffset);
+        int alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
+        int alphaY = y - maxVerticalFilled * (fontSize+numoffset/2);
 
         drawNumRect(e, x, y, alphaX, alphaY);
 
