@@ -134,17 +134,19 @@ public class Board {
     }
 
     // Comprueba si los tableros coinciden
-    public boolean isBoardMatched(Board other) {
+    public ArrayList<Pair<Integer, Integer>> isBoardMatched(Board other) {
         TILE[][] otherBoard = other.getBoard();
-
+        ArrayList<Pair<Integer, Integer>> diff = new ArrayList<>();
         //Assume they are the same size (width and height)
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
+                if(otherBoard[i][j] == TILE.CROSS || otherBoard[i][j] == TILE.EMPTY)
+                    continue;
                 if (board[i][j] != otherBoard[i][j])
-                    return false;
+                    diff.add(new Pair<>(i, j));
             }
         }
-        return true;
+        return diff;
     }
 
     public boolean isTileMatched(int i, int j, Board other){
@@ -249,6 +251,18 @@ public class Board {
                 return e.getGraphics().getImage("wrong");
         }
         return null;
+    }
+
+    //Transforma la tiles rojas en llenas (Llamado tras X segundos de mostrar los fallos)
+    //Pasan a llenas porque es como estaban antes de empezar. SI el jugador hace clic en una casilla
+    //roja, esta pasa a empty
+    public void clearWrongsTiles(){
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                if (board[i][j] == TILE.WRONG)
+                    board[i][j] = TILE.FILL;
+            }
+        }
     }
 
     public void setPosY(int posY) {

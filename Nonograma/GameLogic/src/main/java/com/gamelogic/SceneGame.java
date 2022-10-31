@@ -9,6 +9,8 @@ import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
+import java.util.ArrayList;
+
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
     Engine engine;
@@ -25,6 +27,10 @@ public class SceneGame implements SceneBase {
 
     private IFont numFont;
 
+    private static final double maxTime = 5; //s
+    private double timer = maxTime;
+    boolean DEBUG = false;
+
     public SceneGame(Engine engine) {
         this.engine = engine;
     }
@@ -34,12 +40,24 @@ public class SceneGame implements SceneBase {
         if(checkWin) {
             hasWon = checkHasWon();
             checkWin = false;
+            if(!hasWon) timer = 0;
         }
 
+        if(timer < maxTime){
+            timer += deltaTime;
+            if(timer >= maxTime)
+                gameBoard.clearWrongsTiles();
+        }
+
+        if(hasWon){
+            ((Nonograma) engine.getGame()).endGame(true);
+        }
     }
 
     @Override
     public void input(TouchEvent event_) {
+        bttCheckWin.input(event_);
+
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
             //TODO Boton que evalue tablero ->casillas malas en rojo durante X segundos
             //TODO Variable de fin de juego si tablero correcto
@@ -47,9 +65,13 @@ public class SceneGame implements SceneBase {
 
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
 
-            setTile(index.first, index.second, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
-
+            setTile(index.first, index.second); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
+            if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
+                DEBUG = !DEBUG;
+            }
         }
+
+
     }
 
     @Override
@@ -66,9 +88,16 @@ public class SceneGame implements SceneBase {
         bttCheckWin = new Button("Finish", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
             @Override
             public void input(TouchEvent event_) {
-                checkWin = true;
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(bttCheckWin.isInside(event_.getX_(),event_.getY_())){
+                        checkWin = true;
+                    }
+                }
             }
         };
+        bttCheckWin.setFont(numFont);
+        bttCheckWin.setColor(IColor.BLACK);
+        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
 
     @Override
@@ -114,30 +143,49 @@ public class SceneGame implements SceneBase {
         graphics.setColor(IColor.BLACK);
         checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, numFont);
         gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+        bttCheckWin.render(graphics);
+
+        if(DEBUG){
+            checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+        }
     }
 
     boolean hasWon() {
         return hasWon;
     }
 
-    boolean setTile(int x, int y, boolean click) {
+    boolean setTile(int x, int y) {
         if(x < 0 || y < 0) return false;
 
         TILE tile = gameBoard.getTile(x, y);
 
         if(tile == TILE.EMPTY)
             gameBoard.setTile(x,y, TILE.FILL);
+        else if(tile == TILE.FILL)
+            gameBoard.setTile(x,y, TILE.CROSS);
         else
             gameBoard.setTile(x,y, TILE.EMPTY);
 
         return true;
     }
 
+    boolean setTile(int x, int y, TILE type) {
+        if(x < 0 || y < 0) return false;
+
+        gameBoard.setTile(x, y, type);
+
+        return true;
+    }
+
 
     boolean checkHasWon() {
+        ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
+        for(int i = 0; i < wrongs.size(); i++){
+            setTile(wrongs.get(i).first, wrongs.get(i).second, TILE.WRONG);
+        }
 
-        return checkBoard.isBoardMatched(gameBoard);
+        return wrongs.size() == 0;
     }
 
 

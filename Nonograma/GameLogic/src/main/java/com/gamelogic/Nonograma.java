@@ -27,8 +27,8 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        changeScene(new SceneTitle(engine));
-//        changeScene(new SceneGame(engine));
+        //changeScene(new SceneTitle(engine));
+        changeScene(new SceneGame(engine));
 
     }
 
@@ -52,5 +52,11 @@ public class Nonograma implements IGame {
     @Override
     public void loadImages(IGraphics graphics) {
         currScene.loadImages(graphics);
+    }
+
+    public void endGame(boolean finished){
+        //TODO cambiar manejo de escenas al acabar o salir del juego
+        if(finished)
+            changeScene(new SceneTitle(engine));
     }
 }
