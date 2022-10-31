@@ -122,6 +122,12 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
+    public float getFontSize() {
+        //TODO: Esto no usa el getSize de IFont Igual tendria que haber un IFont en graphics
+        return this.graphics2D.getFont().getSize();
+    }
+
+    @Override
     public void fillRect(int x, int y, int size) {
         fillRect(x, y, size, size);
     }

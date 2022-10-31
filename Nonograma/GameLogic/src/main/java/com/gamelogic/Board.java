@@ -96,6 +96,7 @@ public class Board {
             adyancentsHorizontal.add(adyacents);
         }
 
+        //TODO: erase
         System.out.println("H: " + maxHorizontalFilled);
         System.out.println(Arrays.toString(adyancentsHorizontal.toArray()));
         System.out.println("V: " + maxVerticalFilled);
@@ -159,8 +160,8 @@ public class Board {
         e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int alphaX, int alphaY, int offset) {
-        int i = 0, j = 0;
+    private void drawNums(Engine e, int x, int y, int offset, float fontSize) {
+        int i, j;
         //Dibujar numero de correctos
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
             int size = adyancentsHorizontal.get(i).size();
@@ -168,7 +169,7 @@ public class Board {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            x - (int) ((size-1 - j) * relationX / 2) - offset,
+                            x - (int) ((size-1 - j) * (fontSize+offset/2)) - offset,
                             (int) (i * relationY) + y + (int)(relationY/2));
             }
         }
@@ -180,7 +181,8 @@ public class Board {
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
                             (int) (i * relationX) + x + (int)(relationX/2),
-                            y - (int) ((size-1-j) * relationY / 2) - offset);
+                            // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
+                            y - (int) ((size-1-j) * (fontSize+offset/2)) - offset + (int)(fontSize/2));
             }
         }
     }
@@ -196,28 +198,23 @@ public class Board {
         }
     }
 
-    public void render(Engine e, int x, int y) {
+    public void drawInforects(Engine e, int x, int y) {
 
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
 
+        float fontSize = e.getGraphics().getFontSize();
+
+        final int numoffset = 20;
+
         //Posicion inicial de cuadro numerico
-        //TODO: pillar ancho y alto de fuente en vez de valores cableados
-
-        //int fontSize = e.getGraphics().getFont();
-
-        int alphaX = x - maxHorizontalFilled * 30;
-        int alphaY = y - maxVerticalFilled * 30;
-
-        int numoffset = 20;
+        int alphaX = x - maxHorizontalFilled * (int)(fontSize+numoffset);
+        int alphaY = y - maxVerticalFilled * (int)(fontSize+numoffset);
 
         drawNumRect(e, x, y, alphaX, alphaY);
 
-        drawNums(e, x, y, alphaX, alphaY, numoffset);
-
-        //NO DEBERÍA RENDERIZAR EL TABLERO JUNTO CON LO DEMÁS
-        //drawBoard(e, x, y);
+        drawNums(e, x, y, numoffset, fontSize);
     }
 
     Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {

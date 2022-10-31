@@ -28,6 +28,8 @@ public interface IGraphics {
 
     void setFont(IFont font);
 
+    float getFontSize();
+
     void fillRect(int x, int y, int size);
 
     void fillRect(int x, int y, int w, int h);
