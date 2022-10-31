@@ -16,6 +16,7 @@ public class Nonograma implements IGame {
 
     @Override
     public void changeScene(SceneBase newScene) {
+        currScene = null;
         currScene = newScene;
         currScene.init();
     }
@@ -27,8 +28,8 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        //changeScene(new SceneTitle(engine));
-        changeScene(new SceneGame(engine));
+        changeScene(new SceneTitle(engine));
+//        changeScene(new SceneGame(engine));
 
     }
 

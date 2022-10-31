@@ -29,13 +29,13 @@ public class SceneTitle implements SceneBase {
         loadImages(engine.getGraphics());
         title = engine.getGraphics().newFont("arcade.TTF",100,true);
         int sizeX = 290, sizeY = 100;
-        button = new Button("Jugar", engine.getGraphics().getWidth()/2 - sizeX/2,
+        button = new Button("Play", engine.getGraphics().getWidth()/2 - sizeX/2,
                 engine.getGraphics().getHeight()/2 -  sizeY/2,290, 100) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-                        engine.getGame().changeScene(new SceneGame(engine));
+                        engine.getGame().changeScene(new SceneLevels(engine));
                     }
                 }
             }
@@ -50,7 +50,6 @@ public class SceneTitle implements SceneBase {
     public void render(IGraphics graphics) {
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
-
 
         String title = "Nonograma";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
