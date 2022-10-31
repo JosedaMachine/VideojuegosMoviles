@@ -59,7 +59,7 @@ public class Board {
             List<Integer> adyacents = new ArrayList<>();
             int juntas = 0;
             for (int j = 0; j < cols; j++) {
-                if (board[i][j] == TILE.FILL) {
+                if (board[j][i] == TILE.FILL) {
                     juntas++;
 
                     if (j + 1 == cols)
@@ -71,17 +71,17 @@ public class Board {
             }
 
             if (adyacents.size() == 0) adyacents.add(0);
-            else if (adyacents.size() > maxVerticalFilled) {
-                maxVerticalFilled = adyacents.size();
+            else if (adyacents.size() > maxHorizontalFilled) {
+                maxHorizontalFilled = adyacents.size();
             }
-            adyancentsVertical.add(adyacents);
+            adyancentsHorizontal.add(adyacents);
         }
 
         for (int j = 0; j < cols; j++) {
             List<Integer> adyacents = new ArrayList<>();
             int juntas = 0;
             for (int i = 0; i < rows; i++) {
-                if (board[i][j] == TILE.FILL) {
+                if (board[j][i] == TILE.FILL) {
                     juntas++;
 
                     if (i + 1 == rows)
@@ -92,10 +92,10 @@ public class Board {
                 }
             }
             if (adyacents.size() == 0) adyacents.add(0);
-            else if (adyacents.size() > maxHorizontalFilled) {
-                maxHorizontalFilled = adyacents.size();
+            else if (adyacents.size() > maxVerticalFilled) {
+                maxVerticalFilled = adyacents.size();
             }
-            adyancentsHorizontal.add(adyacents);
+            adyancentsVertical.add(adyacents);
         }
 
         //TODO: erase
