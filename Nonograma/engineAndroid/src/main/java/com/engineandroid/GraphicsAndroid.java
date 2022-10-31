@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
+import com.engine.Pair;
 import com.engine.SceneBase;
 
 import java.util.HashMap;
@@ -146,6 +147,12 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public void drawText(String text, int x, int y) {
         canvas.drawText(text, x, y, paint);
+    }
+
+    @Override
+    public Pair<Double, Double> getStringDimensions(String text) {
+        //TODO
+        return null;
     }
 
     @Override
