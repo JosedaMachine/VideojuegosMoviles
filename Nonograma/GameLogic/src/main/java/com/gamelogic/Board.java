@@ -159,7 +159,7 @@ public class Board {
         e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int alphaX, int alphaY, int offsetDom, int offsetSec) {
+    private void drawNums(Engine e, int x, int y, int alphaX, int alphaY, int offset) {
         int i = 0, j = 0;
         //Dibujar numero de correctos
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -168,8 +168,8 @@ public class Board {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            x - (int) ((size-1 - j) * relationX / 2) - offsetDom,
-                            (int) (i * relationY) + y + offsetSec);
+                            x - (int) ((size-1 - j) * relationX / 2) - offset,
+                            (int) (i * relationY) + y + (int)(relationY/2));
             }
         }
 
@@ -179,8 +179,8 @@ public class Board {
                 Integer num = adyancentsVertical.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            (int) (i * relationX) + x + offsetDom,
-                            y - (int) ((size-1-j) * relationY / 2) - offsetDom);
+                            (int) (i * relationX) + x + (int)(relationX/2),
+                            y - (int) ((size-1-j) * relationY / 2) - offset);
             }
         }
     }
@@ -204,14 +204,17 @@ public class Board {
 
         //Posicion inicial de cuadro numerico
         //TODO: pillar ancho y alto de fuente en vez de valores cableados
+
+        //int fontSize = e.getGraphics().getFont();
+
         int alphaX = x - maxHorizontalFilled * 30;
         int alphaY = y - maxVerticalFilled * 30;
 
-        int numoffsetDom = 20, numoffsetSec = 30;
+        int numoffset = 20;
 
         drawNumRect(e, x, y, alphaX, alphaY);
 
-        drawNums(e, x, y, alphaX, alphaY, numoffsetDom, numoffsetSec);
+        drawNums(e, x, y, alphaX, alphaY, numoffset);
 
         //NO DEBERÍA RENDERIZAR EL TABLERO JUNTO CON LO DEMÁS
         //drawBoard(e, x, y);
