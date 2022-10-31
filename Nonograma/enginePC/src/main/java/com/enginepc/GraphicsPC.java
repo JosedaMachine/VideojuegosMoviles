@@ -149,7 +149,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-        this.graphics2D.drawString(text, x+ insetLeft, y);
+        this.graphics2D.drawString(text, x+ insetLeft, y + insetTop);
     }
 
     @Override

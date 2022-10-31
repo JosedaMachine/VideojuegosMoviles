@@ -27,10 +27,10 @@ public class SceneTitle implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        title = engine.getGraphics().newFont("RamadhanMubarak.ttf",100,true);
-
-        button = new Button("Jugar", engine.getGraphics().getWidth()/2,
-                engine.getGraphics().getHeight()/2 - 200,200, 100) {
+        title = engine.getGraphics().newFont("arcade.TTF",100,true);
+        int sizeX = 290, sizeY = 100;
+        button = new Button("Jugar", engine.getGraphics().getWidth()/2 - sizeX/2,
+                engine.getGraphics().getHeight()/2 -  sizeY/2,290, 100) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -48,11 +48,10 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
-//        Image im = graphics.getImage("cross");
-//        int size = 400;
-//        graphics.drawImage(im, (graphics.getWidth()/2) - (size/2), graphics.getHeight()/2, size, size);
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
+
+
         String title = "Nonograma";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));

@@ -30,13 +30,13 @@ public abstract class Button {
 
     public void render(IGraphics graphics){
         if(backgroundImage != null)
-            graphics.drawImage(backgroundImage, posX - sizeX/2, posY - sizeY/2, sizeX, sizeY);
+            graphics.drawImage(backgroundImage, posX , posY, sizeX, sizeY);
 
         if(font != null){
             graphics.setColor(color);
             graphics.setFont(font);
             Pair<Double, Double> dime = graphics.getStringDimensions(text);
-            graphics.drawText(text, (int) (posX - dime.first/2), (int) (posY + dime.second/2));
+            graphics.drawText(text, (int) (posX), (int) (posY + dime.second*0.8));
         }
 
 
@@ -49,7 +49,7 @@ public abstract class Button {
     public abstract void input(TouchEvent event_);
 
     public boolean isInside(int pixelX, int pixelY){
-        return (pixelX > posX && pixelX <= posX + sizeX ) && ( pixelY > posY && pixelY <= posY + sizeY);
+        return (pixelX > posX && pixelX <= posX + sizeX) && ( pixelY > posY && pixelY <= posY + sizeY);
     }
 
     public void setBackgroundImage(Image backgroundImage) {
