@@ -23,7 +23,6 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     Board gameBoard;
 
-    public int i_index, j_index;
     //True cuando coincidan los tableros
     boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -31,8 +30,6 @@ public class SceneGame implements SceneBase {
 
     public SceneGame(Engine engine) {
         this.engine = engine;
-        i_index = 0;
-        j_index = 0;
     }
 
     @Override
@@ -126,7 +123,7 @@ public class SceneGame implements SceneBase {
     }
 
     boolean setTile(int x, int y, boolean click) {
-        if(x <= 0 || y <= 0) return false;
+        if(x < 0 || y < 0) return false;
 
         TILE tile = gameBoard.getTile(x, y);
 

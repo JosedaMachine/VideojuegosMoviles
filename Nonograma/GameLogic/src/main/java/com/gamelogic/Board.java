@@ -188,6 +188,9 @@ public class Board {
     }
 
     public void drawBoard(Engine e, int x, int y) {
+        //En caso de que se mueva el tablero o reescalado o algo por el estilo
+        if (x != posX) posX = x;
+        if (y != posY) posY = y;
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
