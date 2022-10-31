@@ -70,14 +70,12 @@ public class SceneGame implements SceneBase {
                 DEBUG = !DEBUG;
             }
         }
-
-
     }
 
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        int rows = 5, cols = 10;
+        int rows = 10, cols = 15;
 
         //Tablero de solucion
         checkBoard = new Board(cols, rows, 500, 500);

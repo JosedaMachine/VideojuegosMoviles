@@ -149,7 +149,7 @@ public class EnginePC implements Engine, Runnable{
         do {
             do {
                 try {
-                    graphics.prepare(IColor.BLUE);
+                    graphics.prepare(IColor.WHITE);
                     this.currGame.render(graphics);
                 }
                 finally{

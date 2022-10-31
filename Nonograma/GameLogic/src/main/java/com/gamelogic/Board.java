@@ -29,11 +29,13 @@ public class Board {
         rows = y;
         cols = x;
 
-        width = sizeX_;
-        height = sizeY_;
+        float relationRowCol = rows/(float)cols;
 
-        relationX = sizeX_ / cols;
-        relationY = sizeY_ / rows;
+        width = sizeX_;
+        height = (int)(sizeY_*relationRowCol);
+
+        relationX = sizeX_ /(float) cols;
+        relationY = (sizeY_ /(float) rows) * relationRowCol;
 
         for (int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
@@ -44,6 +46,7 @@ public class Board {
         adyancentsHorizontal = new ArrayList<>();
         adyancentsVertical = new ArrayList<>();
 
+        //generamos el tablero solucion
         Random r = new Random();
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -53,6 +56,8 @@ public class Board {
                     board[i][j] = TILE.FILL;
             }
         }
+
+        //Calculamos los numeros adyacentes
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
         for (int i = 0; i < rows; i++) {
@@ -200,7 +205,8 @@ public class Board {
             for (int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j]);
                 e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
-                        relationX / im.getWidth(), relationY / im.getHeight());
+                        relationX / im.getWidth(), (relationY) / im.getHeight());
+
             }
         }
     }
