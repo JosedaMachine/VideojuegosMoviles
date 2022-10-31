@@ -1,9 +1,5 @@
 package com.gamelogic;
 
-import static com.engine.TouchEvent.ButtonID.LEFT_BUTTON;
-import static com.engine.TouchEvent.ButtonID.RIGHT_BUTTON;
-import static com.engine.TouchEvent.TouchEventType.TOUCH_EVENT;
-
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
@@ -12,8 +8,6 @@ import com.engine.Image;
 import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
-
-import java.awt.event.MouseEvent;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
@@ -27,6 +21,8 @@ public class SceneGame implements SceneBase {
     boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
     boolean checkWin = false;
+
+    private IFont numFont;
 
     public SceneGame(Engine engine) {
         this.engine = engine;
@@ -103,9 +99,7 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
-        IFont fo = graphics.newFont("RamadhanMubarak.ttf", 300, false);
-        graphics.setFont(fo);
-        //
+        numFont = graphics.newFont("RamadhanMubarak.ttf", 20, false);
 
         System.out.println("Resources Loaded");
     }
@@ -114,7 +108,7 @@ public class SceneGame implements SceneBase {
     public void render(IGraphics graphics) {
         //gameBoard.render(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2);
         graphics.setColor(IColor.BLACK);
-        checkBoard.drawInforects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+        checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, numFont);
         gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
     }
 

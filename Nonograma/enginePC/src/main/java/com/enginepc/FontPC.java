@@ -12,10 +12,10 @@ import java.awt.FontFormatException;
 
 public class FontPC implements IFont {
 
-    int size;
-    boolean isBold;
+    private int size;
+    private boolean isBold;
 
-    Font currFont;
+    private Font font;
 
     FontPC(String fontName, int size_, boolean isBold_){
         size = size_;
@@ -29,11 +29,11 @@ public class FontPC implements IFont {
             e.printStackTrace();
         }
 
-        currFont = null;
+        font = null;
         try {
-            currFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            font = Font.createFont(Font.TRUETYPE_FONT, is);
             if(isBold_){
-                currFont = currFont.deriveFont(Font.BOLD);
+                font = font.deriveFont(Font.BOLD);
             }
         } catch (FontFormatException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class FontPC implements IFont {
             e.printStackTrace();
         }
 
-        currFont = currFont.deriveFont(Font.TRUETYPE_FONT, size);
+        font = font.deriveFont(Font.TRUETYPE_FONT, size);
     }
 
     @Override
@@ -54,5 +54,5 @@ public class FontPC implements IFont {
         return isBold;
     }
 
-    public Font getFont() { return currFont; }
+    public Font getFont() {return font;};
 }
