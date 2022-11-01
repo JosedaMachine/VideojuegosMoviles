@@ -19,7 +19,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     Board gameBoard;
 
-    Button bttCheckWin;
+    Button bttCheckWin, bttReturn;
     //True cuando coincidan los tableros
     boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -31,7 +31,7 @@ public class SceneGame implements SceneBase {
     private IFont numFont;
     private IFont pixelFont;
 
-    private static final double maxTime = 5; //s
+    private static final double maxTime = 2.5; //s
     private double timer = maxTime;
     boolean DEBUG = false;
 
@@ -65,6 +65,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void input(TouchEvent event_) {
         bttCheckWin.input(event_);
+        bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
             //TODO Boton que evalue tablero ->casillas malas en rojo durante X segundos
@@ -90,11 +91,12 @@ public class SceneGame implements SceneBase {
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, 500, 500);
 
+        //Check Board
         bttCheckWin = new Button("Check", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(bttCheckWin.isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(event_.getX_(),event_.getY_())){
                         checkWin = true;
                     }
                 }
@@ -103,6 +105,21 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setFont(numFont);
         bttCheckWin.setColor(IColor.BLACK);
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
+        //Return to menu
+        bttReturn = new Button("Coward", (int) (engine.getGraphics().getWidth() * 0.05), (int) (engine.getGraphics().getHeight() * 0.05), 150, 100) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(isInside(event_.getX_(),event_.getY_())){
+                        engine.getGame().changeScene(new SceneTitle(engine));
+                    }
+                }
+            }
+        };
+        bttReturn.setFont(numFont);
+        bttReturn.setColor(IColor.BLACK);
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
 
     @Override
@@ -150,7 +167,9 @@ public class SceneGame implements SceneBase {
         checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
         gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+
         bttCheckWin.render(graphics);
+        bttReturn.render(graphics);
 
         if(DEBUG){
             checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
@@ -162,7 +181,6 @@ public class SceneGame implements SceneBase {
 
             String remainingField = numRemaining + " remaining cells";
             String wrongField = numWrong + " wrong cells";
-
 
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
