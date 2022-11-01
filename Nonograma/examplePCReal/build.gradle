@@ -6,3 +6,15 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
 }
+
+task copyData( type: Copy) {
+    println 'copying pc'
+    description = 'Copying game data into assets folder...'
+    def fromDir = rootDir.getAbsolutePath() + '/data'
+    from(fromDir) {
+        include "**"
+    }
+    into 'assets'
+}
+
+

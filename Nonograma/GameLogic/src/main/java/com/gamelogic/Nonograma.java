@@ -9,6 +9,12 @@ import com.engine.Pair;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
 
+/*
+TODO: reescalado?
+TODO: posiciones ancaladas a la pantalla en funcion de su tamaño-> referencia a getWidth?¿¿¿¿
+TODO: GRadle que se ejecute cuando se compile cada programa
+TODO:
+ */
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;

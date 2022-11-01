@@ -107,12 +107,6 @@ public class Board {
             }
             adyancentsVertical.add(adyacents);
         }
-
-        //TODO: erase
-        System.out.println("H: " + maxHorizontalFilled);
-        System.out.println(Arrays.toString(adyancentsHorizontal.toArray()));
-        System.out.println("V: " + maxVerticalFilled);
-        System.out.println(Arrays.toString(adyancentsVertical.toArray()));
     }
 
     public int getCols() {
@@ -256,7 +250,7 @@ public class Board {
             int j_index = (int) ((pixelY - posY) / (relationY));
 
             e.getAudio().playSound("click.wav");
-            System.out.println("Index X : " + i_index +  " Index Y : " + j_index);
+//            System.out.println("Index X : " + i_index +  " Index Y : " + j_index);
             return new Pair<>(i_index, j_index);
         }
 
