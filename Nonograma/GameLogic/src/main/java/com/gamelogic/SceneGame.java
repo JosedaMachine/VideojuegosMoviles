@@ -27,6 +27,7 @@ public class SceneGame implements SceneBase {
 
     int rows_, cols_;
 
+    int numRemaining = 0, numWrong = 0;
     private IFont numFont;
     private IFont pixelFont;
 
@@ -45,7 +46,9 @@ public class SceneGame implements SceneBase {
         if(checkWin) {
             hasWon = checkHasWon();
             checkWin = false;
-            if(!hasWon) timer = 0;
+            if(!hasWon){
+                timer = 0;
+            }
         }
 
         if(timer < maxTime){
@@ -152,6 +155,22 @@ public class SceneGame implements SceneBase {
         if(DEBUG){
             checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
         }
+
+        if(!hasWon && timer < maxTime){
+            graphics.setFont(pixelFont);
+            graphics.setColor(IColor.RED);
+
+            String remainingField = numRemaining + " remaining cells";
+            String wrongField = numWrong + " wrong cells";
+
+
+            Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
+            Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
+
+            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2), (int) (graphics.getHeight() * 0.05 + dime_remaining.second/2));
+            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2), (int) (graphics.getHeight()*0.10 + dime_wrong.second/2));
+
+        }
     }
 
     boolean hasWon() {
@@ -190,8 +209,11 @@ public class SceneGame implements SceneBase {
             setTile(wrongs.get(i).first, wrongs.get(i).second, TILE.WRONG);
         }
 
+        numRemaining = checkBoard.getNumCorrectTiles() - wrongs.get(wrongs.size() - 1).first;
+        numWrong = wrongs.size() - 1;
+
         return wrongs.size() == 1 && //Que no haya incorrectas
-               wrongs.get(wrongs.size()-1).first == checkBoard.getNumTiles(); //Que haya todas las correctas
+               wrongs.get(wrongs.size()-1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
 
 

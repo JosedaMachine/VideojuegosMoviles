@@ -57,4 +57,12 @@ public abstract class Button {
     public void setColor(int color) {
         this.color = color;
     }
+
+    public void update(Engine engine){
+
+    }
+
+    public void setPostition(int postitionX, int positionY){
+
+    }
 }

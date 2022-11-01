@@ -20,7 +20,7 @@ public class Board {
     private float relationX, relationY;
     private int posX, posY;
 
-    private int numTiles;
+    private int numCorrectTiles;
     private List<List<Integer>> adyancentsHorizontal;
     private List<List<Integer>> adyancentsVertical;
 
@@ -42,7 +42,7 @@ public class Board {
             for (int j = 0; j < rows; j++)
                 board[i][j] = TILE.EMPTY;
 
-        numTiles = 0;
+        numCorrectTiles = 0;
     }
 
     void generateBoard() {
@@ -57,7 +57,7 @@ public class Board {
 
                 if (random <= 3){
                     board[i][j] = TILE.FILL;
-                    numTiles++;
+                    numCorrectTiles++;
                 }
             }
         }
@@ -131,8 +131,8 @@ public class Board {
         return height;
     }
 
-    public int getNumTiles(){
-        return numTiles;
+    public int getNumCorrectTiles(){
+        return numCorrectTiles;
     }
 
     public TILE getTile(int x, int y) {
