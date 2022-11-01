@@ -76,7 +76,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        int rows = 10, cols = 15;
+        int rows = 10, cols = 10;
 
         //Tablero de solucion
         checkBoard = new Board(cols, rows, 500, 500);
