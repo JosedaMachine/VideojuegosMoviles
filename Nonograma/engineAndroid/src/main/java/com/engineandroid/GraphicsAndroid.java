@@ -3,6 +3,7 @@ package com.engineandroid;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.fonts.Font;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -25,8 +26,6 @@ public class GraphicsAndroid implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    private String path = "images/";
-
     GraphicsAndroid(SurfaceView view){
         this.myView = view;
 
@@ -40,12 +39,12 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public Image newImage(String name) {
-        return new ImageAndroid(assetManager, path + name);
+        return new ImageAndroid(assetManager, "images/" + name);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean isBold) {
-        return new FontAndroid(assetManager, path + name, size, isBold);
+        return new FontAndroid(assetManager, "fonts/" + name, size, isBold);
     }
 
     @Override
@@ -152,7 +151,10 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public Pair<Double, Double> getStringDimensions(String text) {
         //TODO
-        return null;
+        Rect bounds = new Rect();
+        paint.getTextBounds(text,0,text.length(), bounds);
+
+        return new Pair<>((double) bounds.width(), (double) bounds.height());
     }
 
     @Override

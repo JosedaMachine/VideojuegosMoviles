@@ -155,7 +155,6 @@ public class GraphicsPC implements IGraphics {
     @Override
     public Pair<Double, Double> getStringDimensions(String text) {
         Rectangle2D r = graphics2D.getFontMetrics().getStringBounds(text, graphics2D);
-        System.out.println();
         return new Pair<>(r.getWidth(), r.getHeight());
     }
 

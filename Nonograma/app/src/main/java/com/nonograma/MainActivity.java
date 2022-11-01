@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         this.renderView = new SurfaceView(this);
         setContentView(this.renderView);
 
+        ColorAndroid.Init();
         //Init Engine
         this.engine = new EngineAndroid(this.renderView);
         //Init Game
