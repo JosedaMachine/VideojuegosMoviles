@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
         public void render(){
             for(int i = 0; i < numCircles; i++)
                 renderClass.renderCircle(this.x + 20*i, this.y + 20* i, this.radius - 2 * i);
-//            renderClass.renderImages(0, 0, this.renderClass.getWidth(), this.renderClass.getHeight() ,this.tom);
-//            renderClass.renderText(300, 150,"Felis Jueves!", this.tface, 200);
+            renderClass.renderImages(0, 0, this.renderClass.getWidth(), this.renderClass.getHeight() ,this.tom);
+            renderClass.renderText(300, 150,"Felis Jueves!", this.tface, 200);
         }
 
         public void input(MotionEvent event){

@@ -1,15 +1,18 @@
 package com.gamelogic;
 
 import com.engine.Engine;
+import com.engine.IColor;
+import com.engine.IFont;
 import com.engine.IGame;
 import com.engine.IGraphics;
+import com.engine.Pair;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
 
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;
-
+    IFont title;
     public Nonograma(Engine engine){
         this.engine = engine;
     }
@@ -28,23 +31,31 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        changeScene(new SceneTitle(engine));
+        title = engine.getGraphics().newFont("arcade.TTF",100,true);
+//        changeScene(new SceneTitle(engine));
         //changeScene(new SceneGame(engine));
     }
 
     @Override
     public void update(double elapsedTime) {
-        currScene.update(elapsedTime);
+//        currScene.update(elapsedTime);
     }
 
     @Override
     public void render(IGraphics graphics) {
-        currScene.render(graphics);
+        graphics.setFont(title);
+        graphics.setColor(IColor.BLACK);
+
+        String title = "Nonograma";
+        Pair<Double, Double> dime = graphics.getStringDimensions(title);
+        graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
+//        currScene.render(graphics);
     }
 
     @Override
     public void processInput(TouchEvent event) {
-        currScene.input(event);
+
+//        currScene.input(event);
     }
 
     // Se podría hacer esto en el init de cada escena pero
@@ -55,8 +66,8 @@ public class Nonograma implements IGame {
     }
 
     public void endGame(boolean finished){
-        //TODO cambiar manejo de escenas al acabar o salir del juego
-        if(finished)
-            changeScene(new SceneTitle(engine));
+//        //TODO cambiar manejo de escenas al acabar o salir del juego
+//        if(finished)
+//            changeScene(new SceneTitle(engine));
     }
 }

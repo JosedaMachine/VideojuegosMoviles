@@ -56,10 +56,6 @@ public class SceneLevels implements SceneBase {
 
         posX = (int) (engine.getGraphics().getWidth()/1.5 - sizeX/2);
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15) );
-
-
-//        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4));
-//        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4));
     }
 
     private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j){

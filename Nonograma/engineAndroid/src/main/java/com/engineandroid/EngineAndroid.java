@@ -78,18 +78,6 @@ public class EngineAndroid implements Engine, Runnable{
     }
 
     @Override
-    public void update(double elapsedTime) {
-        currGame.update(elapsedTime);
-    }
-
-    @Override
-    public void render() {
-        graphics.lockCanvas();
-        this.currGame.render(graphics);
-        graphics.unlockCanvas();
-    }
-
-    @Override
     public void loadResources() {
         this.currGame.loadImages(graphics);
     }
@@ -145,5 +133,17 @@ public class EngineAndroid implements Engine, Runnable{
             // Pintamos el frame
             render();
         }
+    }
+
+    @Override
+    public void update(double elapsedTime) {
+        currGame.update(elapsedTime);
+    }
+
+    @Override
+    public void render() {
+        graphics.lockCanvas();
+        this.currGame.render(graphics);
+        graphics.unlockCanvas();
     }
 }

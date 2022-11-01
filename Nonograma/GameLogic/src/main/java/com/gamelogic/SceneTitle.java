@@ -56,7 +56,6 @@ public class SceneTitle implements SceneBase {
         graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
 
         button.render(graphics);
-
     }
 
     @Override
@@ -67,7 +66,7 @@ public class SceneTitle implements SceneBase {
     @Override
     public void input(TouchEvent event) {
         button.input(event);
-    }
+      }
 
     @Override
     public void loadImages(IGraphics graphics) {
