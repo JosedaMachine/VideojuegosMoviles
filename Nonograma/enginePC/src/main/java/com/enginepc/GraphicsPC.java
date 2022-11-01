@@ -17,14 +17,14 @@ import javax.swing.JFrame;
 
 public class GraphicsPC implements IGraphics {
 
-    private int insetTop, insetLeft;
+    private final int insetTop, insetLeft;
     private final JFrame window;
     private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    private String path = "appDesktop/assets/";
+    private final String path = "appDesktop/assets/";
 
     GraphicsPC(JFrame view){
         window = view;

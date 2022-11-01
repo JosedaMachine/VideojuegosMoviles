@@ -48,9 +48,6 @@ public class EnginePC implements Engine, Runnable{
         graphics = new GraphicsPC(renderView);
         bufferStrategy = renderView.getBufferStrategy();
 
-        System.out.println(view.getInsets().top);
-        System.out.println(view.getInsets().left);
-
         input = new InputPC(renderView);
         audio = new AudioPC();
     }

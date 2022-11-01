@@ -1,7 +1,6 @@
 package com.enginepc;
 
 import com.engine.IColor;
-
 import java.awt.Color;
 
 public class ColorPC extends IColor {

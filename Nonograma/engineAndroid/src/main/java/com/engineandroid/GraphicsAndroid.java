@@ -18,11 +18,11 @@ import java.util.HashMap;
 
 public class GraphicsAndroid implements IGraphics {
 
-    private SurfaceView myView;
-    private SurfaceHolder holder;
+    private final SurfaceView myView;
+    private final SurfaceHolder holder;
     private Canvas canvas;
-    private Paint paint;
-    private AssetManager assetManager;
+    private final Paint paint;
+    private final AssetManager assetManager;
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
@@ -150,10 +150,8 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public Pair<Double, Double> getStringDimensions(String text) {
-        //TODO
         Rect bounds = new Rect();
         paint.getTextBounds(text,0,text.length(), bounds);
-
         return new Pair<>((double) bounds.width(), (double) bounds.height());
     }
 
