@@ -34,8 +34,8 @@ public class SceneTitle implements SceneBase {
         loadImages(engine.getGraphics());
         title = engine.getGraphics().newFont("arcade.TTF",100,true);
         int sizeX = 290, sizeY = 100;
-        int posX = engine.getGraphics().getWidth()/2;
-        int posY = engine.getGraphics().getHeight()/2;
+        int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
+        int posY = engine.getGraphics().getHeight()/2 - sizeY/2;
 
         button = new Button("Play", posX, posY,290, 100) {
             @Override

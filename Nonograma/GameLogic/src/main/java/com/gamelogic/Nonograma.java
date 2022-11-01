@@ -36,7 +36,7 @@ public class Nonograma implements IGame {
 
     @Override
     public void update(double elapsedTime) {
-//        currScene.update(elapsedTime);
+        currScene.update(elapsedTime);
     }
 
     @Override
