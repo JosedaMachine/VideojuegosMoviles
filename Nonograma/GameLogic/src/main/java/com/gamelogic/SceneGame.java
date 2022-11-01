@@ -25,6 +25,8 @@ public class SceneGame implements SceneBase {
     //True cuando ocurra un movimiento y haya que comprobar
     boolean checkWin = false;
 
+    int rows_, cols_;
+
     private IFont numFont;
     private IFont pixelFont;
 
@@ -32,8 +34,10 @@ public class SceneGame implements SceneBase {
     private double timer = maxTime;
     boolean DEBUG = false;
 
-    public SceneGame(Engine engine) {
+    public SceneGame(Engine engine, int rows, int cols) {
         this.engine = engine;
+        rows_ = rows;
+        cols_ = cols;
     }
 
     @Override
@@ -76,15 +80,14 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         loadImages(engine.getGraphics());
-        int rows = 10, cols = 10;
 
         //Tablero de solucion
-        checkBoard = new Board(cols, rows, 500, 500);
+        checkBoard = new Board(cols_, rows_, 500, 500);
         checkBoard.generateBoard();
         //Tablero de juego
-        gameBoard = new Board(cols, rows, 500, 500);
+        gameBoard = new Board(cols_, rows_, 500, 500);
 
-        bttCheckWin = new Button("Finish", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
+        bttCheckWin = new Button("Check", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -131,7 +134,7 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
-        numFont = graphics.newFont("RamadhanMubarak.ttf", 20, false);
+        numFont = graphics.newFont("RamadhanMubarak.ttf", 80, false);
 
         pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
 

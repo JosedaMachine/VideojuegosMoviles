@@ -36,10 +36,8 @@ public abstract class Button {
             graphics.setColor(color);
             graphics.setFont(font);
             Pair<Double, Double> dime = graphics.getStringDimensions(text);
-            graphics.drawText(text, (int) (posX), (int) (posY + dime.second*0.8));
+            graphics.drawText(text, (int) (posX +  sizeX/2 - dime.first*0.5) , (int) (posY + dime.second*0.8));
         }
-
-
     }
 
     public void setFont(IFont font) {
