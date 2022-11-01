@@ -65,7 +65,7 @@ public class GraphicsAndroid implements IGraphics {
     public void lockCanvas() {
         while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
-        clear(ColorAndroid.RED);
+        clear(ColorAndroid.WHITE);
     }
 
     public void unlockCanvas(){

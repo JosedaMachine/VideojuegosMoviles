@@ -26,11 +26,18 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void init() {
+
+        //NOTA
+        //Al parecer el renderer no se ha inicializado, por lo que cuando ponemos las medidas con respecto a la pantalla
+        // nos da 0 puesto que si width = 0 pues width/2 = 0
+
         loadImages(engine.getGraphics());
         title = engine.getGraphics().newFont("arcade.TTF",100,true);
         int sizeX = 290, sizeY = 100;
-        button = new Button("Play", engine.getGraphics().getWidth()/2 - sizeX/2,
-                engine.getGraphics().getHeight()/2 -  sizeY/2,290, 100) {
+        int posX = engine.getGraphics().getWidth()/2;
+        int posY = engine.getGraphics().getHeight()/2;
+
+        button = new Button("Play", posX, posY,290, 100) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -66,7 +73,7 @@ public class SceneTitle implements SceneBase {
     @Override
     public void input(TouchEvent event) {
         button.input(event);
-      }
+    }
 
     @Override
     public void loadImages(IGraphics graphics) {

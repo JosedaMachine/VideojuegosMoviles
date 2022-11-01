@@ -12,7 +12,6 @@ import com.engine.SceneBase;
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;
-    IFont title;
     public Nonograma(Engine engine){
         this.engine = engine;
     }
@@ -31,8 +30,7 @@ public class Nonograma implements IGame {
 
     @Override
     public void init() {
-        title = engine.getGraphics().newFont("arcade.TTF",100,true);
-//        changeScene(new SceneTitle(engine));
+        changeScene(new SceneTitle(engine));
         //changeScene(new SceneGame(engine));
     }
 
@@ -43,19 +41,12 @@ public class Nonograma implements IGame {
 
     @Override
     public void render(IGraphics graphics) {
-        graphics.setFont(title);
-        graphics.setColor(IColor.BLACK);
-
-        String title = "Nonograma";
-        Pair<Double, Double> dime = graphics.getStringDimensions(title);
-        graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
-//        currScene.render(graphics);
+        currScene.render(graphics);
     }
 
     @Override
     public void processInput(TouchEvent event) {
-
-//        currScene.input(event);
+        currScene.input(event);
     }
 
     // Se podría hacer esto en el init de cada escena pero
@@ -67,7 +58,7 @@ public class Nonograma implements IGame {
 
     public void endGame(boolean finished){
 //        //TODO cambiar manejo de escenas al acabar o salir del juego
-//        if(finished)
-//            changeScene(new SceneTitle(engine));
+        if(finished)
+            changeScene(new SceneTitle(engine));
     }
 }
