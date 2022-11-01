@@ -248,12 +248,14 @@ public class Board {
         drawNums(e, x, y, numoffset, fontSize);
     }
 
-    Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {
+    Pair<Integer,Integer> calculcateIndexMatrix(Engine e, int pixelX, int pixelY) {
         // Comprueba si esta dentro del tablero
         if ((pixelX > posX && pixelX <= posX + width) && (pixelY > posY && pixelY <= posY + height)) {
             // Localiza posicion y selecciona el tile
             int i_index = (int) ((pixelX - posX) / (relationX));
             int j_index = (int) ((pixelY - posY) / (relationY));
+
+            e.getAudio().playSound("click.wav");
             System.out.println("Index X : " + i_index +  " Index Y : " + j_index);
             return new Pair<>(i_index, j_index);
         }

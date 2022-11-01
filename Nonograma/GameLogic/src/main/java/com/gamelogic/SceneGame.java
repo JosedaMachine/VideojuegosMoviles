@@ -72,7 +72,7 @@ public class SceneGame implements SceneBase {
             //TODO Variable de fin de juego si tablero correcto
             //TODO hacer un width y height de la fuente
 
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
             setTile(index.first, index.second); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
             if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
@@ -157,6 +157,8 @@ public class SceneGame implements SceneBase {
         numFont = graphics.newFont("RamadhanMubarak.ttf", 80, false);
 
         pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
+
+        engine.getAudio().newSound("click.wav");
 
         System.out.println("Resources Loaded");
     }

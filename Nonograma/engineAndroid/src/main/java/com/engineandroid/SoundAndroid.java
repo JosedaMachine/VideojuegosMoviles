@@ -40,4 +40,9 @@ public class SoundAndroid implements Sound {
     public boolean isLoaded() {
         return sound != null;
     }
+
+    @Override
+    public void setLoop(boolean l) {
+        //TODO
+    }
 }

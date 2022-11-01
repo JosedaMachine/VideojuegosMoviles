@@ -19,11 +19,7 @@ public class SoundPC implements Sound {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(file));
             clip = AudioSystem.getClip();
             clip.open(audioStream);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
 
@@ -31,6 +27,7 @@ public class SoundPC implements Sound {
 
     @Override
     public void play() {
+        clip.setFramePosition(0);
         clip.start();
     }
 
@@ -42,6 +39,14 @@ public class SoundPC implements Sound {
     @Override
     public boolean isLoaded() {
         return clip != null;
+    }
+
+    @Override
+    public void setLoop(boolean l) {
+        if(l)
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        else
+            clip.loop(0);
     }
 
 }

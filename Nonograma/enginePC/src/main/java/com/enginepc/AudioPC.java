@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class AudioPC implements Audio {
 
-    String path = "appDesktop/assets/sounds";
+    String path = "appDesktop/assets/sounds/";
 
     HashMap<String, SoundPC> audioLoaded = new HashMap<>();
 
