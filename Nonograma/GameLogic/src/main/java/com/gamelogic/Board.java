@@ -20,6 +20,7 @@ public class Board {
     private float relationX, relationY;
     private int posX, posY;
 
+    private int numTiles;
     private List<List<Integer>> adyancentsHorizontal;
     private List<List<Integer>> adyancentsVertical;
 
@@ -40,6 +41,8 @@ public class Board {
         for (int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
                 board[i][j] = TILE.EMPTY;
+
+        numTiles = 0;
     }
 
     void generateBoard() {
@@ -52,8 +55,10 @@ public class Board {
             for (int j = 0; j < rows; j++) {
                 int random = r.nextInt(10);
 
-                if (random <= 3)
+                if (random <= 3){
                     board[i][j] = TILE.FILL;
+                    numTiles++;
+                }
             }
         }
 
@@ -126,6 +131,10 @@ public class Board {
         return height;
     }
 
+    public int getNumTiles(){
+        return numTiles;
+    }
+
     public TILE getTile(int x, int y) {
         return board[x][y];
     }
@@ -142,6 +151,7 @@ public class Board {
     public ArrayList<Pair<Integer, Integer>> isBoardMatched(Board other) {
         TILE[][] otherBoard = other.getBoard();
         ArrayList<Pair<Integer, Integer>> diff = new ArrayList<>();
+        int tilesMatched = 0;
         //Assume they are the same size (width and height)
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -149,8 +159,15 @@ public class Board {
                     continue;
                 if (board[i][j] != otherBoard[i][j])
                     diff.add(new Pair<>(i, j));
+                else
+                    tilesMatched++;
+
             }
         }
+
+        //Metemos al final el nº de tiles que coinciden
+        diff.add(new Pair<>(tilesMatched, -1));
+
         return diff;
     }
 

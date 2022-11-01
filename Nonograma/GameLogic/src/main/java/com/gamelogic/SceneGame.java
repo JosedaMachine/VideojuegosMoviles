@@ -185,11 +185,13 @@ public class SceneGame implements SceneBase {
     boolean checkHasWon() {
         ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
-        for(int i = 0; i < wrongs.size(); i++){
+        //NO recorremos hasta el final, el último es el nº de tiles
+        for(int i = 0; i < wrongs.size() - 1; i++){
             setTile(wrongs.get(i).first, wrongs.get(i).second, TILE.WRONG);
         }
 
-        return wrongs.size() == 0;
+        return wrongs.size() == 1 && //Que no haya incorrectas
+               wrongs.get(wrongs.size()-1).first == checkBoard.getNumTiles(); //Que haya todas las correctas
     }
 
 
