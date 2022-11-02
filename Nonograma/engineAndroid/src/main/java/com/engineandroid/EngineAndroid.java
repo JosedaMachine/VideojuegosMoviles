@@ -41,7 +41,6 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void setGame(IGame game) {
-        game.init();
         currGame = game;
     }
 
@@ -102,8 +101,10 @@ public class EngineAndroid implements Engine, Runnable{
 
         // Si el Thread se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(this.running && graphics.getWidth() == 0 && currGame == null);
+        while(this.running && (graphics.getWidth() == 0 || currGame == null));
         // Espera activa. Sería más elegante al menos dormir un poco.
+
+        currGame.init();
 
         long lastFrameTime = System.nanoTime();
 
