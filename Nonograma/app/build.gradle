@@ -49,3 +49,15 @@ task copyData( type: Copy) {
     }
     into 'src/main/assets'
 }
+
+tasks.whenTaskAdded{ task ->
+    if(task.name == "preDebugBuild"){
+        task.finalizedBy "copyData"
+    }
+}
+
+tasks.whenTaskAdded{ task ->
+    if(task.name == "preBuild"){
+        task.finalizedBy "copyData"
+    }
+}
