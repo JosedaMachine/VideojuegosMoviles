@@ -12,8 +12,23 @@ import com.engine.SceneBase;
 /*
 TODO: reescalado?
 TODO: posiciones ancaladas a la pantalla en funcion de su tamaño-> referencia a getWidth?¿¿¿¿
-TODO: GRadle que se ejecute cuando se compile cada programa
-TODO:
+TODO: GRadle que se ejecute cuando se compile cada programa, esta bien?
+TODO: Por que en Android el graphics tarda tanto en crearse, y si esperamos antes se queda colgado? Necesitamos width y hieght para posiciones iniciales
+TODO: Relacion de la primera resolucion con respecto a la nueva?
+Example:
+Init Res= 1080x720
+new Res = 1280x800
+
+RelationX = InitX/newX -> 0.843
+RelationY = InitY/newY -> 0.9
+
+NuevaPos del obejeto = oldPos/relation
+
+Supongo que es lo mismo con las escalas
+
+Y si se pasa de una relacion del 0.5 (es mucho mas grande de lo original) o 1.5 (mucho mas pequeño)
+se generan las bandas o no se puede hacer mas pequeño (respectivamente).
+
  */
 public class Nonograma implements IGame {
     Engine engine;

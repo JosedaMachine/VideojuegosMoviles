@@ -35,6 +35,8 @@ public class GraphicsAndroid implements IGraphics {
         this.paint.setColor(0xFFFFFFFF);
 
         this.assetManager = view.getContext().getAssets();
+
+
     }
 
     @Override

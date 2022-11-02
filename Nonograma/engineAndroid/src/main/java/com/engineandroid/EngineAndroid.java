@@ -18,6 +18,7 @@ public class EngineAndroid implements Engine, Runnable{
     boolean running;
 
     public EngineAndroid(SurfaceView view){
+        currGame = null;
         graphics = new GraphicsAndroid(view);
         input = new InputAndroid(view);
         audio = new AudioAndroid(view.getContext().getAssets());
@@ -40,8 +41,8 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void setGame(IGame game) {
-        currGame = game;
         game.init();
+        currGame = game;
     }
 
     @Override
@@ -101,7 +102,7 @@ public class EngineAndroid implements Engine, Runnable{
 
         // Si el Thread se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(this.running && graphics.getWidth() == 0);
+        while(this.running && graphics.getWidth() == 0 && currGame == null);
         // Espera activa. Sería más elegante al menos dormir un poco.
 
         long lastFrameTime = System.nanoTime();
