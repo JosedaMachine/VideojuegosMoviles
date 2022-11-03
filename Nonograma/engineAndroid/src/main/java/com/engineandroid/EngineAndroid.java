@@ -15,6 +15,12 @@ public class EngineAndroid implements Engine, Runnable{
     IGame currGame;
     private Thread renderThread;
 
+
+   // if(YOURFULLSCREENCHECKHERE) {
+    //    requestWindowFeature(Window.FEATURE_NO_TITLE);
+     //   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+             //   WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    //}
     boolean running;
 
     public EngineAndroid(SurfaceView view){

@@ -1,5 +1,6 @@
 package com.gamelogic;
 
+
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
@@ -8,13 +9,16 @@ import com.engine.IGraphics;
 import com.engine.Pair;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
-
 /*
 TODO: reescalado?
-TODO: posiciones ancaladas a la pantalla en funcion de su tamaño-> referencia a getWidth?¿¿¿¿
-TODO: GRadle que se ejecute cuando se compile cada programa, esta bien?
-TODO: Por que en Android el graphics tarda tanto en crearse, y si esperamos antes se queda colgado? Necesitamos width y hieght para posiciones iniciales
-TODO: Relacion de la primera resolucion con respecto a la nueva?
+TODO: por que parpadea al hacer resize?
+TODO: hay que tener un limite maximo de resize?
+TODO: Relacion de la primera resolucion con respecto a la nueva? Si
+TODO: La logica tiene un tamaño inicial en relacion a la pantalla?
+TODO: sonidos
+TODO: bandas
+TODO: translate en algun sitio?
+
 Example:
 Init Res= 1080x720
 new Res = 1280x800

@@ -52,6 +52,8 @@ public interface IGraphics {
 
     int parseRealLogic();
 
+    double getRelationX();
+    double getRelationY();
 
     void loadImage(Image img, String key);
 

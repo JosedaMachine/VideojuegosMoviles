@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
@@ -22,12 +24,28 @@ public class GraphicsPC implements IGraphics {
     private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
 
+    double initWidth, initHeight;
+    double relationX, relationY;
+
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     private final String path = "appDesktop/assets/";
 
     GraphicsPC(JFrame view){
         window = view;
+
+        relationX = relationY = 1;
+        initHeight = view.getHeight();
+        initWidth = view.getWidth();
+        view.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                relationX = initWidth/(double)window.getWidth();
+                relationY = initHeight/(double)window.getHeight();
+                System.out.println("X: " + relationX);
+                System.out.println("Y: " + relationY);
+                System.out.println("===================");
+            }
+        });
 
         insetTop = view.getInsets().top;
         insetLeft = view.getInsets().left;
@@ -196,4 +214,15 @@ public class GraphicsPC implements IGraphics {
     public BufferStrategy getBufferStrategy(){return bufferStrategy;}
 
     public Graphics getGraphics(){return this.graphics2D;}
+
+
+    @Override
+    public double getRelationX() {
+        return relationX;
+    }
+
+    @Override
+    public double getRelationY() {
+        return relationY;
+    }
 }

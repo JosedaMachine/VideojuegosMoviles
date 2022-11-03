@@ -30,13 +30,15 @@ public abstract class Button {
 
     public void render(IGraphics graphics){
         if(backgroundImage != null)
-            graphics.drawImage(backgroundImage, posX , posY, sizeX, sizeY);
+            graphics.drawImage(backgroundImage, (int)(posX/graphics.getRelationX()) , (int)(posY/graphics.getRelationY()), sizeX, sizeY);
 
         if(font != null){
             graphics.setColor(color);
             graphics.setFont(font);
             Pair<Double, Double> dime = graphics.getStringDimensions(text);
+
             graphics.drawText(text, (int) (posX +  sizeX/2 - dime.first/2) , (int)(posY + dime.second*0.8));
+            //graphics.drawText(text, (int) (posX/graphics.getRelationX() +  sizeX/2 - dime.first*0.5) , (int) (posY/graphics.getRelationY() + dime.second*0.8));
         }
     }
 

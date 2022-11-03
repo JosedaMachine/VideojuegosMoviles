@@ -11,6 +11,8 @@ import com.engine.TouchEvent;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class EnginePC implements Engine, Runnable{
     IGame currGame;
     InputPC input;
     AudioPC audio;
+
     boolean running;
 
     BufferStrategy bufferStrategy;
@@ -171,4 +174,5 @@ public class EnginePC implements Engine, Runnable{
         }
         input.getEventList().clear();
     }
+
 }
