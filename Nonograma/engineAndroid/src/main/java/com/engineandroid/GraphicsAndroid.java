@@ -104,7 +104,7 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public void drawImage(Image image, int x, int y, int width, int height) {
         ImageAndroid anImage = (ImageAndroid) image;
-        canvas.drawBitmap(anImage.getScaledImage(width, height),x - width / 2.0f, y - height / 2.0f ,paint);
+        canvas.drawBitmap(anImage.getScaledImage(width, height),x, y,paint);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void drawRect(int x, int y, int w, int h) {
-        canvas.drawRect(x - w / 2.0f, y - h / 2.0f, w, h, paint);
+        canvas.drawRect(x, y, w, h, paint);
     }
 
     @Override

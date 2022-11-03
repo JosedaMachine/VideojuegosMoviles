@@ -42,6 +42,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    System.out.println("el jogo");
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getGame().changeScene(new SceneLevels(engine));
                     }

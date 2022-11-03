@@ -19,7 +19,7 @@ public class SoundAndroid implements Sound {
             sound.setDataSource(afd.getFileDescriptor(),
                     afd.getStartOffset(), afd.getLength());
             sound.prepare();
-            sound.setLooping(true);
+            sound.setLooping(false);
         } catch (IOException e) {
             System.err.println("Couldn't load audio file");
             e.printStackTrace();
@@ -43,6 +43,6 @@ public class SoundAndroid implements Sound {
 
     @Override
     public void setLoop(boolean l) {
-        //TODO
+        sound.setLooping(l);
     }
 }

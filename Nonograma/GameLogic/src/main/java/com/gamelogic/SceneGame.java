@@ -68,8 +68,6 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-            //TODO Boton que evalue tablero ->casillas malas en rojo durante X segundos
-            //TODO Variable de fin de juego si tablero correcto
             //TODO hacer un width y height de la fuente
 
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());

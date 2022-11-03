@@ -120,7 +120,7 @@ public class EngineAndroid implements Engine, Runnable{
             // Informe de FPS
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            //this.processInput();
+            this.processInput();
 
             this.update(elapsedTime);
 
