@@ -154,7 +154,7 @@ public class GraphicsAndroid implements IGraphics {
     public Pair<Double, Double> getStringDimensions(String text) {
         Rect bounds = new Rect();
         paint.getTextBounds(text,0,text.length(), bounds);
-        return new Pair<>((double) bounds.width(), (double) bounds.height());
+        return new Pair<>((double) bounds.width(), (double) bounds.height()*2);
     }
 
     @Override
