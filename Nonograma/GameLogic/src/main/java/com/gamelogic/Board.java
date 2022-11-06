@@ -207,7 +207,7 @@ public class Board {
         }
     }
 
-    public void drawBoard(Engine e, int x, int y) {
+    public void drawBoard(Engine e, int x, int y, boolean win) {
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
@@ -215,7 +215,9 @@ public class Board {
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j]);
-                e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
+                assert im != null;
+                if(!win || board[i][j] == TILE.FILL)
+                    e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
                         relationX / im.getWidth(), (relationY) / im.getHeight());
             }
         }

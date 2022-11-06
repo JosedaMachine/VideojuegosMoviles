@@ -13,27 +13,26 @@ import java.util.ArrayList;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
-    Engine engine;
+    private final Engine engine;
     //Tablero chuleta para comprobar
-    Board checkBoard;
+    private Board checkBoard;
     //Tablero que ve el jugador
-    Board gameBoard;
+    private Board gameBoard;
 
-    Button bttCheckWin, bttReturn;
+    private Button bttCheckWin, bttReturn;
     //True cuando coincidan los tableros
-    boolean hasWon = false;
+    private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
-    boolean checkWin = false;
+    private boolean checkWin = false;
 
-    int rows_, cols_;
+    private final int rows_, cols_;
 
-    int numRemaining = 0, numWrong = 0;
-    private IFont numFont;
-    private IFont pixelFont;
+    private int numRemaining = 0, numWrong = 0;
+    private IFont numFont, pixelFont;
 
     private static final double maxTime = 2.5; //s
     private double timer = maxTime;
-    boolean DEBUG = false;
+    private boolean DEBUG = false;
 
     public SceneGame(Engine engine, int rows, int cols) {
         this.engine = engine;
@@ -58,7 +57,7 @@ public class SceneGame implements SceneBase {
         }
 
         if(hasWon){
-            ((Nonograma) engine.getGame()).endGame(true);
+            engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
         }
     }
 
@@ -124,9 +123,6 @@ public class SceneGame implements SceneBase {
     public void loadImages(IGraphics graphics){
         System.out.println("Loading Resources...");
 
-        //Image img = graphics.newImage("examplePCReal/assets/images/tom.png", graphics.getWidth(), graphics.getHeight());
-        //graphics.loadImage(img, "Tom");
-
         Image im = graphics.newImage("emptysquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
@@ -152,7 +148,7 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
-        numFont = graphics.newFont("RamadhanMubarak.ttf", 80, false);
+        numFont = graphics.newFont("arcade.TTF", 40, false);
 
         pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
 
@@ -166,13 +162,13 @@ public class SceneGame implements SceneBase {
         graphics.setColor(IColor.BLACK);
         checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
-        gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+        gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, false);
 
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if(DEBUG){
-            checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
+            checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, false);
         }
 
         if(!hasWon && timer < maxTime){
@@ -218,7 +214,6 @@ public class SceneGame implements SceneBase {
         return true;
     }
 
-
     boolean checkHasWon() {
         ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
@@ -233,7 +228,4 @@ public class SceneGame implements SceneBase {
         return wrongs.size() == 1 && //Que no haya incorrectas
                wrongs.get(wrongs.size()-1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
-
-
-
 }

@@ -9,17 +9,17 @@ import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
-import java.awt.Panel;
-import java.awt.TextField;
-
-public class SceneTitle implements SceneBase {
+public class SceneVictory implements SceneBase {
 
     private final Engine engine;
 
     private Button button;
     private IFont title;
-    private String titleText = "Nonograma";
-    public SceneTitle(Engine engine_) {
+    private String victoryText = "VICTORY!";
+
+    private Board checkBoard;
+    public SceneVictory(Engine engine_, Board checkboard) {
+        this.checkBoard = checkboard;
         this.engine = engine_;
     }
 
@@ -31,13 +31,13 @@ public class SceneTitle implements SceneBase {
         // nos da 0 puesto que si width = 0 pues width/2 = 0
 
         loadImages(engine.getGraphics());
-        title = engine.getGraphics().newFont("arcade.TTF",100,true);
+        title = engine.getGraphics().newFont("arcade.TTF",75,true);
         int sizeX = 290, sizeY = 100;
 
         int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getHeight()/2 - sizeY/2;
+        int posY = engine.getGraphics().getHeight()- (int)(sizeY*1.5);
 
-        button = new Button("Play", posX, posY,290, 100) {
+        button = new Button("To Menu", posX, posY,290, 50) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -58,8 +58,10 @@ public class SceneTitle implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
 
-        Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
-        graphics.drawText(titleText, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
+        Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
+        graphics.drawText(victoryText, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()/8 + dime.second/2));
+
+        checkBoard.drawBoard(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2, true);
 
         button.render(graphics);
     }
@@ -86,6 +88,4 @@ public class SceneTitle implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
     }
-
-
 }
