@@ -154,7 +154,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void fillRect(int x, int y, int w, int h) {
-        this.graphics2D.fillRect(x+ (int)(insetLeft/scaleFactor), y+ (int)(insetTop/scaleFactor), x + w, y + h);
+        this.graphics2D.fillRect(x+ (int)insetLeft, y+ (int)insetTop, x + w, y + h);
     }
 
     @Override
