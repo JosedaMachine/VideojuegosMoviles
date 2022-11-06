@@ -163,12 +163,12 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
-    public int getLogicWidth(int x) {
+    public int getLogicWidth() {
         return 0;
     }
 
     @Override
-    public int getLogicHeight(int y) {
+    public int getLogicHeight() {
         return 0;
     }
 

@@ -132,7 +132,7 @@ public class GraphicsPC implements IGraphics {
     public void drawImage(Image image, int x, int y, int width, int height) {
         graphics2D.setPaintMode();
         ImagePC copy = (ImagePC) image;
-        graphics2D.drawImage(copy.getImage(), x+ insetLeft, y+ insetTop, width, height, null);
+        graphics2D.drawImage(copy.getImage(), x+ (int)(insetLeft/scaleFactor), y+ (int)(insetTop/scaleFactor), width, height, null);
         graphics2D.setPaintMode();
     }
 
@@ -194,13 +194,13 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public int getLogicWidth(int x) {
-        return 0;
+    public int getLogicWidth(){
+        return logicWidth;
     }
 
     @Override
-    public int getLogicHeight(int y) {
-        return 0;
+    public int getLogicHeight() {
+        return logicHeight;
     }
 
     @Override
@@ -225,13 +225,19 @@ public class GraphicsPC implements IGraphics {
 
         if(heightWindow >= expectedHeight){
             bandHeight = (heightWindow - expectedHeight)/2;
-            scaleFactor = widthWindow / (float)logicWidth;
+            scaleFactor = (float)widthWindow / (float)logicWidth;
         }else{
             bandWidth = (widthWindow - expectedWidth)/2;
-            scaleFactor = heightWindow / (float)logicHeight;
+            scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
         translateFactorX = bandWidth;
         translateFactorY = bandHeight;
     }
+
+    public int getTranslateFactorX(){return translateFactorX;}
+
+    public int getTranslateFactorY(){return translateFactorY;}
+
+    public float getScaleFactor(){return scaleFactor;}
 }

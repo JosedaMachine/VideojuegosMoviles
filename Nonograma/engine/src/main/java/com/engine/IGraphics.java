@@ -46,9 +46,9 @@ public interface IGraphics {
 
     int getHeight();
 
-    int getLogicWidth(int x);
+    int getLogicWidth();
 
-    int getLogicHeight(int y);
+    int getLogicHeight();
 
     void loadImage(Image img, String key);
 

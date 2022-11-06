@@ -15,9 +15,11 @@ import java.awt.event.MouseListener;
 public class InputPC implements IInput {
 
     private final ArrayList<TouchEvent> eventList;
+    private GraphicsPC graphics_;
 
-    public InputPC(final JFrame view){
+    public InputPC(final JFrame view, GraphicsPC graphics){
          eventList = new ArrayList<>();
+         graphics_ = graphics;
 
          view.addMouseListener(new MouseAdapter(){
             @Override
@@ -39,26 +41,31 @@ public class InputPC implements IInput {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                int posX = mouseEvent.getX() - view.getInsets().left;
+                int posX = mouseEvent.getX();
                 int posY = mouseEvent.getY() - view.getInsets().top;
-                TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
-                TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-                        posX,
-                        posY,
-                        id);
-                eventList.add(touch);
+
+                if(posX - graphics_.getTranslateFactorX()>0 && posY - graphics_.getTranslateFactorY()>0){
+                    TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
+                    TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
+                            id);
+                    eventList.add(touch);
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                int posX = mouseEvent.getX() - view.getInsets().left;
+                int posX = mouseEvent.getX();
                 int posY = mouseEvent.getY() - view.getInsets().top;
-                TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
-                TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-                        posX,
-                        posY,
-                        id);
-                eventList.add(release);
+                if(posX - graphics_.getTranslateFactorX()>0 && posY - graphics_.getTranslateFactorY()>0){
+                    TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
+                    TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
+                             id);
+                    eventList.add(release);
+                }
             }
         });
 

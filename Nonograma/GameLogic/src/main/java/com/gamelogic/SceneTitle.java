@@ -20,6 +20,8 @@ public class SceneTitle implements SceneBase {
         this.engine = engine_;
     }
 
+
+//    int posX , posY;
     @Override
     public void init() {
 
@@ -31,15 +33,20 @@ public class SceneTitle implements SceneBase {
 
         int sizeX = 290, sizeY = 100;
 
-        int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getHeight()/2 - sizeY/2;
+        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
+        int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
-        button = new Button("Play", posX, posY,sizeX, sizeY) {
+        button = new Button("Play", posX * 0, posY * 0,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-                        engine.getGame().changeScene(new SceneLevels(engine));
+
+
+                        System.out.println("X:" + event_.getX_());
+                        System.out.println("Y:" + event_.getY_());
+                        System.out.println("====================");
+//                        engine.getGame().changeScene(new SceneLevels(engine));
                     }
                 }
             }
@@ -48,6 +55,8 @@ public class SceneTitle implements SceneBase {
         button.setFont(title);
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
+
     }
 
     @Override
@@ -56,7 +65,8 @@ public class SceneTitle implements SceneBase {
         graphics.setColor(IColor.BLACK);
 
         Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
-        graphics.drawText(titleText, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.25 + dime.second/2));
+
+        graphics.drawText(titleText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.25 + dime.second/2));
 
         button.render(graphics);
     }
@@ -83,7 +93,7 @@ public class SceneTitle implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
-        title = engine.getGraphics().newFont("arcade.TTF",100,true);
+        title = engine.getGraphics().newFont("arcade.TTF",80,true);
     }
 
 

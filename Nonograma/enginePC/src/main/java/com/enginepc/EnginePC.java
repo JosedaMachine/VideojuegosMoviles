@@ -51,7 +51,7 @@ public class EnginePC implements Engine, Runnable{
         graphics = new GraphicsPC(renderView, logicWidth, logicHeight);
         bufferStrategy = renderView.getBufferStrategy();
 
-        input = new InputPC(renderView);
+        input = new InputPC(renderView, graphics);
         audio = new AudioPC();
     }
 
