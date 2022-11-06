@@ -15,6 +15,7 @@ import java.util.List;
 public class SceneLevels implements SceneBase {
 
     IFont title;
+    IFont titleLittle;
     Engine engine;
     Button button;
 
@@ -38,26 +39,26 @@ public class SceneLevels implements SceneBase {
 
         int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
         int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
-        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4));
+        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false));
 
         posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5));
+        levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5, false));
 
         posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10));
+        levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10, true));
 
         posY = engine.getGraphics().getLogicHeight()/2 -  sizeY/2;
         posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8) );
+        levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8, false) );
 
         posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10) );
+        levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10, true) );
 
         posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15) );
+        levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
     }
 
-    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j){
+    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
         final Button button = new Button(text, x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
@@ -68,7 +69,8 @@ public class SceneLevels implements SceneBase {
                 }
             }
         };
-        button.setFont(title);
+
+        button.setFont(small ? titleLittle : title);
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
@@ -109,5 +111,6 @@ public class SceneLevels implements SceneBase {
         graphics.loadImage(im, "empty");
 
         title = engine.getGraphics().newFont("arcade.TTF",30,true);
+        titleLittle = engine.getGraphics().newFont("arcade.TTF",26,true);
     }
 }
