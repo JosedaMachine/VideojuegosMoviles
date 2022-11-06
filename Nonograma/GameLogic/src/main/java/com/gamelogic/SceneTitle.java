@@ -57,9 +57,9 @@ public class SceneTitle implements SceneBase {
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
-//        engine.getAudio().playSound("music.wav");
-//        engine.getAudio().getSound("music.wav").setLoop(true);
-//        engine.getAudio().getSound("music.wav").setVolume(-20);
+        engine.getAudio().playSound("music.wav");
+        engine.getAudio().getSound("music.wav").setLoop(true);
+        engine.getAudio().getSound("music.wav").setVolume(-15);
     }
 
     @Override

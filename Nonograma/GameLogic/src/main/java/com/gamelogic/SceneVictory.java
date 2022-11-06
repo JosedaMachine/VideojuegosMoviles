@@ -34,8 +34,8 @@ public class SceneVictory implements SceneBase {
 
         int sizeX = 225, sizeY = 50;
 
-        int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getHeight()- (int)(sizeY*2.5);
+        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
+        int posY = engine.getGraphics().getLogicHeight()- (int)(sizeY*2.5);
 
         button = new Button("To Menu", posX, posY,sizeX, sizeY) {
             @Override
@@ -60,9 +60,9 @@ public class SceneVictory implements SceneBase {
         graphics.setColor(IColor.BLACK);
 
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
-        graphics.drawText(victoryText, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()/8 + dime.second/2));
+        graphics.drawText(victoryText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()/8 + dime.second/2));
 
-        checkBoard.drawBoard(engine, graphics.getWidth()/2 - checkBoard.getWidth()/2, graphics.getHeight()/2 - checkBoard.getHeight()/2, true);
+        checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - checkBoard.getWidth()/2, graphics.getLogicHeight()/2 - checkBoard.getHeight()/2, true);
 
         button.render(graphics);
     }
