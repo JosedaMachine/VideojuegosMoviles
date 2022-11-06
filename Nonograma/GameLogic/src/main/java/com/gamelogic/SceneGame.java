@@ -117,6 +117,7 @@ public class SceneGame implements SceneBase {
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
                         engine.getGame().changeScene(new SceneTitle(engine));
                     }
                 }
