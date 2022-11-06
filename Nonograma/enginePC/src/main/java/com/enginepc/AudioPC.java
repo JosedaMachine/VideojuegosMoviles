@@ -18,9 +18,12 @@ public class AudioPC implements Audio {
 
     @Override
     public Sound newSound(String name) {
-        SoundPC sound = new SoundPC(path + name);
-        audioLoaded.put(name, sound);
-        return sound;
+        if(getSound(name) == null) {
+            SoundPC sound = new SoundPC(path + name);
+            audioLoaded.put(name, sound);
+            return sound;
+        }
+        return getSound(name);
     }
 
     @Override

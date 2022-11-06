@@ -45,4 +45,9 @@ public class SoundAndroid implements Sound {
     public void setLoop(boolean l) {
         sound.setLooping(l);
     }
+
+    @Override
+    public void setVolume(int vol) {
+        sound.setVolume(vol,vol);
+    }
 }
