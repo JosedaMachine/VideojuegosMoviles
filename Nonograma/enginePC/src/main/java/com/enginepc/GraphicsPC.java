@@ -47,7 +47,7 @@ public class GraphicsPC implements IGraphics {
         });
 
         insetTop = view.getInsets().top;
-        insetLeft = view.getInsets().left;
+        insetLeft = view.getInsets().left * 0;
         bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
     }
@@ -174,7 +174,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-        this.graphics2D.drawString(text, x+ insetLeft, y + insetTop);
+        this.graphics2D.drawString(text, x+ (insetLeft/scaleFactor), y + (insetTop/scaleFactor));
     }
 
     @Override

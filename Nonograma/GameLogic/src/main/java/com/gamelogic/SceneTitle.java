@@ -36,17 +36,15 @@ public class SceneTitle implements SceneBase {
         int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
-        button = new Button("Play", posX * 0, posY * 0,sizeX, sizeY) {
+        button = new Button("Play", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-
-
                         System.out.println("X:" + event_.getX_());
                         System.out.println("Y:" + event_.getY_());
                         System.out.println("====================");
-//                        engine.getGame().changeScene(new SceneLevels(engine));
+                        engine.getGame().changeScene(new SceneLevels(engine));
                     }
                 }
             }
