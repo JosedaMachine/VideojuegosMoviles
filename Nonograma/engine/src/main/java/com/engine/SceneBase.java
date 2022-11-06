@@ -10,5 +10,5 @@ public interface SceneBase {
 
     void input(TouchEvent event);
 
-    void loadImages(IGraphics graphics);
+    void loadResources(IGraphics graphics);
 }

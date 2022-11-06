@@ -14,10 +14,10 @@ public class SceneVictory implements SceneBase {
     private final Engine engine;
 
     private Button button;
-    private IFont title;
+    private IFont title, buttonFont;
     private String victoryText = "VICTORY!";
 
-    private Board checkBoard;
+    private final Board checkBoard;
     public SceneVictory(Engine engine_, Board checkboard) {
         this.checkBoard = checkboard;
         this.engine = engine_;
@@ -30,25 +30,25 @@ public class SceneVictory implements SceneBase {
         //Al parecer el renderer no se ha inicializado, por lo que cuando ponemos las medidas con respecto a la pantalla
         // nos da 0 puesto que si width = 0 pues width/2 = 0
 
-        loadImages(engine.getGraphics());
-        title = engine.getGraphics().newFont("arcade.TTF",75,true);
-        int sizeX = 290, sizeY = 100;
+        loadResources(engine.getGraphics());
+
+        int sizeX = 225, sizeY = 50;
 
         int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getHeight()- (int)(sizeY*1.5);
+        int posY = engine.getGraphics().getHeight()- (int)(sizeY*2.5);
 
-        button = new Button("To Menu", posX, posY,290, 50) {
+        button = new Button("To Menu", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-                        engine.getGame().changeScene(new SceneLevels(engine));
+                        engine.getGame().changeScene(new SceneTitle(engine));
                     }
                 }
             }
         };
 
-        button.setFont(title);
+        button.setFont(buttonFont);
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
@@ -77,7 +77,7 @@ public class SceneVictory implements SceneBase {
     }
 
     @Override
-    public void loadImages(IGraphics graphics) {
+    public void loadResources(IGraphics graphics) {
         Image im = graphics.newImage("crosssquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
@@ -87,5 +87,9 @@ public class SceneVictory implements SceneBase {
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
+
+        title = engine.getGraphics().newFont("arcade.TTF",75,true);
+
+        buttonFont = engine.getGraphics().newFont("arcade.TTF",50,true);
     }
 }

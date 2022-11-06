@@ -2,11 +2,8 @@ package com.gamelogic;
 
 
 import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
 import com.engine.IGame;
 import com.engine.IGraphics;
-import com.engine.Pair;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
 /*
@@ -76,6 +73,6 @@ public class Nonograma implements IGame {
     // de momento lo hace el motor en cada app
     @Override
     public void loadImages(IGraphics graphics) {
-        currScene.loadImages(graphics);
+        currScene.loadResources(graphics);
     }
 }

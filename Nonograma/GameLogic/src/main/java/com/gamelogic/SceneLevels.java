@@ -10,7 +10,6 @@ import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SceneLevels implements SceneBase {
@@ -28,7 +27,7 @@ public class SceneLevels implements SceneBase {
     @Override
     public void init() {
 
-        loadImages(engine.getGraphics());
+        loadResources(engine.getGraphics());
 
         levels = new ArrayList<>();
 
@@ -103,7 +102,7 @@ public class SceneLevels implements SceneBase {
     }
 
     @Override
-    public void loadImages(IGraphics graphics) {
+    public void loadResources(IGraphics graphics) {
         Image im = graphics.newImage("emptysquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");

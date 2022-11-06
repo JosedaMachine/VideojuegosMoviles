@@ -9,9 +9,6 @@ import com.engine.Pair;
 import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
-import java.awt.Panel;
-import java.awt.TextField;
-
 public class SceneTitle implements SceneBase {
 
     private final Engine engine;
@@ -30,8 +27,8 @@ public class SceneTitle implements SceneBase {
         //Al parecer el renderer no se ha inicializado, por lo que cuando ponemos las medidas con respecto a la pantalla
         // nos da 0 puesto que si width = 0 pues width/2 = 0
 
-        loadImages(engine.getGraphics());
-        title = engine.getGraphics().newFont("arcade.TTF",100,true);
+        loadResources(engine.getGraphics());
+
         int sizeX = 290, sizeY = 100;
 
         int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
@@ -75,7 +72,7 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void loadImages(IGraphics graphics) {
+    public void loadResources(IGraphics graphics) {
         Image im = graphics.newImage("crosssquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
@@ -85,6 +82,8 @@ public class SceneTitle implements SceneBase {
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
+
+        title = engine.getGraphics().newFont("arcade.TTF",100,true);
     }
 
 

@@ -80,7 +80,7 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void init() {
-        loadImages(engine.getGraphics());
+        loadResources(engine.getGraphics());
 
         //Tablero de solucion
         checkBoard = new Board(cols_, rows_, 500, 500);
@@ -88,8 +88,9 @@ public class SceneGame implements SceneBase {
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, 500, 500);
 
+        //TODO: VALORES CABLIADOS!!!
         //Check Board
-        bttCheckWin = new Button("Check", engine.getGraphics().getWidth() - 250, engine.getGraphics().getHeight() - 250, 150, 150) {
+        bttCheckWin = new Button("Check", engine.getGraphics().getWidth()/2 -150/2 + 125, engine.getGraphics().getHeight() - 50*3, 150, 50) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -103,8 +104,9 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setColor(IColor.BLACK);
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
+        //TODO: VALORES CABLIADOS!!!
         //Return to menu
-        bttReturn = new Button("Coward", (int) (engine.getGraphics().getWidth() * 0.05), (int) (engine.getGraphics().getHeight() * 0.05), 150, 100) {
+        bttReturn = new Button("Coward", engine.getGraphics().getWidth()/2 - 150/2 - 125, engine.getGraphics().getHeight()- 50*3, 150, 50) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -120,7 +122,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void loadImages(IGraphics graphics){
+    public void loadResources(IGraphics graphics){
         System.out.println("Loading Resources...");
 
         Image im = graphics.newImage("emptysquare.png");
@@ -181,14 +183,10 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2), (int) (graphics.getHeight() * 0.05 + dime_remaining.second/2));
-            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2), (int) (graphics.getHeight()*0.10 + dime_wrong.second/2));
+            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2) -125, (int) (graphics.getHeight() * 0.005 + dime_remaining.second/2));
+            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2) + 125, (int) (graphics.getHeight() * 0.005 + dime_wrong.second/2));
 
         }
-    }
-
-    boolean hasWon() {
-        return hasWon;
     }
 
     boolean setTile(int x, int y) {
