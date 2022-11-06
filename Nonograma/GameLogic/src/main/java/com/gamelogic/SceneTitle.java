@@ -59,7 +59,7 @@ public class SceneTitle implements SceneBase {
 
         engine.getAudio().playSound("music.wav");
         engine.getAudio().getSound("music.wav").setLoop(true);
-        engine.getAudio().getSound("music.wav").setVolume(-20);
+        engine.getAudio().getSound("music.wav").setVolume(-15);
     }
 
     @Override
