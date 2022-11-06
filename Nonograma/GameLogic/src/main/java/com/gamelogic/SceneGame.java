@@ -69,8 +69,6 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-            //TODO hacer un width y height de la fuente
-
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
             setTile(index.first, index.second, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
@@ -92,9 +90,7 @@ public class SceneGame implements SceneBase {
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, boardSize, boardSize);
 
-        //TODO: VALORES CABLIADOS!!!
-
-        int offset = 125, bttWidth = 150, bttHeight = 50;
+        int offset = 100, bttWidth = 150, bttHeight = 50;
         //Check Board
         bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
             @Override
@@ -110,7 +106,6 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setColor(IColor.BLACK);
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
-        //TODO: VALORES CABLIADOS!!!
         //Return to menu
         bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset, engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
             @Override
@@ -191,7 +186,6 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            //TODO: descabliar
             final int offset = 125;
 
             graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));

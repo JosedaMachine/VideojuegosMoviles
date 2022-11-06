@@ -15,8 +15,8 @@ public class AppDesktop {
         JFrame renderView = new JFrame("Mi aplicación");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = 400;
-        double height = 600;
+        double width = 600;
+        double height = 900;
 
         ColorPC.Init();
 
