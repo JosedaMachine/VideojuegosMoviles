@@ -47,6 +47,7 @@ public class SceneGame implements SceneBase {
             checkWin = false;
             if(!hasWon){
                 timer = 0;
+                engine.getAudio().playSound("wrong.wav");
             }
         }
 
@@ -57,6 +58,7 @@ public class SceneGame implements SceneBase {
         }
 
         if(hasWon){
+            engine.getAudio().playSound("correct.wav");
             engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
         }
     }
@@ -158,7 +160,8 @@ public class SceneGame implements SceneBase {
 
         pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
 
-        engine.getAudio().newSound("click.wav");
+        engine.getAudio().newSound("wrong.wav");
+        engine.getAudio().newSound("correct.wav");
 
         System.out.println("Resources Loaded");
     }

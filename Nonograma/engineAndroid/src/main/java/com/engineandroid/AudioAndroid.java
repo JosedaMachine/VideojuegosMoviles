@@ -25,9 +25,12 @@ public class AudioAndroid implements Audio {
 
     @Override
     public Sound newSound(String name) {
-        SoundAndroid sound = new SoundAndroid(assetManager, path + name);
-        audioLoaded.put(name, sound);
-        return sound;
+        if(getSound(name) == null) {
+            SoundAndroid sound = new SoundAndroid(assetManager, path + name);
+            audioLoaded.put(name, sound);
+            return sound;
+        }
+        return getSound(name);
     }
 
     @Override

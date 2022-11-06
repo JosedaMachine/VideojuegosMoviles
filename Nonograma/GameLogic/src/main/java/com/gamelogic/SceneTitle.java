@@ -17,6 +17,7 @@ public class SceneTitle implements SceneBase {
     private IFont title;
     private String titleText = "Nonogram";
     public SceneTitle(Engine engine_) {
+
         this.engine = engine_;
     }
 
@@ -54,7 +55,9 @@ public class SceneTitle implements SceneBase {
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
-
+        engine.getAudio().playSound("music.wav");
+        engine.getAudio().getSound("music.wav").setLoop(true);
+        engine.getAudio().getSound("music.wav").setVolume(-20);
     }
 
     @Override
@@ -90,6 +93,9 @@ public class SceneTitle implements SceneBase {
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
+
+        engine.getAudio().newSound("music.wav");
+        engine.getAudio().newSound("click.wav");
 
         title = engine.getGraphics().newFont("arcade.TTF",80,true);
     }

@@ -9,4 +9,6 @@ public interface Sound {
     public boolean isLoaded();
 
     public void setLoop(boolean l);
+
+    public void setVolume(int vol);
 }
