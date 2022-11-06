@@ -4,7 +4,6 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.fonts.Font;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -12,7 +11,6 @@ import com.engine.IFont;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
-import com.engine.SceneBase;
 
 import java.util.HashMap;
 
@@ -35,8 +33,6 @@ public class GraphicsAndroid implements IGraphics {
         this.paint.setColor(0xFFFFFFFF);
 
         this.assetManager = view.getContext().getAssets();
-
-
     }
 
     @Override
