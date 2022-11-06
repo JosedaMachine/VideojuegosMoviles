@@ -71,7 +71,7 @@ public class SceneGame implements SceneBase {
 
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
-            setTile(index.first, index.second); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
+            setTile(index.first, index.second, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
             if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
                 DEBUG = !DEBUG;
             }
@@ -82,15 +82,19 @@ public class SceneGame implements SceneBase {
     public void init() {
         loadResources(engine.getGraphics());
 
+        int boardSize = 500;
+
         //Tablero de solucion
-        checkBoard = new Board(cols_, rows_, 500, 500);
+        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
         checkBoard.generateBoard();
         //Tablero de juego
-        gameBoard = new Board(cols_, rows_, 500, 500);
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
 
         //TODO: VALORES CABLIADOS!!!
+
+        int offset = 125, bttWidth = 150, bttHeight = 50;
         //Check Board
-        bttCheckWin = new Button("Check", engine.getGraphics().getWidth()/2 -150/2 + 125, engine.getGraphics().getHeight() - 50*3, 150, 50) {
+        bttCheckWin = new Button("Check", engine.getGraphics().getWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getHeight() - bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -106,7 +110,7 @@ public class SceneGame implements SceneBase {
 
         //TODO: VALORES CABLIADOS!!!
         //Return to menu
-        bttReturn = new Button("Coward", engine.getGraphics().getWidth()/2 - 150/2 - 125, engine.getGraphics().getHeight()- 50*3, 150, 50) {
+        bttReturn = new Button("Coward", engine.getGraphics().getWidth()/2 - bttWidth/2 - offset, engine.getGraphics().getHeight()- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -183,14 +187,22 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2) -125, (int) (graphics.getHeight() * 0.005 + dime_remaining.second/2));
-            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2) + 125, (int) (graphics.getHeight() * 0.005 + dime_wrong.second/2));
+            //TODO: descabliar
+            final int offset = 125;
+
+            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2) - offset, (int) (graphics.getHeight() * 0.005 + dime_remaining.second/2));
+            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2) + offset, (int) (graphics.getHeight() * 0.005 + dime_wrong.second/2));
 
         }
     }
 
-    boolean setTile(int x, int y) {
-        if(x < 0 || y < 0) return false;
+    void setTile(int x, int y, boolean wrong) {
+        if(x < 0 || y < 0) return;
+
+        if(wrong){
+            gameBoard.setTile(x, y, TILE.WRONG);
+            return;
+        }
 
         TILE tile = gameBoard.getTile(x, y);
 
@@ -200,16 +212,6 @@ public class SceneGame implements SceneBase {
             gameBoard.setTile(x,y, TILE.CROSS);
         else
             gameBoard.setTile(x,y, TILE.EMPTY);
-
-        return true;
-    }
-
-    boolean setTile(int x, int y, TILE type) {
-        if(x < 0 || y < 0) return false;
-
-        gameBoard.setTile(x, y, type);
-
-        return true;
     }
 
     boolean checkHasWon() {
@@ -217,7 +219,7 @@ public class SceneGame implements SceneBase {
 
         //NO recorremos hasta el final, el último es el nº de tiles
         for(int i = 0; i < wrongs.size() - 1; i++){
-            setTile(wrongs.get(i).first, wrongs.get(i).second, TILE.WRONG);
+            setTile(wrongs.get(i).first, wrongs.get(i).second, true);
         }
 
         numRemaining = checkBoard.getNumCorrectTiles() - wrongs.get(wrongs.size() - 1).first;

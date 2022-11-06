@@ -15,7 +15,7 @@ public class SceneTitle implements SceneBase {
 
     private Button button;
     private IFont title;
-    private String titleText = "Nonograma";
+    private String titleText = "Nonogram";
     public SceneTitle(Engine engine_) {
         this.engine = engine_;
     }
@@ -34,7 +34,7 @@ public class SceneTitle implements SceneBase {
         int posX = engine.getGraphics().getWidth()/2 - sizeX/2;
         int posY = engine.getGraphics().getHeight()/2 - sizeY/2;
 
-        button = new Button("Play", posX, posY,290, 100) {
+        button = new Button("Play", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
