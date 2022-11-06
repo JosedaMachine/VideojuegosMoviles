@@ -194,8 +194,8 @@ public class SceneGame implements SceneBase {
             //TODO: descabliar
             final int offset = 125;
 
-            graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2) - offset, (int) (graphics.getLogicHeight() * 0.005 + dime_remaining.second/2));
-            graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2) + offset, (int) (graphics.getLogicHeight() * 0.005 + dime_wrong.second/2));
+            graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
+            graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
 
         }
     }
