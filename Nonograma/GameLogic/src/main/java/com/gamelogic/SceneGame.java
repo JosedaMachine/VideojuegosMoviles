@@ -84,7 +84,7 @@ public class SceneGame implements SceneBase {
     public void init() {
         loadResources(engine.getGraphics());
 
-        int boardSize = 500;
+        int boardSize = 200;
 
         //Tablero de solucion
         checkBoard = new Board(cols_, rows_, boardSize, boardSize);
@@ -96,7 +96,7 @@ public class SceneGame implements SceneBase {
 
         int offset = 125, bttWidth = 150, bttHeight = 50;
         //Check Board
-        bttCheckWin = new Button("Check", engine.getGraphics().getWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getHeight() - bttHeight*3, bttWidth, bttHeight) {
+        bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -112,7 +112,7 @@ public class SceneGame implements SceneBase {
 
         //TODO: VALORES CABLIADOS!!!
         //Return to menu
-        bttReturn = new Button("Coward", engine.getGraphics().getWidth()/2 - bttWidth/2 - offset, engine.getGraphics().getHeight()- bttHeight*3, bttWidth, bttHeight) {
+        bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset, engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -170,15 +170,15 @@ public class SceneGame implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         graphics.setColor(IColor.BLACK);
-        checkBoard.drawInfoRects(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, pixelFont);
+        checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
-        gameBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, false);
+        gameBoard.drawBoard(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, false);
 
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if(DEBUG){
-            checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2, false);
+            checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, false);
         }
 
         if(!hasWon && timer < maxTime){
@@ -194,8 +194,8 @@ public class SceneGame implements SceneBase {
             //TODO: descabliar
             final int offset = 125;
 
-            graphics.drawText(remainingField, (int) (graphics.getWidth()/2 - dime_remaining.first/2) - offset, (int) (graphics.getHeight() * 0.005 + dime_remaining.second/2));
-            graphics.drawText(wrongField, (int) (graphics.getWidth()/2 - dime_wrong.first/2) + offset, (int) (graphics.getHeight() * 0.005 + dime_wrong.second/2));
+            graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2) - offset, (int) (graphics.getLogicHeight() * 0.005 + dime_remaining.second/2));
+            graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2) + offset, (int) (graphics.getLogicHeight() * 0.005 + dime_wrong.second/2));
 
         }
     }

@@ -164,12 +164,12 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawRect(int x, int y, int w, int h) {
-        this.graphics2D.drawRect(x+ insetLeft, y+ insetTop, w, h);
+        this.graphics2D.drawRect((int) (x+ insetLeft/scaleFactor), (int) (y+ insetTop/scaleFactor), w, h);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        this.graphics2D.drawLine(x1+ insetLeft, y1+ insetTop, x2+ insetLeft, y2+ insetTop);
+        this.graphics2D.drawLine((int) (x1+ (insetLeft/scaleFactor)), (int) (y1+ insetTop/scaleFactor), (int) (x2+ insetLeft/scaleFactor), (int) (y2+ insetTop/scaleFactor));
     }
 
     @Override
