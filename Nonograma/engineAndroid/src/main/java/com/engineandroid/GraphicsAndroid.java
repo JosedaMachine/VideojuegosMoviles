@@ -177,21 +177,6 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
-    public int parseRealLogic() {
-        return 0;
-    }
-
-    @Override
-    public double getRelationX() {
-        return 0;
-    }
-
-    @Override
-    public double getRelationY() {
-        return 0;
-    }
-
-    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }
