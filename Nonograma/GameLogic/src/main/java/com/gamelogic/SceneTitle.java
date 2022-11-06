@@ -42,7 +42,7 @@ public class SceneTitle implements SceneBase {
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-
+                        engine.getAudio().playSound("click.wav");
 
                         System.out.println("X:" + event_.getX_());
                         System.out.println("Y:" + event_.getY_());
