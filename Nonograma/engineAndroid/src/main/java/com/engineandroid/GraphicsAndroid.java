@@ -119,7 +119,6 @@ public class GraphicsAndroid implements IGraphics {
         paint.setTextSize(anFont.getSize());
     }
 
-    //TODO no hay diferencia entre fill y draw en android??
     @Override
     public void fillRect(int x, int y, int size) {
         drawRect(x, y, size, size);

@@ -24,26 +24,37 @@ public class GraphicsPC implements IGraphics {
     private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
 
+    int logicWidth, logicHeight;
+
     double initWidth, initHeight;
     double relationX, relationY;
+
+    float scaleFactor;
+    int translateFactorX, translateFactorY;
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     private final String path = "appDesktop/assets/";
 
-    GraphicsPC(JFrame view){
+    GraphicsPC(JFrame view, int logicWidth_ , int logicHeight_){
         window = view;
-
+        logicHeight = logicHeight_;
+        logicWidth = logicWidth_;
         relationX = relationY = 1;
         initHeight = view.getHeight();
         initWidth = view.getWidth();
         view.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                relationX = initWidth/(double)window.getWidth();
-                relationY = initHeight/(double)window.getHeight();
-                System.out.println("X: " + relationX);
-                System.out.println("Y: " + relationY);
+//                relationX = initWidth/(double)window.getWidth();
+//                relationY = initHeight/(double)window.getHeight();
+                recalcFactors(window.getWidth(), window.getHeight());
+                System.out.println("X: " + translateFactorX);
+                System.out.println("Y: " + translateFactorY);
+                System.out.println("Scale: " + scaleFactor);
                 System.out.println("===================");
+
+                translate(translateFactorX, translateFactorY);
+                scale(scaleFactor, scaleFactor);
             }
         });
 
@@ -72,7 +83,6 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void translate(int x, int y) {
-        //Sí, es así de fácil
         graphics2D.translate(x, y);
     }
 
@@ -84,10 +94,21 @@ public class GraphicsPC implements IGraphics {
 
     public void prepare(int color){
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
+        this.clear(color);
+
+
         //TODO: Escalado resolucion
         //this.graphics2D.scale(1,1);
         //this.graphics2D.translate(1,1);
-        this.clear(color);
+        //TODO: Borrar
+        setColor(ColorPC.GRAY);
+
+        //Bandas Horizontales
+        drawRect(0,0, translateFactorX, window.getHeight());
+        drawRect(window.getWidth() - translateFactorX - insetLeft, 0, translateFactorX, window.getHeight());
+
+        drawRect(0,0, window.getWidth(), translateFactorY);
+        drawRect(0, window.getHeight() - translateFactorY - insetTop, window.getWidth(), translateFactorY);
     }
 
     public void finish(){
@@ -215,7 +236,6 @@ public class GraphicsPC implements IGraphics {
 
     public Graphics getGraphics(){return this.graphics2D;}
 
-
     @Override
     public double getRelationX() {
         return relationX;
@@ -224,5 +244,23 @@ public class GraphicsPC implements IGraphics {
     @Override
     public double getRelationY() {
         return relationY;
+    }
+
+    public void recalcFactors(int widthWindow, int heightWindow) {
+        int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
+        int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
+
+        int bandWidth = 0, bandHeight = 0;
+
+        if(heightWindow >= expectedHeight){
+            bandHeight = (heightWindow - expectedHeight)/2;
+            scaleFactor = widthWindow / (float)logicWidth;
+        }else{
+            bandWidth = (widthWindow - expectedWidth)/2;
+            scaleFactor = heightWindow / (float)logicHeight;
+        }
+
+        translateFactorX = bandWidth;
+        translateFactorY = bandHeight;
     }
 }

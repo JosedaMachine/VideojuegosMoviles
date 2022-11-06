@@ -30,7 +30,7 @@ public class EnginePC implements Engine, Runnable{
     BufferStrategy bufferStrategy;
     private Thread renderThread;
 
-    public EnginePC(JFrame renderView){
+    public EnginePC(JFrame renderView, int logicWidth, int logicHeight){
         view = renderView;
 
         //ESTO EL TICHER LO HACE EN GRAPHICSPC
@@ -48,7 +48,7 @@ public class EnginePC implements Engine, Runnable{
             return;
         }
 
-        graphics = new GraphicsPC(renderView);
+        graphics = new GraphicsPC(renderView, logicWidth, logicHeight);
         bufferStrategy = renderView.getBufferStrategy();
 
         input = new InputPC(renderView);

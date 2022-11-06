@@ -15,8 +15,8 @@ public class AppDesktop {
         JFrame renderView = new JFrame("Mi aplicación");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() * 0.7;
-        double height = screenSize.getHeight() * 0.8;
+        double width = 400;
+        double height = 600;
 
         ColorPC.Init();
 
@@ -25,7 +25,7 @@ public class AppDesktop {
         renderView.setIgnoreRepaint(true);
 
         renderView.setVisible(true);
-        EnginePC engine = new EnginePC(renderView);
+        EnginePC engine = new EnginePC(renderView, (int)width, (int)height);
 
         IGame game = new Nonograma(engine);
 
