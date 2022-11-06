@@ -34,26 +34,26 @@ public class SceneLevels implements SceneBase {
         int numButtons = 6;
         int offsetX = 50, offsetY = 50;
 
-        int sizeX = 150, sizeY = 100;
+        int sizeX = 75, sizeY = 50;
 
-        int posX = engine.getGraphics().getWidth()/3 - sizeX/2;
-        int posY = engine.getGraphics().getHeight()/3 -  sizeY/2;
+        int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
+        int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
         levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4));
 
-        posX = engine.getGraphics().getWidth()/2 - sizeX/2;
+        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5));
 
-        posX = (int) (engine.getGraphics().getWidth()/1.5 - sizeX/2);
+        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
         levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10));
 
-        posY = engine.getGraphics().getHeight()/2 -  sizeY/2;
-        posX = engine.getGraphics().getWidth()/3 - sizeX/2;
+        posY = engine.getGraphics().getLogicHeight()/2 -  sizeY/2;
+        posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
         levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8) );
 
-        posX = engine.getGraphics().getWidth()/2 - sizeX/2;
+        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10) );
 
-        posX = (int) (engine.getGraphics().getWidth()/1.5 - sizeX/2);
+        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15) );
     }
 
@@ -83,7 +83,7 @@ public class SceneLevels implements SceneBase {
 
         String title = "Select puzzle size";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
-        graphics.drawText(title, (int) (graphics.getWidth()/2 - dime.first/2), (int) (graphics.getHeight()*0.15 + dime.second/2));
+        graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).render(graphics);
@@ -109,6 +109,6 @@ public class SceneLevels implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
-        title = engine.getGraphics().newFont("arcade.TTF",50,true);
+        title = engine.getGraphics().newFont("arcade.TTF",30,true);
     }
 }
