@@ -173,8 +173,7 @@ public class SceneGame implements SceneBase {
     public void render(IGraphics graphics) {
         graphics.setColor(IColor.BLACK);
         checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
-        //checkBoard.drawBoard(engine, graphics.getWidth()/2 - gameBoard.getWidth()/2, graphics.getHeight()/2 - gameBoard.getHeight()/2);
-        gameBoard.drawBoard(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, false);
+        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);

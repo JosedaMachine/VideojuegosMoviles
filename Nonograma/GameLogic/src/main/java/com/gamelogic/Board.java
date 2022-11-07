@@ -174,6 +174,7 @@ public class Board {
     }
 
     private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
+
         // dibujar cuadro lateral
         e.getGraphics().drawLine(alphaX, y + height - 1, x, y + height - 1);
         e.getGraphics().drawLine(alphaX, y, x, y);
@@ -215,6 +216,8 @@ public class Board {
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
+
+
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -228,19 +231,24 @@ public class Board {
     }
 
     public void drawInfoRects(Engine e, int x, int y, IFont font) {
+        e.getGraphics().setFont(font);
+        e.getGraphics().setColor(IColor.BLACK);
+        int fontSize = font.getSize();
+
+        final int numoffset = 15;
+
+        //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X
+        int boardMiddle = (width - x)/2;
+        int alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
+        int newMiddle = (width - alphaX)/2;
+        x += newMiddle- boardMiddle;
 
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
 
-        e.getGraphics().setFont(font);
-        e.getGraphics().setColor(IColor.BLACK);
-        int fontSize = font.getSize();
-
-        final int numoffset = 20;
-
         //Posicion inicial de cuadro numerico
-        int alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
+        alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
         int alphaY = y - maxVerticalFilled * (fontSize+numoffset/2);
 
         drawNumRect(e, x, y, alphaX, alphaY);
@@ -256,13 +264,13 @@ public class Board {
             int j_index = (int) ((pixelY - posY) / (relationY));
 
             e.getAudio().playSound("click.wav");
-//            System.out.println("Index X : " + i_index +  " Index Y : " + j_index);
             return new Pair<>(i_index, j_index);
         }
 
         return new Pair<>(-1, -1);
     }
 
+    //Coge image dependiendo del tile
     private Image tileImage(Engine e, TILE t) {
         switch (t) {
             case FILL:
@@ -288,6 +296,9 @@ public class Board {
             }
         }
     }
+
+    public int getPosX(){return posX;};
+    public int getPosY(){return posY;};
 
     public void setPosY(int posY) {
         this.posY = posY;
