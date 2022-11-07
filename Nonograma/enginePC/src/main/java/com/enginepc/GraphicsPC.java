@@ -204,6 +204,16 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
+    public void setLogicWidth(int width) {
+        logicWidth = width;
+    }
+
+    @Override
+    public void setLogicHeight(int height) {
+        logicHeight = height;
+    }
+
+    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }

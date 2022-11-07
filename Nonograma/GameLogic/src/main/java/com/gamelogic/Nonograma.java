@@ -8,8 +8,8 @@ import com.engine.TouchEvent;
 import com.engine.SceneBase;
 /*
 TODO: por que parpadea al hacer resize?
-TODO: fuente en funcion del tamaño casilla o mas peque
 TODO: todo lo de movil
+TODO: fuente en funcion del tamaño casilla o mas peque
 TODO: que el tablero se coloque con respecto a su tamaño + la caja de numeros
 
  */

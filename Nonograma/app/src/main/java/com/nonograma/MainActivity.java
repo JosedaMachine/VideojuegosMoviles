@@ -2,6 +2,7 @@ package com.nonograma;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -54,5 +55,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         this.engine.pause();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration myConfig) {
+        super.onConfigurationChanged(myConfig);
+        int orient = getResources().getConfiguration().orientation;
+        switch(orient) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                System.out.println("Vertical");
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                System.out.println("Horizontal");
+                break;
+            default:
+        }
     }
 }
