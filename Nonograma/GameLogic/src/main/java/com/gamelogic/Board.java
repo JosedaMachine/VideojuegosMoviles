@@ -117,6 +117,10 @@ public class Board {
         return rows;
     }
 
+    public Pair<Float, Float> getRelationFactorSize(){
+        return new Pair<Float, Float>(relationX, relationY);
+    }
+
     public int getWidth() {
         return width;
     }
@@ -190,7 +194,7 @@ public class Board {
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
                             x - (int) ((size-1 - j) * (fontSize+offset/2)) - offset,
-                            (int) (i * relationY) + y + (int)(relationY/2));
+                            (int) (i * relationY) + y + (int)(relationY/1.3));
             }
         }
 
