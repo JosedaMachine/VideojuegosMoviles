@@ -17,7 +17,6 @@ public class SceneLevels implements SceneBase {
     IFont title;
     IFont titleLittle;
     Engine engine;
-    Button button;
 
     public SceneLevels(Engine engine_) {
         this.engine = engine_;
@@ -30,10 +29,8 @@ public class SceneLevels implements SceneBase {
 
         loadResources(engine.getGraphics());
 
+        //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
-
-        int numButtons = 6;
-        int offsetX = 50, offsetY = 50;
 
         int sizeX = 75, sizeY = 50;
 
@@ -58,12 +55,14 @@ public class SceneLevels implements SceneBase {
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
     }
 
+    //Boton de creacion de nivel
     private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
         final Button button = new Button(text, x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
+                        //Iniciar nivel con medidas adecuadas
                         engine.getAudio().playSound("click.wav");
                         engine.getGame().changeScene(new SceneGame(engine , i, j));
                     }
@@ -83,10 +82,12 @@ public class SceneLevels implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
 
+        //Texto
         String title = "Select puzzle size";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
+        //Botones
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).render(graphics);
         }
@@ -94,7 +95,7 @@ public class SceneLevels implements SceneBase {
 
     @Override
     public void update(double deltaTime) {
-
+        //Vacio
     }
 
     @Override

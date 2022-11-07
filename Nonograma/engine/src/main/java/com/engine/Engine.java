@@ -10,6 +10,5 @@ public interface Engine {
     public void pause();
     public void update(double elapsedTime);
     public void render();
-    public void loadResources();
     public void processInput();
 }

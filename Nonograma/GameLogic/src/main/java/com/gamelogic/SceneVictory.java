@@ -25,18 +25,14 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void init() {
-
-        //NOTA
-        //Al parecer el renderer no se ha inicializado, por lo que cuando ponemos las medidas con respecto a la pantalla
-        // nos da 0 puesto que si width = 0 pues width/2 = 0
-
         loadResources(engine.getGraphics());
 
         int sizeX = 225, sizeY = 50;
 
         int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getLogicHeight()- (int)(sizeY*2.5);
+        int posY = engine.getGraphics().getLogicHeight() - (int)(sizeY*2.5);
 
+        //Boton vuelta al menu
         button = new Button("To Menu", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
@@ -59,17 +55,20 @@ public class SceneVictory implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK);
 
+        //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
         graphics.drawText(victoryText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()/8 + dime.second/2));
 
+        //Tablero correcto
         checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - checkBoard.getWidth()/2, graphics.getLogicHeight()/2 - checkBoard.getHeight()/2, true);
 
+        //Boton de vuelta al menu
         button.render(graphics);
     }
 
     @Override
     public void update(double deltaTime) {
-
+        //Vacio
     }
 
     @Override

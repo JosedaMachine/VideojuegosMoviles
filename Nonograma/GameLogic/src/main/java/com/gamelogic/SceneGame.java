@@ -25,12 +25,14 @@ public class SceneGame implements SceneBase {
     //True cuando ocurra un movimiento y haya que comprobar
     private boolean checkWin = false;
 
+    //Filas y columnas del tablero
     private final int rows_, cols_;
 
     private int numRemaining = 0, numWrong = 0;
+    //Fuentes
     private IFont numFont, pixelFont;
 
-    private static final double maxTime = 2.5; //s
+    private static final double maxTime = 2.5; //Segundos para texto incorrecto
     private double timer = maxTime;
     private boolean DEBUG = false;
 
@@ -42,21 +44,26 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void update(double deltaTime) {
+        //Comprueba la victoria
         if(checkWin) {
             hasWon = checkHasWon();
             checkWin = false;
             if(!hasWon){
+                //Inicia el timer de derrota
                 timer = 0;
                 engine.getAudio().playSound("wrong.wav");
             }
         }
 
+        //Avanza timer
         if(timer < maxTime){
             timer += deltaTime;
             if(timer >= maxTime)
+                //Limpiar casillas rojas
                 gameBoard.clearWrongsTiles();
         }
 
+        //Victoria
         if(hasWon){
             engine.getAudio().playSound("correct.wav");
             engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
@@ -69,9 +76,11 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+            //Input en casillas del tablero
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
-            setTile(index.first, index.second, false); //SI pongo esto se pone a fill y recibe mas inputs y se pone a empty
+            setTile(index.first, index.second, false);
+            //Debug para mostrar el resultado
             if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
                 DEBUG = !DEBUG;
             }
@@ -90,16 +99,18 @@ public class SceneGame implements SceneBase {
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, boardSize, boardSize);
 
-
+        //relación respecto a numero de casillas
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
-        System.out.println(relations.first + " AND " + relations.second);
+
         int size = (int) Math.round(relations.first * 0.7);
         pixelFont = engine.getGraphics().newFont("upheavtt.ttf", size, false);
 
-
+        //Tamaño de los botones
         int offset = 100, bttWidth = 150, bttHeight = 50;
-        //Check Board
-        bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
+
+        //Boton Check Win
+        bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 + offset,
+                engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -113,8 +124,9 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setColor(IColor.BLACK);
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
-        //Return to menu
-        bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset, engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
+        //Boton Return to menu
+        bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset,
+                engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -171,17 +183,20 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
+        //Tablero
         graphics.setColor(IColor.BLACK);
         checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
+        //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if(DEBUG){
-            checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, false);
+            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
         }
 
+        //Texto indicando casillas incorrectas
         if(!hasWon && timer < maxTime){
             graphics.setFont(numFont);
 
@@ -191,8 +206,6 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            final int offset = 125;
-
             graphics.setColor(IColor.BLUE);
             graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
             graphics.setColor(IColor.RED);
@@ -201,6 +214,7 @@ public class SceneGame implements SceneBase {
         }
     }
 
+    //Establece la casilla dada por [x][y] al siguiente estado
     void setTile(int x, int y, boolean wrong) {
         if(x < 0 || y < 0) return;
 
@@ -224,9 +238,11 @@ public class SceneGame implements SceneBase {
 
         //NO recorremos hasta el final, el último es el nº de tiles
         for(int i = 0; i < wrongs.size() - 1; i++){
+            //Establecemos a wrong las casillas
             setTile(wrongs.get(i).first, wrongs.get(i).second, true);
         }
 
+        //Numero de incorrectas y que faltan
         numRemaining = checkBoard.getNumCorrectTiles() - wrongs.get(wrongs.size() - 1).first;
         numWrong = wrongs.size() - 1;
 

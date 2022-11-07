@@ -118,7 +118,7 @@ public class Board {
     }
 
     public Pair<Float, Float> getRelationFactorSize(){
-        return new Pair<Float, Float>(relationX, relationY);
+        return new Pair<>(relationX, relationY);
     }
 
     public int getWidth() {

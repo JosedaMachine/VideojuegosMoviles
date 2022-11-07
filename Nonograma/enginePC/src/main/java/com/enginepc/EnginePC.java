@@ -141,7 +141,6 @@ public class EnginePC implements Engine, Runnable{
             this.update(elapsedTime);
             this.render();
         }
-        System.out.println("Out");
     }
 
     @Override
@@ -159,11 +158,6 @@ public class EnginePC implements Engine, Runnable{
 
             bufferStrategy.show();
         } while(this.bufferStrategy.contentsLost());
-    }
-
-    @Override
-    public void loadResources() {
-        this.currGame.loadImages(graphics);
     }
 
     @Override

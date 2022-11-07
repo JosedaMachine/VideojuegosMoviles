@@ -9,9 +9,6 @@ import com.engine.SceneBase;
 /*
 TODO: por que parpadea al hacer resize?
 TODO: todo lo de movil
-TODO: fuente en funcion del tamaño casilla o mas peque
-TODO: que el tablero se coloque con respecto a su tamaño + la caja de numeros
-
  */
 public class Nonograma implements IGame {
     Engine engine;
@@ -20,6 +17,7 @@ public class Nonograma implements IGame {
         this.engine = engine;
     }
 
+    //Iniciar nueva escena
     @Override
     public void changeScene(SceneBase newScene) {
         currScene = newScene;
@@ -31,6 +29,7 @@ public class Nonograma implements IGame {
         return currScene;
     }
 
+    //Escena de titulo inicial
     @Override
     public void init() {
         changeScene(new SceneTitle(engine));
@@ -49,12 +48,5 @@ public class Nonograma implements IGame {
     @Override
     public void processInput(TouchEvent event) {
         currScene.input(event);
-    }
-
-    // Se podría hacer esto en el init de cada escena pero
-    // de momento lo hace el motor en cada app
-    @Override
-    public void loadImages(IGraphics graphics) {
-        currScene.loadResources(graphics);
     }
 }

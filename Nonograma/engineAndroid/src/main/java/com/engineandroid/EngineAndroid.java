@@ -78,11 +78,6 @@ public class EngineAndroid implements Engine, Runnable{
     }
 
     @Override
-    public void loadResources() {
-        this.currGame.loadImages(graphics);
-    }
-
-    @Override
     public void processInput() {
         ArrayList<TouchEvent> list =input.getEventList();
         for (int i = 0; i < list.size(); i++){

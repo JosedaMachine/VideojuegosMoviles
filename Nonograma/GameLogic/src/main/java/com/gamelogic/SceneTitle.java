@@ -21,15 +21,8 @@ public class SceneTitle implements SceneBase {
         this.engine = engine_;
     }
 
-
-//    int posX , posY;
     @Override
     public void init() {
-
-        //NOTA
-        //Al parecer el renderer no se ha inicializado, por lo que cuando ponemos las medidas con respecto a la pantalla
-        // nos da 0 puesto que si width = 0 pues width/2 = 0
-
         loadResources(engine.getGraphics());
 
         int sizeX = 290, sizeY = 100;
@@ -37,16 +30,13 @@ public class SceneTitle implements SceneBase {
         int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
+        //Boton de play
         button = new Button("Play", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-
-                        System.out.println("X:" + event_.getX_());
-                        System.out.println("Y:" + event_.getY_());
-                        System.out.println("====================");
                         engine.getGame().changeScene(new SceneLevels(engine));
                     }
                 }
@@ -57,6 +47,7 @@ public class SceneTitle implements SceneBase {
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
+        //Musica en loop
         engine.getAudio().playSound("music.wav");
         engine.getAudio().getSound("music.wav").setLoop(true);
         engine.getAudio().getSound("music.wav").setVolume(-15);
@@ -68,15 +59,16 @@ public class SceneTitle implements SceneBase {
         graphics.setColor(IColor.BLACK);
 
         Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
-
+        //Texto del titulo
         graphics.drawText(titleText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.25 + dime.second/2));
 
+        //Boton
         button.render(graphics);
     }
 
     @Override
     public void update(double deltaTime) {
-
+        //Vacio
     }
 
     @Override
@@ -101,6 +93,4 @@ public class SceneTitle implements SceneBase {
 
         title = engine.getGraphics().newFont("arcade.TTF",80,true);
     }
-
-
 }

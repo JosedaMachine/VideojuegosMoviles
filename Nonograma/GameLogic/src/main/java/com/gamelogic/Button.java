@@ -23,9 +23,11 @@ public abstract class Button {
     }
 
     public void render(IGraphics graphics){
+        //Imagen de fondo
         if(backgroundImage != null)
             graphics.drawImage(backgroundImage, posX, posY, sizeX, sizeY);
 
+        //Texto interior
         if(font != null){
             graphics.setColor(color);
             graphics.setFont(font);
@@ -41,6 +43,7 @@ public abstract class Button {
 
     public abstract void input(TouchEvent event_);
 
+    //Comprobacion para gestionar input
     public boolean isInside(int pixelX, int pixelY){
         return (pixelX > posX && pixelX <= posX + sizeX) && ( pixelY > posY && pixelY <= posY + sizeY);
     }
