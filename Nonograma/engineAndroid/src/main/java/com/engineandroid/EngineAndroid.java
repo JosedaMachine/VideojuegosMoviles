@@ -104,6 +104,21 @@ public class EngineAndroid implements Engine, Runnable{
         while(this.running && (graphics.getWidth() == 0 || currGame == null));
         // Espera activa. Sería más elegante al menos dormir un poco.
 
+        //TODO Quitar
+
+        System.out.println("Height " + graphics.getHeight());
+        System.out.println("Width " + graphics.getWidth());
+
+        if(graphics.isVerticalOrintated()){
+            graphics.setLogicHeight(graphics.getWidth());
+            graphics.setLogicHeight((int) (graphics.getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
+        }else{
+            graphics.setLogicHeight(graphics.getLogicHeight());
+            graphics.setLogicHeight((int) (graphics.getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
+        }
+
+        System.out.println("X: " + graphics.getLogicWidth());
+        System.out.println("Y: " + graphics.getLogicHeight());
         currGame.init();
 
         long lastFrameTime = System.nanoTime();

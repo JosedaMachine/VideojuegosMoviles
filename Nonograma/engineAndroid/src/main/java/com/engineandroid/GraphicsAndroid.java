@@ -2,10 +2,12 @@ package com.engineandroid;
 
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.engine.IFont;
 import com.engine.IGraphics;
@@ -27,11 +29,53 @@ public class GraphicsAndroid implements IGraphics {
     int logicWidth, logicHeight;
     float scaleFactor;
     int translateFactorX, translateFactorY;
+    private boolean vertical;
 
     GraphicsAndroid(SurfaceView view, int logicWidth_ , int logicHeight_){
         this.myView = view;
         this.logicHeight = logicHeight_;
         this.logicWidth = logicWidth_;
+
+        this.myView.addOnLayoutChangeListener( new View.OnLayoutChangeListener()
+        {
+            public void onLayoutChange( View v,
+                                        int left,    int top,    int right,    int bottom,
+                                        int leftWas, int topWas, int rightWas, int bottomWas )
+            {
+                int widthWas = rightWas - leftWas; // Right exclusive, left inclusive
+                int heightWas = bottomWas - topWas; // Bottom exclusive, top inclusive
+
+                vertical = myView.getHeight() > myView.getWidth();
+
+                if(vertical){
+                    setLogicHeight(myView.getWidth());
+                    setLogicHeight((int) (myView.getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
+                }else{
+                    setLogicHeight(getLogicHeight());
+                    setLogicHeight((int) (myView.getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
+                }
+
+                if(v.getWidth() != widthWas && v.getHeight() != heightWas){
+                    recalcFactors(myView.getWidth(), myView.getHeight());
+
+                    System.out.println("X: " + translateFactorX);
+                    System.out.println("Y: " + translateFactorY);
+                    System.out.println("Scale: " + scaleFactor);
+                    System.out.println("===================");
+                }
+
+
+//                if( v.getWidth() != widthWas ){
+//                    System.out.println("Ha cambiado el ancho");
+//                    System.out.println("Ancho:" + myView.getWidth());
+//                }
+//                if( v.getHeight() != heightWas ) {
+//                    System.out.println("Ha cambiado el alto");
+//                    System.out.println("Alto:" + myView.getHeight());
+//                }
+            }
+        });
+
 
         this.holder = this.myView.getHolder();
 
@@ -74,6 +118,9 @@ public class GraphicsAndroid implements IGraphics {
         while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
         clear(ColorAndroid.WHITE);
+
+        setColor(Color.BLUE);
+        fillRect(translateFactorY , translateFactorX, getLogicWidth(), getLogicHeight());
     }
 
     public void unlockCanvas(){
@@ -183,6 +230,16 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
+    public void setLogicWidth(int width) {
+        logicWidth = width;
+    }
+
+    @Override
+    public void setLogicHeight(int height) {
+        logicHeight = height;
+    }
+
+    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }
@@ -209,5 +266,24 @@ public class GraphicsAndroid implements IGraphics {
 
         translateFactorX = bandWidth;
         translateFactorY = bandHeight;
+    }
+
+    @Override
+    public int getTranslateFactorX() {
+        return translateFactorX;
+    }
+
+    @Override
+    public int getTranslateFactorY() {
+        return translateFactorY;
+    }
+
+    @Override
+    public float getScaleFactor() {
+        return scaleFactor;
+    }
+
+    public boolean isVerticalOrintated() {
+        return vertical;
     }
 }

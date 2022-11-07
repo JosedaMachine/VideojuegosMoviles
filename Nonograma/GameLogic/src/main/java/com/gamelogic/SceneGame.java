@@ -90,6 +90,13 @@ public class SceneGame implements SceneBase {
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, boardSize, boardSize);
 
+
+        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        System.out.println(relations.first + " AND " + relations.second);
+        int size = (int) Math.round(relations.first * 0.7);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", size, false);
+
+
         int offset = 100, bttWidth = 150, bttHeight = 50;
         //Check Board
         bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 -bttWidth/2 + offset, engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
@@ -154,7 +161,7 @@ public class SceneGame implements SceneBase {
 
         numFont = graphics.newFont("arcade.TTF", 40, false);
 
-        pixelFont = graphics.newFont("upheavtt.ttf", 20, false);
+        pixelFont = graphics.newFont("upheavtt.ttf", 10, false);
 
         engine.getAudio().newSound("wrong.wav");
         engine.getAudio().newSound("correct.wav");
@@ -177,8 +184,7 @@ public class SceneGame implements SceneBase {
         }
 
         if(!hasWon && timer < maxTime){
-            graphics.setFont(pixelFont);
-            graphics.setColor(IColor.RED);
+            graphics.setFont(numFont);
 
             String remainingField = numRemaining + " remaining cells";
             String wrongField = numWrong + " wrong cells";
@@ -188,7 +194,9 @@ public class SceneGame implements SceneBase {
 
             final int offset = 125;
 
+            graphics.setColor(IColor.BLUE);
             graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
+            graphics.setColor(IColor.RED);
             graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
 
         }
