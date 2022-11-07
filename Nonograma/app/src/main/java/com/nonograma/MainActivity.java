@@ -30,9 +30,12 @@ public class MainActivity extends AppCompatActivity {
         SurfaceView renderView = new SurfaceView(this);
         setContentView(renderView);
 
+        int width = 600;
+        int height = 900;
+
         ColorAndroid.Init();
         //Init Engine
-        this.engine = new EngineAndroid(renderView);
+        this.engine = new EngineAndroid(renderView, width, height);
         //Init Game
         IGame game = new Nonograma(engine);
 

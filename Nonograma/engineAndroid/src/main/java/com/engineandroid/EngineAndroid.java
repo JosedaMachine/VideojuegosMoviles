@@ -17,9 +17,9 @@ public class EngineAndroid implements Engine, Runnable{
 
     boolean running;
 
-    public EngineAndroid(SurfaceView view){
+    public EngineAndroid(SurfaceView view, int logicWidth_ , int logicHeight_){
         currGame = null;
-        graphics = new GraphicsAndroid(view);
+        graphics = new GraphicsAndroid(view, logicWidth_, logicHeight_);
         input = new InputAndroid(view);
         audio = new AudioAndroid(view.getContext().getAssets());
     }

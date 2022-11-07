@@ -53,4 +53,6 @@ public interface IGraphics {
     void loadImage(Image img, String key);
 
     Image getImage(String key);
+
+    void recalcFactors(int widthWindow, int heightWindow);
 }

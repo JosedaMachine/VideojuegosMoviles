@@ -216,7 +216,8 @@ public class GraphicsPC implements IGraphics {
     public BufferStrategy getBufferStrategy(){return bufferStrategy;}
 
     public Graphics getGraphics(){return this.graphics2D;}
-
+    
+    @Override
     public void recalcFactors(int widthWindow, int heightWindow) {
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
         int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);

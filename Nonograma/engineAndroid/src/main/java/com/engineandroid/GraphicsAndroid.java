@@ -24,8 +24,14 @@ public class GraphicsAndroid implements IGraphics {
 
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
-    GraphicsAndroid(SurfaceView view){
+    int logicWidth, logicHeight;
+    float scaleFactor;
+    int translateFactorX, translateFactorY;
+
+    GraphicsAndroid(SurfaceView view, int logicWidth_ , int logicHeight_){
         this.myView = view;
+        this.logicHeight = logicHeight_;
+        this.logicWidth = logicWidth_;
 
         this.holder = this.myView.getHolder();
 
@@ -33,6 +39,8 @@ public class GraphicsAndroid implements IGraphics {
         this.paint.setColor(0xFFFFFFFF);
 
         this.assetManager = view.getContext().getAssets();
+
+        recalcFactors(getWidth(), getHeight());
     }
 
     @Override
@@ -48,6 +56,8 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public void clear(int color) {
         canvas.drawColor(color);
+        translate(translateFactorX, translateFactorY);
+        scale(scaleFactor, scaleFactor);
     }
 
     @Override
@@ -164,12 +174,12 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public int getLogicWidth() {
-        return 0;
+        return logicWidth;
     }
 
     @Override
     public int getLogicHeight() {
-        return 0;
+        return logicHeight;
     }
 
     @Override
@@ -180,5 +190,24 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public Image getImage(String key) {
         return imagesLoaded.get(key);
+    }
+
+    @Override
+    public void recalcFactors(int widthWindow, int heightWindow) {
+        int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
+        int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
+
+        int bandWidth = 0, bandHeight = 0;
+
+        if(heightWindow >= expectedHeight){
+            bandHeight = (heightWindow - expectedHeight)/2;
+            scaleFactor = (float)widthWindow / (float)logicWidth;
+        }else{
+            bandWidth = (widthWindow - expectedWidth)/2;
+            scaleFactor = (float)heightWindow / (float)logicHeight;
+        }
+
+        translateFactorX = bandWidth;
+        translateFactorY = bandHeight;
     }
 }
