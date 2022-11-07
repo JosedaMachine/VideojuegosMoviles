@@ -185,7 +185,7 @@ public class Board {
         e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int offset, int fontSize) {
+    private void drawNums(Engine e, int x, int y, int fontSize) {
         int i, j;
         //Dibujar numero de correctos
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -194,7 +194,7 @@ public class Board {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            x - (int) ((size-1 - j) * (fontSize+offset/2)) - offset,
+                            x - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
                             (int) (i * relationY) + y + (int)(relationY/1.3));
             }
         }
@@ -207,7 +207,7 @@ public class Board {
                     e.getGraphics().drawText(num.toString(),
                             (int) (i * relationX) + x + (int)(relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
-                            y - (int) ((size-1-j) * (fontSize+offset/2)) - offset + (fontSize/2));
+                            y - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
             }
         }
     }
@@ -235,11 +235,9 @@ public class Board {
         e.getGraphics().setColor(IColor.BLACK);
         int fontSize = font.getSize();
 
-        final int numoffset = 15;
-
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X
         int boardMiddle = (width - x)/2;
-        int alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
+        int alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
         int newMiddle = (width - alphaX)/2;
         x += newMiddle- boardMiddle;
 
@@ -248,12 +246,12 @@ public class Board {
         if (y != posY) posY = y;
 
         //Posicion inicial de cuadro numerico
-        alphaX = x - maxHorizontalFilled * (fontSize+numoffset/2);
-        int alphaY = y - maxVerticalFilled * (fontSize+numoffset/2);
+        alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
+        int alphaY = y - maxVerticalFilled * (fontSize+fontSize/2);
 
         drawNumRect(e, x, y, alphaX, alphaY);
 
-        drawNums(e, x, y, numoffset, fontSize);
+        drawNums(e, x, y, fontSize);
     }
 
     Pair<Integer,Integer> calculcateIndexMatrix(Engine e, int pixelX, int pixelY) {
