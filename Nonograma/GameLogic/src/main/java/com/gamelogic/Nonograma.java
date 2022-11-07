@@ -7,8 +7,8 @@ import com.engine.IGraphics;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
 /*
-TODO: por que parpadea al hacer resize?
-TODO: todo lo de movil
+TODO: tamaño assets en funcion del tamaño de la logica
+
  */
 public class Nonograma implements IGame {
     Engine engine;
@@ -48,5 +48,10 @@ public class Nonograma implements IGame {
     @Override
     public void processInput(TouchEvent event) {
         currScene.input(event);
+    }
+
+    @Override
+    public void loadImages(IGraphics graphics) {
+        currScene.loadResources(graphics);
     }
 }

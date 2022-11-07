@@ -45,34 +45,13 @@ public class GraphicsAndroid implements IGraphics {
                 int widthWas = rightWas - leftWas; // Right exclusive, left inclusive
                 int heightWas = bottomWas - topWas; // Bottom exclusive, top inclusive
 
-                vertical = myView.getHeight() > myView.getWidth();
-
-                if(vertical){
-                    setLogicHeight(myView.getWidth());
-                    setLogicHeight((int) (myView.getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
-                }else{
-                    setLogicHeight(getLogicHeight());
-                    setLogicHeight((int) (myView.getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
-                }
-
                 if(v.getWidth() != widthWas && v.getHeight() != heightWas){
                     recalcFactors(myView.getWidth(), myView.getHeight());
-
-                    System.out.println("X: " + translateFactorX);
-                    System.out.println("Y: " + translateFactorY);
-                    System.out.println("Scale: " + scaleFactor);
-                    System.out.println("===================");
+//                    System.out.println("X: " + translateFactorX);
+//                    System.out.println("Y: " + translateFactorY);
+//                    System.out.println("Scale: " + scaleFactor);
+//                    System.out.println("===================");
                 }
-
-
-//                if( v.getWidth() != widthWas ){
-//                    System.out.println("Ha cambiado el ancho");
-//                    System.out.println("Ancho:" + myView.getWidth());
-//                }
-//                if( v.getHeight() != heightWas ) {
-//                    System.out.println("Ha cambiado el alto");
-//                    System.out.println("Alto:" + myView.getHeight());
-//                }
             }
         });
 
@@ -98,8 +77,6 @@ public class GraphicsAndroid implements IGraphics {
     @Override
     public void clear(int color) {
         canvas.drawColor(color);
-        translate(translateFactorX, translateFactorY);
-        scale(scaleFactor, scaleFactor);
     }
 
     @Override
@@ -117,8 +94,16 @@ public class GraphicsAndroid implements IGraphics {
         canvas = holder.lockCanvas();
         clear(ColorAndroid.WHITE);
 
-        setColor(Color.BLUE);
-        fillRect(translateFactorY , translateFactorX, getLogicWidth(), getLogicHeight());
+        setColor(Color.GRAY);
+
+        fillRect(0,0, translateFactorX, getHeight());
+        fillRect(getWidth() - translateFactorX, 0, translateFactorX, getHeight());
+
+        fillRect(0,0, getWidth(), translateFactorY);
+        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
+
+        translate(translateFactorX, translateFactorY);
+        scale(scaleFactor, scaleFactor);
     }
 
     public void unlockCanvas(){
@@ -187,7 +172,7 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void drawRect(int x, int y, int w, int h) {
-        canvas.drawRect(x, y, w, h, paint);
+        canvas.drawRect(x, y, x + w, y + h, paint);
     }
 
     @Override
@@ -249,11 +234,18 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void recalcFactors(int widthWindow, int heightWindow) {
+
+        System.out.println("Altura Logica:" + logicHeight);
+        System.out.println("Anchura Logica:" + logicWidth);
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
         int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
+        System.out.println("Anchura :" + widthWindow);
+        System.out.println("Anchura Esperada :" + expectedWidth);
+
+        System.out.println("Altura :" + heightWindow);
+        System.out.println("Altura Esperada :" + expectedHeight);
 
         int bandWidth = 0, bandHeight = 0;
-
         if(heightWindow >= expectedHeight){
             bandHeight = (heightWindow - expectedHeight)/2;
             scaleFactor = (float)widthWindow / (float)logicWidth;
@@ -283,5 +275,16 @@ public class GraphicsAndroid implements IGraphics {
 
     public boolean isVerticalOrintated() {
         return vertical;
+    }
+
+    public void configLogicResolution(){
+//        No hace falta en esta practica porque se hace solo pero en caso de que nos interesara.
+//        if(!isVerticalOrintated()){
+//            setLogicHeight(getHeight());
+//            setLogicWidth((int) (getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
+//        } else
+        setLogicWidth(getWidth());
+        setLogicHeight((int) (getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
+
     }
 }

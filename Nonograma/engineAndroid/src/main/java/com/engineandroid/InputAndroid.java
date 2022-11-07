@@ -10,9 +10,11 @@ import java.util.ArrayList;
 
 public class InputAndroid implements IInput {
     ArrayList<TouchEvent> events;
+    private GraphicsAndroid graphics_;
 
-    InputAndroid(View view){
+    InputAndroid(View view, GraphicsAndroid graphics){
         events = new ArrayList<>();
+        graphics_ = graphics;
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -22,13 +24,13 @@ public class InputAndroid implements IInput {
                 TouchEvent event;
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN)
                     event = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-                            posX,
-                            posY,
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
                             id);
                 else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP)
                     event = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-                            posX,
-                            posY,
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
                             id);
                 else
                     return false;
