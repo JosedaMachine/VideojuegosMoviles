@@ -17,7 +17,7 @@ public class SceneLevels implements SceneBase {
     IFont title;
     IFont titleLittle;
     Engine engine;
-
+    private Fade fade;
     public SceneLevels(Engine engine_) {
         this.engine = engine_;
     }
@@ -28,6 +28,13 @@ public class SceneLevels implements SceneBase {
     public void init() {
 
         loadResources(engine.getGraphics());
+
+        fade = new Fade(engine,
+                0, 0,
+                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                2000, 2000, Fade.STATE_FADE.In);
+        fade.setColor(IColor.BLACK);
+        fade.triggerFade();
 
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
@@ -64,8 +71,21 @@ public class SceneLevels implements SceneBase {
                     if(isInside(event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
                         engine.getAudio().playSound("click.wav");
-                        engine.getGame().changeScene(new SceneGame(engine , i, j));
+
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+
+
                     }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if(fade.getFadeOutComplete()){
+                    engine.getGame().changeScene(new SceneGame(engine , i, j));
                 }
             }
         };
@@ -80,7 +100,7 @@ public class SceneLevels implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK);
+        graphics.setColor(IColor.BLACK, 1.0f);
 
         //Texto
         String title = "Select puzzle size";
@@ -91,11 +111,16 @@ public class SceneLevels implements SceneBase {
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).render(graphics);
         }
+
+        fade.render();
     }
 
     @Override
     public void update(double deltaTime) {
-        //Vacio
+        fade.update(deltaTime);
+        for(int i = 0; i < levels.size(); i++){
+            levels.get(i).update(deltaTime);
+        }
     }
 
     @Override

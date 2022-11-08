@@ -12,7 +12,7 @@ import com.engine.TouchEvent;
 public class SceneTitle implements SceneBase {
 
     private final Engine engine;
-
+    private Fade fade;
     private Button button;
     private IFont title;
     private String titleText = "Nonogram";
@@ -30,6 +30,13 @@ public class SceneTitle implements SceneBase {
         int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
+        fade = new Fade(engine,
+                        0, 0,
+                             engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                       2000, 2000, Fade.STATE_FADE.In);
+        fade.setColor(IColor.BLACK);
+        fade.triggerFade();
+
         //Boton de play
         button = new Button("Play", posX, posY,sizeX, sizeY) {
             @Override
@@ -37,8 +44,19 @@ public class SceneTitle implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-                        engine.getGame().changeScene(new SceneLevels(engine));
+
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
                     }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if(fade.getFadeOutComplete()){
+                    engine.getGame().changeScene(new SceneLevels(engine));
                 }
             }
         };
@@ -56,7 +74,7 @@ public class SceneTitle implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK);
+        graphics.setColor(IColor.BLACK, 1.0f);
 
         Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
         //Texto del titulo
@@ -64,11 +82,15 @@ public class SceneTitle implements SceneBase {
 
         //Boton
         button.render(graphics);
+
+        fade.render();
     }
 
     @Override
     public void update(double deltaTime) {
         //Vacio
+        fade.update(deltaTime);
+        button.update(deltaTime);
     }
 
     @Override

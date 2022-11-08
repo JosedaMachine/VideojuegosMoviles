@@ -84,7 +84,7 @@ public class GraphicsPC implements IGraphics {
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         this.clear(color);
 
-        setColor(ColorPC.GRAY);
+        setColor(ColorPC.WHITE, 1.0f);
 
         fillRect(0,0, translateFactorX, window.getHeight());
         fillRect(window.getWidth() - translateFactorX - insetLeft, 0, translateFactorX, window.getHeight());
@@ -137,8 +137,15 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public void setColor(int color) {
-        this.graphics2D.setColor(new Color(color, true));
+    public void setColor(int color, float alpha) {
+        Color c = new Color(color, true);
+
+        if(alpha != 1){
+            float[] components = new float[4];
+            c.getColorComponents(components);
+            c = new Color(components[0], components[1], components[2], alpha);
+        }
+        this.graphics2D.setColor(c);
     }
 
     @Override

@@ -232,7 +232,7 @@ public class Board {
 
     public void drawInfoRects(Engine e, int x, int y, IFont font) {
         e.getGraphics().setFont(font);
-        e.getGraphics().setColor(IColor.BLACK);
+        e.getGraphics().setColor(IColor.BLACK, 1.0f);
         int fontSize = font.getSize();
 
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X

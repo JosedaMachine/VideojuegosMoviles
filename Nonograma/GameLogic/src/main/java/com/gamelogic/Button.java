@@ -29,7 +29,7 @@ public abstract class Button {
 
         //Texto interior
         if(font != null){
-            graphics.setColor(color);
+            graphics.setColor(color, 1.0f);
             graphics.setFont(font);
             Pair<Double, Double> dime = graphics.getStringDimensions(text);
 
@@ -42,6 +42,8 @@ public abstract class Button {
     }
 
     public abstract void input(TouchEvent event_);
+
+    public abstract void update(double deltaTime);
 
     //Comprobacion para gestionar input
     public boolean isInside(int pixelX, int pixelY){

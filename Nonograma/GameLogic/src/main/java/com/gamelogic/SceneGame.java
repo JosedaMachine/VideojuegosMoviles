@@ -119,6 +119,11 @@ public class SceneGame implements SceneBase {
                     }
                 }
             }
+
+            @Override
+            public void update(double deltaTime) {
+
+            }
         };
         bttCheckWin.setFont(numFont);
         bttCheckWin.setColor(IColor.BLACK);
@@ -135,6 +140,11 @@ public class SceneGame implements SceneBase {
                         engine.getGame().changeScene(new SceneTitle(engine));
                     }
                 }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+
             }
         };
         bttReturn.setFont(numFont);
@@ -184,7 +194,7 @@ public class SceneGame implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         //Tablero
-        graphics.setColor(IColor.BLACK);
+        graphics.setColor(IColor.BLACK, 1.0f);
         checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
@@ -206,9 +216,9 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            graphics.setColor(IColor.BLUE);
+            graphics.setColor(IColor.BLUE, 1.0f);
             graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
-            graphics.setColor(IColor.RED);
+            graphics.setColor(IColor.RED, 1.0f);
             graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
 
         }

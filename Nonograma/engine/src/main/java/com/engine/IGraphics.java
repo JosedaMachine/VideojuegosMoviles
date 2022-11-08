@@ -24,7 +24,7 @@ public interface IGraphics {
 
     void drawImage(Image image, int x, int y, int width, int height);
 
-    void setColor(int color);
+    void setColor(int color, float alpha);
 
     void setFont(IFont font);
 

@@ -15,7 +15,7 @@ public class SceneVictory implements SceneBase {
 
     private Button button;
     private IFont title, buttonFont;
-    private String victoryText = "VICTORY!";
+    private final String victoryText = "VICTORY!";
 
     private final Board checkBoard;
     public SceneVictory(Engine engine_, Board checkboard) {
@@ -43,6 +43,11 @@ public class SceneVictory implements SceneBase {
                     }
                 }
             }
+
+            @Override
+            public void update(double deltaTime) {
+
+            }
         };
 
         button.setFont(buttonFont);
@@ -53,7 +58,7 @@ public class SceneVictory implements SceneBase {
     @Override
     public void render(IGraphics graphics) {
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK);
+        graphics.setColor(IColor.BLACK, 1.0f);
 
         //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);

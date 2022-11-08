@@ -8,5 +8,5 @@ public interface IGame {
     void update(double elapsedTime);
     void render(IGraphics graphics);
     void processInput(TouchEvent event);
-    //void loadImages(IGraphics graphics);
+    void loadImages(IGraphics graphics);
 }
