@@ -153,8 +153,6 @@ public class GraphicsAndroid implements IGraphics {
 //            c = new Color(components[0], components[1], components[2], alpha);
 //        }
 //        paint.setColor(c);
-
-
         paint.setColor(color);
         paint.setAlpha((int) (alpha * 255));
     }

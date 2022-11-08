@@ -13,13 +13,14 @@ public abstract class Button {
     private int color;
 
     private final int posX, posY, sizeX, sizeY;
-
+    private boolean selected;
     public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_){
         text = text_;
         posX = posX_;
         posY = posY_;
         sizeX = sizeX_;
         sizeY = sizeY_;
+        selected = false;
     }
 
     public void render(IGraphics graphics){
@@ -56,5 +57,13 @@ public abstract class Button {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

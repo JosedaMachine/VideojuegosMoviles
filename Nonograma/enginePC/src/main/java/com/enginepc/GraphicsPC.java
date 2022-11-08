@@ -85,7 +85,7 @@ public class GraphicsPC implements IGraphics {
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         this.clear(color);
 
-        setColor(ColorPC.WHITE, 1.0f);
+        setColor(ColorPC.GRAY, 1.0f);
 
         fillRect(0,0, translateFactorX, window.getHeight());
         fillRect(window.getWidth() - translateFactorX - insetLeft, 0, translateFactorX, window.getHeight());

@@ -32,7 +32,7 @@ public class SceneLevels implements SceneBase {
         fade = new Fade(engine,
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
-                2000, 2000, Fade.STATE_FADE.In);
+                1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
 
@@ -71,20 +71,18 @@ public class SceneLevels implements SceneBase {
                     if(isInside(event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
                         engine.getAudio().playSound("click.wav");
-
+                        setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
                         }
-
-
                     }
                 }
             }
 
             @Override
             public void update(double deltaTime) {
-                if(fade.getFadeOutComplete()){
+                if(fade.getFadeOutComplete() && isSelected()){
                     engine.getGame().changeScene(new SceneGame(engine , i, j));
                 }
             }

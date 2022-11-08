@@ -33,7 +33,7 @@ public class SceneTitle implements SceneBase {
         fade = new Fade(engine,
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
-                       2000, 2000, Fade.STATE_FADE.In);
+                       1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
 
