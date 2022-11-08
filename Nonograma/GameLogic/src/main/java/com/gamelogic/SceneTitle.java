@@ -24,8 +24,10 @@ public class SceneTitle implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
-
-        int sizeX = 290, sizeY = 100;
+        //290
+        //100
+        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.483f),
+            sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
 
         int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
         int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
@@ -112,7 +114,7 @@ public class SceneTitle implements SceneBase {
 
         engine.getAudio().newSound("music.wav");
         engine.getAudio().newSound("click.wav");
-
-        title = engine.getGraphics().newFont("arcade.TTF",80,true);
+        //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
+        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
     }
 }

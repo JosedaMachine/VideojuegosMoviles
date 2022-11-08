@@ -39,16 +39,11 @@ public class GraphicsPC implements IGraphics {
         view.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 recalcFactors(window.getWidth(), window.getHeight());
-                System.out.println("X: " + translateFactorX);
-                System.out.println("Y: " + translateFactorY);
-                System.out.println("Scale: " + scaleFactor);
-                System.out.println("===================");
             }
         });
 
         insetTop = view.getInsets().top;
-        //TODO:?????
-        insetLeft = view.getInsets().left * 0;
+        insetLeft = 0;
         bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
     }

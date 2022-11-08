@@ -6,16 +6,18 @@ import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
-/*
-TODO: tamaño assets en funcion del tamaño de la logica
 
+/*
+TODO Comentar todo el codigo
  */
+
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;
     public Nonograma(Engine engine){
         this.engine = engine;
     }
+
 
     //Iniciar nueva escena
     @Override

@@ -98,6 +98,7 @@ public class EngineAndroid implements Engine, Runnable{
         while(this.running && (graphics.getWidth() == 0 || currGame == null));
         // Espera activa. Sería más elegante al menos dormir un poco.
 
+        //TODO Borrar
         graphics.configLogicResolution();
 
         currGame.init();

@@ -292,8 +292,8 @@ public class GraphicsAndroid implements IGraphics {
 //            setLogicHeight(getHeight());
 //            setLogicWidth((int) (getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
 //        } else
-        setLogicWidth(getWidth());
-        setLogicHeight((int) (getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
+//        setLogicWidth(getWidth());
+//        setLogicHeight((int) (getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
 
     }
 }

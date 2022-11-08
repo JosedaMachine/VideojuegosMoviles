@@ -40,8 +40,9 @@ public class SceneLevels implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int sizeX = 75, sizeY = 50;
-
+        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.155f),
+            sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.055f);
+//
         int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
         int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
         levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false));
@@ -89,7 +90,7 @@ public class SceneLevels implements SceneBase {
             }
         };
 
-        button.setFont(small ? titleLittle : title);
+        button.setFont(titleLittle);
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
@@ -136,7 +137,7 @@ public class SceneLevels implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
-        title = engine.getGraphics().newFont("arcade.TTF",30,true);
-        titleLittle = engine.getGraphics().newFont("arcade.TTF",26,true);
+        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+        titleLittle = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.035f),true);
     }
 }

@@ -103,7 +103,7 @@ public class SceneGame implements SceneBase {
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
 
-        int boardSize = 360;
+        int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
 
         //Tablero de solucion
         checkBoard = new Board(cols_, rows_, boardSize, boardSize);
@@ -114,11 +114,13 @@ public class SceneGame implements SceneBase {
         //relación respecto a numero de casillas
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
-        int size = (int) Math.round(relations.first * 0.7);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", size, false);
+        float size = (float) (Math.floor(relations.first * 0.7)/1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * size), false);
 
         //Tamaño de los botones
-        int offset = 100, bttWidth = 150, bttHeight = 50;
+        int offset = (int)(engine.getGraphics().getLogicWidth() * 0.16f),
+            bttWidth = (int)(engine.getGraphics().getLogicWidth() * 0.25f),
+            bttHeight = (int)(engine.getGraphics().getLogicWidth() * 0.0833f);
 
         //Boton Check Win
         bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 + offset,
@@ -198,9 +200,9 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
-        numFont = graphics.newFont("arcade.TTF", 40, false);
+        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
 
-        pixelFont = graphics.newFont("upheavtt.ttf", 10, false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * 0.1f), false);
 
         engine.getAudio().newSound("wrong.wav");
         engine.getAudio().newSound("correct.wav");
