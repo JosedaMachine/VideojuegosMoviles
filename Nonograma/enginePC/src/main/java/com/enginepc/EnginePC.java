@@ -25,7 +25,7 @@ public class EnginePC implements Engine, Runnable{
     public EnginePC(JFrame renderView, int logicWidth, int logicHeight){
         view = renderView;
 
-        //ESTO EL TICHER LO HACE EN GRAPHICSPC
+        //TODO: ESTO EL TICHER LO HACE EN GRAPHICSPC
         int intentos = 100;
         while(intentos-- > 0) {
             try {
@@ -143,7 +143,7 @@ public class EnginePC implements Engine, Runnable{
                     this.currGame.render(graphics);
                 }
                 catch (Exception e){
-                    //System.out.println("wakala");
+
                 }
                 finally{
                     graphics.finish();

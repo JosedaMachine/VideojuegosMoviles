@@ -91,7 +91,7 @@ public class SceneGame implements SceneBase {
     public void init() {
         loadResources(engine.getGraphics());
 
-        int boardSize = 200;
+        int boardSize = 360;
 
         //Tablero de solucion
         checkBoard = new Board(cols_, rows_, boardSize, boardSize);
