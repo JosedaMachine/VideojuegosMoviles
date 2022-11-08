@@ -1,6 +1,5 @@
 package com.engineandroid;
 
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.engine.*;
@@ -13,7 +12,7 @@ public class EngineAndroid implements Engine, Runnable{
     InputAndroid input;
     AudioAndroid audio;
     IGame currGame;
-    private Thread renderThread;
+    private Thread engineThread;
 
     boolean running;
 
@@ -56,8 +55,8 @@ public class EngineAndroid implements Engine, Runnable{
             // (programación defensiva)
             this.running = true;
             // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
-            this.renderThread = new Thread(this);
-            this.renderThread.start();
+            this.engineThread = new Thread(this);
+            this.engineThread.start();
         }
     }
 
@@ -67,8 +66,8 @@ public class EngineAndroid implements Engine, Runnable{
             this.running = false;
             while (true) {
                 try {
-                    this.renderThread.join();
-                    this.renderThread = null;
+                    this.engineThread.join();
+                    this.engineThread = null;
                     break;
                 } catch (InterruptedException ie) {
                     // Esto no debería ocurrir nunca...
@@ -88,7 +87,7 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void run() {
-        if (renderThread != Thread.currentThread()) {
+        if (engineThread != Thread.currentThread()) {
             // Evita que cualquiera que no sea esta clase llame a este Runnable en un Thread
             // Programación defensiva
             throw new RuntimeException("run() should not be called directly");

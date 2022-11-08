@@ -6,14 +6,8 @@ import com.engine.IColor;
 import com.engine.IGraphics;
 import com.engine.IGame;
 import com.engine.IInput;
-import com.engine.SceneBase;
 import com.engine.TouchEvent;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -26,7 +20,7 @@ public class EnginePC implements Engine, Runnable{
     AudioPC audio;
 
     boolean running;
-    private Thread renderThread;
+    private Thread engineThread;
 
     public EnginePC(JFrame renderView, int logicWidth, int logicHeight){
         view = renderView;
@@ -85,8 +79,8 @@ public class EnginePC implements Engine, Runnable{
             // (programación defensiva)
             this.running = true;
             // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
-            this.renderThread = new Thread(this);
-            this.renderThread.start();
+            this.engineThread = new Thread(this);
+            this.engineThread.start();
         }
     }
 
@@ -96,8 +90,8 @@ public class EnginePC implements Engine, Runnable{
             this.running = false;
             while (true) {
                 try {
-                    this.renderThread.join();
-                    this.renderThread = null;
+                    this.engineThread.join();
+                    this.engineThread = null;
                     break;
                 } catch (InterruptedException ie) {
                     // Esto no debería ocurrir nunca...
@@ -113,7 +107,7 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public void run() {
-        if (renderThread != Thread.currentThread()) {
+        if (engineThread != Thread.currentThread()) {
             // Evita que cualquiera que no sea esta clase llame a este Runnable en un Thread
             // Programación defensiva
             throw new RuntimeException("run() should not be called directly");
