@@ -94,7 +94,7 @@ public class GraphicsAndroid implements IGraphics {
         canvas = holder.lockCanvas();
         clear(ColorAndroid.WHITE);
 
-        setColor(Color.GRAY);
+        setColor(Color.GRAY, 1.0f);
 
         fillRect(0,0, translateFactorX, getHeight());
         fillRect(getWidth() - translateFactorX, 0, translateFactorX, getHeight());
@@ -144,8 +144,19 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
-    public void setColor(int color) {
+    public void setColor(int color, float alpha) {
+//        Color c = new Color(color, true);
+//
+//        if(alpha != 1){
+//            float[] components = new float[4];
+//            c.getColorComponents(components);
+//            c = new Color(components[0], components[1], components[2], alpha);
+//        }
+//        paint.setColor(c);
+
+
         paint.setColor(color);
+        paint.setAlpha((int) (alpha * 255));
     }
 
     @Override
