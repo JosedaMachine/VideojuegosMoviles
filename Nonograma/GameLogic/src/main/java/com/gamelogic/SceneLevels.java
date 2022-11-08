@@ -29,6 +29,7 @@ public class SceneLevels implements SceneBase {
 
         loadResources(engine.getGraphics());
 
+        //Fade In
         fade = new Fade(engine,
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),

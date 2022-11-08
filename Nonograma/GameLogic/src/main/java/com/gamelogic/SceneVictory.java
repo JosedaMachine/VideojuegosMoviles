@@ -17,6 +17,8 @@ public class SceneVictory implements SceneBase {
     private IFont title, buttonFont;
     private final String victoryText = "VICTORY!";
 
+    private Fade fade;
+
     private final Board checkBoard;
     public SceneVictory(Engine engine_, Board checkboard) {
         this.checkBoard = checkboard;
@@ -26,6 +28,13 @@ public class SceneVictory implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
+
+        //Fade In
+        fade = new Fade(engine,
+                0, 0,
+                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                1000, 1000, Fade.STATE_FADE.Out);
+        fade.setColor(IColor.BLACK);
 
         int sizeX = 225, sizeY = 50;
 
@@ -39,14 +48,18 @@ public class SceneVictory implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-                        engine.getGame().changeScene(new SceneTitle(engine));
+
+                        fade.triggerFade();
+
                     }
                 }
             }
 
             @Override
             public void update(double deltaTime) {
-
+                if(fade.getFadeOutComplete()){
+                    engine.getGame().changeScene(new SceneTitle(engine));
+                }
             }
         };
 
@@ -57,6 +70,7 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void render(IGraphics graphics) {
+
         graphics.setFont(title);
         graphics.setColor(IColor.BLACK, 1.0f);
 
@@ -69,11 +83,13 @@ public class SceneVictory implements SceneBase {
 
         //Boton de vuelta al menu
         button.render(graphics);
+        fade.render();
     }
 
     @Override
     public void update(double deltaTime) {
-        //Vacio
+        fade.update(deltaTime);
+        button.update(deltaTime);
     }
 
     @Override

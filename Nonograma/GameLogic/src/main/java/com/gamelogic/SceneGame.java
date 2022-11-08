@@ -32,6 +32,8 @@ public class SceneGame implements SceneBase {
     //Fuentes
     private IFont numFont, pixelFont;
 
+    private Fade fade;
+
     private static final double maxTime = 2.5; //Segundos para texto incorrecto
     private double timer = maxTime;
     private boolean DEBUG = false;
@@ -68,6 +70,8 @@ public class SceneGame implements SceneBase {
             engine.getAudio().playSound("correct.wav");
             engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
         }
+        fade.update(deltaTime);
+        bttReturn.update(deltaTime);
     }
 
     @Override
@@ -90,6 +94,14 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
+
+        //Fade In
+        fade = new Fade(engine,
+                0, 0,
+                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                1000, 1000, Fade.STATE_FADE.In);
+        fade.setColor(IColor.BLACK);
+        fade.triggerFade();
 
         int boardSize = 360;
 
@@ -122,7 +134,6 @@ public class SceneGame implements SceneBase {
 
             @Override
             public void update(double deltaTime) {
-
             }
         };
         bttCheckWin.setFont(numFont);
@@ -137,14 +148,20 @@ public class SceneGame implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-                        engine.getGame().changeScene(new SceneTitle(engine));
+
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
                     }
                 }
             }
 
             @Override
             public void update(double deltaTime) {
-
+                if(fade.getFadeOutComplete()){
+                    engine.getGame().changeScene(new SceneTitle(engine));
+                }
             }
         };
         bttReturn.setFont(numFont);
@@ -222,6 +239,8 @@ public class SceneGame implements SceneBase {
             graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
 
         }
+
+        fade.render();
     }
 
     //Establece la casilla dada por [x][y] al siguiente estado
