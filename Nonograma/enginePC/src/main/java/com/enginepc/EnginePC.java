@@ -142,6 +142,9 @@ public class EnginePC implements Engine, Runnable{
                     graphics.prepare(IColor.WHITE);
                     this.currGame.render(graphics);
                 }
+                catch (Exception e){
+                    //System.out.println("wakala");
+                }
                 finally{
                     graphics.finish();
                 }
