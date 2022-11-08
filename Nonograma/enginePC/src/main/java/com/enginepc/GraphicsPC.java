@@ -47,6 +47,7 @@ public class GraphicsPC implements IGraphics {
         });
 
         insetTop = view.getInsets().top;
+        //TODO:?????
         insetLeft = view.getInsets().left * 0;
         bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();

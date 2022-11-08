@@ -26,8 +26,6 @@ public class EnginePC implements Engine, Runnable{
     AudioPC audio;
 
     boolean running;
-
-    BufferStrategy bufferStrategy;
     private Thread renderThread;
 
     public EnginePC(JFrame renderView, int logicWidth, int logicHeight){
@@ -49,7 +47,6 @@ public class EnginePC implements Engine, Runnable{
         }
 
         graphics = new GraphicsPC(renderView, logicWidth, logicHeight);
-        bufferStrategy = renderView.getBufferStrategy();
 
         input = new InputPC(renderView, graphics);
         audio = new AudioPC();
@@ -154,10 +151,10 @@ public class EnginePC implements Engine, Runnable{
                 finally{
                     graphics.finish();
                 }
-            } while(this.bufferStrategy.contentsRestored());
+            } while(this.graphics.getBufferStrategy().contentsRestored());
 
-            bufferStrategy.show();
-        } while(this.bufferStrategy.contentsLost());
+            graphics.getBufferStrategy().show();
+        } while(this.graphics.getBufferStrategy().contentsLost());
     }
 
     @Override
