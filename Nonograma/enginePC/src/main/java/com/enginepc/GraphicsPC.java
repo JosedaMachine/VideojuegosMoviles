@@ -79,8 +79,6 @@ public class GraphicsPC implements IGraphics {
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         this.clear(color);
 
-        setColor(ColorPC.GRAY, 1.0f);
-
         //Bandas horizontales
         fillRect(0,0, translateFactorX, window.getHeight());
         fillRect(window.getWidth() - translateFactorX, 0, translateFactorX, window.getHeight());
