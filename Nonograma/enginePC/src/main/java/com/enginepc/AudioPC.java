@@ -6,9 +6,11 @@ import com.engine.Sound;
 import java.util.HashMap;
 
 public class AudioPC implements Audio {
-
     String path = "appDesktop/assets/sounds/";
 
+    //Gestor de recursos
+    //Dado un nombre devuelve su valor (instancia de sonido).
+    //En caso de no estar el nombre devuelve null.
     HashMap<String, SoundPC> audioLoaded = new HashMap<>();
 
     @Override

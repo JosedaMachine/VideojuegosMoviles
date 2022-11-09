@@ -14,7 +14,6 @@ public class Nonograma implements IGame {
         this.engine = engine;
     }
 
-
     //Iniciar nueva escena
     @Override
     public void changeScene(SceneBase newScene) {

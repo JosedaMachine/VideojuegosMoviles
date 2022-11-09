@@ -38,6 +38,11 @@ public class EngineAndroid implements Engine, Runnable{
         return audio;
     }
 
+    /**
+     * Asigna un juego a ejecutar. No se inicializa dicho hasta antes de iniciar el bucle principal
+     * por motivos de inicializado del motor gráfico y prevención de errorres.
+     * @param game juego que se ejecuta
+     */
     @Override
     public void setGame(IGame game) {
         currGame = game;
@@ -98,6 +103,8 @@ public class EngineAndroid implements Engine, Runnable{
         while(this.running && (graphics.getWidth() == 0 || currGame == null));
         // Espera activa. Sería más elegante al menos dormir un poco.
 
+        //Lanzamos aqui el init del game ya que muchos valores de posición van en función del
+        //tamaño del dispositivo.
         currGame.init();
 
         long lastFrameTime = System.nanoTime();
@@ -138,6 +145,9 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void render() {
+        //~Mutex~
+        //Prevenimos que en ningún otro sitio del código se permita pintar, bloqueando el canvas
+        //para su modificación a continuación
         graphics.prepare(0);
         this.currGame.render(graphics);
         graphics.finish();
