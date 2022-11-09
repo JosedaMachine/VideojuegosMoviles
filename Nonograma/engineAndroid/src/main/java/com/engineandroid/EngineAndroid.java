@@ -82,7 +82,7 @@ public class EngineAndroid implements Engine, Runnable{
         for (int i = 0; i < list.size(); i++){
             this.currGame.processInput(list.get(i));
         }
-        input.getEventList().clear();
+        input.flushEvents();
     }
 
     @Override
@@ -138,8 +138,8 @@ public class EngineAndroid implements Engine, Runnable{
 
     @Override
     public void render() {
-        graphics.lockCanvas();
+        graphics.prepare(0);
         this.currGame.render(graphics);
-        graphics.unlockCanvas();
+        graphics.finish();
     }
 }

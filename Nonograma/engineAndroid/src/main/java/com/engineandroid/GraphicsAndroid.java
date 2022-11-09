@@ -84,24 +84,27 @@ public class GraphicsAndroid implements IGraphics {
         canvas.scale((float)x, (float)y);
     }
 
-    public void lockCanvas() {
+    @Override
+    public void prepare(int color) {
         while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
         clear(ColorAndroid.WHITE);
 
         setColor(Color.GRAY, 1.0f);
 
+        //Bandas horizontales
         fillRect(0,0, translateFactorX, getHeight());
         fillRect(getWidth() - translateFactorX, 0, translateFactorX, getHeight());
 
+        //Bandas verticales
         fillRect(0,0, getWidth(), translateFactorY);
         fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
 
         translate(translateFactorX, translateFactorY);
         scale(scaleFactor, scaleFactor);
     }
-
-    public void unlockCanvas(){
+    @Override
+    public void finish(){
         holder.unlockCanvasAndPost(canvas);
     }
 

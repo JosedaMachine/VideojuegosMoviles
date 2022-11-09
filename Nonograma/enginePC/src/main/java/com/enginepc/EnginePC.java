@@ -160,7 +160,7 @@ public class EnginePC implements Engine, Runnable{
         for (int i = 0; i < list.size(); i++){
             this.currGame.processInput(list.get(i));
         }
-        input.getEventList().clear();
+        input.flushEvents();
     }
 
 }

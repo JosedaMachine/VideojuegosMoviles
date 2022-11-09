@@ -6,39 +6,21 @@ import com.engine.TouchEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFrame;
-
-import java.awt.event.MouseListener;
 
 public class InputPC implements IInput {
 
     private final ArrayList<TouchEvent> eventList;
-    private GraphicsPC graphics_;
+    private final GraphicsPC graphics_;
 
     public InputPC(final JFrame view, GraphicsPC graphics){
          eventList = new ArrayList<>();
          graphics_ = graphics;
 
+         //Genera un evento TOUCH_EVENT o RELEASE_EVENT en funcion de la posicion reescalada de
+         //la pantalla, respetando la logica, y lo añade a la cola de eventos para ser procesado
          view.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-//                int posX = mouseEvent.getX() - view.getInsets().left;
-//                int posY = mouseEvent.getY() - view.getInsets().top;
-//                TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[mouseEvent.getButton()];
-//                TouchEvent touch = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-//                                                  posX,
-//                                                  posY,
-//                                                  id);
-//                eventList.add(touch);
-//                TouchEvent release = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-//                                                    posX,
-//                                                    posY,
-//                                                    id);
-//                eventList.add(release);
-            }
-
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 int posX = mouseEvent.getX();

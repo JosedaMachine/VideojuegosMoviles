@@ -71,19 +71,21 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void scale(double x, double y) {
-        //Este también es así de fácil
         graphics2D.scale(x, y);
     }
 
+    @Override
     public void prepare(int color){
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         this.clear(color);
 
         setColor(ColorPC.GRAY, 1.0f);
 
+        //Bandas horizontales
         fillRect(0,0, translateFactorX, window.getHeight());
         fillRect(window.getWidth() - translateFactorX, 0, translateFactorX, window.getHeight());
 
+        //Bandas verticales
         fillRect(0,0, window.getWidth(), translateFactorY);
         fillRect(0, window.getHeight() - translateFactorY - insetTop, window.getWidth(), translateFactorY);
 
@@ -92,6 +94,7 @@ public class GraphicsPC implements IGraphics {
         scale(scaleFactor, scaleFactor);
     }
 
+    @Override
     public void finish(){
         graphics2D.dispose();
     }
@@ -215,8 +218,6 @@ public class GraphicsPC implements IGraphics {
         return imagesLoaded.get(key);
     }
 
-    public BufferStrategy getBufferStrategy(){return bufferStrategy;}
-
     @Override
     public void recalcFactors(int widthWindow, int heightWindow) {
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
@@ -236,9 +237,14 @@ public class GraphicsPC implements IGraphics {
         translateFactorY = bandHeight;
     }
 
+    @Override
     public int getTranslateFactorX(){return translateFactorX;}
 
+    @Override
     public int getTranslateFactorY(){return translateFactorY;}
 
+    @Override
     public float getScaleFactor(){return scaleFactor;}
+
+    public BufferStrategy getBufferStrategy(){return bufferStrategy;}
 }

@@ -10,11 +10,14 @@ import java.util.ArrayList;
 
 public class InputAndroid implements IInput {
     ArrayList<TouchEvent> events;
-    private GraphicsAndroid graphics_;
+    private final GraphicsAndroid graphics_;
 
     InputAndroid(View view, GraphicsAndroid graphics){
         events = new ArrayList<>();
         graphics_ = graphics;
+
+        //Genera un evento TOUCH_EVENT o RELEASE_EVENT en funcion de la posicion reescalada de
+        //la pantalla, respetando la logica, y lo añade a la cola de eventos para ser procesado
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -50,6 +53,4 @@ public class InputAndroid implements IInput {
     public void flushEvents() {
         events.clear();
     }
-
-
 }
