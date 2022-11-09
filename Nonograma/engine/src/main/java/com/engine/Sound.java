@@ -11,4 +11,6 @@ public interface Sound {
     public void setLoop(boolean l);
 
     public void setVolume(int vol);
+
+    public boolean alreadyPlaying();
 }

@@ -50,4 +50,9 @@ public class SoundAndroid implements Sound {
     public void setVolume(int vol) {
         sound.setVolume(vol,vol);
     }
+
+    @Override
+    public boolean alreadyPlaying() {
+        return sound.isPlaying();
+    }
 }

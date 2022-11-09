@@ -54,4 +54,8 @@ public class SoundPC implements Sound {
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(vol); // Reduce volume by 10 decibels.
     }
+
+    public boolean alreadyPlaying(){
+        return clip.isRunning();
+    }
 }

@@ -7,6 +7,7 @@ import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
 import com.engine.SceneBase;
+import com.engine.Sound;
 import com.engine.TouchEvent;
 
 public class SceneTitle implements SceneBase {
@@ -68,9 +69,13 @@ public class SceneTitle implements SceneBase {
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
-        engine.getAudio().playSound("music.wav");
-        engine.getAudio().getSound("music.wav").setLoop(true);
-        engine.getAudio().getSound("music.wav").setVolume(-15);
+        Sound music =  engine.getAudio().getSound("music.wav");
+
+        if(!music.alreadyPlaying()) {
+            engine.getAudio().playSound("music.wav");
+            music.setLoop(true);
+            music.setVolume(-15);
+        }
     }
 
     @Override
