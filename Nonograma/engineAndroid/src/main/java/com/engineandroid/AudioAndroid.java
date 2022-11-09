@@ -12,6 +12,9 @@ public class AudioAndroid implements Audio {
     String path = "sounds/";
     AssetManager assetManager;
 
+    //Gestor de recursos
+    //Dado un nombre devuelve su valor (instancia de sonido).
+    //En caso de no estar el nombre devuelve null.
     HashMap<String, SoundAndroid> audioLoaded = new HashMap<>();
 
     AudioAndroid(AssetManager ass){

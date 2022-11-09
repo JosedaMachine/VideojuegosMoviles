@@ -29,10 +29,12 @@ public class FontPC implements IFont {
             e.printStackTrace();
         }
 
+        //Creamos la fuente según
         font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, is);
             if(isBold_){
+                //Asignamos que esté en negrita
                 font = font.deriveFont(Font.BOLD);
             }
         } catch (FontFormatException e) {
@@ -41,6 +43,7 @@ public class FontPC implements IFont {
             e.printStackTrace();
         }
 
+        //Asignamos su tamaño
         font = font.deriveFont(Font.TRUETYPE_FONT, size);
     }
 
@@ -54,5 +57,8 @@ public class FontPC implements IFont {
         return isBold;
     }
 
+    /**
+     * Devuelve una instancia de fuente de awt.
+     */
     public Font getFont() {return font;};
 }

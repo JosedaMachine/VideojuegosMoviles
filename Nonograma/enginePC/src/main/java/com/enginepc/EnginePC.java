@@ -11,6 +11,7 @@ import com.engine.TouchEvent;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+
 public class EnginePC implements Engine, Runnable{
 
     JFrame view;
@@ -25,7 +26,6 @@ public class EnginePC implements Engine, Runnable{
     public EnginePC(JFrame renderView, int logicWidth, int logicHeight){
         view = renderView;
 
-        //TODO: ESTO EL TICHER LO HACE EN GRAPHICSPC
         int intentos = 100;
         while(intentos-- > 0) {
             try {
