@@ -29,7 +29,6 @@ public class GraphicsAndroid implements IGraphics {
     int logicWidth, logicHeight;
     float scaleFactor;
     int translateFactorX, translateFactorY;
-    private boolean vertical;
 
     GraphicsAndroid(SurfaceView view, int logicWidth_ , int logicHeight_){
         this.myView = view;
@@ -47,10 +46,6 @@ public class GraphicsAndroid implements IGraphics {
 
                 if(v.getWidth() != widthWas && v.getHeight() != heightWas){
                     recalcFactors(myView.getWidth(), myView.getHeight());
-//                    System.out.println("X: " + translateFactorX);
-//                    System.out.println("Y: " + translateFactorY);
-//                    System.out.println("Scale: " + scaleFactor);
-//                    System.out.println("===================");
                 }
             }
         });
@@ -145,14 +140,6 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void setColor(int color, float alpha) {
-//        Color c = new Color(color, true);
-//
-//        if(alpha != 1){
-//            float[] components = new float[4];
-//            c.getColorComponents(components);
-//            c = new Color(components[0], components[1], components[2], alpha);
-//        }
-//        paint.setColor(c);
         paint.setColor(color);
         paint.setAlpha((int) (alpha * 255));
     }
@@ -222,16 +209,6 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
-    public void setLogicWidth(int width) {
-        logicWidth = width;
-    }
-
-    @Override
-    public void setLogicHeight(int height) {
-        logicHeight = height;
-    }
-
-    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }
@@ -282,18 +259,4 @@ public class GraphicsAndroid implements IGraphics {
         return scaleFactor;
     }
 
-    public boolean isVerticalOrintated() {
-        return vertical;
-    }
-
-    public void configLogicResolution(){
-//        No hace falta en esta practica porque se hace solo pero en caso de que nos interesara.
-//        if(!isVerticalOrintated()){
-//            setLogicHeight(getHeight());
-//            setLogicWidth((int) (getHeight() * (2.0f/3.0f))); //Relacion 2/3 (altura> ancho)
-//        } else
-//        setLogicWidth(getWidth());
-//        setLogicHeight((int) (getWidth() * (3.0f/2.0f))); //Relacion 2/3 pero desde el ancho hacia la altura (altura> ancho)
-
-    }
 }

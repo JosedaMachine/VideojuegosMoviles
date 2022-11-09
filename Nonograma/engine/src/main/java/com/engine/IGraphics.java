@@ -50,10 +50,6 @@ public interface IGraphics {
 
     int getLogicHeight();
 
-    void setLogicWidth(int width);
-
-    void setLogicHeight(int height);
-
     void loadImage(Image img, String key);
 
     Image getImage(String key);
