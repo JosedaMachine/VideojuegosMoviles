@@ -25,20 +25,22 @@ public class SceneTitle implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
-        //290
-        //100
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.483f),
-            sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
 
-        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
+        //Fade In
         fade = new Fade(engine,
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
+
+        //Posicion y tamanyo de boton (290x100)
+        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.483f),
+                sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
+
+        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
+        int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
         //Boton de play
         button = new Button("Play", posX, posY,sizeX, sizeY) {
@@ -48,6 +50,7 @@ public class SceneTitle implements SceneBase {
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
 
+                        //Trigger Fade Out
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
@@ -58,6 +61,7 @@ public class SceneTitle implements SceneBase {
 
             @Override
             public void update(double deltaTime) {
+                //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete()){
                     engine.getGame().changeScene(new SceneLevels(engine));
                 }

@@ -7,10 +7,6 @@ import com.engine.IGraphics;
 import com.engine.TouchEvent;
 import com.engine.SceneBase;
 
-/*
-TODO Comentar todo el codigo
- */
-
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;

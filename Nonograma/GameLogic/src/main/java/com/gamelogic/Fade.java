@@ -5,8 +5,6 @@ import com.engine.Engine;
 import com.engine.IGraphics;
 import com.engine.IColor;
 
-
-
 public class Fade{
 
     public enum STATE_FADE{In, Out};
@@ -35,11 +33,13 @@ public class Fade{
         }else alpha = 1.0f;
 
         colorFade = IColor.BLACK;
+        //Posicion y tamanyo
         posX_ = posX;
         posY_ = posY;
         sizeX_ = width;
         sizeY_ = height;
 
+        //Tiempos de fade
         timeIn_ = timeIn  /** App::FPS*/;
         timeOut_ = timeOut /** App::FPS*/;
         state_ = state;
@@ -56,6 +56,7 @@ public class Fade{
 
     public void update(double deltaTime){
         if (play){
+            //Resta o suma alpha dependiendo de si es Fade In o Fade Out
             if (state_ == STATE_FADE.In && !fadeInComplete){
 //              lerpPrecise(alpha, 0, percentageIn)
                 alpha -= deltaTime;

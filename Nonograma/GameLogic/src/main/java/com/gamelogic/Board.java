@@ -4,11 +4,8 @@ import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
 import com.engine.Image;
-import com.engine.SceneBase;
 import com.engine.Pair;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -16,8 +13,9 @@ public class Board {
     private TILE[][] board;
     private final int rows;
     private final int cols;
-    private int width, height, maxHorizontalFilled, maxVerticalFilled;
-    private float relationX, relationY;
+    private final int width, height;
+    private int maxHorizontalFilled, maxVerticalFilled;
+    private final float relationX, relationY;
     private int posX, posY;
 
     private int numCorrectTiles;
@@ -30,6 +28,7 @@ public class Board {
         rows = y;
         cols = x;
 
+        //Relacion para cuando hay menos filas que columnas
         float relationRowCol = rows/(float)cols;
 
         width = sizeX_;
@@ -38,6 +37,7 @@ public class Board {
         relationX = sizeX_ /(float) cols;
         relationY = (sizeY_ /(float) rows) * relationRowCol;
 
+        //Tablero incialmente vacio
         for (int i = 0; i < cols; i++)
             for (int j = 0; j < rows; j++)
                 board[i][j] = TILE.EMPTY;
@@ -62,7 +62,7 @@ public class Board {
             }
         }
 
-        //Calculamos los numeros adyacentes
+        //Calculamos los numeros adyacentes horizontal
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
         for (int i = 0; i < rows; i++) {
@@ -87,6 +87,7 @@ public class Board {
             adyancentsHorizontal.add(adyacents);
         }
 
+        //vertical
         for (int j = 0; j < cols; j++) {
             List<Integer> adyacents = new ArrayList<>();
             int juntas = 0;
@@ -107,14 +108,6 @@ public class Board {
             }
             adyancentsVertical.add(adyacents);
         }
-    }
-
-    public int getCols() {
-        return cols;
-    }
-
-    public int getRows() {
-        return rows;
     }
 
     public Pair<Float, Float> getRelationFactorSize(){
@@ -169,10 +162,6 @@ public class Board {
         return diff;
     }
 
-    public boolean isTileMatched(int i, int j, Board other){
-        return board[i][j] == other.getBoard()[i][j];
-    }
-
     private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
 
         // dibujar cuadro lateral
@@ -187,7 +176,7 @@ public class Board {
 
     private void drawNums(Engine e, int x, int y, int fontSize) {
         int i, j;
-        //Dibujar numero de correctos
+        //Dibujar numero de correctos Horizontal
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
             int size = adyancentsHorizontal.get(i).size();
             for (j = size - 1; j >= 0; j--) {
@@ -199,6 +188,7 @@ public class Board {
             }
         }
 
+        //Vertical
         for (i = 0; i < adyancentsVertical.size(); i++) {
             int size = adyancentsVertical.get(i).size();
             for (j = size - 1; j >= 0; j--) {
@@ -297,12 +287,4 @@ public class Board {
 
     public int getPosX(){return posX;};
     public int getPosY(){return posY;};
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
 }

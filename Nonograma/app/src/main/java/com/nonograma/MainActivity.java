@@ -43,23 +43,23 @@ public class MainActivity extends AppCompatActivity {
         //Set Game and play
         engine.resume();
         engine.setGame(game);
-        //Tambien se podrian cargar los recursos dentro del setscene
-
-
     }
 
+    //Reanudar
     @Override
     protected void onResume() {
         super.onResume();
         this.engine.resume();
     }
 
+    //Pausa
     @Override
     protected void onPause() {
         super.onPause();
         this.engine.pause();
     }
 
+    //Voltear movil
     @Override
     public void onConfigurationChanged(Configuration myConfig) {
         super.onConfigurationChanged(myConfig);
