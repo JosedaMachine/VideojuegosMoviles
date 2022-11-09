@@ -1,16 +1,23 @@
 package com.engine;
 
+
+// Envuelve los sonidos
 public interface Sound {
+    // Reproduce el sonido
+    void play();
 
-    public abstract void play();
+    // Pausa el sonido
+    void pause();
 
-    public abstract void pause();
+    // Comprueba que el sonido se haya cargado correctamente
+    boolean isLoaded();
 
-    public boolean isLoaded();
+    // Cambia el sonido a loop en función del parámetro
+    void setLoop(boolean l);
 
-    public void setLoop(boolean l);
+    // Cambia el volumen del sonido en función de vol
+    void setVolume(int vol);
 
-    public void setVolume(int vol);
-
-    public boolean alreadyPlaying();
+    // Comprueba si el sonido ya está sonando
+    boolean alreadyPlaying();
 }
