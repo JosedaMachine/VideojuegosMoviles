@@ -60,7 +60,7 @@ public class Fade{
             if (state_ == STATE_FADE.In && !fadeInComplete){
 //              lerpPrecise(alpha, 0, percentageIn)
                 alpha -= deltaTime;
-                if (alpha <= 0.09){
+                if (alpha <= 0){
                     fadeInComplete = true;
                     play = false;
                 }
@@ -69,7 +69,7 @@ public class Fade{
             else if(state_ == STATE_FADE.Out && !fadeOutComplete){
 //                lerpPrecise(alpha, 1.0f, percentageOut)
                 alpha += deltaTime;
-                if (alpha >= 0.97f){
+                if (alpha >= 1.0f){
                     fadeOutComplete = true;
                     play = false;
                 }

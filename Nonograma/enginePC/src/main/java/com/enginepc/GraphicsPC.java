@@ -79,14 +79,14 @@ public class GraphicsPC implements IGraphics {
         this.graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
         this.clear(color);
 
-        //Bandas horizontales
-        fillRect(0,0, translateFactorX, window.getHeight());
-        fillRect(window.getWidth() - translateFactorX, 0, translateFactorX, window.getHeight());
-
-        //Bandas verticales
-        fillRect(0,0, window.getWidth(), translateFactorY);
-        fillRect(0, window.getHeight() - translateFactorY - insetTop, window.getWidth(), translateFactorY);
-
+//        //Bandas horizontales - DEBUG
+//        fillRect(0,0, translateFactorX, window.getHeight());
+//        fillRect(window.getWidth() - translateFactorX, 0, translateFactorX, window.getHeight());
+//
+//        //Bandas verticales - DEBUG
+//        fillRect(0,0, window.getWidth(), translateFactorY);
+//        fillRect(0, window.getHeight() - translateFactorY - insetTop, window.getWidth(), translateFactorY);
+//
         translate(translateFactorX, translateFactorY);
 
         scale(scaleFactor, scaleFactor);

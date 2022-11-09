@@ -150,7 +150,12 @@ public class EnginePC implements Engine, Runnable{
                 }
             } while(this.graphics.getBufferStrategy().contentsRestored());
 
-            graphics.getBufferStrategy().show();
+            try {
+                graphics.getBufferStrategy().show();
+            }
+            catch (Exception e){
+
+            }
         } while(this.graphics.getBufferStrategy().contentsLost());
     }
 

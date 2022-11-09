@@ -90,13 +90,13 @@ public class GraphicsAndroid implements IGraphics {
         canvas = holder.lockCanvas();
         clear(ColorAndroid.WHITE);
 
-        //Bandas horizontales
-        fillRect(0,0, translateFactorX, getHeight());
-        fillRect(getWidth() - translateFactorX, 0, translateFactorX, getHeight());
-
-        //Bandas verticales
-        fillRect(0,0, getWidth(), translateFactorY);
-        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
+//        //Bandas horizontales - DEBUG
+//        fillRect(0,0, translateFactorX, getHeight());
+//        fillRect(getWidth() - translateFactorX, 0, translateFactorX, getHeight());
+//
+//        //Bandas verticales - DEBUG
+//        fillRect(0,0, getWidth(), translateFactorY);
+//        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
 
         translate(translateFactorX, translateFactorY);
         scale(scaleFactor, scaleFactor);
