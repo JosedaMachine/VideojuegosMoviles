@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 
 public class GraphicsPC implements IGraphics {
 
-    private final int insetTop, insetLeft;
+    private final int insetTop;
     private final JFrame window;
     private Graphics2D graphics2D;
     private final BufferStrategy bufferStrategy;
@@ -43,7 +43,6 @@ public class GraphicsPC implements IGraphics {
         });
 
         insetTop = view.getInsets().top;
-        insetLeft = 0;
         bufferStrategy = window.getBufferStrategy();
         graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
     }
@@ -83,7 +82,7 @@ public class GraphicsPC implements IGraphics {
         setColor(ColorPC.GRAY, 1.0f);
 
         fillRect(0,0, translateFactorX, window.getHeight());
-        fillRect(window.getWidth() - translateFactorX - insetLeft, 0, translateFactorX, window.getHeight());
+        fillRect(window.getWidth() - translateFactorX, 0, translateFactorX, window.getHeight());
 
         fillRect(0,0, window.getWidth(), translateFactorY);
         fillRect(0, window.getHeight() - translateFactorY - insetTop, window.getWidth(), translateFactorY);
@@ -128,7 +127,7 @@ public class GraphicsPC implements IGraphics {
     public void drawImage(Image image, int x, int y, int width, int height) {
         graphics2D.setPaintMode();
         ImagePC copy = (ImagePC) image;
-        graphics2D.drawImage(copy.getImage(), x+ (int)(insetLeft/scaleFactor), y+ (int)(insetTop/scaleFactor), width, height, null);
+        graphics2D.drawImage(copy.getImage(), x, y+ (int)(insetTop/scaleFactor), width, height, null);
         graphics2D.setPaintMode();
     }
 
@@ -157,7 +156,7 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void fillRect(int x, int y, int w, int h) {
-        this.graphics2D.fillRect(x+ (int)insetLeft, y+ (int)insetTop, x + w, y + h);
+        this.graphics2D.fillRect(x, y+ insetTop, x + w, y + h);
     }
 
     @Override
@@ -167,17 +166,17 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public void drawRect(int x, int y, int w, int h) {
-        this.graphics2D.drawRect((int) (x+ insetLeft/scaleFactor), (int) (y+ insetTop/scaleFactor), w, h);
+        this.graphics2D.drawRect(x, (int) (y+ insetTop/scaleFactor), w, h);
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-        this.graphics2D.drawLine((int) (x1+ (insetLeft/scaleFactor)), (int) (y1+ insetTop/scaleFactor), (int) (x2+ insetLeft/scaleFactor), (int) (y2+ insetTop/scaleFactor));
+        this.graphics2D.drawLine(x1, (int) (y1+ insetTop/scaleFactor), x2, (int) (y2+ insetTop/scaleFactor));
     }
 
     @Override
     public void drawText(String text, int x, int y) {
-        this.graphics2D.drawString(text, x+ (insetLeft/scaleFactor), y + (insetTop/scaleFactor));
+        this.graphics2D.drawString(text, x, y + (insetTop/scaleFactor));
     }
 
     @Override
@@ -207,16 +206,6 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public void setLogicWidth(int width) {
-        logicWidth = width;
-    }
-
-    @Override
-    public void setLogicHeight(int height) {
-        logicHeight = height;
-    }
-
-    @Override
     public void loadImage(Image img, String key) {
         imagesLoaded.put(key, img);
     }
@@ -228,8 +217,6 @@ public class GraphicsPC implements IGraphics {
 
     public BufferStrategy getBufferStrategy(){return bufferStrategy;}
 
-    public Graphics getGraphics(){return this.graphics2D;}
-    
     @Override
     public void recalcFactors(int widthWindow, int heightWindow) {
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
