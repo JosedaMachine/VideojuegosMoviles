@@ -43,7 +43,7 @@ dependencies {
 
 task copyData( type: Copy) {
     description = 'Copying game data into assets folder...'
-    def fromDir = rootDir.getAbsolutePath() + '/data'
+    def fromDir = rootDir.getAbsolutePath() + '/appDesktop/assets'
     from(fromDir) {
         include "**"
     }
