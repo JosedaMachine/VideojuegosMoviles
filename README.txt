@@ -1,5 +1,4 @@
-Los modulos donde estan los ejemplos son ejemplopc(Android) y ejemplopcReal(PC). Siento mucho los nombres confusos, pero no sabiamos
-si cambiar los nombres iba a romper el proyecto por el .gradle.
+En la carpeta de Practicas y Enunciados se encuentran los zips de las entregas de cada práctica.
 
 Integrantes:
 Daniel Illanes Morillas
