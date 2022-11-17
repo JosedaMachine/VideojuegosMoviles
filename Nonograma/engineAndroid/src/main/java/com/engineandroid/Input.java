@@ -3,16 +3,13 @@ package com.engineandroid;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.engine.IInput;
-import com.engine.TouchEvent;
-
 import java.util.ArrayList;
 
-public class InputAndroid implements IInput {
+public class Input {
     ArrayList<TouchEvent> events;
-    private final GraphicsAndroid graphics_;
+    private final Graphics graphics_;
 
-    InputAndroid(View view, GraphicsAndroid graphics){
+    Input(View view, Graphics graphics){
         events = new ArrayList<>();
         graphics_ = graphics;
 
@@ -44,12 +41,10 @@ public class InputAndroid implements IInput {
         });
     }
 
-    @Override
     public ArrayList<TouchEvent> getEventList() {
         return events;
     }
 
-    @Override
     public void flushEvents() {
         events.clear();
     }

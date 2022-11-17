@@ -6,34 +6,31 @@ import com.engine.*;
 
 import java.util.ArrayList;
 
-public class EngineAndroid implements Engine, Runnable{
+public class Engine implements Runnable{
 
-    GraphicsAndroid graphics;
-    InputAndroid input;
-    AudioAndroid audio;
+    Graphics graphics;
+    Input input;
+    Audio audio;
     IGame currGame;
     private Thread engineThread;
 
     boolean running;
 
-    public EngineAndroid(SurfaceView view, int logicWidth_ , int logicHeight_){
+    public Engine(SurfaceView view, int logicWidth_ , int logicHeight_){
         currGame = null;
-        graphics = new GraphicsAndroid(view, logicWidth_, logicHeight_);
-        input = new InputAndroid(view, graphics);
-        audio = new AudioAndroid(view.getContext().getAssets());
+        graphics = new Graphics(view, logicWidth_, logicHeight_);
+        input = new Input(view, graphics);
+        audio = new Audio(view.getContext().getAssets());
     }
 
-    @Override
-    public IGraphics getGraphics() {
+    public Graphics getGraphics() {
         return graphics;
     }
 
-    @Override
-    public IInput getInput() {
+    public Input getInput() {
         return input;
     }
 
-    @Override
     public Audio getAudio() {
         return audio;
     }
@@ -43,17 +40,14 @@ public class EngineAndroid implements Engine, Runnable{
      * por motivos de inicializado del motor gráfico y prevención de errorres.
      * @param game juego que se ejecuta
      */
-    @Override
     public void setGame(IGame game) {
         currGame = game;
     }
 
-    @Override
     public IGame getGame() {
         return currGame;
     }
 
-    @Override
     public void resume() {
         if (!this.running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya
@@ -65,7 +59,6 @@ public class EngineAndroid implements Engine, Runnable{
         }
     }
 
-    @Override
     public void pause() {
         if (this.running) {
             this.running = false;
@@ -81,7 +74,6 @@ public class EngineAndroid implements Engine, Runnable{
         }
     }
 
-    @Override
     public void processInput() {
         ArrayList<TouchEvent> list =input.getEventList();
         for (int i = 0; i < list.size(); i++){
@@ -138,12 +130,10 @@ public class EngineAndroid implements Engine, Runnable{
         }
     }
 
-    @Override
     public void update(double elapsedTime) {
         currGame.update(elapsedTime);
     }
 
-    @Override
     public void render() {
         //~Mutex~
         //Prevenimos que en ningún otro sitio del código se permita pintar, bloqueando el canvas

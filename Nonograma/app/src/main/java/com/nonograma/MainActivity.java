@@ -9,14 +9,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.engineandroid.*;
-import com.engine.*;
+import com.engineandroid.Engine;
 import com.gamelogic.Nonograma;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Engine engine;
+    private com.engine.Engine engine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         ColorAndroid.Init();
         //Init Engine
-        this.engine = new EngineAndroid(renderView, width, height);
+        this.engine = new Engine(renderView, width, height);
         //Init Game
         IGame game = new Nonograma(engine);
 

@@ -1,7 +1,5 @@
 package com.engineandroid;
 
-import com.engine.IColor;
-
 import android.graphics.Color;
 
 public class ColorAndroid extends IColor {

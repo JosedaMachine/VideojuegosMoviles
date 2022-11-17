@@ -1,4 +1,4 @@
-package com.engine;
+package com.engineandroid;
 
 
 public interface IGame {
@@ -6,7 +6,7 @@ public interface IGame {
     SceneBase getScene();
     void init();
     void update(double elapsedTime);
-    void render(IGraphics graphics);
+    void render(Graphics graphics);
     void processInput(TouchEvent event);
-    void loadImages(IGraphics graphics);
+    void loadImages(Graphics graphics);
 }
