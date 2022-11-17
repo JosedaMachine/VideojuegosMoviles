@@ -7,7 +7,7 @@ import com.engine.Sound;
 
 import java.util.HashMap;
 
-public class AudioAndroid implements Audio {
+public class AudioAndroid {
 
     String path = "sounds/";
     AssetManager assetManager;
@@ -21,12 +21,10 @@ public class AudioAndroid implements Audio {
         assetManager = ass;
     }
 
-    @Override
     public Sound getSound(String name) {
         return audioLoaded.get(name);
     }
 
-    @Override
     public Sound newSound(String name) {
         if(getSound(name) == null) {
             SoundAndroid sound = new SoundAndroid(assetManager, path + name);
@@ -36,7 +34,6 @@ public class AudioAndroid implements Audio {
         return getSound(name);
     }
 
-    @Override
     public void playSound(String name) {
         getSound(name).play();
     }
