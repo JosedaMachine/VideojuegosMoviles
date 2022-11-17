@@ -1,4 +1,4 @@
-package com.nonograma;
+package com.launcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private com.engine.Engine engine;
+    private Engine engine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         int width = 600;
         int height = 900;
 
-        ColorAndroid.Init();
+        ColorWrap.Init();
         //Init Engine
         this.engine = new Engine(renderView, width, height);
         //Init Game

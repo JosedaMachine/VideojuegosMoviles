@@ -1,21 +1,21 @@
 package com.gamelogic;
 
-import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
-import com.engine.IGraphics;
-import com.engine.Image;
-import com.engine.Pair;
-import com.engine.SceneBase;
-import com.engine.TouchEvent;
+import com.engineandroid.Engine;
+import com.engineandroid.ColorWrap;
+import com.engineandroid.Font;
+import com.engineandroid.Graphics;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
+import com.engineandroid.SceneBase;
+import com.engineandroid.TouchEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SceneLevels implements SceneBase {
 
-    IFont title;
-    IFont titleLittle;
+    Font title;
+    Font titleLittle;
     Engine engine;
     private Fade fade;
     public SceneLevels(Engine engine_) {
@@ -34,7 +34,7 @@ public class SceneLevels implements SceneBase {
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.In);
-        fade.setColor(IColor.BLACK);
+        fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
         //Lista de botones con los diferentes tamanyos de tablero
@@ -91,16 +91,16 @@ public class SceneLevels implements SceneBase {
         };
 
         button.setFont(titleLittle);
-        button.setColor(IColor.BLACK);
+        button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         return button;
     }
 
     @Override
-    public void render(IGraphics graphics) {
+    public void render(Graphics graphics) {
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK, 1.0f);
+        graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto
         String title = "Select puzzle size";
@@ -131,7 +131,7 @@ public class SceneLevels implements SceneBase {
     }
 
     @Override
-    public void loadResources(IGraphics graphics) {
+    public void loadResources(Graphics graphics) {
         Image im = graphics.newImage("emptysquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");

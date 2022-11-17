@@ -1,11 +1,11 @@
 package com.gamelogic;
 
 
-import com.engine.Engine;
-import com.engine.IGame;
-import com.engine.IGraphics;
-import com.engine.TouchEvent;
-import com.engine.SceneBase;
+import com.engineandroid.Engine;
+import com.engineandroid.IGame;
+import com.engineandroid.Graphics;
+import com.engineandroid.TouchEvent;
+import com.engineandroid.SceneBase;
 
 /*
 TODO: 30 Nov modo historia totalmente funcional y mecánica de vida
@@ -81,7 +81,7 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void render(IGraphics graphics) {
+    public void render(Graphics graphics) {
         currScene.render(graphics);
     }
 
@@ -91,7 +91,7 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void loadImages(IGraphics graphics) {
+    public void loadImages(Graphics graphics) {
         currScene.loadResources(graphics);
     }
 }

@@ -1,10 +1,10 @@
 package com.gamelogic;
 
-import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
-import com.engine.Image;
-import com.engine.Pair;
+import com.engineandroid.Engine;
+import com.engineandroid.ColorWrap;
+import com.engineandroid.Font;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -220,9 +220,9 @@ public class Board {
         }
     }
 
-    public void drawInfoRects(Engine e, int x, int y, IFont font) {
+    public void drawInfoRects(Engine e, int x, int y, Font font) {
         e.getGraphics().setFont(font);
-        e.getGraphics().setColor(IColor.BLACK, 1.0f);
+        e.getGraphics().setColor(ColorWrap.BLACK, 1.0f);
         int fontSize = font.getSize();
 
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X

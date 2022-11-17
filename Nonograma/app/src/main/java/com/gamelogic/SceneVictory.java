@@ -1,20 +1,20 @@
 package com.gamelogic;
 
-import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
-import com.engine.IGraphics;
-import com.engine.Image;
-import com.engine.Pair;
-import com.engine.SceneBase;
-import com.engine.TouchEvent;
+import com.engineandroid.Engine;
+import com.engineandroid.ColorWrap;
+import com.engineandroid.Font;
+import com.engineandroid.Graphics;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
+import com.engineandroid.SceneBase;
+import com.engineandroid.TouchEvent;
 
 public class SceneVictory implements SceneBase {
 
     private final Engine engine;
 
     private Button button;
-    private IFont title, buttonFont;
+    private Font title, buttonFont;
     private final String victoryText = "VICTORY!";
 
     private Fade fade;
@@ -34,7 +34,7 @@ public class SceneVictory implements SceneBase {
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.Out);
-        fade.setColor(IColor.BLACK);
+        fade.setColor(ColorWrap.BLACK);
 
         int sizeX = 225, sizeY = 50;
 
@@ -64,15 +64,15 @@ public class SceneVictory implements SceneBase {
         };
 
         button.setFont(buttonFont);
-        button.setColor(IColor.BLACK);
+        button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
 
     @Override
-    public void render(IGraphics graphics) {
+    public void render(Graphics graphics) {
 
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK, 1.0f);
+        graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
@@ -98,7 +98,7 @@ public class SceneVictory implements SceneBase {
     }
 
     @Override
-    public void loadResources(IGraphics graphics) {
+    public void loadResources(Graphics graphics) {
         Image im = graphics.newImage("crosssquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");

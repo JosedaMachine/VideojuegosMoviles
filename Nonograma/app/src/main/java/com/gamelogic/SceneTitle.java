@@ -1,21 +1,21 @@
 package com.gamelogic;
 
-import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
-import com.engine.IGraphics;
-import com.engine.Image;
-import com.engine.Pair;
-import com.engine.SceneBase;
-import com.engine.Sound;
-import com.engine.TouchEvent;
+import com.engineandroid.Engine;
+import com.engineandroid.ColorWrap;
+import com.engineandroid.Font;
+import com.engineandroid.Graphics;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
+import com.engineandroid.SceneBase;
+import com.engineandroid.Sound;
+import com.engineandroid.TouchEvent;
 
 public class SceneTitle implements SceneBase {
 
     private final Engine engine;
     private Fade fade;
     private Button button;
-    private IFont title;
+    private Font title;
     private String titleText = "Nonogram";
     public SceneTitle(Engine engine_) {
 
@@ -32,7 +32,7 @@ public class SceneTitle implements SceneBase {
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
-        fade.setColor(IColor.BLACK);
+        fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
         //Posicion y tamanyo de boton (290x100)
@@ -69,7 +69,7 @@ public class SceneTitle implements SceneBase {
         };
 
         button.setFont(title);
-        button.setColor(IColor.BLACK);
+        button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
@@ -83,9 +83,9 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void render(IGraphics graphics) {
+    public void render(Graphics graphics) {
         graphics.setFont(title);
-        graphics.setColor(IColor.BLACK, 1.0f);
+        graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
         //Texto del titulo
@@ -110,7 +110,7 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void loadResources(IGraphics graphics) {
+    public void loadResources(Graphics graphics) {
         Image im = graphics.newImage("crosssquare.png");
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");

@@ -1,6 +1,8 @@
 package com.engineandroid;
 
-public class IColor {
+import android.graphics.Color;
+
+public class ColorWrap {
 
     /**
      * Valor entero que representa rgba
@@ -22,4 +24,16 @@ public class IColor {
      * Valor entero que representa rgba
      */
     public static Integer BLACK = null;
+
+
+    /**
+     * Inicializar los valores de los colores
+     */
+    public static void  Init(){
+        BLACK = android.graphics.Color.BLACK;
+        RED = android.graphics.Color.RED;
+        BLUE = android.graphics.Color.BLUE;
+        WHITE = android.graphics.Color.WHITE;
+        GRAY = android.graphics.Color.GRAY;
+    }
 }

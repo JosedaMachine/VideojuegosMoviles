@@ -1,13 +1,13 @@
 package com.gamelogic;
 
-import com.engine.Engine;
-import com.engine.IColor;
-import com.engine.IFont;
-import com.engine.IGraphics;
-import com.engine.Image;
-import com.engine.Pair;
-import com.engine.SceneBase;
-import com.engine.TouchEvent;
+import com.engineandroid.Engine;
+import com.engineandroid.ColorWrap;
+import com.engineandroid.Font;
+import com.engineandroid.Graphics;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
+import com.engineandroid.SceneBase;
+import com.engineandroid.TouchEvent;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class SceneGame implements SceneBase {
 
     private int numRemaining = 0, numWrong = 0;
     //Fuentes
-    private IFont numFont, pixelFont;
+    private Font numFont, pixelFont;
 
     private Fade fade;
 
@@ -100,7 +100,7 @@ public class SceneGame implements SceneBase {
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.In);
-        fade.setColor(IColor.BLACK);
+        fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
         int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
@@ -139,7 +139,7 @@ public class SceneGame implements SceneBase {
             }
         };
         bttCheckWin.setFont(numFont);
-        bttCheckWin.setColor(IColor.BLACK);
+        bttCheckWin.setColor(ColorWrap.BLACK);
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Boton Return to menu
@@ -167,12 +167,12 @@ public class SceneGame implements SceneBase {
             }
         };
         bttReturn.setFont(numFont);
-        bttReturn.setColor(IColor.BLACK);
+        bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
 
     @Override
-    public void loadResources(IGraphics graphics){
+    public void loadResources(Graphics graphics){
         System.out.println("Loading Resources...");
 
         Image im = graphics.newImage("emptysquare.png");
@@ -211,9 +211,9 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void render(IGraphics graphics) {
+    public void render(Graphics graphics) {
         //Tablero
-        graphics.setColor(IColor.BLACK, 1.0f);
+        graphics.setColor(ColorWrap.BLACK, 1.0f);
         checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
@@ -235,9 +235,9 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
-            graphics.setColor(IColor.BLUE, 1.0f);
+            graphics.setColor(ColorWrap.BLUE, 1.0f);
             graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
-            graphics.setColor(IColor.RED, 1.0f);
+            graphics.setColor(ColorWrap.RED, 1.0f);
             graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
 
         }

@@ -1,14 +1,14 @@
 package com.gamelogic;
 
-import com.engine.IFont;
-import com.engine.IGraphics;
-import com.engine.Image;
-import com.engine.Pair;
-import com.engine.TouchEvent;
+import com.engineandroid.Font;
+import com.engineandroid.Graphics;
+import com.engineandroid.Image;
+import com.engineandroid.Pair;
+import com.engineandroid.TouchEvent;
 
 public abstract class Button {
     private Image backgroundImage = null;
-    private IFont font = null;
+    private Font font = null;
     private final String text;
     private int color;
 
@@ -23,7 +23,7 @@ public abstract class Button {
         selected = false;
     }
 
-    public void render(IGraphics graphics){
+    public void render(Graphics graphics){
         //Imagen de fondo
         if(backgroundImage != null)
             graphics.drawImage(backgroundImage, posX, posY, sizeX, sizeY);
@@ -38,7 +38,7 @@ public abstract class Button {
         }
     }
 
-    public void setFont(IFont font) {
+    public void setFont(Font font) {
         this.font = font;
     }
 

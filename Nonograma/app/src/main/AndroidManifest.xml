@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Nonograma"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.launcher.MainActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>

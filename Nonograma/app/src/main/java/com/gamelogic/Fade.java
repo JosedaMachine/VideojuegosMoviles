@@ -1,9 +1,9 @@
 package com.gamelogic;
 
 
-import com.engine.Engine;
-import com.engine.IGraphics;
-import com.engine.IColor;
+import com.engineandroid.Engine;
+import com.engineandroid.Graphics;
+import com.engineandroid.ColorWrap;
 
 public class Fade{
 
@@ -15,7 +15,7 @@ public class Fade{
     private float alpha;
     private int colorFade;
     private final Engine e_;
-    private IGraphics g;
+    private Graphics g;
 
     private STATE_FADE state_;
 
@@ -32,7 +32,7 @@ public class Fade{
             alpha = 0.0f;
         }else alpha = 1.0f;
 
-        colorFade = IColor.BLACK;
+        colorFade = ColorWrap.BLACK;
         //Posicion y tamanyo
         posX_ = posX;
         posY_ = posY;

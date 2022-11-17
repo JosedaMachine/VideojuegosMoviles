@@ -2,8 +2,6 @@ package com.engineandroid;
 
 import android.view.SurfaceView;
 
-import com.engine.*;
-
 import java.util.ArrayList;
 
 public class Engine implements Runnable{

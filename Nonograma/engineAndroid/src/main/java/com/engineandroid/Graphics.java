@@ -76,7 +76,7 @@ public class Graphics {
     public void prepare(int color) {
         while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
-        clear(ColorAndroid.WHITE);
+        clear(ColorWrap.WHITE);
 
 //        //Bandas horizontales - DEBUG
 //        fillRect(0,0, translateFactorX, getHeight());
@@ -102,23 +102,22 @@ public class Graphics {
 
     }
 
-    public void drawImage(com.engine.Image image) {
+    public void drawImage(Image image) {
         drawImage(image, 0, 0);
     }
 
-    public void drawImage(com.engine.Image image, int x, int y) {
+    public void drawImage(Image image, int x, int y) {
         drawImage(image, x, y, 1.0f, 1.0f);
     }
 
-    public void drawImage(com.engine.Image image, int x, int y, float scaleX, float scaleY) {
+    public void drawImage(Image image, int x, int y, float scaleX, float scaleY) {
         int width  = (int) ((image.getWidth()) * scaleX);
         int height = (int) ((image.getHeight())* scaleY);
         drawImage(image, x, y, width, height);
     }
 
-    public void drawImage(com.engine.Image image, int x, int y, int width, int height) {
-        Image anImage = (Image) image;
-        canvas.drawBitmap(anImage.getScaledImage(width, height),x, y,paint);
+    public void drawImage(Image image, int x, int y, int width, int height) {
+        canvas.drawBitmap(image.getScaledImage(width, height),x, y,paint);
     }
 
     public void setColor(int color, float alpha) {
