@@ -12,12 +12,12 @@ import com.engineandroid.TouchEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneStory implements SceneBase {
+public class SceneCategory implements SceneBase {
 
     Font title;
     Engine engine;
     private Fade fade;
-    public SceneStory(Engine engine_) {
+    public SceneCategory(Engine engine_) {
         this.engine = engine_;
     }
 
@@ -39,20 +39,21 @@ public class SceneStory implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int size = (int)(engine.getGraphics().getLogicWidth() * 0.155f);
+        int size = (int)(engine.getGraphics().getLogicWidth() * 0.40f);
 
-        int numCols = 4, numFils = 5;
+        int numCols = 2, numFils = 2;
 
         int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f),
                 yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f);
 
         int posX = (int) ((engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2);
-        int posY = engine.getGraphics().getLogicHeight()/3 -  size/2;
+        int posY = engine.getGraphics().getLogicHeight()/2 - size/2;
 
         for (int i = 0; i < numFils; i++){
             for (int j = 0; j < numCols; j++){
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
+
                 levels.add(createLevel("", newPosX, newPosY, size, size, 4, 4, false));
             }
         }
@@ -79,7 +80,7 @@ public class SceneStory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneGame(engine , i, j));
+                    engine.getGame().changeScene(new SceneStory(engine));
                 }
             }
         };
@@ -96,7 +97,7 @@ public class SceneStory implements SceneBase {
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto
-        String title = "Select puzzle";
+        String title = "Select Category";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 

@@ -98,7 +98,7 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && buttonType_ == buttonType.STORY){
-                    engine.getGame().changeScene(new SceneStory(engine));
+                    engine.getGame().changeScene(new SceneCategory(engine));
                 }
             }
         };
