@@ -5,6 +5,10 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
+
+import java.io.File;
+import java.util.Scanner; // Import the Scanner class to read text files
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -287,4 +291,19 @@ public class Board {
 
     public int getPosX(){return posX;};
     public int getPosY(){return posY;};
+
+
+    public boolean toFile(File file, Scanner reader){
+
+
+
+        return true;
+    }
+
+    public boolean readFile(File file, Scanner reader){
+
+        
+
+        return true;
+    }
 }
