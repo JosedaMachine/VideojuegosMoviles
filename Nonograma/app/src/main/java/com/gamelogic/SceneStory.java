@@ -40,30 +40,20 @@ public class SceneStory implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.155f),
-                sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.055f);
-//
-        int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
+        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.155f);
 
-        //TODO: anyadir niveles en for
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 4, 4, false));
+        int posX = (int) (engine.getGraphics().getLogicWidth()*0.125f),
+                posY = engine.getGraphics().getLogicHeight()/3 -  sizeX/2;
 
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 5, 5, false));
+        int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.20f);
 
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 5, 10, true));
+        int yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.20f);
 
-        posY = engine.getGraphics().getLogicHeight()/2 -  sizeY/2;
-        posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 8, 8, false) );
-
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 10, 10, true) );
-
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("", posX, posY, sizeX, sizeX, 10, 15, true) );
+        for (int i = 0; i < 5; i++){
+            for (int j = 0; j < 4; j++){
+                levels.add(createLevel("", posX + (j*xOffset), posY + (i*yOffset), sizeX, sizeX, 4, 4, false));
+            }
+        }
     }
 
     //Boton de creacion de nivel
@@ -105,7 +95,7 @@ public class SceneStory implements SceneBase {
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto
-        String title = "Select puzzle size";
+        String title = "Select puzzle";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
