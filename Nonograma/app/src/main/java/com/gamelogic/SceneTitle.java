@@ -14,7 +14,7 @@ public class SceneTitle implements SceneBase {
 
     private final Engine engine;
     private Fade fade;
-    private Button button;
+    private Button quickButton, storyButton;
     private Font title;
     private String titleText = "Nonogram";
     public SceneTitle(Engine engine_) {
@@ -36,18 +36,18 @@ public class SceneTitle implements SceneBase {
         fade.triggerFade();
 
         //Posicion y tamanyo de boton (290x100)
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.483f),
+        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.8f),
                 sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
 
-        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
+        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2,
+                posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
 
         //Boton de play
-        button = new Button("Play", posX, posY,sizeX, sizeY) {
+        quickButton = new Button("Quick Game", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(button.isInside(event_.getX_(),event_.getY_())){
+                    if(quickButton.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
 
                         //Trigger Fade Out
@@ -68,9 +68,42 @@ public class SceneTitle implements SceneBase {
             }
         };
 
-        button.setFont(title);
-        button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        posY += engine.getGraphics().getLogicHeight() * 0.2f;
+
+        //Boton de play
+        storyButton = new Button("Story Mode", posX, posY,sizeX, sizeY) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(storyButton.isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
+
+                        //Trigger Fade Out
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                //Cambio de escena al terminar fade
+                //TODO: esto no va si tenemos 2 botones que hacen fade
+                if(fade.getFadeOutComplete()){
+                    engine.getGame().changeScene(new SceneStory(engine));
+                }
+            }
+        };
+
+        quickButton.setFont(title);
+        quickButton.setColor(ColorWrap.BLACK);
+        quickButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
+        storyButton.setFont(title);
+        storyButton.setColor(ColorWrap.BLACK);
+        storyButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
         Sound music =  engine.getAudio().getSound("music.wav");
@@ -92,7 +125,8 @@ public class SceneTitle implements SceneBase {
         graphics.drawText(titleText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.25 + dime.second/2));
 
         //Boton
-        button.render(graphics);
+        quickButton.render(graphics);
+        storyButton.render(graphics);
 
         fade.render();
     }
@@ -101,12 +135,14 @@ public class SceneTitle implements SceneBase {
     public void update(double deltaTime) {
         //Vacio
         fade.update(deltaTime);
-        button.update(deltaTime);
+        quickButton.update(deltaTime);
+        storyButton.update(deltaTime);
     }
 
     @Override
     public void input(TouchEvent event) {
-        button.input(event);
+        quickButton.input(event);
+        storyButton.input(event);
     }
 
     @Override
