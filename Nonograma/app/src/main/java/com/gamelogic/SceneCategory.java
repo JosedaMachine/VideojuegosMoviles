@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SceneCategory implements SceneBase {
 
-    Font title;
+    Font title, levelLabel;
     Engine engine;
     private Fade fade;
     public SceneCategory(Engine engine_) {
@@ -101,10 +101,21 @@ public class SceneCategory implements SceneBase {
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
+        graphics.setFont(levelLabel);
+
         //Botones
         for(int i = 0; i < levels.size(); i++){
-            levels.get(i).render(graphics);
+            Button b = levels.get(i);
+
+            b.render(graphics);
+            int size = b.getSizeX();
+            graphics.drawImage(graphics.getImage("empty"), (int)(b.getX() + size*0.25f),
+                    (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
+
+            //TODO: Texto dependiente de la cantidad de niveles
+            graphics.drawText("20/20", (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
+
 
         fade.render();
     }
@@ -133,5 +144,6 @@ public class SceneCategory implements SceneBase {
 
 
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+        levelLabel = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
     }
 }

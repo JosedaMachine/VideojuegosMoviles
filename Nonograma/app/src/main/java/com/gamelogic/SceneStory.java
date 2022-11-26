@@ -53,6 +53,7 @@ public class SceneStory implements SceneBase {
             for (int j = 0; j < numCols; j++){
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
+                //TODO: Cada nivel diferente + imagenes diferentes si desbloqueado o no
                 levels.add(createLevel("", newPosX, newPosY, size, size, 4, 4, false));
             }
         }

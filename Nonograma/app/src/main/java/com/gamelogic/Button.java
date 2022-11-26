@@ -66,4 +66,9 @@ public abstract class Button {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public int getX(){return posX;}
+    public int getY(){return posY;}
+    public int getSizeX(){return sizeX;}
+    public int getSizeY(){return sizeY;}
 }
