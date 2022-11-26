@@ -17,11 +17,17 @@ public class SceneStory implements SceneBase {
     Font title;
     Engine engine;
     private Fade fade;
-    public SceneStory(Engine engine_) {
-        this.engine = engine_;
-    }
-
     List<Button> levels;
+
+    private Category category;
+    private int lockIndex;
+
+    public SceneStory(Engine engine_, int category, int lvlIndex) {
+        this.engine = engine_;
+        this.category = Category.values()[category];
+
+        lockIndex = lvlIndex;
+    }
 
     @Override
     public void init() {
@@ -49,29 +55,36 @@ public class SceneStory implements SceneBase {
         int posX = (int) ((engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2);
         int posY = engine.getGraphics().getLogicHeight()/3 -  size/2;
 
+        int cont = 0;
         for (int i = 0; i < numFils; i++){
             for (int j = 0; j < numCols; j++){
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
                 //TODO: Cada nivel diferente + imagenes diferentes si desbloqueado o no
-                levels.add(createLevel("", newPosX, newPosY, size, size, 4, 4, false));
+                levels.add(createLevel("", newPosX, newPosY, size, size, 4, 4, cont));
+                cont++;
             }
         }
     }
 
     //Boton de creacion de nivel
-    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
+    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, int lvlIndex){
         final Button button = new Button(text, x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
-                        engine.getAudio().playSound("click.wav");
-                        setSelected(true);
-                        if(fade.getState() != Fade.STATE_FADE.Out) {
-                            fade.setState(Fade.STATE_FADE.Out);
-                            fade.triggerFade();
+                        if(lvlIndex <= lockIndex) {
+                            engine.getAudio().playSound("click.wav");
+                            setSelected(true);
+                            if (fade.getState() != Fade.STATE_FADE.Out) {
+                                fade.setState(Fade.STATE_FADE.Out);
+                                fade.triggerFade();
+                            }
+                        }
+                        else{
+                            engine.getAudio().playSound("wrong.wav");
                         }
                     }
                 }
@@ -80,13 +93,20 @@ public class SceneStory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
+                    //TODO: Generar el nivel correcto de la categoría correcta
                     engine.getGame().changeScene(new SceneGame(engine , i, j));
                 }
             }
         };
 
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("lock"));
+        //Nivel ya superado
+        if(lvlIndex < lockIndex)
+            button.setBackgroundImage(engine.getGraphics().getImage("tick"));
+        //Siguente Nivel o bloqueado
+        else
+            button.setBackgroundImage(engine.getGraphics().getImage((lvlIndex != lockIndex)?"lock":"unlock"));
+
 
         return button;
     }
@@ -131,6 +151,15 @@ public class SceneStory implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "lock");
 
+        im = graphics.newImage("unlock.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "unlock");
+
+        im = graphics.newImage("tick.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "tick");
 
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
     }

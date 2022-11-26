@@ -10,6 +10,7 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SceneCategory implements SceneBase {
@@ -17,16 +18,24 @@ public class SceneCategory implements SceneBase {
     Font title, levelLabel;
     Engine engine;
     private Fade fade;
+    private final int maxLevels = 20;
+
     public SceneCategory(Engine engine_) {
         this.engine = engine_;
     }
 
+    HashMap<Category, Integer> categoryLevelIndexes = new HashMap<>();
     List<Button> levels;
 
     @Override
     public void init() {
-
         loadResources(engine.getGraphics());
+
+        //TODO: Esto leerlo de archivo
+        categoryLevelIndexes.put(Category.CAT0, 20);
+        categoryLevelIndexes.put(Category.CAT1, 14);
+        categoryLevelIndexes.put(Category.CAT2, 0);
+        categoryLevelIndexes.put(Category.CAT3, 0);
 
         //Fade In
         fade = new Fade(engine,
@@ -49,30 +58,37 @@ public class SceneCategory implements SceneBase {
         int posX = (int) ((engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2);
         int posY = engine.getGraphics().getLogicHeight()/2 - size/2;
 
+        int cont = 0;
         for (int i = 0; i < numFils; i++){
+
             for (int j = 0; j < numCols; j++){
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
 
-                levels.add(createLevel("", newPosX, newPosY, size, size, 4, 4, false));
+                levels.add(createLevel(newPosX, newPosY, size, size, cont));
+                cont++;
             }
         }
     }
 
     //Boton de creacion de nivel
-    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
-        final Button button = new Button(text, x ,y, sizeX, sizeY) {
+    private Button createLevel(int x, int y, int sizeX, int sizeY, final int i){
+        final Button button = new Button("", x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
-                        //Iniciar nivel con medidas adecuadas
-                        engine.getAudio().playSound("click.wav");
-                        setSelected(true);
-                        if(fade.getState() != Fade.STATE_FADE.Out) {
-                            fade.setState(Fade.STATE_FADE.Out);
-                            fade.triggerFade();
+
+                        if(i == 0 || categoryLevelIndexes.get(Category.values()[i-1]) == maxLevels){
+                            engine.getAudio().playSound("click.wav");
+                            setSelected(true);
+                            if(fade.getState() != Fade.STATE_FADE.Out) {
+                                fade.setState(Fade.STATE_FADE.Out);
+                                fade.triggerFade();
+                            }
                         }
+                        else
+                            engine.getAudio().playSound("wrong.wav");
                     }
                 }
             }
@@ -80,13 +96,14 @@ public class SceneCategory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneStory(engine));
+                    engine.getGame().changeScene(new SceneStory(engine, i, categoryLevelIndexes.get(Category.values()[i])));
                 }
             }
         };
 
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("lock"));
+        button.setBackgroundImage(engine.getGraphics().getImage(
+                    (i > 0 && categoryLevelIndexes.get(Category.values()[i-1]) < maxLevels)?"lock":"category" + i));
 
         return button;
     }
@@ -112,8 +129,7 @@ public class SceneCategory implements SceneBase {
             graphics.drawImage(graphics.getImage("empty"), (int)(b.getX() + size*0.25f),
                     (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
 
-            //TODO: Texto dependiente de la cantidad de niveles
-            graphics.drawText("20/20", (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
+            graphics.drawText(categoryLevelIndexes.get(Category.values()[i]) + "/" + maxLevels, (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 
 
@@ -142,6 +158,14 @@ public class SceneCategory implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "lock");
 
+        for(int i = 0; i<4;i++) {
+            im = graphics.newImage("category" + i + ".png");
+            if (!im.isLoaded())
+                System.out.println("No se ha encontrado la imagen");
+            graphics.loadImage(im, "category" + i );
+        }
+
+        engine.getAudio().newSound("wrong.wav");
 
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
         levelLabel = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
