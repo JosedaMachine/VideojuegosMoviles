@@ -10,15 +10,10 @@ import com.engineandroid.SceneBase;
 /*
 TODO: 30 Nov modo historia totalmente funcional y mecánica de vida
 TODO: Niveles bloqueados -> persistencia
-TODO: O dificultad o temática (Dificultad va a ser la buena)
-
-TODO: Borrar motor de PC
+TODO: niveles por tematica (4 5x5, 4 8x8, 4 10x10 y 4 15x15)
+TODO: Botones de volver a escena anterior en vez de solo a title
 
 TODO: Pedir en el manifest todas las pantallas menos las pequeñas
-
-TODO: Fácil 20 niv 5x5
-TODO: Intermedio 20 niv 8x8 (o 10X10)
-TODO: Dificil 20 niv 10x10 (o 15X15)
 
 TODO: Sistema de vidas -> check incorrecto pierde una vida
 TODO: nivel correcto recupera una vida
@@ -34,7 +29,6 @@ Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
 startActivity(intent) ; // startActivity es un método de Context
 
 
-
 TODO: Varias paletas (5 por ejemplo) y estilos (cuadrados un poco diferentes o fuentes diferentes)
 TODO: No estaria guapo un modo daltónico ni nada que pusiera formas características en cada casilla (fill=imagen de rombo, Wrong=X, etc)
 TODO: paletas y estilos desbloqueables al pasar cierta cantidad de niveles de la historia O mediante dinero de juego (prob. mas nota)
@@ -47,7 +41,7 @@ TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y perm
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
 
-TODO: Sensores y AR proximamente
+TODO: Sensores
 */
 
 public class Nonograma implements IGame {

@@ -58,6 +58,7 @@ public class SceneVictory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
+                    //TODO: al titulo si quick game -> a story si historia
                     engine.getGame().changeScene(new SceneTitle(engine));
                 }
             }

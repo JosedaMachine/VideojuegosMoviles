@@ -24,7 +24,10 @@ public class SceneCategory implements SceneBase {
         this.engine = engine_;
     }
 
+    //TODO: Imagino que podemos pasar esto por ref hasta el nivel para sumar cuando uno es completado
+    //TODO: O igual en un gameManager
     HashMap<Category, Integer> categoryLevelIndexes = new HashMap<>();
+
     List<Button> levels;
 
     @Override
@@ -33,8 +36,8 @@ public class SceneCategory implements SceneBase {
 
         //TODO: Esto leerlo de archivo
         categoryLevelIndexes.put(Category.CAT0, 20);
-        categoryLevelIndexes.put(Category.CAT1, 14);
-        categoryLevelIndexes.put(Category.CAT2, 0);
+        categoryLevelIndexes.put(Category.CAT1, 20);
+        categoryLevelIndexes.put(Category.CAT2, 10);
         categoryLevelIndexes.put(Category.CAT3, 0);
 
         //Fade In
@@ -79,6 +82,7 @@ public class SceneCategory implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
 
+                        //Si no esta bloqueado
                         if(i == 0 || categoryLevelIndexes.get(Category.values()[i-1]) == maxLevels){
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
@@ -114,7 +118,7 @@ public class SceneCategory implements SceneBase {
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto
-        String title = "Select Category";
+        String title = "Select A Category";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
