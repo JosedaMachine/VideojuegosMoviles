@@ -19,8 +19,8 @@ import java.util.Random;
 
 public class Board {
     private TILE[][] board;
-    private final int rows;
-    private final int cols;
+    private int rows = 0;
+    private int cols = 0;
     private final int width, height;
     private int maxHorizontalFilled, maxVerticalFilled;
     private final float relationX, relationY;
@@ -31,64 +31,48 @@ public class Board {
     private List<List<Integer>> adyancentsVertical;
 
 
-    Board(int x, int y, int sizeX_, int sizeY_) {
-        board = new TILE[x][y];
-        rows = y;
-        cols = x;
+    Board(int cols, int rows, int sizeX_, int sizeY_) {
+        board = new TILE[cols][rows];
+        this.rows = rows;
+        this.cols = cols;
 
         //Relacion para cuando hay menos filas que columnas
-        float relationRowCol = rows/(float)cols;
+        float relationRowCol = this.rows /(float) this.cols;
 
         width = sizeX_;
         height = (int)(sizeY_*relationRowCol);
 
-        relationX = sizeX_ /(float) cols;
-        relationY = (sizeY_ /(float) rows) * relationRowCol;
+        relationX = sizeX_ /(float) this.cols;
+        relationY = (sizeY_ /(float) this.rows) * relationRowCol;
 
         //Tablero incialmente vacio
-        for (int i = 0; i < cols; i++)
-            for (int j = 0; j < rows; j++)
+        for (int i = 0; i < this.cols; i++)
+            for (int j = 0; j < this.rows; j++)
                 board[i][j] = TILE.EMPTY;
 
         numCorrectTiles = 0;
     }
 
-    Board(BufferedReader reader){
-        int x = 1, y = 3;
-        int sizeX_ = 3, sizeY_ = 3;
-        rows = y;
-        cols = x;
-
+    Board(BufferedReader reader, int sizeX_, int sizeY_){
         //Relacion para cuando hay menos filas que columnas
-        float relationRowCol = rows/(float)cols;
-
-        width = sizeX_;
-        height = (int)(sizeY_*relationRowCol);
-
-        relationX = sizeX_ /(float) cols;
-        relationY = (sizeY_ /(float) rows) * relationRowCol;
-
-//        try {
-//            File board = new File();
-//            Scanner openFile = new Scanner(board);
-//
-//            while (openFile.hasNextLine()){
-//                String fileData = openFile.nextLine();
-//                System.out.println(fileData);
-//            }
-//
-//            openFile.close();
-//        }
-//        catch (FileNotFoundException e){
-//            System.out.println("Error");
-//            e.printStackTrace();
-//        }
-
         try {
-            // do reading, usually loop until end of file reading
             String mLine;
+            mLine = reader.readLine();
+            this.cols = Integer.parseInt(mLine);
+            mLine = reader.readLine();
+            this.rows = Integer.parseInt(mLine);
+
+            board = new TILE[this.cols][this.rows];
+
+            //Por cada character de la fila String, asignamos filas de la columna
             while ((mLine = reader.readLine()) != null) {
-                int m = 0;
+                int i = 0;
+                for(int j = 0; j < mLine.length(); j++){
+                    if(mLine.charAt(j) == '.')
+                        board[j][i] = TILE.FILL;
+                    else board[j][i] = TILE.EMPTY;
+                }
+                i++;
             }
         } catch (IOException e) {
             //log the exception
@@ -101,12 +85,20 @@ public class Board {
                 }
             }
         }
+
+        //Relacion para cuando hay menos filas que columnas
+        float relationRowCol = this.rows /(float) this.cols;
+
+        width = sizeX_;
+        height = (int)(sizeY_*relationRowCol);
+
+        relationX = sizeX_ /(float) this.cols;
+        relationY = (sizeY_ /(float) this.rows) * relationRowCol;
+
+        calcAdjyacents();
     }
 
     void generateBoard() {
-        adyancentsHorizontal = new ArrayList<>();
-        adyancentsVertical = new ArrayList<>();
-
         //generamos el tablero solucion
         Random r = new Random();
         for (int i = 0; i < cols; i++) {
@@ -124,6 +116,8 @@ public class Board {
     }
 
     void calcAdjyacents(){
+        adyancentsHorizontal = new ArrayList<>();
+        adyancentsVertical = new ArrayList<>();
         //Calculamos los numeros adyacentes horizontal
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
@@ -183,6 +177,14 @@ public class Board {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
     }
 
     public int getNumCorrectTiles(){

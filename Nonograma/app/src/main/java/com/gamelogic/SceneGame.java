@@ -35,7 +35,8 @@ public class SceneGame implements SceneBase {
     private int lives = maxLives;
 
     //Filas y columnas del tablero
-    private final int rows_, cols_;
+    private int rows_;
+    private int cols_;
 
     private int numRemaining = 0, numWrong = 0;
     //Fuentes
@@ -46,6 +47,8 @@ public class SceneGame implements SceneBase {
     private static final double maxTime = 2.5; //Segundos para texto incorrecto
     private double timer = maxTime;
     private boolean DEBUG = false;
+
+    private String levelName = null;
 
     private Category category = null;
     private int lvlIndex = 0;
@@ -62,6 +65,8 @@ public class SceneGame implements SceneBase {
         cols_ = cols;
         category = cat;
         lvlIndex = index;
+
+        levelName = "prueba";
     }
 
     //endregion + Construct y Con
@@ -146,23 +151,10 @@ public class SceneGame implements SceneBase {
 
         int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
 
-        //Tablero de solucion
-//        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
-        String fileName = "prueba";
 
-        BufferedReader reader_ = null;
-        try {
-            reader_ = engine.openFile("levels/" + fileName +  ".txt");
-        }
-        catch (IOException e) {
-            System.out.println("Error opening file");
-            e.printStackTrace();
-        }
-
-        checkBoard = new Board(reader_);
-        checkBoard.generateBoard();
-        //Tablero de juego
-        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+        if(levelName != null){
+            createLevel(levelName, boardSize);
+        }else createLevel(boardSize);
 
         //relación respecto a numero de casillas
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
@@ -222,6 +214,34 @@ public class SceneGame implements SceneBase {
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+    }
+
+    private void createLevel(String levelName, int boardSize) {
+        String fileName = "prueba";
+
+        BufferedReader reader_ = null;
+        try {
+            reader_ = engine.openFile("levels/" + fileName +  ".txt");
+        }
+        catch (IOException e) {
+            System.out.println("Error opening file");
+            e.printStackTrace();
+        }
+
+//        Tablero de solucion
+        checkBoard = new Board(reader_, boardSize, boardSize);
+
+        cols_ = checkBoard.getCols();
+        rows_ = checkBoard.getRows();
+
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+    }
+
+    private void createLevel(int boardSize) {
+        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
+        checkBoard.generateBoard();
+        //Tablero de juego
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
     }
 
     @Override
