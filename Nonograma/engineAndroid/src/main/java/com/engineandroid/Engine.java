@@ -1,7 +1,11 @@
 package com.engineandroid;
 
+import android.content.res.AssetManager;
 import android.view.SurfaceView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Engine implements Runnable{
@@ -10,6 +14,7 @@ public class Engine implements Runnable{
     Input input;
     Audio audio;
     IGame currGame;
+    AssetManager assetManager_;
     private Thread engineThread;
 
     boolean running;
@@ -18,7 +23,9 @@ public class Engine implements Runnable{
         currGame = null;
         graphics = new Graphics(view, logicWidth_, logicHeight_);
         input = new Input(view, graphics);
-        audio = new Audio(view.getContext().getAssets());
+        assetManager_ = view.getContext().getAssets();
+        audio = new Audio(assetManager_);
+
     }
 
     public Graphics getGraphics() {
@@ -40,6 +47,11 @@ public class Engine implements Runnable{
      */
     public void setGame(IGame game) {
         currGame = game;
+    }
+
+    public BufferedReader openFile(String fileName) throws IOException {
+        return new BufferedReader(
+                new InputStreamReader(assetManager_.open(fileName), "UTF-8"));
     }
 
     public IGame getGame() {

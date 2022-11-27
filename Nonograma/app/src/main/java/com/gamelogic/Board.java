@@ -6,7 +6,11 @@ import com.engineandroid.Font;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 import java.util.ArrayList;
@@ -49,6 +53,56 @@ public class Board {
         numCorrectTiles = 0;
     }
 
+    Board(BufferedReader reader){
+        int x = 1, y = 3;
+        int sizeX_ = 3, sizeY_ = 3;
+        rows = y;
+        cols = x;
+
+        //Relacion para cuando hay menos filas que columnas
+        float relationRowCol = rows/(float)cols;
+
+        width = sizeX_;
+        height = (int)(sizeY_*relationRowCol);
+
+        relationX = sizeX_ /(float) cols;
+        relationY = (sizeY_ /(float) rows) * relationRowCol;
+
+//        try {
+//            File board = new File();
+//            Scanner openFile = new Scanner(board);
+//
+//            while (openFile.hasNextLine()){
+//                String fileData = openFile.nextLine();
+//                System.out.println(fileData);
+//            }
+//
+//            openFile.close();
+//        }
+//        catch (FileNotFoundException e){
+//            System.out.println("Error");
+//            e.printStackTrace();
+//        }
+
+        try {
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                int m = 0;
+            }
+        } catch (IOException e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    //log the exception
+                }
+            }
+        }
+    }
+
     void generateBoard() {
         adyancentsHorizontal = new ArrayList<>();
         adyancentsVertical = new ArrayList<>();
@@ -66,6 +120,10 @@ public class Board {
             }
         }
 
+        calcAdjyacents();
+    }
+
+    void calcAdjyacents(){
         //Calculamos los numeros adyacentes horizontal
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
@@ -113,6 +171,7 @@ public class Board {
             adyancentsVertical.add(adyacents);
         }
     }
+
 
     public Pair<Float, Float> getRelationFactorSize(){
         return new Pair<>(relationX, relationY);

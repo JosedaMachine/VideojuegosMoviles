@@ -9,6 +9,8 @@ import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
@@ -106,7 +108,19 @@ public class SceneGame implements SceneBase {
         int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
 
         //Tablero de solucion
-        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
+//        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
+        String fileName = "prueba";
+
+        BufferedReader reader_ = null;
+        try {
+            reader_ = engine.openFile("levels/" + fileName +  ".txt");
+        }
+        catch (IOException e) {
+            System.out.println("Error opening file");
+            e.printStackTrace();
+        }
+
+        checkBoard = new Board(reader_);
         checkBoard.generateBoard();
         //Tablero de juego
         gameBoard = new Board(cols_, rows_, boardSize, boardSize);
