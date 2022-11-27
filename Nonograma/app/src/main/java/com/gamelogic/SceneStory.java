@@ -94,7 +94,7 @@ public class SceneStory implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
                     //TODO: Generar el nivel correcto de la categoría correcta
-                    engine.getGame().changeScene(new SceneGame(engine , i, j, Category.CAT0, 0));
+                    engine.getGame().changeScene(new SceneGame(engine , i, j, category, lvlIndex));
                 }
             }
         };

@@ -1,7 +1,0 @@
-10
-5
-p..p..pppp
-p.....pppp
-p.....pppp
-.......ppp
-p......ppp

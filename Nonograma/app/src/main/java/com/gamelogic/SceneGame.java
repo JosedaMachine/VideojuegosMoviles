@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class SceneGame implements SceneBase {
 
     //region Variables y Constructora
-
     private final Engine engine;
     //Tablero chuleta para comprobar
     private Board checkBoard;
@@ -53,6 +52,10 @@ public class SceneGame implements SceneBase {
     private Category category = null;
     private int lvlIndex = 0;
 
+    String[] OceanLevels = {"fish", "anchor", "crab"};
+    String[] MedievalLevels = {"cat" , "sword"};
+
+
     public SceneGame(Engine engine, int rows, int cols) {
         this.engine = engine;
         rows_ = rows;
@@ -66,7 +69,8 @@ public class SceneGame implements SceneBase {
         category = cat;
         lvlIndex = index;
 
-        levelName = "prueba";
+        if(cat == Category.CAT1)
+            levelName = MedievalLevels[index];
     }
 
     //endregion + Construct y Con
@@ -217,11 +221,9 @@ public class SceneGame implements SceneBase {
     }
 
     private void createLevel(String levelName, int boardSize) {
-        String fileName = "prueba";
-
         BufferedReader reader_ = null;
         try {
-            reader_ = engine.openFile("levels/" + fileName +  ".txt");
+            reader_ = engine.openFile("levels/" + levelName +  ".txt");
         }
         catch (IOException e) {
             System.out.println("Error opening file");

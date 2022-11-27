@@ -65,11 +65,13 @@ public class Board {
             board = new TILE[this.cols][this.rows];
 
             //Por cada character de la fila String, asignamos filas de la columna
+            int i = 0;
             while ((mLine = reader.readLine()) != null) {
-                int i = 0;
                 for(int j = 0; j < mLine.length(); j++){
-                    if(mLine.charAt(j) == '.')
+                    if(mLine.charAt(j) == '.'){
                         board[j][i] = TILE.FILL;
+                        numCorrectTiles++;
+                    }
                     else board[j][i] = TILE.EMPTY;
                 }
                 i++;
