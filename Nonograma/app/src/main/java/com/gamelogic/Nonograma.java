@@ -49,6 +49,7 @@ public class Nonograma implements IGame {
     SceneBase currScene;
     public Nonograma(Engine engine){
         this.engine = engine;
+        GameManager.init();
     }
 
     //Iniciar nueva escena

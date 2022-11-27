@@ -22,11 +22,11 @@ public class SceneStory implements SceneBase {
     private Category category;
     private int lockIndex;
 
-    public SceneStory(Engine engine_, int category, int lvlIndex) {
+    public SceneStory(Engine engine_, int category) {
         this.engine = engine_;
         this.category = Category.values()[category];
 
-        lockIndex = lvlIndex;
+        lockIndex = GameManager.instance().getLevelIndex(Category.values()[category]);
     }
 
     @Override

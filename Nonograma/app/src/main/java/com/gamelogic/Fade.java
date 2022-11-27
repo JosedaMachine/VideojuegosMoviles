@@ -45,8 +45,8 @@ public class Fade{
         state_ = state;
         play = false;
 
-        percentageIn = ((float)1.0f / (float)timeIn_);
-        percentageOut = ((float)1.0f/ (float)timeOut_);
+        percentageIn = (1.0f / (float)timeIn_);
+        percentageOut = (1.0f/ (float)timeOut_);
     }
 
     public void render(){

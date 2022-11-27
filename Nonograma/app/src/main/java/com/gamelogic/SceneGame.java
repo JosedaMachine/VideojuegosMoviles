@@ -15,6 +15,9 @@ import java.util.ArrayList;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
+
+    //region Variables y Constructora
+
     private final Engine engine;
     //Tablero chuleta para comprobar
     private Board checkBoard;
@@ -26,6 +29,10 @@ public class SceneGame implements SceneBase {
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
     private boolean checkWin = false;
+
+    //Vidas
+    private final int maxLives = 3;
+    private int lives = maxLives;
 
     //Filas y columnas del tablero
     private final int rows_, cols_;
@@ -40,11 +47,26 @@ public class SceneGame implements SceneBase {
     private double timer = maxTime;
     private boolean DEBUG = false;
 
+    private Category category = null;
+    private int lvlIndex = 0;
+
     public SceneGame(Engine engine, int rows, int cols) {
         this.engine = engine;
         rows_ = rows;
         cols_ = cols;
     }
+
+    public SceneGame(Engine engine, int rows, int cols, Category cat, int index) {
+        this.engine = engine;
+        rows_ = rows;
+        cols_ = cols;
+        category = cat;
+        lvlIndex = index;
+    }
+
+    //endregion + Construct y Con
+
+    //region Override methods
 
     @Override
     public void update(double deltaTime) {
@@ -56,6 +78,12 @@ public class SceneGame implements SceneBase {
                 //Inicia el timer de derrota
                 timer = 0;
                 engine.getAudio().playSound("wrong.wav");
+
+                //Si nivel historia y vidas == 0
+                if(!subtractLife()){
+                    //TODO: Enviar a escena de derrota o devolver a escena anterior
+                    //engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
+                }
             }
         }
 
@@ -70,6 +98,17 @@ public class SceneGame implements SceneBase {
         //Victoria
         if(hasWon){
             engine.getAudio().playSound("correct.wav");
+
+            //Si modo historia
+            if (category != null){
+                final int lastLvlIndex = GameManager.instance().getLevelIndex(category);
+                //Si es el ultimo nivel desbloqueado -> desbloquea siguiente
+                if(lastLvlIndex == lvlIndex)
+                    GameManager.instance().setLevelIndex(category, lvlIndex + 1);
+
+                //TODO: Guardar nuevo lastLvlIndex en archivo guardado
+            }
+
             engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
         }
         fade.update(deltaTime);
@@ -259,8 +298,12 @@ public class SceneGame implements SceneBase {
         fade.render();
     }
 
+    //endregion
+
+    //region methods
+
     //Establece la casilla dada por [x][y] al siguiente estado
-    void setTile(int x, int y, boolean wrong) {
+    private void setTile(int x, int y, boolean wrong) {
         if(x < 0 || y < 0) return;
 
         if(wrong){
@@ -278,7 +321,21 @@ public class SceneGame implements SceneBase {
             gameBoard.setTile(x,y, TILE.EMPTY);
     }
 
-    boolean checkHasWon() {
+    private boolean subtractLife(){
+        lives--;
+        return lives > 0;
+    }
+
+    private boolean checkMaxLives(){
+        return lives == maxLives;
+    }
+
+    private void addLife(){
+        if(lives < maxLives)
+            lives++;
+    }
+
+    private boolean checkHasWon() {
         ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
         //NO recorremos hasta el final, el último es el nº de tiles
@@ -294,4 +351,6 @@ public class SceneGame implements SceneBase {
         return wrongs.size() == 1 && //Que no haya incorrectas
                wrongs.get(wrongs.size()-1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
+
+    //endregion
 }

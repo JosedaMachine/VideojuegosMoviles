@@ -10,7 +10,6 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SceneCategory implements SceneBase {
@@ -24,10 +23,6 @@ public class SceneCategory implements SceneBase {
         this.engine = engine_;
     }
 
-    //TODO: Imagino que podemos pasar esto por ref hasta el nivel para sumar cuando uno es completado
-    //TODO: O igual en un gameManager
-    HashMap<Category, Integer> categoryLevelIndexes = new HashMap<>();
-
     List<Button> levels;
 
     @Override
@@ -35,10 +30,10 @@ public class SceneCategory implements SceneBase {
         loadResources(engine.getGraphics());
 
         //TODO: Esto leerlo de archivo
-        categoryLevelIndexes.put(Category.CAT0, 20);
-        categoryLevelIndexes.put(Category.CAT1, 20);
-        categoryLevelIndexes.put(Category.CAT2, 10);
-        categoryLevelIndexes.put(Category.CAT3, 0);
+        GameManager.instance().setLevelIndex(Category.CAT0, 20);
+        GameManager.instance().setLevelIndex(Category.CAT1, 20);
+        GameManager.instance().setLevelIndex(Category.CAT2, 10);
+        GameManager.instance().setLevelIndex(Category.CAT3, 0);
 
         //Fade In
         fade = new Fade(engine,
@@ -58,7 +53,7 @@ public class SceneCategory implements SceneBase {
         int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f),
                 yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f);
 
-        int posX = (int) ((engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2);
+        int posX = (engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2;
         int posY = engine.getGraphics().getLogicHeight()/2 - size/2;
 
         int cont = 0;
@@ -83,7 +78,7 @@ public class SceneCategory implements SceneBase {
                     if(isInside(event_.getX_(),event_.getY_())){
 
                         //Si no esta bloqueado
-                        if(i == 0 || categoryLevelIndexes.get(Category.values()[i-1]) == maxLevels){
+                        if(i == 0 || GameManager.instance().getLevelIndex(Category.values()[i-1]) == maxLevels){
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
                             if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -100,14 +95,14 @@ public class SceneCategory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneStory(engine, i, categoryLevelIndexes.get(Category.values()[i])));
+                    engine.getGame().changeScene(new SceneStory(engine, i));
                 }
             }
         };
 
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage(
-                    (i > 0 && categoryLevelIndexes.get(Category.values()[i-1]) < maxLevels)?"lock":"category" + i));
+                    (i > 0 && GameManager.instance().getLevelIndex(Category.values()[i-1]) < maxLevels)?"lock":"category" + i));
 
         return button;
     }
@@ -120,7 +115,8 @@ public class SceneCategory implements SceneBase {
         //Texto
         String title = "Select A Category";
         Pair<Double, Double> dime = graphics.getStringDimensions(title);
-        graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
+        graphics.drawText(title, (int) (graphics.getLogicWidth()/2 - dime.first/2),
+                (int) (graphics.getLogicHeight()*0.15 + dime.second/2));
 
         graphics.setFont(levelLabel);
 
@@ -133,7 +129,8 @@ public class SceneCategory implements SceneBase {
             graphics.drawImage(graphics.getImage("empty"), (int)(b.getX() + size*0.25f),
                     (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
 
-            graphics.drawText(categoryLevelIndexes.get(Category.values()[i]) + "/" + maxLevels, (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
+            graphics.drawText(GameManager.instance().getLevelIndex(Category.values()[i]) + "/"
+                    + maxLevels, (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 
 
