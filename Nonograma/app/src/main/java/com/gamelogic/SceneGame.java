@@ -52,8 +52,25 @@ public class SceneGame implements SceneBase {
     private Category category = null;
     private int lvlIndex = 0;
 
-    String[] OceanLevels = {"fish", "anchor", "crab"};
-    String[] MedievalLevels = {"cat" , "sword"};
+    String[] KitchenLevels = {"fork", "knife", "spoon", "plate",
+                              "pan","pot","oven","microwave",
+                              "salt","napkin","pizza","sandwich",
+                              "table","chefhat","restaurant","glass"};
+
+    String[] MedievalLevels = {"cat" , "sword", "bow", "crossbow",
+                               "helmet", "arrow", "shield", "castle",
+                               "banner", "crossingswords","crown","beer",
+                               "dragon", "law", "flail", "gallows"};
+
+    String[] OceanLevels = {"fish", "anchor", "crab", "sailboat",
+                            "fishnet","fishingrod","helm","prow",
+                            "hook","eyepatch","shark","barrel",
+                            "chest","coin","skull","jellyfish"};
+
+    String[] IconLevels = {"twitter", "faebook", "google", "whatsapp",
+                            "instagram","gmail","discord","chrome",
+                            "visualstudio","github","twitch","youtibe",
+                            "infojobs"/*¿la de trabajar te la sabes?*/,"netflix","amazon","ucm"};
 
 
     public SceneGame(Engine engine, int rows, int cols) {
