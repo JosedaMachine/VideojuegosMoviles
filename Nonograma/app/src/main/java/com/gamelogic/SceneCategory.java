@@ -29,12 +29,6 @@ public class SceneCategory implements SceneBase {
     public void init() {
         loadResources(engine.getGraphics());
 
-        //TODO: Esto leerlo de archivo
-        GameManager.instance().setLevelIndex(Category.CAT0, 20);
-        GameManager.instance().setLevelIndex(Category.CAT1, 20);
-        GameManager.instance().setLevelIndex(Category.CAT2, 10);
-        GameManager.instance().setLevelIndex(Category.CAT3, 0);
-
         //Fade In
         fade = new Fade(engine,
                 0, 0,

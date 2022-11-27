@@ -90,8 +90,7 @@ public class SceneGame implements SceneBase {
 
                 //Si nivel historia y vidas == 0
                 if(!subtractLife()){
-                    //TODO: Enviar a escena de derrota o devolver a escena anterior
-                    //engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
+                    engine.getGame().changeScene(new SceneDefeat(engine));
                 }
             }
         }
@@ -275,6 +274,16 @@ public class SceneGame implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "fill");
 
+        im = graphics.newImage("heart.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "heart");
+
+        im = graphics.newImage("emptyheart.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "emptyheart");
+
         numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
 
         pixelFont = graphics.newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * 0.1f), false);
@@ -299,6 +308,22 @@ public class SceneGame implements SceneBase {
         if(DEBUG){
             checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
         }
+
+        //Corazones
+        Image heart = graphics.getImage("heart"),
+            emHeart = graphics.getImage("emptyheart");
+
+        float heartScale = 0.1f;
+        float xOffset = graphics.getLogicWidth()*0.005f + heart.getWidth()*heartScale ;
+
+        for (int i = 0; i < maxLives; i++){
+            //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
+            graphics.drawImage((i < lives)?heart:emHeart,
+                    (int)(graphics.getLogicWidth()*0.2f - (heart.getWidth()*heartScale)/2 + xOffset*i),
+                    (int)(graphics.getLogicHeight()*0.75 - (heart.getHeight()*heartScale)/2), heartScale, heartScale);
+        }
+
+
 
         //Texto indicando casillas incorrectas
         if(!hasWon && timer < maxTime){
@@ -352,6 +377,7 @@ public class SceneGame implements SceneBase {
         return lives == maxLives;
     }
 
+    //Anyadir al ver anuncio
     private void addLife(){
         if(lives < maxLives)
             lives++;
