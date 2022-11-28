@@ -70,7 +70,7 @@ public class Board {
                 for(int j = 0; j < mLine.length(); j++){
                     if(mLine.charAt(j) == '.'){
                         board[j][i] = TILE.FILL;
-//                        numCorrectTiles++;
+                        numCorrectTiles++;
                     }
                     else board[j][i] = TILE.EMPTY;
                 }
@@ -87,7 +87,7 @@ public class Board {
                 }
             }
         }
-        numCorrectTiles = 0;
+//        numCorrectTiles = 0;
         //Relacion para cuando hay menos filas que columnas
         float relationRowCol = this.rows /(float) this.cols;
 
