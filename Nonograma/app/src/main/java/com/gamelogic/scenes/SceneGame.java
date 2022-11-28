@@ -58,22 +58,22 @@ public class SceneGame implements SceneBase {
     private Category category = null;
     private int lvlIndex = 0;
 
-    String[] KitchenLevels = {"fork", "knife", "spoon", "plate",
+    String[] KitchenLevels = {"fork", "spoon","knife", "plate",
                               "pan","pot","oven","microwave",
                               "salt","napkin","pizza","sandwich",
                               "table","chefhat","restaurant","glass"};
 
-    String[] MedievalLevels = {"cat" , "sword", "bow", "crossbow",
+    String[] MedievalLevels = {"bow", "sword" , "cat" , "crossbow",
                                "helmet", "arrow", "shield", "castle",
                                "banner", "crossingswords","crown","beer",
                                "dragon", "law", "flail", "gallows"};
 
-    String[] OceanLevels = {"fish", "anchor", "crab", "sailboat",
+    String[] OceanLevels = {"fish", "anchor", "crab", "hook",
                             "fishnet","fishingrod","helm","prow",
-                            "hook","eyepatch","shark","barrel",
+                            "sailboat","eyepatch","shark","barrel",
                             "chest","coin","skull","jellyfish"};
 
-    String[] IconLevels = {"twitter", "faebook", "google", "whatsapp",
+    String[] IconLevels = {"twitter", "facebook", "google", "whatsapp",
                             "instagram","gmail","discord","chrome",
                             "visualstudio","github","twitch","youtibe",
                             "infojobs"/*¿la de trabajar te la sabes?*/,"netflix","amazon","ucm"};
@@ -92,8 +92,13 @@ public class SceneGame implements SceneBase {
         category = cat;
         lvlIndex = index;
 
-        if(cat == Category.CAT1)
+        if(cat == Category.CAT0)
+            levelName = KitchenLevels[index];
+        else if(cat == Category.CAT1)
             levelName = MedievalLevels[index];
+        else if(cat == Category.CAT2)
+            levelName = OceanLevels[index];
+        else levelName = IconLevels[index];
     }
 
     //endregion + Construct y Con
