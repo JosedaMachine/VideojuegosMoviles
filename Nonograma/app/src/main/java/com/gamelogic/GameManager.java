@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class GameManager {
     private static GameManager instance_;
+    private final int maxLevels = 4;
 
     public GameManager(){
 
@@ -25,6 +26,9 @@ public class GameManager {
         return true;
     }
 
+    public int getMaxLevel(){
+        return maxLevels;
+    }
     public int getLevelIndex(Category category){
         return categoryLevelIndexes.get(category);
     }

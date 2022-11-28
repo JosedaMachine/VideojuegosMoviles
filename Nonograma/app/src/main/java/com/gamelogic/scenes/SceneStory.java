@@ -51,7 +51,7 @@ public class SceneStory implements SceneBase {
 
         int size = (int)(engine.getGraphics().getLogicWidth() * 0.155f);
 
-        int numCols = 4, numFils = 5;
+        int numCols = 4, numFils = GameManager.instance().getMaxLevel()/4;
 
         int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f),
                 yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f);

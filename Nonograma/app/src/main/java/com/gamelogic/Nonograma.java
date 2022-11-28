@@ -52,9 +52,9 @@ public class Nonograma implements IGame {
         this.engine = engine;
         GameManager.init();
         //TODO: Esto leerlo de archivo
-        GameManager.instance().setLevelIndex(Category.CAT0, 20);
-        GameManager.instance().setLevelIndex(Category.CAT1, 0);
-        GameManager.instance().setLevelIndex(Category.CAT2, 0);
+        GameManager.instance().setLevelIndex(Category.CAT0, 4);
+        GameManager.instance().setLevelIndex(Category.CAT1, 4);
+        GameManager.instance().setLevelIndex(Category.CAT2, 2);
         GameManager.instance().setLevelIndex(Category.CAT3, 0);
     }
 

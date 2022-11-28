@@ -17,11 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SceneCategory implements SceneBase {
-
     Font title, levelLabel;
     Engine engine;
     private Fade fade;
-    private final int maxLevels = 20;
 
     public SceneCategory(Engine engine_) {
         this.engine = engine_;
@@ -76,7 +74,7 @@ public class SceneCategory implements SceneBase {
                     if(isInside(event_.getX_(),event_.getY_())){
 
                         //Si no esta bloqueado
-                        if(i == 0 || GameManager.instance().getLevelIndex(Category.values()[i-1]) == maxLevels){
+                        if(i == 0 || GameManager.instance().getLevelIndex(Category.values()[i-1]) == GameManager.instance().getMaxLevel()){
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
                             if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -100,7 +98,7 @@ public class SceneCategory implements SceneBase {
 
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage(
-                    (i > 0 && GameManager.instance().getLevelIndex(Category.values()[i-1]) < maxLevels)?"lock":"category" + i));
+                    (i > 0 && GameManager.instance().getLevelIndex(Category.values()[i-1]) < GameManager.instance().getMaxLevel())?"lock":"category" + i));
 
         return button;
     }
@@ -128,7 +126,7 @@ public class SceneCategory implements SceneBase {
                     (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
 
             graphics.drawText(GameManager.instance().getLevelIndex(Category.values()[i]) + "/"
-                    + maxLevels, (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
+                    + GameManager.instance().getMaxLevel(), (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 
 
