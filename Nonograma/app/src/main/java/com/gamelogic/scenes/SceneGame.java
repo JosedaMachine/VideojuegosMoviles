@@ -342,13 +342,14 @@ public class SceneGame implements SceneBase {
             emHeart = graphics.getImage("emptyheart");
 
         float heartScale = 0.1f;
-        float xOffset = graphics.getLogicWidth()*0.005f + heart.getWidth()*heartScale ;
+        float xOffset = graphics.getLogicWidth()*0.005f + heart.getWidth()*heartScale,
+                yOffset = graphics.getLogicHeight()*0.005f;
 
         for (int i = 0; i < maxLives; i++){
             //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
             graphics.drawImage((i < lives)?heart:emHeart,
-                    (int)(graphics.getLogicWidth()*0.2f - (heart.getWidth()*heartScale)/2 + xOffset*i),
-                    (int)(graphics.getLogicHeight()*0.75 - (heart.getHeight()*heartScale)/2), heartScale, heartScale);
+                    (int)(checkBoard.getPosX() + xOffset*i),
+                    (int)(checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
         }
 
 
