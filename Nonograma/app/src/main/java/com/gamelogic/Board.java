@@ -31,7 +31,7 @@ public class Board {
     private List<List<Integer>> adyancentsVertical;
 
 
-    Board(int cols, int rows, int sizeX_, int sizeY_) {
+    public Board(int cols, int rows, int sizeX_, int sizeY_) {
         board = new TILE[cols][rows];
         this.rows = rows;
         this.cols = cols;
@@ -53,7 +53,7 @@ public class Board {
         numCorrectTiles = 0;
     }
 
-    Board(BufferedReader reader, int sizeX_, int sizeY_){
+    public Board(BufferedReader reader, int sizeX_, int sizeY_){
         //Relacion para cuando hay menos filas que columnas
         try {
             String mLine;
@@ -100,7 +100,7 @@ public class Board {
         calcAdjyacents();
     }
 
-    void generateBoard() {
+    public void generateBoard() {
         //generamos el tablero solucion
         Random r = new Random();
         for (int i = 0; i < cols; i++) {
@@ -311,7 +311,7 @@ public class Board {
         drawNums(e, x, y, fontSize);
     }
 
-    Pair<Integer,Integer> calculcateIndexMatrix(Engine e, int pixelX, int pixelY) {
+    public Pair<Integer,Integer> calculcateIndexMatrix(Engine e, int pixelX, int pixelY) {
         // Comprueba si esta dentro del tablero
         if ((pixelX > posX && pixelX <= posX + width) && (pixelY > posY && pixelY <= posY + height)) {
             // Localiza posicion y selecciona el tile

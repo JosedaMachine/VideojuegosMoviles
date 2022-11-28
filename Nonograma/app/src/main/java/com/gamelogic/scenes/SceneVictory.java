@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.gamelogic.scenes;
 
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
@@ -8,18 +8,23 @@ import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
+import com.gamelogic.Board;
+import com.gamelogic.Button;
+import com.gamelogic.Fade;
 
-public class SceneDefeat implements SceneBase {
+public class SceneVictory implements SceneBase {
 
     private final Engine engine;
 
     private Button button;
     private Font title, buttonFont;
-    private final String victoryText = "DEFEAT!";
+    private final String victoryText = "VICTORY!";
 
     private Fade fade;
 
-    public SceneDefeat(Engine engine_) {
+    private final Board checkBoard;
+    public SceneVictory(Engine engine_, Board checkboard) {
+        this.checkBoard = checkboard;
         this.engine = engine_;
     }
 
@@ -73,17 +78,12 @@ public class SceneDefeat implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
-        //Texto de derrota
+        //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
         graphics.drawText(victoryText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()/8 + dime.second/2));
 
-        //Imagen Derrota
-        Image im = graphics.getImage("skull");
-
-        float scale = 0.8f;
-        //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
-        graphics.drawImage(im, graphics.getLogicWidth()/2 - (int)((im.getWidth()*scale)/2),
-                graphics.getLogicHeight()/2 - (int)((im.getHeight()*scale)/2), scale, scale);
+        //Tablero correcto
+        checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - checkBoard.getWidth()/2, graphics.getLogicHeight()/2 - checkBoard.getHeight()/2, true);
 
         //Boton de vuelta al menu
         button.render(graphics);
@@ -112,11 +112,6 @@ public class SceneDefeat implements SceneBase {
         if(!im.isLoaded())
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
-
-        im = graphics.newImage("skull.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "skull");
 
         title = engine.getGraphics().newFont("arcade.TTF",75,true);
 

@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.gamelogic.scenes;
 
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
@@ -8,6 +8,8 @@ import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
+import com.gamelogic.Button;
+import com.gamelogic.Fade;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,6 +6,7 @@ import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.SceneBase;
+import com.gamelogic.scenes.SceneTitle;
 
 /*
 TODO: 30 Nov modo historia totalmente funcional y mecánica de vida
