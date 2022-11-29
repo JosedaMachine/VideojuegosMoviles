@@ -13,11 +13,6 @@ import com.gamelogic.Button;
 import com.gamelogic.Fade;
 
 public class SceneTitle implements SceneBase {
-    private enum buttonType
-    {
-        STORY, QUICK
-    }
-
     private final Engine engine;
     private Fade fade;
     private Button quickButton, storyButton;
@@ -27,8 +22,6 @@ public class SceneTitle implements SceneBase {
 
         this.engine = engine_;
     }
-
-    buttonType buttonType_;
 
     @Override
     public void init() {
@@ -56,7 +49,7 @@ public class SceneTitle implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(quickButton.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-                        buttonType_ = buttonType.QUICK;
+                        setSelected(true);
 
                         //Trigger Fade Out
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -70,7 +63,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
-                if(fade.getFadeOutComplete() && buttonType_ == buttonType.QUICK){
+                if(fade.getFadeOutComplete() && isSelected()){
                     engine.getGame().changeScene(new SceneLevels(engine));
                 }
             }
@@ -85,7 +78,7 @@ public class SceneTitle implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(storyButton.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-                        buttonType_ = buttonType.STORY;
+                        setSelected(true);
 
                         //Trigger Fade Out
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -99,7 +92,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
-                if(fade.getFadeOutComplete() && buttonType_ == buttonType.STORY){
+                if(fade.getFadeOutComplete() && isSelected()){
                     engine.getGame().changeScene(new SceneCategory(engine));
                 }
             }

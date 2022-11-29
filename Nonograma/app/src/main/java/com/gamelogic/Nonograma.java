@@ -31,7 +31,6 @@ startActivity(intent) ; // startActivity es un método de Context
 
 
 TODO: Varias paletas (5 por ejemplo) y estilos (cuadrados un poco diferentes o fuentes diferentes)
-TODO: No estaria guapo un modo daltónico ni nada que pusiera formas características en cada casilla (fill=imagen de rombo, Wrong=X, etc)
 TODO: paletas y estilos desbloqueables al pasar cierta cantidad de niveles de la historia O mediante dinero de juego (prob. mas nota)
 
 TODO: Banner anuncio en la parte inferior del juego
