@@ -42,7 +42,7 @@ public class SceneStory implements SceneBase {
         fade = new Fade(engine,
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
-                1000, 1000, Fade.STATE_FADE.In);
+                500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
@@ -130,7 +130,7 @@ public class SceneStory implements SceneBase {
             levels.get(i).render(graphics);
         }
 
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override

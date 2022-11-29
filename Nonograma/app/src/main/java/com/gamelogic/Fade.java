@@ -40,8 +40,8 @@ public class Fade{
         sizeY_ = height;
 
         //Tiempos de fade
-        timeIn_ = timeIn  /** App::FPS*/;
-        timeOut_ = timeOut /** App::FPS*/;
+        timeIn_ = timeIn;
+        timeOut_ = timeOut;
         state_ = state;
         play = false;
 
@@ -49,9 +49,9 @@ public class Fade{
         percentageOut = (1.0f/ (float)timeOut_);
     }
 
-    public void render(){
-        e_.getGraphics().setColor(colorFade, alpha);
-        e_.getGraphics().fillRect(posX_, posY_, sizeX_ , sizeY_);
+    public void render(Graphics g){
+        g.setColor(colorFade, alpha);
+        g.fillRect(posX_, posY_, sizeX_ , sizeY_);
     }
 
     public void update(double deltaTime){

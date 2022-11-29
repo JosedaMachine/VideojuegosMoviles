@@ -33,7 +33,7 @@ public class SceneDefeat implements SceneBase {
         fade = new Fade(engine,
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
-                1000, 1000, Fade.STATE_FADE.Out);
+                500, 500, Fade.STATE_FADE.Out);
         fade.setColor(ColorWrap.BLACK);
 
         int sizeX = 225, sizeY = 50;
@@ -89,7 +89,7 @@ public class SceneDefeat implements SceneBase {
 
         //Boton de vuelta al menu
         button.render(graphics);
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override
