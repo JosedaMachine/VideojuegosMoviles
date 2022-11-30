@@ -1,5 +1,6 @@
 package com.engineandroid;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -23,6 +24,8 @@ public class Graphics {
     int logicWidth, logicHeight;
     float scaleFactor;
     int translateFactorX, translateFactorY;
+
+    private int clearColor = ColorWrap.WHITE;
 
     Graphics(SurfaceView view, int logicWidth_ , int logicHeight_){
         this.myView = view;
@@ -73,10 +76,10 @@ public class Graphics {
         canvas.scale((float)x, (float)y);
     }
 
-    public void prepare(int color) {
+    public void prepare() {
         while (!holder.getSurface().isValid());
         canvas = holder.lockCanvas();
-        clear(ColorWrap.WHITE);
+        clear(clearColor);
 
 //        //Bandas horizontales - DEBUG
 //        fillRect(0,0, translateFactorX, getHeight());
@@ -220,4 +223,9 @@ public class Graphics {
         return scaleFactor;
     }
 
+    public Context getContext() {return myView.getContext();}
+
+    public void setClearColor(int color) {clearColor = color;}
+
+    public int getClearColor() {return clearColor;}
 }

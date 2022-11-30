@@ -9,6 +9,7 @@ import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.Sound;
 import com.engineandroid.TouchEvent;
+import com.gamelogic.AccelerometerSensor;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
 
@@ -18,6 +19,9 @@ public class SceneTitle implements SceneBase {
     private Button quickButton, storyButton;
     private Font title;
     private String titleText = "Nonogram";
+
+    private AccelerometerSensor accelerometerSensor;
+
     public SceneTitle(Engine engine_) {
 
         this.engine = engine_;
@@ -114,6 +118,9 @@ public class SceneTitle implements SceneBase {
             music.setLoop(true);
             music.setVolume(-15);
         }
+
+        //Acceleremoter
+        accelerometerSensor = new AccelerometerSensor(engine.getGraphics().getContext());
     }
 
     @Override
@@ -138,6 +145,7 @@ public class SceneTitle implements SceneBase {
         fade.update(deltaTime);
         quickButton.update(deltaTime);
         storyButton.update(deltaTime);
+        updateBackground();
     }
 
     @Override
@@ -162,5 +170,19 @@ public class SceneTitle implements SceneBase {
         engine.getAudio().newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+    }
+
+    private void updateBackground(){
+        float[] deltas = accelerometerSensor.getDeltaValues();
+
+        int i = 0;
+        while(i < 3 && deltas[i] < 15){
+            i++;
+        }
+
+        if(i < 3)
+            engine.getGraphics().setClearColor(ColorWrap.BLACK);
+        else
+            engine.getGraphics().setClearColor(ColorWrap.WHITE);
     }
 }

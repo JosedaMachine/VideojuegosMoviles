@@ -25,7 +25,6 @@ public class Engine implements Runnable{
         input = new Input(view, graphics);
         assetManager_ = view.getContext().getAssets();
         audio = new Audio(assetManager_);
-
     }
 
     public Graphics getGraphics() {
@@ -58,6 +57,7 @@ public class Engine implements Runnable{
         return currGame;
     }
 
+    //TODO meter un método a GAME de onResume, onPause
     public void resume() {
         if (!this.running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya
@@ -148,7 +148,7 @@ public class Engine implements Runnable{
         //~Mutex~
         //Prevenimos que en ningún otro sitio del código se permita pintar, bloqueando el canvas
         //para su modificación a continuación
-        graphics.prepare(0);
+        graphics.prepare();
         this.currGame.render(graphics);
         graphics.finish();
     }
