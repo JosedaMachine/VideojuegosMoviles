@@ -1,6 +1,5 @@
 package com.launcher;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Configuration;
@@ -12,9 +11,6 @@ import android.view.WindowManager;
 import com.engineandroid.*;
 import com.engineandroid.Engine;
 import com.gamelogic.Nonograma;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Objects;
 
@@ -34,12 +30,7 @@ public class MainActivity extends AppCompatActivity {
         //Init renderer
         SurfaceView renderView = new SurfaceView(this);
         setContentView(renderView);
-        MobileAds.initialize(this, new OnInitializationCompleteListener(){
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
 
-            }
-        });
         int width = 600;
         int height = 900;
 
