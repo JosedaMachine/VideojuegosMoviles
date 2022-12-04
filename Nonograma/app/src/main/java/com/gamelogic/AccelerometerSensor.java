@@ -8,7 +8,7 @@ import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
-
+//TODO esto debe ir en el motor, no la logica
 public class AccelerometerSensor {
     Context context;
     SensorManager sensorManager;

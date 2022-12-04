@@ -22,6 +22,17 @@ import java.util.ArrayList;
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
 
+    public class TileTouched{
+        public int x, y;
+        public boolean touched;
+
+        public TileTouched(){
+            x = -1;
+            y = -1;
+            touched = false;
+        }
+    }
+
     //region Variables y Constructora
     private final Engine engine;
     //Tablero chuleta para comprobar
@@ -34,6 +45,8 @@ public class SceneGame implements SceneBase {
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
     private boolean checkWin = false;
+
+    private boolean isHoldingPress = false;
 
     //Vidas
     private final int maxLives = 3;
@@ -58,6 +71,8 @@ public class SceneGame implements SceneBase {
     private Category category = null;
     private int lvlIndex = 0;
 
+    TileTouched tileTouchedInfo_ = null;
+
     String[] KitchenLevels = {"fork", "spoon","knife", "plate",
                               "pan","pot","oven","microwave",
                               "salt","napkin","pizza","sandwich",
@@ -76,13 +91,15 @@ public class SceneGame implements SceneBase {
     String[] IconLevels = {"twitter", "facebook", "google", "whatsapp",
                             "instagram","gmail","discord","chrome",
                             "visualstudio","github","twitch","youtibe",
-                            "infojobs"/*¿la de trabajar te la sabes?*/,"netflix","amazon","ucm"};
+                            "infojobs","netflix","amazon","ucm"};
 
 
     public SceneGame(Engine engine, int rows, int cols) {
         this.engine = engine;
         rows_ = rows;
         cols_ = cols;
+
+
     }
 
     public SceneGame(Engine engine, int rows, int cols, Category cat, int index) {
@@ -93,12 +110,12 @@ public class SceneGame implements SceneBase {
         lvlIndex = index;
 
         if(cat == Category.CAT0)
-            levelName = KitchenLevels[index];
+            levelName = "kitchen/" + KitchenLevels[index];
         else if(cat == Category.CAT1)
-            levelName = MedievalLevels[index];
+            levelName = "medieval/" + MedievalLevels[index];
         else if(cat == Category.CAT2)
-            levelName = OceanLevels[index];
-        else levelName = IconLevels[index];
+            levelName = "ocean/" + OceanLevels[index];
+        else levelName = "icon/" + IconLevels[index];
     }
 
     //endregion + Construct y Con
@@ -157,19 +174,56 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+            isHoldingPress = false;
+
+            tileTouchedInfo_.touched = false;
+        }
+        else if((event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) || (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT)){
             //Input en casillas del tablero
+            isHoldingPress = true;
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
-            setTile(index.first, index.second, false);
+            if(index.first != -1 && index.second != -1)
+                setTile(index.first, index.second, false);
             //Debug para mostrar el resultado
             if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
                 DEBUG = !DEBUG;
             }
         }
+
+        System.out.println(isHoldingPress);
+    }
+
+    //Establece la casilla dada por [x][y] al siguiente estado
+    private void setTile(int x, int y, boolean wrong) {
+        if(x < 0 || y < 0) return;
+
+        if(wrong){
+            gameBoard.setTile(x, y, TILE.WRONG);
+            return;
+        }
+
+        if(tileTouchedInfo_.x == x && tileTouchedInfo_.y == y && tileTouchedInfo_.touched)
+            return;
+
+        TILE tile = gameBoard.getTile(x, y);
+
+        if(tile == TILE.EMPTY)
+            gameBoard.setTile(x,y, TILE.FILL);
+        else if(tile == TILE.FILL)
+            gameBoard.setTile(x,y, TILE.CROSS);
+        else
+            gameBoard.setTile(x,y, TILE.EMPTY);
+
+        tileTouchedInfo_.x = x;
+        tileTouchedInfo_.y = y;
+        tileTouchedInfo_.touched = true;
     }
 
     @Override
     public void init() {
+        tileTouchedInfo_ = new TileTouched();
+
         loadResources(engine.getGraphics());
 
         //Fade In
@@ -378,24 +432,7 @@ public class SceneGame implements SceneBase {
 
     //region methods
 
-    //Establece la casilla dada por [x][y] al siguiente estado
-    private void setTile(int x, int y, boolean wrong) {
-        if(x < 0 || y < 0) return;
 
-        if(wrong){
-            gameBoard.setTile(x, y, TILE.WRONG);
-            return;
-        }
-
-        TILE tile = gameBoard.getTile(x, y);
-
-        if(tile == TILE.EMPTY)
-            gameBoard.setTile(x,y, TILE.FILL);
-        else if(tile == TILE.FILL)
-            gameBoard.setTile(x,y, TILE.CROSS);
-        else
-            gameBoard.setTile(x,y, TILE.EMPTY);
-    }
 
     private boolean subtractLife(){
         lives--;
