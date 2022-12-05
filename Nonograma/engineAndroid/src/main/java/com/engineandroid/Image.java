@@ -18,6 +18,11 @@ public class Image {
             e.printStackTrace();
         }
         image = BitmapFactory.decodeStream(is);
+        try {
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Bitmap getImage() {

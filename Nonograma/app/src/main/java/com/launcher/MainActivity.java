@@ -1,5 +1,6 @@
 package com.launcher;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Configuration;
@@ -11,12 +12,19 @@ import android.view.WindowManager;
 import com.engineandroid.*;
 import com.engineandroid.Engine;
 import com.gamelogic.Nonograma;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.nonograma.R;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private Engine engine;
+    private AdView ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
         //Init renderer
         SurfaceView renderView = new SurfaceView(this);
         setContentView(renderView);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener(){
+
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+//
+//        ad = findViewById(R.id.adView);
+//        AdRequest adR = new AdRequest.Builder().build();
+//        ad.loadAd(adR);
 
         int width = 600;
         int height = 900;

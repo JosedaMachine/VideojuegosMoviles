@@ -18,6 +18,8 @@ public class Sound {
                     afd.getStartOffset(), afd.getLength());
             sound.prepare();
             sound.setLooping(false);
+
+            afd.close();
         } catch (IOException e) {
             System.err.println("Couldn't load audio file");
             e.printStackTrace();
