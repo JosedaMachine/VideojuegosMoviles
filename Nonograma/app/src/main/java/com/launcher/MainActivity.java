@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //
-//        ad = findViewById(R.id.adView);
-//        AdRequest adR = new AdRequest.Builder().build();
-//        ad.loadAd(adR);
+        ad = findViewById(R.id.adView);
+        AdRequest adR = new AdRequest.Builder().build();
+        ad.loadAd(adR);
 
         int width = 600;
         int height = 900;
