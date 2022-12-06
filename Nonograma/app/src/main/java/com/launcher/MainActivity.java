@@ -2,6 +2,7 @@ package com.launcher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -36,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        //Init Notification
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+//                .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                .setContentTitle("Nonograma")
+//                .setContentText("Dale a jugar WACHO")
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        //Init adds
         MobileAds.initialize(this, new OnInitializationCompleteListener(){
 
             @Override
