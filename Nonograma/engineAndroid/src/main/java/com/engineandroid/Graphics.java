@@ -207,7 +207,7 @@ public class Graphics {
             scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
-        translateFactorX = bandWidth;
+        translateFactorX = 0;
         translateFactorY = bandHeight;
     }
 

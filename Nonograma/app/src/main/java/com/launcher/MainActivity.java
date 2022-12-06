@@ -29,15 +29,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //FullScreen
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(getSupportActionBar()).hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //Init renderer
-        SurfaceView renderView = new SurfaceView(this);
-        setContentView(renderView);
+        setContentView(R.layout.activity_main);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener(){
 
@@ -48,8 +45,13 @@ public class MainActivity extends AppCompatActivity {
         });
 //
         ad = findViewById(R.id.adView);
-        AdRequest adR = new AdRequest.Builder().build();
-        ad.loadAd(adR);
+        if(ad != null){
+            AdRequest adR = new AdRequest.Builder().build();
+            ad.loadAd(adR);
+        }
+
+        //Init renderer
+        SurfaceView renderView = findViewById(R.id.surfaceView);
 
         int width = 600;
         int height = 900;
