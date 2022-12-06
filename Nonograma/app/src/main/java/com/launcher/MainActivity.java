@@ -6,6 +6,7 @@ import androidx.core.app.NotificationCompat;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Init renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         int width = 600;
         int height = 900;

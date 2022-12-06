@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.launcher.MainActivity">
 
+<!--        app:layout_constraintBottom_toTopOf="@+id/adView"-->
     <SurfaceView
         android:id="@+id/surfaceView"
-        android:layout_width="409dp"
-        android:layout_height="680dp"
+        android:layout_width="match_parent"
+        android:layout_height="@+id/adView"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="0dp"
         app:adSize="BANNER"
         app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
