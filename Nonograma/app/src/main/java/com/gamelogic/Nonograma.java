@@ -21,7 +21,7 @@ TODO: nivel correcto recupera una vida
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si ganas vida o dinero al verlo(o incluso 2 botones))
 TODO: tb se puede pagar dinero de juego por vidas al final del nivel
 
-TODO: Botón en pantalla victoria que lleve a whats o a twitter para indicar tu victoria -> interacción social -> intent
+TODO: Mejor botón de Twitter, aunque ya funciona
 En el manifest:
 Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
  .appendQueryParameter( "text", "Este es mi texto a tweettear")
@@ -41,7 +41,7 @@ TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y perm
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
 
-TODO: Sensores
+TODO: Sensores hagan algo con sentido
 */
 
 public class Nonograma implements IGame {
@@ -49,7 +49,7 @@ public class Nonograma implements IGame {
     SceneBase currScene;
     public Nonograma(Engine engine){
         this.engine = engine;
-        GameManager.init();
+        GameManager.init(engine);
         //TODO: Esto leerlo de archivo
         GameManager.instance().setLevelIndex(Category.CAT0, 4);
         GameManager.instance().setLevelIndex(Category.CAT1, 4);

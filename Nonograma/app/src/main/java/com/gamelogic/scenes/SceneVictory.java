@@ -16,6 +16,7 @@ import com.engineandroid.TouchEvent;
 import com.gamelogic.Board;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
+import com.gamelogic.GameManager;
 
 public class SceneVictory implements SceneBase {
 
@@ -78,7 +79,7 @@ public class SceneVictory implements SceneBase {
                     if(shareButton.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         engine.getContext().startActivity(
-                                getTwitterIntent("Just beat a level on NONOGRAM!"));
+                                GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"));
                     }
                 }
             }
@@ -159,37 +160,5 @@ public class SceneVictory implements SceneBase {
 
     }
 
-    // Genera el intent para Twitter.
-    // Primero comprueba si tienes Twitter instalado
-    // Luego abre la aplicación o te abre el navegador con el tuit preparado 
-    private Intent getTwitterIntent(String shareText)
-    {
-        Intent shareIntent;
 
-        if(doesPackageExist("com.twitter.android"))
-        {
-            shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setClassName("com.twitter.android",
-                    "com.twitter.android.PostActivity");
-            shareIntent.setType("text/*");
-            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
-        }
-        else
-        {
-            String tweetUrl = "https://twitter.com/intent/tweet?text=" + shareText;
-            Uri uri = Uri.parse(tweetUrl);
-            shareIntent = new Intent(Intent.ACTION_VIEW, uri);
-        }
-        return shareIntent;
-    }
-
-    private boolean doesPackageExist(String targetPackage){
-        PackageManager pm= engine.getContext().getPackageManager();
-        try {
-            PackageInfo info=pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-        return true;
-    }
 }
