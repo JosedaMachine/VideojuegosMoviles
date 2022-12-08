@@ -1,5 +1,6 @@
 package com.engineandroid;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.view.SurfaceView;
 
@@ -154,5 +155,9 @@ public class Engine implements Runnable{
         graphics.prepare();
         this.currGame.render(graphics);
         graphics.finish();
+    }
+
+    public Context getContext(){
+        return this.graphics.getContext();
     }
 }

@@ -1,5 +1,10 @@
 package com.gamelogic.scenes;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -17,6 +22,7 @@ public class SceneVictory implements SceneBase {
     private final Engine engine;
 
     private Button button;
+    private Button shareButton;
     private Font title, buttonFont;
     private final String victoryText = "VICTORY!";
 
@@ -45,15 +51,13 @@ public class SceneVictory implements SceneBase {
         int posY = engine.getGraphics().getLogicHeight() - (int)(sizeY*2.5);
 
         //Boton vuelta al menu
-        button = new Button("To Menu", posX, posY,sizeX, sizeY) {
+        button = new Button("Menu", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
-
                         fade.triggerFade();
-
                     }
                 }
             }
@@ -67,9 +71,29 @@ public class SceneVictory implements SceneBase {
             }
         };
 
+        shareButton = new Button("", posX, posY + sizeY + 15,sizeX, sizeY) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(shareButton.isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
+                        engine.getContext().startActivity(
+                                getTwitterIntent("Just beat a level on NONOGRAM!"));
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        shareButton.setFont(buttonFont);
+        shareButton.setColor(ColorWrap.BLACK);
+        shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
     }
 
     @Override
@@ -87,6 +111,7 @@ public class SceneVictory implements SceneBase {
 
         //Boton de vuelta al menu
         button.render(graphics);
+        shareButton.render(graphics);
         fade.render(graphics);
     }
 
@@ -98,6 +123,7 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void input(TouchEvent event) {
+        shareButton.input(event);
         button.input(event);
     }
 
@@ -113,6 +139,11 @@ public class SceneVictory implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
+        im = graphics.newImage("share.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "share");
+
         title = engine.getGraphics().newFont("arcade.TTF",75,true);
 
         buttonFont = engine.getGraphics().newFont("arcade.TTF",50,true);
@@ -126,5 +157,39 @@ public class SceneVictory implements SceneBase {
     @Override
     public void onPause() {
 
+    }
+
+    // Genera el intent para Twitter.
+    // Primero comprueba si tienes Twitter instalado
+    // Luego abre la aplicación o te abre el navegador con el tuit preparado 
+    private Intent getTwitterIntent(String shareText)
+    {
+        Intent shareIntent;
+
+        if(doesPackageExist("com.twitter.android"))
+        {
+            shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setClassName("com.twitter.android",
+                    "com.twitter.android.PostActivity");
+            shareIntent.setType("text/*");
+            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
+        }
+        else
+        {
+            String tweetUrl = "https://twitter.com/intent/tweet?text=" + shareText;
+            Uri uri = Uri.parse(tweetUrl);
+            shareIntent = new Intent(Intent.ACTION_VIEW, uri);
+        }
+        return shareIntent;
+    }
+
+    private boolean doesPackageExist(String targetPackage){
+        PackageManager pm= engine.getContext().getPackageManager();
+        try {
+            PackageInfo info=pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 }

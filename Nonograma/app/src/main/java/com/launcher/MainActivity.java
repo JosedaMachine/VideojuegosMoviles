@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         //Init renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);
 
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
