@@ -377,6 +377,16 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
     public void render(Graphics graphics) {
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);

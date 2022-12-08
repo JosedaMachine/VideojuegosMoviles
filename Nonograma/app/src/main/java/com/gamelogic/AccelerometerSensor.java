@@ -57,7 +57,7 @@ public class AccelerometerSensor {
         sensorManager.registerListener(accelerometer, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    public void onStop() {
+    public void onPause() {
         sensorManager.unregisterListener(accelerometer);
     }
 

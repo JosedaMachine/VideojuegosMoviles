@@ -9,4 +9,6 @@ public interface IGame {
     void render(Graphics graphics);
     void processInput(TouchEvent event);
     void loadImages(Graphics graphics);
+    void onResume();
+    void onPause();
 }

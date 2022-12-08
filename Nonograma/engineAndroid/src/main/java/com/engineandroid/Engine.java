@@ -57,7 +57,6 @@ public class Engine implements Runnable{
         return currGame;
     }
 
-    //TODO meter un método a GAME de onResume, onPause
     public void resume() {
         if (!this.running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya
@@ -66,6 +65,8 @@ public class Engine implements Runnable{
             // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
             this.engineThread = new Thread(this);
             this.engineThread.start();
+            if(currGame != null)
+                this.currGame.onResume();
         }
     }
 
@@ -74,6 +75,8 @@ public class Engine implements Runnable{
             this.running = false;
             while (true) {
                 try {
+                    if(currGame != null)
+                        this.currGame.onPause();
                     this.engineThread.join();
                     this.engineThread = null;
                     break;

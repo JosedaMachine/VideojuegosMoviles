@@ -1,5 +1,7 @@
 package com.gamelogic.scenes;
 
+import android.os.Debug;
+
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -172,17 +174,33 @@ public class SceneTitle implements SceneBase {
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
     }
 
+    @Override
+    public void onResume() {
+        accelerometerSensor.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        accelerometerSensor.onPause();
+    }
+
     private void updateBackground(){
+        //TODO funciona pero lo que hace es una tontería
         float[] deltas = accelerometerSensor.getDeltaValues();
 
         int i = 0;
-        while(i < 3 && deltas[i] < 15){
+        while(i < 3 && deltas[i] < 10){
             i++;
         }
 
-        if(i < 3)
+        //Si detecta movimiento
+        if(i < 3){
             engine.getGraphics().setClearColor(ColorWrap.BLACK);
-        else
-            engine.getGraphics().setClearColor(ColorWrap.WHITE);
+            System.out.println("Changed to Black");
+        }
+//        else{
+//           //engine.getGraphics().setClearColor(ColorWrap.WHITE);
+//            //System.out.println("Es blanco");
+//        }
     }
 }

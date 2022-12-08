@@ -117,4 +117,14 @@ public class SceneVictory implements SceneBase {
 
         buttonFont = engine.getGraphics().newFont("arcade.TTF",50,true);
     }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
 }

@@ -94,4 +94,16 @@ public class Nonograma implements IGame {
     public void loadImages(Graphics graphics) {
         currScene.loadResources(graphics);
     }
+
+    @Override
+    public void onResume() {
+        if(currScene != null)
+            currScene.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        if(currScene != null)
+            currScene.onPause();
+    }
 }

@@ -11,4 +11,8 @@ public interface SceneBase {
     void input(TouchEvent event);
 
     void loadResources(Graphics graphics);
+
+    void onResume();
+
+    void onPause();
 }
