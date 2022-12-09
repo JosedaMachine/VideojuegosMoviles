@@ -91,21 +91,4 @@ public class GameManager {
         }
         return true;
     }
-
-    public void buildNotification(String titleText, String contentText){
-        Intent intent = new Intent(engine.getContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(engine.getContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(engine.getContext(), "ExampleID")
-                .setSmallIcon(android.R.drawable.btn_star)
-                .setContentTitle(titleText)
-                .setContentText(contentText)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(engine.getContext());
-        managerCompat.notify(1, builder.build());
-    }
 }

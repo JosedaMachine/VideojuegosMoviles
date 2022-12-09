@@ -2,10 +2,13 @@ package com.launcher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Init Notification
-       createNotificationChannel();
+        createNotificationChannel();
+        //TODO llamar esto al cerrar la app
+        createAlarm();
 
         //Init adds
         MobileAds.initialize(this, new OnInitializationCompleteListener(){
@@ -116,4 +121,15 @@ public class MainActivity extends AppCompatActivity {
             manager.createNotificationChannel(channel);
         }
     }
+
+    private void createAlarm(){
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("NotificationText", "some text");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+        //TODO cambiar el tiempo a 1 semana en milisegundos
+        alarmManager.set(AlarmManager.RTC_WAKEUP, 10000, pendingIntent);
+    }
+
 }

@@ -16,6 +16,15 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <receiver android:name="com.launcher.AlarmReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="com.launcher.MainActivity"
             android:configChanges="orientation|screenSize"
@@ -27,5 +36,7 @@
             </intent-filter>
         </activity>
     </application>
+
+
 
 </manifest>

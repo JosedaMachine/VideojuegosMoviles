@@ -1,8 +1,13 @@
 package com.engineandroid;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.view.SurfaceView;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -160,4 +165,5 @@ public class Engine implements Runnable{
     public Context getContext(){
         return this.graphics.getContext();
     }
+
 }
