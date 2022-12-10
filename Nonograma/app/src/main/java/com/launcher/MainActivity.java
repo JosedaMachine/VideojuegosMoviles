@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -114,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle extras = intent.getExtras();
+        if (extras != null ) {
+            engine.sendMessage(extras);
+        }
+    }
+
     private void createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel("ExampleID", "ExampleID", NotificationManager.IMPORTANCE_DEFAULT);
@@ -123,13 +133,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createAlarm(){
+        //Crea la alarma que posteriormente creará la notificación
         Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("NotificationText", "some text");
+        intent.putExtra("Alarm", "any");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
-        //TODO cambiar el tiempo a 1 semana en milisegundos
-        alarmManager.set(AlarmManager.RTC_WAKEUP, 10000, pendingIntent);
+        //Elimina una alarma previamente puesta
+        alarmManager.cancel(pendingIntent);
+
+        //TODO cambiar el tiempo a 1 semana en milisegundos (ahora está a 30000 que son 30 seg)
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+30000, pendingIntent);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.gamelogic;
 
 
+import android.os.Bundle;
+
 import com.engineandroid.Engine;
 import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
@@ -105,5 +107,12 @@ public class Nonograma implements IGame {
     public void onPause() {
         if(currScene != null)
             currScene.onPause();
+    }
+
+    @Override
+    public void sendMessage(Bundle message) {
+        if(message.containsKey("RewardNotification")){
+            GameManager.instance().addMoney(message.getInt("RewardNotification"));
+        }
     }
 }

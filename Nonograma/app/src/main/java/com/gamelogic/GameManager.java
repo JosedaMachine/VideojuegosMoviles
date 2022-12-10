@@ -58,6 +58,7 @@ public class GameManager {
         return money = m;
     }
 
+    public void addMoney(int m) { money += m; }
     // Genera el intent para Twitter.
     // Primero comprueba si tienes Twitter instalado
     // Luego abre la aplicación o te abre el navegador con el tuit preparado

@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.os.Bundle;
 import android.view.SurfaceView;
 
 import androidx.core.app.NotificationCompat;
@@ -164,6 +165,11 @@ public class Engine implements Runnable{
 
     public Context getContext(){
         return this.graphics.getContext();
+    }
+
+    public void sendMessage(Bundle extras){
+        if(currGame != null)
+            currGame.sendMessage(extras);
     }
 
 }

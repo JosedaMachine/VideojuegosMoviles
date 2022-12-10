@@ -27,6 +27,7 @@
 
         <activity
             android:name="com.launcher.MainActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>

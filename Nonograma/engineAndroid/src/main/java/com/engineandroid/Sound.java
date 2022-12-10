@@ -31,7 +31,7 @@ public class Sound {
     }
 
     public void pause() {
-        sound.stop();
+        sound.pause();
     }
 
     public boolean isLoaded() {
