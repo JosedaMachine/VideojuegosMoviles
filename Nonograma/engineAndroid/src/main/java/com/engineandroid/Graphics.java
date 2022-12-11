@@ -56,8 +56,15 @@ public class Graphics {
         this.assetManager = view.getContext().getAssets();
     }
 
-    public Image newImage(String name) {
-        return new Image(assetManager, "images/" + name);
+    public Image newImage(String path, String name) {
+        Image i = imagesLoaded.get(path);
+        if(i == null) {
+            i = new Image(assetManager, "images/" + path);
+            if(!i.isLoaded())
+                System.out.println("No se ha encontrado la imagen");
+            loadImage(i, name);
+        }
+        return i;
     }
 
     public Font newFont(String name, int size, boolean isBold) {

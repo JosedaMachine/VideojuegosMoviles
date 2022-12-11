@@ -223,18 +223,19 @@ public class SceneGame implements SceneBase {
     @Override
     public void init() {
         tileTouchedInfo_ = new TileTouched();
-
         loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                logicWidth, logicHeight,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
-        int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
+        int boardSize = (int)(logicWidth * 0.6f);
 
 
         if(levelName != null){
@@ -245,16 +246,16 @@ public class SceneGame implements SceneBase {
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
         float size = (float) (Math.floor(relations.first * 0.7)/1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * size), false);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int)(logicHeight * size), false);
 
         //Tamaño de los botones
-        int offset = (int)(engine.getGraphics().getLogicWidth() * 0.16f),
-            bttWidth = (int)(engine.getGraphics().getLogicWidth() * 0.25f),
-            bttHeight = (int)(engine.getGraphics().getLogicWidth() * 0.0833f);
+        int offset = (int)(logicWidth * 0.16f),
+            bttWidth = (int)(logicWidth * 0.25f),
+            bttHeight = (int)(logicWidth * 0.0833f);
 
         //Boton Check Win
-        bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 + offset,
-                engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
+        bttCheckWin = new Button("Check", logicWidth/2 - bttWidth/2 + offset,
+                logicHeight - bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -273,8 +274,8 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Boton Return to menu
-        bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset,
-                engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
+        bttReturn = new Button("Coward", logicWidth/2 - bttWidth/2 - offset,
+                logicHeight- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -331,43 +332,15 @@ public class SceneGame implements SceneBase {
     public void loadResources(Graphics graphics){
         System.out.println("Loading Resources...");
 
-        Image im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
-
-        im = graphics.newImage("crosssquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "cross");
-
-        im = graphics.newImage("tom.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "tom");
-
-        im = graphics.newImage("wrongsquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "wrong");
-
-        im = graphics.newImage("fillsquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "fill");
-
-        im = graphics.newImage("heart.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "heart");
-
-        im = graphics.newImage("emptyheart.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "emptyheart");
+        graphics.newImage("emptysquare.png", "empty");
+        graphics.newImage("crosssquare.png", "cross");
+        graphics.newImage("tom.png", "tom");
+        graphics.newImage("wrongsquare.png", "wrong");
+        graphics.newImage("fillsquare.png", "fill");
+        graphics.newImage("heart.png", "heart");
+        graphics.newImage("emptyheart.png", "emptyheart");
 
         numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
-
         pixelFont = graphics.newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * 0.1f), false);
 
         engine.getAudio().newSound("wrong.wav");
@@ -388,9 +361,12 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void render(Graphics graphics) {
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
+
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
+        checkBoard.drawInfoRects(engine, logicWidth/2 - gameBoard.getWidth()/2, logicHeight/2 - gameBoard.getHeight()/2, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
         //Botones
@@ -406,8 +382,8 @@ public class SceneGame implements SceneBase {
             emHeart = graphics.getImage("emptyheart");
 
         float heartScale = 0.1f;
-        float xOffset = graphics.getLogicWidth()*0.005f + heart.getWidth()*heartScale,
-                yOffset = graphics.getLogicHeight()*0.005f;
+        float xOffset = logicWidth*0.005f + heart.getWidth()*heartScale,
+                yOffset = logicHeight*0.005f;
 
         for (int i = 0; i < maxLives; i++){
             //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
@@ -429,9 +405,9 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
             graphics.setColor(ColorWrap.BLUE, 1.0f);
-            graphics.drawText(remainingField, (int) (graphics.getLogicWidth()/2 - dime_remaining.first/2), (int) (graphics.getLogicHeight() * 0.05 + dime_remaining.second/2));
+            graphics.drawText(remainingField, (int) (logicWidth/2 - dime_remaining.first/2), (int) (logicHeight * 0.05 + dime_remaining.second/2));
             graphics.setColor(ColorWrap.RED, 1.0f);
-            graphics.drawText(wrongField, (int) (graphics.getLogicWidth()/2 - dime_wrong.first/2), (int) (graphics.getLogicHeight() * 0.09 + dime_wrong.second/2));
+            graphics.drawText(wrongField, (int) (logicWidth/2 - dime_wrong.first/2), (int) (logicHeight * 0.09 + dime_wrong.second/2));
 
         }
 

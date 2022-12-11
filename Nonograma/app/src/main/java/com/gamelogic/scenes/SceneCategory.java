@@ -30,11 +30,13 @@ public class SceneCategory implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                logicWidth, logicHeight,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
@@ -42,15 +44,15 @@ public class SceneCategory implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int size = (int)(engine.getGraphics().getLogicWidth() * 0.40f);
+        int size = (int)(logicWidth * 0.40f);
 
         int numCols = 2, numFils = 2;
 
-        int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f),
-                yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f);
+        int xOffset = (int) (logicWidth * 0.05f),
+                yOffset = (int) (logicWidth * 0.05f);
 
-        int posX = (engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2;
-        int posY = engine.getGraphics().getLogicHeight()/2 - size/2;
+        int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
+        int posY = logicHeight/2 - size/2;
 
         int cont = 0;
         for (int i = 0; i < numFils; i++){
@@ -150,22 +152,15 @@ public class SceneCategory implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        Image im = graphics.newImage("lock.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "lock");
+        graphics.newImage("lock.png", "lock");
 
-        for(int i = 0; i<4;i++) {
-            im = graphics.newImage("category" + i + ".png");
-            if (!im.isLoaded())
-                System.out.println("No se ha encontrado la imagen");
-            graphics.loadImage(im, "category" + i );
-        }
+        for(int i = 0; i<4;i++)
+            graphics.newImage("category" + i + ".png", "category" + i );
 
         engine.getAudio().newSound("wrong.wav");
 
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
-        levelLabel = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
+        title = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+        levelLabel = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
     }
 
     @Override

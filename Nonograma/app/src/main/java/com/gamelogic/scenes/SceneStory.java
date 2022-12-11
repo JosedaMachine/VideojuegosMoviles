@@ -37,11 +37,13 @@ public class SceneStory implements SceneBase {
     public void init() {
 
         loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                logicWidth, logicHeight,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
@@ -49,15 +51,15 @@ public class SceneStory implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int size = (int)(engine.getGraphics().getLogicWidth() * 0.155f);
+        int size = (int)(logicWidth * 0.155f);
 
         int numCols = 4, numFils = GameManager.instance().getMaxLevel()/4;
 
-        int xOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f),
-                yOffset = (int) (engine.getGraphics().getLogicWidth() * 0.05f);
+        int xOffset = (int) (logicWidth * 0.05f),
+                yOffset = (int) (logicWidth * 0.05f);
 
-        int posX = (int) ((engine.getGraphics().getLogicWidth() - (size*numCols + xOffset*(numCols-1)))/2);
-        int posY = engine.getGraphics().getLogicHeight()/3 -  size/2;
+        int posX = (int) ((logicWidth - (size*numCols + xOffset*(numCols-1)))/2);
+        int posY = logicHeight/3 -  size/2;
 
         int cont = 0;
         for (int i = 0; i < numFils; i++){
@@ -150,22 +152,11 @@ public class SceneStory implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        Image im = graphics.newImage("lock.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "lock");
+        graphics.newImage("lock.png", "lock");
+        graphics.newImage("unlock.png", "unlock");
+        graphics.newImage("tick.png","tick");
 
-        im = graphics.newImage("unlock.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "unlock");
-
-        im = graphics.newImage("tick.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "tick");
-
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+        title = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
     }
 
     @Override

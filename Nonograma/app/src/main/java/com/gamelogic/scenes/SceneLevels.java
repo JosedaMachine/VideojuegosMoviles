@@ -4,7 +4,6 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -31,10 +30,12 @@ public class SceneLevels implements SceneBase {
 
         loadResources(engine.getGraphics());
 
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
         //Fade In
         fade = new Fade(engine,
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                    logicWidth, logicHeight,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
@@ -42,27 +43,27 @@ public class SceneLevels implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.155f),
-            sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.055f);
+        int sizeX = (int)(logicWidth * 0.155f),
+            sizeY = (int)(logicHeight * 0.055f);
 //
-        int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
+        int posX = (int) (logicWidth/3.5 - sizeX/2);
+        int posY = logicHeight/3 -  sizeY/2;
         levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false));
 
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
+        posX = logicWidth/2 - sizeX/2;
         levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5, false));
 
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
+        posX = (int) (logicWidth/1.38 - sizeX/2);
         levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10, true));
 
-        posY = engine.getGraphics().getLogicHeight()/2 -  sizeY/2;
-        posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
+        posY = logicHeight/2 -  sizeY/2;
+        posX = (int) (logicWidth/3.5 - sizeX/2);
         levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8, false) );
 
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
+        posX = logicWidth/2 - sizeX/2;
         levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10, true) );
 
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
+        posX = (int) (logicWidth/1.38 - sizeX/2);
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
     }
 
@@ -134,13 +135,12 @@ public class SceneLevels implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        Image im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
+        graphics.newImage("emptysquare.png", "empty");
 
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
-        titleLittle = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.035f),true);
+        int logicHeight = engine.getGraphics().getLogicHeight();
+
+        title = graphics.newFont("arcade.TTF",(int)(logicHeight * 0.05f),true);
+        titleLittle = graphics.newFont("arcade.TTF",(int)(logicHeight * 0.035f),true);
     }
 
     @Override

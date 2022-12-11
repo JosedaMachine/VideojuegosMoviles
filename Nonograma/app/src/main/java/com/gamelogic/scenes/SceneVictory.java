@@ -9,7 +9,6 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -39,18 +38,20 @@ public class SceneVictory implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                logicWidth, logicHeight,
                 500, 500, Fade.STATE_FADE.Out);
         fade.setColor(ColorWrap.BLACK);
 
         int sizeX = 225, sizeY = 50;
 
-        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getLogicHeight() - (int)(sizeY*2.5);
+        int posX = logicWidth/2 - sizeX/2;
+        int posY = logicHeight - (int)(sizeY*2.5);
 
         //Boton vuelta al menu
         button = new Button("Menu", posX, posY,sizeX, sizeY) {
@@ -106,16 +107,18 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void render(Graphics graphics) {
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         graphics.setFont(title);
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
-        graphics.drawText(victoryText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()/8 + dime.second/2));
+        graphics.drawText(victoryText, (int) (logicWidth/2 - dime.first/2), (int) (logicHeight/8 + dime.second/2));
 
         //Tablero correcto
-        checkBoard.drawBoard(engine, graphics.getLogicWidth()/2 - checkBoard.getWidth()/2, graphics.getLogicHeight()/2 - checkBoard.getHeight()/2, true);
+        checkBoard.drawBoard(engine, logicWidth/2 - checkBoard.getWidth()/2, logicHeight/2 - checkBoard.getHeight()/2, true);
 
         //Boton de vuelta al menu
         button.render(graphics);
@@ -137,24 +140,13 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        Image im = graphics.newImage("crosssquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "cross");
+        graphics.newImage("crosssquare.png", "cross");
+        graphics.newImage("emptysquare.png", "empty");
+        graphics.newImage("share.png", "share");
 
-        im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
+        title = graphics.newFont("arcade.TTF",75,true);
 
-        im = graphics.newImage("share.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "share");
-
-        title = engine.getGraphics().newFont("arcade.TTF",75,true);
-
-        buttonFont = engine.getGraphics().newFont("arcade.TTF",50,true);
+        buttonFont = graphics.newFont("arcade.TTF",50,true);
     }
 
     @Override

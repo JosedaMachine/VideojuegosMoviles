@@ -36,21 +36,23 @@ public class SceneTitle implements SceneBase {
     @Override
     public void init() {
         loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
                         0, 0,
-                             engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                        logicWidth, logicHeight,
                        500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
         //Posicion y tamanyo de boton (290x100)
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.8f),
-                sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
+        int sizeX = (int)(logicWidth * 0.8f),
+                sizeY = (int)(logicHeight * 0.111f);
 
-        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2,
-                posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
+        int posX = logicWidth/2 - sizeX/2,
+                posY = logicHeight/2 - sizeY/2;
 
         //Boton de play
         quickButton = new Button("Quick Game", posX, posY,sizeX, sizeY) {
@@ -79,7 +81,7 @@ public class SceneTitle implements SceneBase {
             }
         };
 
-        posY += engine.getGraphics().getLogicHeight() * 0.2f;
+        posY += logicHeight * 0.2f;
 
         //Boton de play
         storyButton = new Button("Story Mode", posX, posY,sizeX, sizeY) {
@@ -131,14 +133,14 @@ public class SceneTitle implements SceneBase {
         //Interface
         UserInterface uinterface = engine.getGame().getUserInterface();
         uinterface.clearElements();
-        uinterface.addElement(new TextElement(title, engine.getGraphics().getLogicWidth() - 170, 50, 5, 5, GameManager.instance().getTextMoney()) {
+        uinterface.addElement(new TextElement(title, logicWidth - 170, 50, 5, 5, GameManager.instance().getTextMoney()) {
             @Override
             public void update(double deltaTime) {}
             @Override
             public void input(TouchEvent event_) {}
         });
 
-        uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), engine.getGraphics().getLogicWidth() - 65, 25, 55, 55) {
+        uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), logicWidth - 65, 25, 55, 55) {
             @Override
             public void update(double deltaTime) {}
             @Override
@@ -179,21 +181,9 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        Image im = graphics.newImage("crosssquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "cross");
-
-        im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
-
-        im = graphics.newImage("coin.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "coin");
-
+        graphics.newImage("crosssquare.png", "cross");
+        graphics.newImage("emptysquare.png", "empty");
+        graphics.newImage("coin.png", "coin");
 
         engine.getAudio().setMusic("music.wav");
         engine.getAudio().newSound("click.wav");
