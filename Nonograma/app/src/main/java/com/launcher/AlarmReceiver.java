@@ -11,15 +11,16 @@ import androidx.core.app.NotificationManagerCompat;
 public class AlarmReceiver  extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        buildNotification("Illo vente", "Juegate unos nonogramas to majos mira mira", context);
+        //TODO hacer esto con sentido (si acaso una recompensa aleatoria o algo) (y que salga en el mensaje)
+        buildRewardNotification("Illo vente", "Juegate unos nonogramas to majos mira mira", context);
     }
 
     //Construye y lanza una notificación que abre la app
     //intentClass: Clase a lanzar en la notificación (En nuestro caso, MainActivity)
-    public void buildNotification(String titleText, String contentText, Context context){
+    public void buildRewardNotification(String titleText, String contentText, Context context){
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("RewardNotification", (int) 100);
+        intent.putExtra("RewardNotification", 100);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ExampleID")

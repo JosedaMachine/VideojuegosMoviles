@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -121,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if (extras != null ) {
             engine.sendMessage(extras);
-        }
+        }else
+            Log.d("MONEY", "EXTRAS NULL");
     }
 
     private void createNotificationChannel(){

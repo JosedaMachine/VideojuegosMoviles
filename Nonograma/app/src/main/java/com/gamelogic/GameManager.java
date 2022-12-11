@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 public class GameManager {
     private static GameManager instance_;
     private final int maxLevels = 4;
+    private final int maxMoney = 10000;
     private Engine engine;
 
     public GameManager(Engine engine){
@@ -54,11 +56,28 @@ public class GameManager {
         return money;
     }
 
+    public String getTextMoney() {
+        if(money < 10)
+            return "000" + money;
+        if(money < 100)
+            return "00" + money;
+        if(money < 1000)
+            return "0" + money;
+
+        return "" + money;
+    }
+
     public int setMoney(int m){
         return money = m;
     }
 
-    public void addMoney(int m) { money += m; }
+    public void addMoney(int m) {
+        Log.d("MONEY", ""+m);
+        money += m;
+        money = Math.min(maxMoney, money);
+        TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
+        ui.setText(getTextMoney());
+    }
     // Genera el intent para Twitter.
     // Primero comprueba si tienes Twitter instalado
     // Luego abre la aplicación o te abre el navegador con el tuit preparado

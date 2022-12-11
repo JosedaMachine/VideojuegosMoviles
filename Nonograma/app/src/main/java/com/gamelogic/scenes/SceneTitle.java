@@ -1,6 +1,6 @@
 package com.gamelogic.scenes;
 
-import android.os.Debug;
+import android.graphics.Color;
 
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
@@ -14,6 +14,10 @@ import com.engineandroid.TouchEvent;
 import com.gamelogic.AccelerometerSensor;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
+import com.engineandroid.UserInterface;
+import com.gamelogic.GameManager;
+import com.gamelogic.ImageElement;
+import com.gamelogic.TextElement;
 
 public class SceneTitle implements SceneBase {
     private final Engine engine;
@@ -113,7 +117,7 @@ public class SceneTitle implements SceneBase {
         storyButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
-        Sound music =  engine.getAudio().getSound("music.wav");
+        Sound music = engine.getAudio().getSound("music.wav");
 
         if(!music.alreadyPlaying()) {
             engine.getAudio().playSound("music.wav");
@@ -123,6 +127,23 @@ public class SceneTitle implements SceneBase {
 
         //Acceleremoter
         accelerometerSensor = new AccelerometerSensor(engine.getGraphics().getContext());
+
+        //Interface
+        UserInterface uinterface = engine.getGame().getUserInterface();
+        uinterface.clearElements();
+        uinterface.addElement(new TextElement(title, engine.getGraphics().getLogicWidth() - 170, 50, 5, 5, GameManager.instance().getTextMoney()) {
+            @Override
+            public void update(double deltaTime) {}
+            @Override
+            public void input(TouchEvent event_) {}
+        });
+
+        uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), engine.getGraphics().getLogicWidth() - 65, 25, 55, 55) {
+            @Override
+            public void update(double deltaTime) {}
+            @Override
+            public void input(TouchEvent event_) {}
+        });
     }
 
     @Override
@@ -168,6 +189,11 @@ public class SceneTitle implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "empty");
 
+        im = graphics.newImage("coin.png");
+        if(!im.isLoaded())
+            System.out.println("No se ha encontrado la imagen");
+        graphics.loadImage(im, "coin");
+
         engine.getAudio().newSound("music.wav");
         engine.getAudio().newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
@@ -185,7 +211,7 @@ public class SceneTitle implements SceneBase {
     }
 
     private void updateBackground(){
-        //TODO funciona pero lo que hace es una tontería
+        //TODO funciona pero lo que hace es una tontería, es lo que controla el sensor ahora mismo
         float[] deltas = accelerometerSensor.getDeltaValues();
 
         int i = 0;

@@ -8,6 +8,7 @@ import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.SceneBase;
+import com.engineandroid.UserInterface;
 import com.gamelogic.scenes.SceneTitle;
 
 /*
@@ -49,6 +50,7 @@ TODO: Sensores hagan algo con sentido
 public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;
+    UserInterface userInterface;
     public Nonograma(Engine engine){
         this.engine = engine;
         GameManager.init(engine);
@@ -57,6 +59,8 @@ public class Nonograma implements IGame {
         GameManager.instance().setLevelIndex(Category.CAT1, 4);
         GameManager.instance().setLevelIndex(Category.CAT2, 4);
         GameManager.instance().setLevelIndex(Category.CAT3, 0);
+
+        userInterface = new UserInterface();
     }
 
     //Iniciar nueva escena
@@ -80,16 +84,19 @@ public class Nonograma implements IGame {
     @Override
     public void update(double elapsedTime) {
         currScene.update(elapsedTime);
+        userInterface.update(elapsedTime);
     }
 
     @Override
     public void render(Graphics graphics) {
         currScene.render(graphics);
+        userInterface.render(graphics);
     }
 
     @Override
     public void processInput(TouchEvent event) {
         currScene.input(event);
+        userInterface.input(event);
     }
 
     @Override
@@ -107,6 +114,11 @@ public class Nonograma implements IGame {
     public void onPause() {
         if(currScene != null)
             currScene.onPause();
+    }
+
+    @Override
+    public UserInterface getUserInterface(){
+        return userInterface;
     }
 
     @Override

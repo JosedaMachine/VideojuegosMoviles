@@ -14,4 +14,5 @@ public interface IGame {
     void onResume();
     void onPause();
     void sendMessage(Bundle message);
+    UserInterface getUserInterface();
 }

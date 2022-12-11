@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import androidx.core.app.NotificationCompat;
@@ -170,6 +171,8 @@ public class Engine implements Runnable{
     public void sendMessage(Bundle extras){
         if(currGame != null)
             currGame.sendMessage(extras);
+        else
+            Log.d("MONEY", "Game NULL");
     }
 
 }

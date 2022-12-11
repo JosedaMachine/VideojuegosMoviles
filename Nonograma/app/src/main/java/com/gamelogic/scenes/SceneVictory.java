@@ -95,6 +95,8 @@ public class SceneVictory implements SceneBase {
         shareButton.setFont(buttonFont);
         shareButton.setColor(ColorWrap.BLACK);
         shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
+
+        GameManager.instance().addMoney(20);
     }
 
     @Override
