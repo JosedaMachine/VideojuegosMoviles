@@ -75,12 +75,11 @@ public class GameManager {
         Log.d("MONEY", ""+m);
         money += m;
         money = Math.min(maxMoney, money);
-        TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
-        ui.setText(getTextMoney());
     }
     // Genera el intent para Twitter.
     // Primero comprueba si tienes Twitter instalado
     // Luego abre la aplicación o te abre el navegador con el tuit preparado
+    //TODO si vemos que tal mover a SceneVictory o yo qué sé
     public Intent getTwitterIntent(String shareText)
     {
         Intent shareIntent;

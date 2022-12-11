@@ -30,6 +30,8 @@ public class UserInterface {
     }
 
     public SceneElement getElement(int index){
+        if(index >= elements.size())
+            return null;
         return elements.get(index);
     }
 

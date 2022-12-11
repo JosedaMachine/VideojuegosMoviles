@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         //Set Game and play
         engine.resume();
         engine.setGame(game);
+
+        detectIntent(getIntent());
     }
 
     //Reanudar
@@ -116,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+    private void detectIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null ) {
             engine.sendMessage(extras);

@@ -2,6 +2,7 @@ package com.gamelogic;
 
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.engineandroid.Engine;
 import com.engineandroid.IGame;
@@ -126,5 +127,6 @@ public class Nonograma implements IGame {
         if(message.containsKey("RewardNotification")){
             GameManager.instance().addMoney(message.getInt("RewardNotification"));
         }
+        Log.d("MONEY", "MENSAJE " + message.getInt("RewardNotification"));
     }
 }

@@ -17,6 +17,7 @@ import com.gamelogic.Board;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
 import com.gamelogic.GameManager;
+import com.gamelogic.TextElement;
 
 public class SceneVictory implements SceneBase {
 
@@ -97,6 +98,10 @@ public class SceneVictory implements SceneBase {
         shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
 
         GameManager.instance().addMoney(20);
+        if(engine.getGame().getUserInterface().getElement(0) != null){
+            TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
+            ui.setText(GameManager.instance().getTextMoney());
+        }
     }
 
     @Override

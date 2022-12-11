@@ -203,11 +203,13 @@ public class SceneTitle implements SceneBase {
     @Override
     public void onResume() {
         accelerometerSensor.onResume();
+        engine.getAudio().getSound("music.wav").play();
     }
 
     @Override
     public void onPause() {
         accelerometerSensor.onPause();
+        engine.getAudio().getSound("music.wav").pause();
     }
 
     private void updateBackground(){
