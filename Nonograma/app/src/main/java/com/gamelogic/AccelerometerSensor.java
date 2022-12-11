@@ -26,8 +26,9 @@ public class AccelerometerSensor {
         lastValues = new float[] {0,0,0};
         deltaValues = new float[] {0,0,0};
 
-        //TODO protección contra móviles sin acelerómetro
-        //if(sensor == null) NO SE PUEDE USAR LA CLASE
+        //No se hace nada si no tiene acelerómetro el dispositivo
+        if(sensor == null)
+            return;
 
         accelerometer = new SensorEventListener() {
             @Override
@@ -54,11 +55,13 @@ public class AccelerometerSensor {
     //Métodos que llamar para que no consuma la aplicación mientras que está cerrada
     //El sensor SIGUE ACTIVO si no se quita del registro aunque se minimice la app
     public void onResume() {
-        sensorManager.registerListener(accelerometer, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if(accelerometer != null)
+            sensorManager.registerListener(accelerometer, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void onPause() {
-        sensorManager.unregisterListener(accelerometer);
+        if(accelerometer != null)
+            sensorManager.unregisterListener(accelerometer);
     }
 
     public float[] getDeltaValues(){
