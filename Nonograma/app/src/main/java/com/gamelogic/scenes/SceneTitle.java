@@ -9,7 +9,7 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
-import com.engineandroid.Sound;
+import com.engineandroid.Music;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.AccelerometerSensor;
 import com.gamelogic.Button;
@@ -117,10 +117,10 @@ public class SceneTitle implements SceneBase {
         storyButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
-        Sound music = engine.getAudio().getSound("music.wav");
+        Music music = engine.getAudio().getMusic();
 
         if(!music.alreadyPlaying()) {
-            engine.getAudio().playSound("music.wav");
+            music.play();
             music.setLoop(true);
             music.setVolume(-15);
         }
@@ -194,7 +194,8 @@ public class SceneTitle implements SceneBase {
             System.out.println("No se ha encontrado la imagen");
         graphics.loadImage(im, "coin");
 
-        engine.getAudio().newSound("music.wav");
+
+        engine.getAudio().setMusic("music.wav");
         engine.getAudio().newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
@@ -203,13 +204,11 @@ public class SceneTitle implements SceneBase {
     @Override
     public void onResume() {
         accelerometerSensor.onResume();
-        engine.getAudio().getSound("music.wav").play();
     }
 
     @Override
     public void onPause() {
         accelerometerSensor.onPause();
-        engine.getAudio().getSound("music.wav").pause();
     }
 
     private void updateBackground(){

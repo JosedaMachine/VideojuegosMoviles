@@ -2,51 +2,47 @@ package com.engineandroid;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.media.MediaPlayer;
+import android.media.SoundPool;
 import java.io.IOException;
 
 public class Sound {
 
-    MediaPlayer sound = null;
+    int soundId;
+    float volume;
+    int loop;
+    float rate;
 
-    Sound(AssetManager ass, String file){
-        sound = new MediaPlayer();
-        sound.reset();
+    Sound(SoundPool sPool, AssetManager ass, String file){
+        soundId = -1;
         try {
-            AssetFileDescriptor afd = ass.openFd(file);
-            sound.setDataSource(afd.getFileDescriptor(),
-                    afd.getStartOffset(), afd.getLength());
-            sound.prepare();
-            sound.setLooping(false);
+            AssetFileDescriptor assetDescriptor = ass.openFd(file);
+            soundId = sPool.load(assetDescriptor, 1);
+            volume = 1;
+            loop = 0;
+            rate = 1;
 
-            afd.close();
-        } catch (IOException e) {
-            System.err.println("Couldn't load audio file");
-            e.printStackTrace();
+        }catch (IOException e) {
+            throw new RuntimeException("Couldn't load sound.");
         }
+
     }
 
-    public void play() {
-        sound.start();
+    public void setLoop(int l) {
+        loop = l;
     }
-
-    public void pause() {
-        sound.pause();
+    public int getLoop() {
+        return loop;
     }
-
-    public boolean isLoaded() {
-        return sound != null;
+    public void setVolume(float vol) {
+        volume = vol;
     }
-
-    public void setLoop(boolean l) {
-        sound.setLooping(l);
+    public float getVolume() {
+        return volume;
     }
-
-    public void setVolume(int vol) {
-        sound.setVolume(vol,vol);
+    public int getId() {
+        return soundId;
     }
-
-    public boolean alreadyPlaying() {
-        return sound.isPlaying();
+    public float getRate(){
+        return rate;
     }
 }

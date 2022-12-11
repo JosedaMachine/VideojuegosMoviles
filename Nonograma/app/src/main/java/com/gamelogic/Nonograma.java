@@ -13,17 +13,12 @@ import com.engineandroid.UserInterface;
 import com.gamelogic.scenes.SceneTitle;
 
 /*
-TODO: 30 Nov modo historia totalmente funcional y mecánica de vida
-TODO: Niveles bloqueados -> persistencia
-TODO: niveles por tematica (4 5x5, 4 8x8, 4 10x10 y 4 15x15)
+TODO: persistencia
 TODO: Botones de volver a escena anterior en vez de solo a title
 
 TODO: Pedir en el manifest todas las pantallas menos las pequeñas
 
-TODO: Sistema de vidas -> check incorrecto pierde una vida
-TODO: nivel correcto recupera una vida
-TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si ganas vida o dinero al verlo(o incluso 2 botones))
-TODO: tb se puede pagar dinero de juego por vidas al final del nivel
+TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
 
 TODO: Mejor botón de Twitter, aunque ya funciona
 En el manifest:
@@ -34,12 +29,8 @@ Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
 startActivity(intent) ; // startActivity es un método de Context
 
 
-TODO: Varias paletas (5 por ejemplo) y estilos (cuadrados un poco diferentes o fuentes diferentes)
-TODO: paletas y estilos desbloqueables al pasar cierta cantidad de niveles de la historia O mediante dinero de juego (prob. mas nota)
-
-TODO: Banner anuncio en la parte inferior del juego
-
-TODO: Notificación push que se mande al móvil cada semana que no se abre la app
+TODO: Varias paletas (2 por ejemplo) y estilos (cuadrados un poco diferentes o fuentes diferentes)
+TODO: paletas y estilos desbloqueables mediante dinero de juego
 
 TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
@@ -52,6 +43,8 @@ public class Nonograma implements IGame {
     Engine engine;
     SceneBase currScene;
     UserInterface userInterface;
+
+
     public Nonograma(Engine engine){
         this.engine = engine;
         GameManager.init(engine);
@@ -110,12 +103,16 @@ public class Nonograma implements IGame {
     public void onResume() {
         if(currScene != null)
             currScene.onResume();
+        engine.getAudio().getMusic().play();
+        engine.getAudio().resumeEverySound();
     }
 
     @Override
     public void onPause() {
         if(currScene != null)
             currScene.onPause();
+        engine.getAudio().getMusic().pause();
+        engine.getAudio().pauseEverySound();
     }
 
     @Override
