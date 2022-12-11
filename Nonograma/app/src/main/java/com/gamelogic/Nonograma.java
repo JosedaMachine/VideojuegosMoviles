@@ -79,7 +79,8 @@ public class Nonograma implements IGame {
     //Escena de titulo inicial
     @Override
     public void init() {
-        changeScene(new SceneTitle(engine));
+        if(currScene == null)
+            changeScene(new SceneTitle(engine));
     }
 
     @Override
