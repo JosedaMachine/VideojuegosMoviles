@@ -4,7 +4,10 @@ package com.engineandroid;
 import android.os.Bundle;
 
 public interface IGame {
-    void changeScene(SceneBase newScene);
+    void pushScene(SceneBase newScene);
+    void previousScene();
+    boolean changeScene(String sceneClassName);
+
     SceneBase getScene();
     void init();
     void update(double elapsedTime);

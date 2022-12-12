@@ -4,7 +4,6 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -93,7 +92,7 @@ public class SceneCategory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneStory(engine, i));
+                    engine.getGame().pushScene(new SceneStory(engine, i));
                 }
             }
         };

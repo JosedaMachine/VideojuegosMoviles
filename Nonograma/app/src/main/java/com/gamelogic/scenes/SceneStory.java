@@ -4,7 +4,6 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -100,7 +99,7 @@ public class SceneStory implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
                     //TODO: Generar el nivel correcto de la categoría correcta
-                    engine.getGame().changeScene(new SceneGame(engine , i, j, category, lvlIndex));
+                    engine.getGame().pushScene(new SceneGame(engine , i, j, category, lvlIndex));
                 }
             }
         };

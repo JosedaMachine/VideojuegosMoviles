@@ -54,6 +54,10 @@ public class Fade{
         g.fillRect(posX_, posY_, sizeX_ , sizeY_);
     }
 
+    public void reset(){
+        fadeInComplete = fadeOutComplete = false;
+    }
+
     public void update(double deltaTime){
         if (play){
             //Resta o suma alpha dependiendo de si es Fade In o Fade Out
@@ -61,6 +65,7 @@ public class Fade{
 //              lerpPrecise(alpha, 0, percentageIn)
                 alpha -= deltaTime;
                 if (alpha <= 0){
+                    alpha = 0.0f;
                     fadeInComplete = true;
                     play = false;
                 }
@@ -70,6 +75,7 @@ public class Fade{
 //                lerpPrecise(alpha, 1.0f, percentageOut)
                 alpha += deltaTime;
                 if (alpha >= 1.0f){
+                    alpha = 1.0f;
                     fadeOutComplete = true;
                     play = false;
                 }
