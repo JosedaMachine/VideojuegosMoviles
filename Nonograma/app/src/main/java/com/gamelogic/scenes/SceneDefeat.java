@@ -61,7 +61,7 @@ public class SceneDefeat implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
                     //TODO: al titulo si quick game -> a story si historia
-                    engine.getGame().changeScene(new SceneTitle(engine));
+                    engine.getGame().pushScene(new SceneTitle(engine));
                 }
             }
         };

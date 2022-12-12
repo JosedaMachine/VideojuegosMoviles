@@ -15,13 +15,15 @@ import java.util.List;
 
 public class SceneLevels implements SceneBase {
 
-    Font title;
+    Font title, numFont;
     Font titleLittle;
     Engine engine;
     private Fade fade;
     public SceneLevels(Engine engine_) {
         this.engine = engine_;
     }
+
+    private Button bttReturn;
 
     List<Button> levels;
 
@@ -65,6 +67,41 @@ public class SceneLevels implements SceneBase {
 
         posX = (int) (logicWidth/1.38 - sizeX/2);
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
+
+        int offset = (int)(logicWidth * 0.16f),
+                bttWidth = (int)(logicWidth * 0.25f),
+                bttHeight = (int)(logicWidth * 0.0833f);
+
+        //Boton Return to menu
+        bttReturn = new Button("back", logicWidth/2 - bttWidth/2,
+                logicHeight- bttHeight*3, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
+                        setSelected(true);
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if(fade.getFadeOutComplete() && isSelected()){
+                    setSelected(false);
+                    engine.getGame().previousScene();
+//                    engine.getGame().changeScene("SceneLevels");
+//                    engine.getGame().pushScene(new SceneTitle(engine));
+                }
+            }
+        };
+        bttReturn.setFont(numFont);
+        bttReturn.setColor(ColorWrap.BLACK);
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
     }
 
     //Boton de creacion de nivel
@@ -88,7 +125,11 @@ public class SceneLevels implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneGame(engine , i, j));
+                    setSelected(false);
+                    engine.getGame().pushScene(new SceneGame(engine , i, j));
+                    fade.reset();
+                    fade.setState(Fade.STATE_FADE.In);
+                    fade.triggerFade();
                 }
             }
         };
@@ -114,13 +155,15 @@ public class SceneLevels implements SceneBase {
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).render(graphics);
         }
-
+        bttReturn.render(graphics);
         fade.render(graphics);
     }
 
     @Override
     public void update(double deltaTime) {
         fade.update(deltaTime);
+        bttReturn.update(deltaTime);
+
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).update(deltaTime);
         }
@@ -128,6 +171,7 @@ public class SceneLevels implements SceneBase {
 
     @Override
     public void input(TouchEvent event) {
+        bttReturn.input(event);
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).input(event);
         }
@@ -140,6 +184,7 @@ public class SceneLevels implements SceneBase {
         int logicHeight = engine.getGraphics().getLogicHeight();
 
         title = graphics.newFont("arcade.TTF",(int)(logicHeight * 0.05f),true);
+        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
         titleLittle = graphics.newFont("arcade.TTF",(int)(logicHeight * 0.035f),true);
     }
 

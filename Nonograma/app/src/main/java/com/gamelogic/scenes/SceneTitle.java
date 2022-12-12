@@ -1,12 +1,9 @@
 package com.gamelogic.scenes;
 
-import android.graphics.Color;
-
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.Music;
@@ -76,7 +73,10 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneLevels(engine));
+                    engine.getGame().pushScene(new SceneLevels(engine));
+                    fade.reset();
+                    fade.setState(Fade.STATE_FADE.In);
+                    fade.triggerFade();
                 }
             }
         };
@@ -105,7 +105,10 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneCategory(engine));
+                    engine.getGame().pushScene(new SceneCategory(engine));
+                    fade.reset();
+                    fade.setState(Fade.STATE_FADE.In);
+                    fade.triggerFade();
                 }
             }
         };

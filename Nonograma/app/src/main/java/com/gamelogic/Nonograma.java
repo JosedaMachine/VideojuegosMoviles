@@ -12,6 +12,9 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
 import com.gamelogic.scenes.SceneTitle;
 
+import java.util.Iterator;
+import java.util.Stack;
+
 /*
 TODO: persistencia
 TODO: Botones de volver a escena anterior en vez de solo a title
@@ -44,6 +47,7 @@ public class Nonograma implements IGame {
     SceneBase currScene;
     UserInterface userInterface;
 
+    Stack sceneStack;
 
     public Nonograma(Engine engine){
         this.engine = engine;
@@ -54,63 +58,136 @@ public class Nonograma implements IGame {
         GameManager.instance().setLevelIndex(Category.CAT2, 4);
         GameManager.instance().setLevelIndex(Category.CAT3, 0);
 
+        sceneStack = new Stack();
+
         userInterface = new UserInterface();
     }
 
     //Iniciar nueva escena
     @Override
-    public void changeScene(SceneBase newScene) {
-        currScene = newScene;
-        currScene.init();
+    public void pushScene(SceneBase newScene) {
+        newScene.init();
+        sceneStack.push(newScene);
+//        currScene = newScene;
+  //      currScene.init();
     }
 
     @Override
+    public void previousScene() {
+        sceneStack.pop();
+    }
+
+    @Override
+    public boolean changeScene(String sceneClassName) {
+        Iterator iterator = sceneStack.iterator();
+
+        System.out.println("Searching");
+
+        boolean hasBeenFound = false;
+        int skipped = 0;
+        while(iterator.hasNext() && !hasBeenFound){
+            Object value = iterator.next();
+
+            String valueName = value.getClass().getSimpleName();
+            boolean val =  valueName.equals(sceneClassName);
+
+            if(val) {
+                System.out.println("Bien");
+                hasBeenFound = true;
+            }else {
+                skipped++;
+            }
+        }
+
+        int toPop = sceneStack.size() - skipped - 1;
+
+        if(toPop == -1)
+            return false;
+
+        while(toPop > 0){
+            sceneStack.pop();
+            toPop--;
+        }
+
+        return true;
+    }
+
+
+    @Override
     public SceneBase getScene() {
-        return currScene;
+        if(!sceneStack.empty())
+            return (SceneBase) sceneStack.peek();
+        else return null;
     }
 
     //Escena de titulo inicial
     @Override
     public void init() {
         if(currScene == null)
-            changeScene(new SceneTitle(engine));
+            pushScene(new SceneTitle(engine));
     }
 
     @Override
     public void update(double elapsedTime) {
-        currScene.update(elapsedTime);
-        userInterface.update(elapsedTime);
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.update(elapsedTime);
+
+            //currScene.update(elapsedTime);
+            userInterface.update(elapsedTime);
+        }
     }
 
     @Override
     public void render(Graphics graphics) {
-        currScene.render(graphics);
-        userInterface.render(graphics);
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.render(graphics);
+
+    //        currScene.render(graphics);
+            userInterface.render(graphics);
+        }
     }
 
     @Override
     public void processInput(TouchEvent event) {
-        currScene.input(event);
-        userInterface.input(event);
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.input(event);
+
+    //        currScene.input(event);
+            userInterface.input(event);
+        }
     }
 
     @Override
     public void loadImages(Graphics graphics) {
-        currScene.loadResources(graphics);
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.loadResources(graphics);
+
+    //        currScene.loadResources(graphics);
+        }
     }
 
     @Override
     public void onResume() {
-        if(currScene != null)
-            currScene.onResume();
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.onResume();
+//            currScene.onResume();
+        }
         engine.getAudio().getMusic().play();
         engine.getAudio().resumeEverySound();
     }
 
     @Override
     public void onPause() {
-        if(currScene != null)
-            currScene.onPause();
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.onPause();
+//            currScene.onPause();
+        }
         engine.getAudio().getMusic().pause();
         engine.getAudio().pauseEverySound();
     }

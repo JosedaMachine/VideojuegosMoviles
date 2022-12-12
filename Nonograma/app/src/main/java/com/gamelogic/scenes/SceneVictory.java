@@ -1,10 +1,5 @@
 package com.gamelogic.scenes;
 
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -69,7 +64,7 @@ public class SceneVictory implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
                     //TODO: al titulo si quick game -> a story si historia
-                    engine.getGame().changeScene(new SceneTitle(engine));
+                    engine.getGame().pushScene(new SceneTitle(engine));
                 }
             }
         };

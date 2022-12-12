@@ -135,7 +135,7 @@ public class SceneGame implements SceneBase {
 
                 //Si nivel historia y vidas == 0
                 if(!subtractLife()){
-                    engine.getGame().changeScene(new SceneDefeat(engine));
+                    engine.getGame().pushScene(new SceneDefeat(engine));
                 }
             }
         }
@@ -162,7 +162,7 @@ public class SceneGame implements SceneBase {
                 //TODO: Guardar nuevo lastLvlIndex en archivo guardado
             }
 
-            engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
+            engine.getGame().pushScene(new SceneVictory(engine , checkBoard));
         }
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
@@ -293,7 +293,9 @@ public class SceneGame implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
-                    engine.getGame().changeScene(new SceneTitle(engine));
+                    engine.getGame().previousScene();
+//                    engine.getGame().changeScene("SceneLevels");
+//                    engine.getGame().pushScene(new SceneTitle(engine));
                 }
             }
         };
