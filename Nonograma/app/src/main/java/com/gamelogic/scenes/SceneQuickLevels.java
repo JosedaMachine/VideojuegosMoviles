@@ -73,7 +73,7 @@ public class SceneQuickLevels implements SceneBase {
                 bttHeight = (int)(logicWidth * 0.0833f);
 
         //Boton Return to menu
-        bttReturn = new Button("back", logicWidth/2 - bttWidth/2,
+        bttReturn = new Button("menu", logicWidth/2 - bttWidth/2,
                 logicHeight- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
