@@ -73,7 +73,10 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().pushScene(new SceneLevels(engine));
+
+                    setSelected(false);
+
+                    engine.getGame().pushScene(new SceneQuickLevels(engine));
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
@@ -105,7 +108,8 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().pushScene(new SceneCategory(engine));
+                    engine.getGame().pushScene(new SceneStoryCategories(engine));
+                    setSelected(false);
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();

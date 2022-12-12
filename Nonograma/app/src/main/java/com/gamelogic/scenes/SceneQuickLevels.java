@@ -13,13 +13,13 @@ import com.gamelogic.Fade;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneLevels implements SceneBase {
+public class SceneQuickLevels implements SceneBase {
 
     Font title, numFont;
     Font titleLittle;
     Engine engine;
     private Fade fade;
-    public SceneLevels(Engine engine_) {
+    public SceneQuickLevels(Engine engine_) {
         this.engine = engine_;
     }
 
