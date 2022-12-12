@@ -15,17 +15,17 @@ import com.gamelogic.GameManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SceneCategory implements SceneBase {
-    Font title, levelLabel;
+public class SceneStoryCategories implements SceneBase {
+    Font title, levelLabel, numFont;
     Engine engine;
     private Fade fade;
 
-    public SceneCategory(Engine engine_) {
+    public SceneStoryCategories(Engine engine_) {
         this.engine = engine_;
     }
 
     List<Button> levels;
-
+    Button bttReturn;
     @Override
     public void init() {
         loadResources(engine.getGraphics());
@@ -51,7 +51,7 @@ public class SceneCategory implements SceneBase {
                 yOffset = (int) (logicWidth * 0.05f);
 
         int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
-        int posY = logicHeight/2 - size/2;
+        int posY = (int)(logicHeight/2.5) - size/2;
 
         int cont = 0;
         for (int i = 0; i < numFils; i++){
@@ -60,14 +60,50 @@ public class SceneCategory implements SceneBase {
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
 
-                levels.add(createLevel(newPosX, newPosY, size, size, cont));
+                levels.add(createCategory(newPosX, newPosY, size, size, cont));
                 cont++;
             }
         }
+
+        int offset = (int)(logicWidth * 0.16f),
+                bttWidth = (int)(logicWidth * 0.25f),
+                bttHeight = (int)(logicWidth * 0.0833f);
+
+        //Boton Return to menu
+        bttReturn = new Button("back", logicWidth/2 - bttWidth/2,
+                logicHeight - bttHeight*2, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
+                        setSelected(true);
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if(fade.getFadeOutComplete() && isSelected()){
+                    setSelected(false);
+                    engine.getGame().previousScene();
+//                    engine.getGame().changeScene("SceneLevels");
+//                    engine.getGame().pushScene(new SceneTitle(engine));
+                }
+            }
+        };
+        bttReturn.setFont(numFont);
+        bttReturn.setColor(ColorWrap.BLACK);
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
     }
 
     //Boton de creacion de nivel
-    private Button createLevel(int x, int y, int sizeX, int sizeY, final int i){
+    private Button createCategory(int x, int y, int sizeX, int sizeY, final int i){
         final Button button = new Button("", x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
@@ -92,7 +128,11 @@ public class SceneCategory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().pushScene(new SceneStory(engine, i));
+                    setSelected(false);
+                    fade.reset();
+                    fade.setState(Fade.STATE_FADE.In);
+                    fade.triggerFade();
+                    engine.getGame().pushScene(new SceneStoryLevels(engine, i));
                 }
             }
         };
@@ -130,6 +170,8 @@ public class SceneCategory implements SceneBase {
                     + GameManager.instance().getMaxLevel(), (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 
+        bttReturn.render(graphics);
+
 
         fade.render(graphics);
     }
@@ -137,6 +179,7 @@ public class SceneCategory implements SceneBase {
     @Override
     public void update(double deltaTime) {
         fade.update(deltaTime);
+        bttReturn.update(deltaTime);
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).update(deltaTime);
         }
@@ -144,6 +187,7 @@ public class SceneCategory implements SceneBase {
 
     @Override
     public void input(TouchEvent event) {
+        bttReturn.input(event);
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).input(event);
         }
@@ -158,6 +202,7 @@ public class SceneCategory implements SceneBase {
 
         engine.getAudio().newSound("wrong.wav");
 
+        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
         title = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
         levelLabel = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
     }

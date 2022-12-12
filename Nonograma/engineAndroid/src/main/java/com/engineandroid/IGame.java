@@ -7,7 +7,6 @@ public interface IGame {
     void pushScene(SceneBase newScene);
     void previousScene();
     boolean changeScene(String sceneClassName);
-
     SceneBase getScene();
     void init();
     void update(double elapsedTime);
