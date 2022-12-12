@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.engineandroid;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -9,7 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
 //TODO esto debe ir en el motor, no la logica?
-public class AccelerometerSensor {
+public class AccelerometerSensor implements com.engineandroid.Sensor {
     Context context;
     SensorManager sensorManager;
     Sensor sensor;
@@ -54,11 +54,13 @@ public class AccelerometerSensor {
 
     //Métodos que llamar para que no consuma la aplicación mientras que está cerrada
     //El sensor SIGUE ACTIVO si no se quita del registro aunque se minimice la app
+    @Override
     public void onResume() {
         if(accelerometer != null)
             sensorManager.registerListener(accelerometer, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    @Override
     public void onPause() {
         if(accelerometer != null)
             sensorManager.unregisterListener(accelerometer);

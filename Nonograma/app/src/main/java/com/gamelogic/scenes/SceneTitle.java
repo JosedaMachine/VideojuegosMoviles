@@ -8,7 +8,7 @@ import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.Music;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.AccelerometerSensor;
+import com.engineandroid.AccelerometerSensor;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
 import com.engineandroid.UserInterface;
