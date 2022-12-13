@@ -22,11 +22,12 @@ public class Graphics {
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     int logicWidth, logicHeight;
-    float scaleFactor;
+    float scaleFactorX, scaleFactorY;
     int translateFactorX, translateFactorY;
 
     private int clearColor = ColorWrap.WHITE;
-
+    //TODO: preguntar si esta bien que grafics tenga datos de AdView para que tenga en cuenta su tamaño para pintar.
+    private Pair<Integer, Integer> adViewDimensions;
     Graphics(SurfaceView view, int logicWidth_ , int logicHeight_){
         this.myView = view;
         this.logicHeight = logicHeight_;
@@ -42,7 +43,7 @@ public class Graphics {
                 int heightWas = bottomWas - topWas; // Bottom exclusive, top inclusive
 
                 if(v.getWidth() != widthWas && v.getHeight() != heightWas){
-                    recalcFactors(myView.getWidth(), myView.getHeight());
+                    recalcFactors(myView.getWidth(), myView.getHeight() - adViewDimensions.second);
                 }
             }
         });
@@ -54,6 +55,10 @@ public class Graphics {
         this.paint.setColor(0xFFFFFFFF);
 
         this.assetManager = view.getContext().getAssets();
+    }
+
+    public void setAdBannerDim(Pair<Integer, Integer> dim){
+        adViewDimensions = dim;
     }
 
     public Image newImage(String path, String name) {
@@ -96,8 +101,8 @@ public class Graphics {
 //        fillRect(0,0, getWidth(), translateFactorY);
 //        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
 
-        translate(translateFactorX, translateFactorY);
-        scale(scaleFactor, scaleFactor);
+        translate(translateFactorX, 0);
+        scale(scaleFactorX, scaleFactorY);
     }
 
     public void finish(){
@@ -208,13 +213,15 @@ public class Graphics {
         int bandWidth = 0, bandHeight = 0;
         if(heightWindow >= expectedHeight){
             bandHeight = (heightWindow - expectedHeight)/2;
-            scaleFactor = (float)widthWindow / (float)logicWidth;
+            scaleFactorX = (float)widthWindow / (float)logicWidth;
+            scaleFactorY = (float)heightWindow / (float)logicHeight;
         }else{
             bandWidth = (widthWindow - expectedWidth)/2;
-            scaleFactor = (float)heightWindow / (float)logicHeight;
+            scaleFactorX = (float)widthWindow / (float)logicWidth;
+            scaleFactorY = (float)heightWindow / (float)logicHeight;
         }
 
-        translateFactorX = 0;
+        translateFactorX = bandWidth;
         translateFactorY = bandHeight;
     }
 
@@ -223,11 +230,15 @@ public class Graphics {
     }
 
     public int getTranslateFactorY() {
-        return translateFactorY;
+        return 0;
     }
 
-    public float getScaleFactor() {
-        return scaleFactor;
+    public float getScaleFactorX() {
+        return scaleFactorX;
+    }
+
+    public float getScaleFactorY() {
+        return scaleFactorY;
     }
 
     public Context getContext() {return myView.getContext();}

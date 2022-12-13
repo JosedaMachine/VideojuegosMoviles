@@ -194,32 +194,6 @@ public class SceneGame implements SceneBase {
         System.out.println(isHoldingPress);
     }
 
-    //Establece la casilla dada por [x][y] al siguiente estado
-    private void setTile(int x, int y, boolean wrong) {
-        if(x < 0 || y < 0) return;
-
-        if(wrong){
-            gameBoard.setTile(x, y, TILE.WRONG);
-            return;
-        }
-
-        if(tileTouchedInfo_.x == x && tileTouchedInfo_.y == y && tileTouchedInfo_.touched)
-            return;
-
-        TILE tile = gameBoard.getTile(x, y);
-
-        if(tile == TILE.EMPTY)
-            gameBoard.setTile(x,y, TILE.FILL);
-        else if(tile == TILE.FILL)
-            gameBoard.setTile(x,y, TILE.CROSS);
-        else
-            gameBoard.setTile(x,y, TILE.EMPTY);
-
-        tileTouchedInfo_.x = x;
-        tileTouchedInfo_.y = y;
-        tileTouchedInfo_.touched = true;
-    }
-
     @Override
     public void init() {
         tileTouchedInfo_ = new TileTouched();
@@ -304,32 +278,6 @@ public class SceneGame implements SceneBase {
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
     }
 
-    private void createLevel(String levelName, int boardSize) {
-        BufferedReader reader_ = null;
-        try {
-            reader_ = engine.openFile("levels/" + levelName +  ".txt");
-        }
-        catch (IOException e) {
-            System.out.println("Error opening file");
-            e.printStackTrace();
-        }
-
-//        Tablero de solucion
-        checkBoard = new Board(reader_, boardSize, boardSize);
-
-        cols_ = checkBoard.getCols();
-        rows_ = checkBoard.getRows();
-
-        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
-    }
-
-    private void createLevel(int boardSize) {
-        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
-        checkBoard.generateBoard();
-        //Tablero de juego
-        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
-    }
-
     @Override
     public void loadResources(Graphics graphics){
         System.out.println("Loading Resources...");
@@ -355,12 +303,13 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void onResume() {
+        int m = 0;
 
     }
 
     @Override
     public void onPause() {
-
+        int n = 0;
     }
 
     @Override
@@ -423,7 +372,57 @@ public class SceneGame implements SceneBase {
 
     //region methods
 
+    private void createLevel(String levelName, int boardSize) {
+        BufferedReader reader_ = null;
+        try {
+            reader_ = engine.openFile("levels/" + levelName +  ".txt");
+        }
+        catch (IOException e) {
+            System.out.println("Error opening file");
+            e.printStackTrace();
+        }
 
+//        Tablero de solucion
+        checkBoard = new Board(reader_, boardSize, boardSize);
+
+        cols_ = checkBoard.getCols();
+        rows_ = checkBoard.getRows();
+
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+    }
+
+    private void createLevel(int boardSize) {
+        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
+        checkBoard.generateBoard();
+        //Tablero de juego
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+    }
+
+    //Establece la casilla dada por [x][y] al siguiente estado
+    private void setTile(int x, int y, boolean wrong) {
+        if(x < 0 || y < 0) return;
+
+        if(wrong){
+            gameBoard.setTile(x, y, TILE.WRONG);
+            return;
+        }
+
+        if(tileTouchedInfo_.x == x && tileTouchedInfo_.y == y && tileTouchedInfo_.touched)
+            return;
+
+        TILE tile = gameBoard.getTile(x, y);
+
+        if(tile == TILE.EMPTY)
+            gameBoard.setTile(x,y, TILE.FILL);
+        else if(tile == TILE.FILL)
+            gameBoard.setTile(x,y, TILE.CROSS);
+        else
+            gameBoard.setTile(x,y, TILE.EMPTY);
+
+        tileTouchedInfo_.x = x;
+        tileTouchedInfo_.y = y;
+        tileTouchedInfo_.touched = true;
+    }
 
     private boolean subtractLife(){
         lives--;

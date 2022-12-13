@@ -172,24 +172,25 @@ public class Nonograma implements IGame {
 
     @Override
     public void onResume() {
+        engine.getAudio().getMusic().play();
+        engine.getAudio().resumeEverySound();
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.onResume();
 //            currScene.onResume();
         }
-        engine.getAudio().getMusic().play();
-        engine.getAudio().resumeEverySound();
+
     }
 
     @Override
     public void onPause() {
+        engine.getAudio().getMusic().pause();
+        engine.getAudio().pauseEverySound();
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.onPause();
 //            currScene.onPause();
         }
-        engine.getAudio().getMusic().pause();
-        engine.getAudio().pauseEverySound();
     }
 
     @Override

@@ -25,14 +25,16 @@ public class Engine implements Runnable{
     AssetManager assetManager_;
     private Thread engineThread;
 
-    boolean running;
+    boolean running, firstRun;
 
-    public Engine(SurfaceView view, int logicWidth_ , int logicHeight_){
+    public Engine(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer>adBanSize){
         currGame = null;
         graphics = new Graphics(view, logicWidth_, logicHeight_);
+        graphics.setAdBannerDim(adBanSize);
         input = new Input(view, graphics);
         assetManager_ = view.getContext().getAssets();
         audio = new Audio(assetManager_);
+        firstRun = false;
     }
 
     public Graphics getGraphics() {
@@ -118,7 +120,11 @@ public class Engine implements Runnable{
 
         //Lanzamos aqui el init del game ya que muchos valores de posición van en función del
         //tamaño del dispositivo.
-        currGame.init();
+
+        if(!firstRun){
+            currGame.init();
+            firstRun = true;
+        }
 
         long lastFrameTime = System.nanoTime();
 

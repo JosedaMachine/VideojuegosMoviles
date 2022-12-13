@@ -60,16 +60,11 @@ public class SceneDefeat implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
-                    //TODO: al titulo si quick game -> a story si historia
-//                    engine.getGame().pushScene(new SceneTitle(engine));
-
-                    //We know that our scene level selection is 2 Scene below current one.
+                    //Sabemos que la escena de niveles esta 2 escenas por debajo de ésta.
                     int i = 2;
                     while(i-- > 0){
                         engine.getGame().previousScene();
                     }
-
-//                    engine.getGame().changeScene("SceneTitle");
                 }
             }
         };

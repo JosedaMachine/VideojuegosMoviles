@@ -29,6 +29,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private Engine engine;
+    private String sharedPrefFile = "com.example.android.nonogram";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
         ColorWrap.Init();
         //Init Engine
-        this.engine = new Engine(renderView, width, height);
+
+        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize();
+
+        this.engine = new Engine(renderView, width, height, dimAd);
         //Init Game
         IGame game = new Nonograma(engine);
 
@@ -70,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
         engine.setGame(game);
 
         detectIntent(getIntent());
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+
+        System.out.println("Stop");
     }
 
     //Reanudar
@@ -84,6 +95,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         this.engine.pause();
+        //TODO hacerlo en el destroy pero no me pilla el evento
+
+//        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+//        preferencesEditor.putInt("count", mCount);
+//        preferencesEditor.putBoolean("playing", True);
+//        preferencesEditor.apply(); //también podemos usar .commit()
+
+    }
+
+    @Override
+    protected void onStop() {
+            super.onStop();
+        System.out.println("Stop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("Stop");
     }
 
     //Voltear movil

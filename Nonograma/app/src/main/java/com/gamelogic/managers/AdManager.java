@@ -6,8 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.engineandroid.Pair;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -53,6 +55,10 @@ public class AdManager {
             AdRequest adR = new AdRequest.Builder().build();
             ad.loadAd(adR);
         }
+    }
+
+    public Pair<Integer, Integer> getBannerSize(){
+        return new Pair<Integer, Integer>(ad.getAdSize().getWidth() , ad.getAdSize().getHeight());
     }
 
     public void buildRewardedAd(){

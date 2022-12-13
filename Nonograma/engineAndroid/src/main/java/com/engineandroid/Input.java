@@ -24,19 +24,19 @@ public class Input {
                 TouchEvent event;
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN){
                     event = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
                             id);
                 }
                 else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP)
                     event = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
                             id);
                 else if(action == MotionEvent.ACTION_MOVE)
                     event = new TouchEvent(TouchEvent.TouchEventType.MOVE_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
                             id);
                 else
                     return false;

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.launcher.MainActivity">
 
-<!--        app:layout_constraintBottom_toTopOf="@+id/adView"-->
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -14,14 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"
         app:adSize="BANNER"
         app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <SurfaceView
         android:id="@+id/surfaceView"
