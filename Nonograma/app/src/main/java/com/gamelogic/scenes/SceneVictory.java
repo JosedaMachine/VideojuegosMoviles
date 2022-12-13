@@ -8,6 +8,7 @@ import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
+import com.gamelogic.AdManager;
 import com.gamelogic.Board;
 import com.gamelogic.Button;
 import com.gamelogic.Fade;
@@ -78,6 +79,8 @@ public class SceneVictory implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (adButton.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
+                        AdManager.instance().makeRewardAd();
+//                        AdManager.instance().showRewardedAd();
                     }
                 }
             }

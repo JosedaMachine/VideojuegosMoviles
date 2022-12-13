@@ -1,6 +1,7 @@
 package com.gamelogic;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class AdManager {
 
     public void buildRewardedAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(activity, "ca-app-pub-3940256099942544~3347511713",
+        RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
@@ -111,14 +112,24 @@ public class AdManager {
                 @Override
                 public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                     // Handle the reward.
-                    //Log.d(TAG, "The user earned the reward.");
+                    Log.d("Reward", "The user earned the reward.");
 //                    int rewardAmount = rewardItem.getAmount();
 //                    String rewardType = rewardItem.getType();
                 }
             });
         } else {
-            //Log.d(TAG, "The rewarded ad wasn't ready yet.");
+            Log.d("Reward", "The rewarded ad wasn't ready yet.");
         }
+    }
+
+    public void makeRewardAd(){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                buildRewardedAd();
+                showRewardedAd();
+            }
+        });
     }
 
 }
