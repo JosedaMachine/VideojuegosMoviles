@@ -1,6 +1,7 @@
 package com.gamelogic.managers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.nonograma.R;
+
+import java.util.Objects;
 
 public class AdManager {
     private static AdManager instance_;
@@ -57,8 +60,8 @@ public class AdManager {
         }
     }
 
-    public Pair<Integer, Integer> getBannerSize(){
-        return new Pair<Integer, Integer>(ad.getAdSize().getWidth() , ad.getAdSize().getHeight());
+    public Pair<Integer, Integer> getBannerSize(Context context){
+        return new Pair<Integer, Integer>(Objects.requireNonNull(ad.getAdSize()).getWidthInPixels(context), Objects.requireNonNull(ad.getAdSize()).getHeightInPixels(context));
     }
 
     public void buildRewardedAd(){

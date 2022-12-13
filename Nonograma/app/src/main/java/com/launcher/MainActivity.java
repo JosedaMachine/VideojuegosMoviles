@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         ColorWrap.Init();
         //Init Engine
 
-        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize();
+        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize(this);
 
         this.engine = new Engine(renderView, width, height, dimAd);
         //Init Game

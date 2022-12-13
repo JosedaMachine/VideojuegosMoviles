@@ -101,7 +101,7 @@ public class Graphics {
 //        fillRect(0,0, getWidth(), translateFactorY);
 //        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
 
-        translate(translateFactorX, 0);
+        translate(0, 0);
         scale(scaleFactorX, scaleFactorY);
     }
 
@@ -226,7 +226,7 @@ public class Graphics {
     }
 
     public int getTranslateFactorX() {
-        return translateFactorX;
+        return 0;
     }
 
     public int getTranslateFactorY() {
