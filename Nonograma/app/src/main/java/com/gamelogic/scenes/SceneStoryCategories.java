@@ -98,7 +98,7 @@ public class SceneStoryCategories implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
     }
 
@@ -163,7 +163,7 @@ public class SceneStoryCategories implements SceneBase {
 
             b.render(graphics);
             int size = b.getSizeX();
-            graphics.drawImage(graphics.getImage("empty0"), (int)(b.getX() + size*0.25f),
+            graphics.drawImage(graphics.getImage("buttonbox"), (int)(b.getX() + size*0.25f),
                     (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
 
             graphics.drawText(GameManager.instance().getLevelIndex(CATEGORY.values()[i]) + "/"

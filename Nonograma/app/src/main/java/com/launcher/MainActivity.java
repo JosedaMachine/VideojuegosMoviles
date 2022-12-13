@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("Stop");
+        System.out.println("Destroy");
     }
 
     //Voltear movil

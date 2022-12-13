@@ -238,7 +238,7 @@ public class SceneGame implements SceneBase {
         };
         bttCheckWin.setFont(numFont);
         bttCheckWin.setColor(ColorWrap.BLACK);
-        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         //Boton Return to menu
         bttReturn = new Button("Coward", logicWidth/2 - bttWidth/2 - offset,
@@ -268,7 +268,7 @@ public class SceneGame implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
     }
 
     @Override
