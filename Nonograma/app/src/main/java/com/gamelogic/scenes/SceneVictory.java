@@ -4,6 +4,7 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
+import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -17,14 +18,16 @@ public class SceneVictory implements SceneBase {
 
     private final Engine engine;
 
-    private Button button;
-    private Button shareButton;
+    private Button button,
+            shareButton,
+            adButton;
     private Font title, buttonFont;
     private final String victoryText = "VICTORY!";
 
     private Fade fade;
 
     private final Board checkBoard;
+
     public SceneVictory(Engine engine_, Board checkboard) {
         this.checkBoard = checkboard;
         this.engine = engine_;
@@ -45,15 +48,55 @@ public class SceneVictory implements SceneBase {
 
         int sizeX = 225, sizeY = 50;
 
-        int posX = logicWidth/2 - sizeX/2;
-        int posY = logicHeight - (int)(sizeY*2.5);
+        int posX = (int)(logicWidth *0.25f - sizeX / 2);
+        int posY = logicHeight - (int) (sizeY * 2.5);
 
         //Boton vuelta al menu
-        button = new Button("Levels", posX, posY,sizeX, sizeY) {
+        shareButton = new Button("", posX, posY, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
-                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(button.isInside(event_.getX_(),event_.getY_())){
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (shareButton.isInside(event_.getX_(), event_.getY_())) {
+                        engine.getAudio().playSound("click.wav");
+                        engine.getContext().startActivity(
+                                GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"));
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+
+        posX = (int)(logicWidth *0.75f - sizeX / 2);
+
+        //Boton vuelta al menu
+        adButton = new Button("X2 coin", posX, posY, sizeX, sizeY) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (adButton.isInside(event_.getX_(), event_.getY_())) {
+                        engine.getAudio().playSound("click.wav");
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                    //TODO: hacer ad
+            }
+        };
+
+        posX = logicWidth / 2 - sizeX / 2;
+        posY += logicHeight*0.05f + sizeY;
+
+        //Boton vuelta al menu
+        button = new Button("Menu", posX, posY, sizeX, sizeY) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (button.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         fade.triggerFade();
                     }
@@ -74,32 +117,21 @@ public class SceneVictory implements SceneBase {
             }
         };
 
-        shareButton = new Button("", posX, posY + sizeY + 15,sizeX, sizeY) {
-            @Override
-            public void input(TouchEvent event_) {
-                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(shareButton.isInside(event_.getX_(),event_.getY_())){
-                        engine.getAudio().playSound("click.wav");
-                        engine.getContext().startActivity(
-                                GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"));
-                    }
-                }
-            }
-
-            @Override
-            public void update(double deltaTime) {
-            }
-        };
-
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
+        adButton.setFont(buttonFont);
+        adButton.setColor(ColorWrap.BLACK);
+        adButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
         shareButton.setFont(buttonFont);
         shareButton.setColor(ColorWrap.BLACK);
         shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
 
+        //TODO: cambiar de 20 a lo que toque
         GameManager.instance().addMoney(20);
-        if(engine.getGame().getUserInterface().getElement(0) != null){
+        if (engine.getGame().getUserInterface().getElement(0) != null) {
             TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
             ui.setText(GameManager.instance().getTextMoney());
         }
@@ -115,13 +147,26 @@ public class SceneVictory implements SceneBase {
 
         //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
-        graphics.drawText(victoryText, (int) (logicWidth/2 - dime.first/2), (int) (logicHeight/8 + dime.second/2));
+        graphics.drawText(victoryText, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 9 + dime.second / 2));
+
+        //Monedas
+        String money = "+" + 17;
+        dime = graphics.getStringDimensions(money);
+        graphics.drawText(money, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 5 + dime.second / 2));
+
+        Image coin = graphics.getImage("coin");
+        float coinScale = 55 / (float) coin.getWidth();
+        float offsetX = coin.getWidth() * coinScale * 0.3f;
+        float offsetY = coin.getHeight() * coinScale * 0.2f;
+
+        graphics.drawImage(coin, (int) (logicWidth / 2 + dime.first / 2 + offsetX), (int)(logicHeight / 5 - offsetY), coinScale, coinScale);
 
         //Tablero correcto
-        checkBoard.drawBoard(engine, logicWidth/2 - checkBoard.getWidth()/2, logicHeight/2 - checkBoard.getHeight()/2, true);
+        checkBoard.drawBoard(engine, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2, true);
 
         //Boton de vuelta al menu
         button.render(graphics);
+        adButton.render(graphics);
         shareButton.render(graphics);
         fade.render(graphics);
     }
@@ -130,12 +175,14 @@ public class SceneVictory implements SceneBase {
     public void update(double deltaTime) {
         fade.update(deltaTime);
         button.update(deltaTime);
+        adButton.update(deltaTime);
     }
 
     @Override
     public void input(TouchEvent event) {
         shareButton.input(event);
         button.input(event);
+        adButton.input(event);
     }
 
     @Override
@@ -144,9 +191,9 @@ public class SceneVictory implements SceneBase {
         graphics.newImage("emptysquare.png", "empty");
         graphics.newImage("share.png", "share");
 
-        title = graphics.newFont("arcade.TTF",75,true);
+        title = graphics.newFont("arcade.TTF", 75, true);
 
-        buttonFont = graphics.newFont("arcade.TTF",50,true);
+        buttonFont = graphics.newFont("arcade.TTF", 50, true);
     }
 
     @Override

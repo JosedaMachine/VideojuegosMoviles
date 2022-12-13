@@ -19,7 +19,7 @@ import com.gamelogic.TextElement;
 public class SceneTitle implements SceneBase {
     private final Engine engine;
     private Fade fade;
-    private Button quickButton, storyButton;
+    private Button quickButton, storyButton, paletteButton;
     private Font title;
     private String titleText = "Nonogram";
 
@@ -117,6 +117,41 @@ public class SceneTitle implements SceneBase {
             }
         };
 
+        posY += logicHeight * 0.2f;
+
+        //Boton de paletas
+        paletteButton = new Button("Palettes", posX, posY, sizeX, sizeY) {
+            @Override
+            public void input(TouchEvent event_) {
+                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    if(paletteButton.isInside(event_.getX_(),event_.getY_())){
+                        engine.getAudio().playSound("click.wav");
+                        setSelected(true);
+
+                        //Trigger Fade Out
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                //Cambio de escena al terminar fade
+                if(fade.getFadeOutComplete() && isSelected()){
+
+                    setSelected(false);
+
+                    engine.getGame().pushScene(new ScenePalettes(engine));
+                    fade.reset();
+                    fade.setState(Fade.STATE_FADE.In);
+                    fade.triggerFade();
+                }
+            }
+        };
+
         quickButton.setFont(title);
         quickButton.setColor(ColorWrap.BLACK);
         quickButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
@@ -124,6 +159,10 @@ public class SceneTitle implements SceneBase {
         storyButton.setFont(title);
         storyButton.setColor(ColorWrap.BLACK);
         storyButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+
+        paletteButton.setFont(title);
+        paletteButton.setColor(ColorWrap.BLACK);
+        paletteButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
         //Musica en loop
         Music music = engine.getAudio().getMusic();
@@ -167,6 +206,7 @@ public class SceneTitle implements SceneBase {
         //Boton
         quickButton.render(graphics);
         storyButton.render(graphics);
+        paletteButton.render(graphics);
 
         fade.render(graphics);
     }
@@ -177,6 +217,7 @@ public class SceneTitle implements SceneBase {
         fade.update(deltaTime);
         quickButton.update(deltaTime);
         storyButton.update(deltaTime);
+        paletteButton.update(deltaTime);
         updateBackground();
     }
 
@@ -184,6 +225,7 @@ public class SceneTitle implements SceneBase {
     public void input(TouchEvent event) {
         quickButton.input(event);
         storyButton.input(event);
+        paletteButton.input(event);
     }
 
     @Override
