@@ -103,7 +103,7 @@ public class SceneStoryLevels implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
     }
 

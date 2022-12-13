@@ -90,7 +90,7 @@ public class ScenePalettes implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
     }
 
     //Boton de seleccion de paleta

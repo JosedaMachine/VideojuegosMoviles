@@ -154,15 +154,15 @@ public class SceneTitle implements SceneBase {
 
         quickButton.setFont(title);
         quickButton.setColor(ColorWrap.BLACK);
-        quickButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        quickButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         storyButton.setFont(title);
         storyButton.setColor(ColorWrap.BLACK);
-        storyButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        storyButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         paletteButton.setFont(title);
         paletteButton.setColor(ColorWrap.BLACK);
-        paletteButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        paletteButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         //Musica en loop
         Music music = engine.getAudio().getMusic();
@@ -230,7 +230,7 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        graphics.newImage("emptysquare0.png", "empty0");
+        graphics.newImage("buttonbox.png", "buttonbox");
         graphics.newImage("coin.png", "coin");
 
         engine.getAudio().setMusic("music.wav");

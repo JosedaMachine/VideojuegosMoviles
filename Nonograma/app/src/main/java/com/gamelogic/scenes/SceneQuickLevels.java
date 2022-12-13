@@ -101,7 +101,7 @@ public class SceneQuickLevels implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
     }
 
     //Boton de creacion de nivel
@@ -136,7 +136,7 @@ public class SceneQuickLevels implements SceneBase {
 
         button.setFont(titleLittle);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         return button;
     }

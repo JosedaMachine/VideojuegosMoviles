@@ -122,11 +122,11 @@ public class SceneVictory implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         adButton.setFont(buttonFont);
         adButton.setColor(ColorWrap.BLACK);
-        adButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
+        adButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         shareButton.setFont(buttonFont);
         shareButton.setColor(ColorWrap.BLACK);
