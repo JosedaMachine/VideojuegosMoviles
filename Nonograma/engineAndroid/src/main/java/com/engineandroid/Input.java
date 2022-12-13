@@ -1,7 +1,10 @@
 package com.engineandroid;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,14 @@ public class Input {
         //Genera un evento TOUCH_EVENT o RELEASE_EVENT en funcion de la posicion reescalada de
         //la pantalla, respetando la logica, y lo añade a la cola de eventos para ser procesado
         view.setOnTouchListener(new View.OnTouchListener() {
+            boolean longPress = false;
+            final Handler handler = new Handler();
+            Runnable mLongPressed = new Runnable() {
+                public void run() {
+                    longPress = true;
+                }
+            };
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int action = motionEvent.getActionMasked();
@@ -23,21 +34,31 @@ public class Input {
                 TouchEvent.ButtonID id = TouchEvent.ButtonID.values()[motionEvent.getActionIndex()];
                 TouchEvent event;
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN){
+                    handler.postDelayed(mLongPressed, ViewConfiguration.getLongPressTimeout());
+                    Log.d("INPUT", "Normal press!");
                     event = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
                             (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
                             (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
                             id);
                 }
-                else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP)
-                    event = new TouchEvent(TouchEvent.TouchEventType.RELEASE_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
-                            id);
-                else if(action == MotionEvent.ACTION_MOVE)
+                else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP){
+                    handler.removeCallbacks(mLongPressed);
+                    Log.d("INPUT", longPress ? "Long press!" : "Normal up!");
+                    event = new TouchEvent(longPress ? TouchEvent.TouchEventType.LONG_EVENT : TouchEvent.TouchEventType.RELEASE_EVENT,
+                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
+                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
+                        id);
+
+                    longPress = false;
+                }
+                else if(action == MotionEvent.ACTION_MOVE){
+                    handler.removeCallbacks(mLongPressed);
+                    Log.d("INPUT", "Normal move!");
                     event = new TouchEvent(TouchEvent.TouchEventType.MOVE_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
-                            id);
+                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
+                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
+                        id);
+                }
                 else
                     return false;
 

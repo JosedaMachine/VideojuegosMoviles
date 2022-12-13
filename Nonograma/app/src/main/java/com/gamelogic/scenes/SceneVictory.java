@@ -87,7 +87,6 @@ public class SceneVictory implements SceneBase {
 
             @Override
             public void update(double deltaTime) {
-                    //TODO: hacer ad
             }
         };
 

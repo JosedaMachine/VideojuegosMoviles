@@ -25,6 +25,7 @@ public class TouchEvent implements Comparable<TouchEvent>{
         TOUCH_EVENT,
         RELEASE_EVENT,
         MOVE_EVENT,
+        LONG_EVENT
     }
 
     public enum ButtonID {
