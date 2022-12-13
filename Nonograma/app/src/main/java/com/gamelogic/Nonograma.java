@@ -1,12 +1,11 @@
 package com.gamelogic;
 
 
-import android.os.Bundle;
-import android.util.Log;
-
 import com.engineandroid.Engine;
 import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
+import com.engineandroid.MESSAGE_TYPE;
+import com.engineandroid.Message;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
@@ -198,10 +197,11 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void sendMessage(Bundle message) {
-        if(message.containsKey("RewardNotification")){
-            GameManager.instance().addMoney(message.getInt("RewardNotification"));
+    public void sendMessage(Message message) {
+        if(message.getType() == MESSAGE_TYPE.REWARD_NOTIFICATION){
+            GameManager.instance().addMoney(message.reward);
+        }else {
+            currScene.processMessage(message);
         }
-        Log.d("MONEY", "MENSAJE " + message.getInt("RewardNotification"));
     }
 }

@@ -174,11 +174,11 @@ public class Engine implements Runnable{
         return this.graphics.getContext();
     }
 
-    public void sendMessage(Bundle extras){
+    public void sendMessage(Message msg){
         if(currGame != null)
-            currGame.sendMessage(extras);
-        else
-            Log.d("MONEY", "Game NULL");
+            currGame.sendMessage(msg);
     }
+
+
 
 }

@@ -15,6 +15,6 @@ public interface IGame {
     void loadImages(Graphics graphics);
     void onResume();
     void onPause();
-    void sendMessage(Bundle message);
+    void sendMessage(Message message);
     UserInterface getUserInterface();
 }

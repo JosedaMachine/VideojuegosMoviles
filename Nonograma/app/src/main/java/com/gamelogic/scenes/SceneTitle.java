@@ -4,6 +4,7 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
+import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.Music;
@@ -247,6 +248,11 @@ public class SceneTitle implements SceneBase {
     @Override
     public void onPause() {
         accelerometerSensor.onPause();
+    }
+
+    @Override
+    public void processMessage(Message msg) {
+
     }
 
     private void updateBackground(){

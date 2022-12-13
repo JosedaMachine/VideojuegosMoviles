@@ -6,6 +6,7 @@ import com.engineandroid.Engine;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
+import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -232,6 +233,11 @@ public class ScenePalettes implements SceneBase {
 
     @Override
     public void onPause() {
+
+    }
+
+    @Override
+    public void processMessage(Message msg) {
 
     }
 

@@ -15,4 +15,6 @@ public interface SceneBase {
     void onResume();
 
     void onPause();
+
+    void processMessage(Message msg);
 }

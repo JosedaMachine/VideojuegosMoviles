@@ -28,6 +28,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    final int width = 600;
+    final int height = 900;
     private Engine engine;
     private String sharedPrefFile = "com.example.android.nonogram";
 
@@ -56,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int width = 600;
-        int height = 900;
 
         ColorWrap.Init();
         //Init Engine
@@ -123,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
         int orient = getResources().getConfiguration().orientation;
         switch(orient) {
             case Configuration.ORIENTATION_LANDSCAPE:
-                System.out.println("Vertical");
+
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
-                System.out.println("Horizontal");
+
                 break;
             default:
         }
@@ -135,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
     private void detectIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null ) {
-            engine.sendMessage(extras);
-        }else
-            Log.d("MONEY", "EXTRAS NULL");
+            if(extras.containsKey("RewardNotification")){
+                Message msg = new Message(MESSAGE_TYPE.REWARD_NOTIFICATION);
+                msg.reward = extras.getInt("RewardNotification");
+                engine.sendMessage(msg);
+            }
+        }
     }
 
     private void createNotificationChannel(){
