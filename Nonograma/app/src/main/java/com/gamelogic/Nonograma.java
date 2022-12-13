@@ -17,8 +17,6 @@ import java.util.Stack;
 
 /*
 TODO: persistencia
-TODO: Botones de volver a escena anterior en vez de solo a title
-
 TODO: Pedir en el manifest todas las pantallas menos las pequeñas
 
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)

@@ -49,7 +49,7 @@ public class SceneVictory implements SceneBase {
         int posY = logicHeight - (int)(sizeY*2.5);
 
         //Boton vuelta al menu
-        button = new Button("Menu", posX, posY,sizeX, sizeY) {
+        button = new Button("Levels", posX, posY,sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -64,8 +64,12 @@ public class SceneVictory implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
                     //TODO: al titulo si quick game -> a story si historia
-                    engine.getGame().changeScene("SceneTitle");
-//                    engine.getGame().pushScene(new SceneTitle(engine));
+
+                    //We know that our scene level selection is 2 Scene below current one.
+                    int i = 2;
+                    while(i-- > 0){
+                        engine.getGame().previousScene();
+                    }
                 }
             }
         };
