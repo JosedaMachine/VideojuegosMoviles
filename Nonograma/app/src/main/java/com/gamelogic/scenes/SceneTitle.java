@@ -9,12 +9,12 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.Music;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.AccelerometerSensor;
-import com.gamelogic.Button;
-import com.gamelogic.Fade;
+import com.gamelogic.utils.Button;
+import com.gamelogic.utils.Fade;
 import com.engineandroid.UserInterface;
-import com.gamelogic.GameManager;
-import com.gamelogic.ImageElement;
-import com.gamelogic.TextElement;
+import com.gamelogic.managers.GameManager;
+import com.gamelogic.utils.ImageElement;
+import com.gamelogic.utils.TextElement;
 
 public class SceneTitle implements SceneBase {
     private final Engine engine;
@@ -154,15 +154,15 @@ public class SceneTitle implements SceneBase {
 
         quickButton.setFont(title);
         quickButton.setColor(ColorWrap.BLACK);
-        quickButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        quickButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         storyButton.setFont(title);
         storyButton.setColor(ColorWrap.BLACK);
-        storyButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        storyButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         paletteButton.setFont(title);
         paletteButton.setColor(ColorWrap.BLACK);
-        paletteButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        paletteButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         //Musica en loop
         Music music = engine.getAudio().getMusic();
@@ -230,8 +230,7 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        graphics.newImage("crosssquare.png", "cross");
-        graphics.newImage("emptysquare.png", "empty");
+        graphics.newImage("emptysquare0.png", "empty0");
         graphics.newImage("coin.png", "coin");
 
         engine.getAudio().setMusic("music.wav");

@@ -8,12 +8,12 @@ import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.AdManager;
+import com.gamelogic.managers.AdManager;
 import com.gamelogic.Board;
-import com.gamelogic.Button;
-import com.gamelogic.Fade;
-import com.gamelogic.GameManager;
-import com.gamelogic.TextElement;
+import com.gamelogic.utils.Button;
+import com.gamelogic.utils.Fade;
+import com.gamelogic.managers.GameManager;
+import com.gamelogic.utils.TextElement;
 
 public class SceneVictory implements SceneBase {
 
@@ -165,7 +165,8 @@ public class SceneVictory implements SceneBase {
         graphics.drawImage(coin, (int) (logicWidth / 2 + dime.first / 2 + offsetX), (int)(logicHeight / 5 - offsetY), coinScale, coinScale);
 
         //Tablero correcto
-        checkBoard.drawBoard(engine, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2, true);
+        checkBoard.drawBoard(engine, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2,
+                true, GameManager.instance().getPalette().ordinal());
 
         //Boton de vuelta al menu
         button.render(graphics);
@@ -190,8 +191,6 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        graphics.newImage("crosssquare.png", "cross");
-        graphics.newImage("emptysquare.png", "empty");
         graphics.newImage("share.png", "share");
 
         title = graphics.newFont("arcade.TTF", 75, true);

@@ -7,10 +7,10 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.Button;
-import com.gamelogic.Category;
-import com.gamelogic.Fade;
-import com.gamelogic.GameManager;
+import com.gamelogic.utils.Button;
+import com.gamelogic.enums.CATEGORY;
+import com.gamelogic.utils.Fade;
+import com.gamelogic.managers.GameManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ public class SceneStoryLevels implements SceneBase {
     List<Button> levels;
     private Button bttReturn;
 
-    private Category category;
+    private CATEGORY category;
     private int lockIndex;
 
     public SceneStoryLevels(Engine engine_, int category) {
         this.engine = engine_;
-        this.category = Category.values()[category];
+        this.category = CATEGORY.values()[category];
 
-        lockIndex = GameManager.instance().getLevelIndex(Category.values()[category]);
+        lockIndex = GameManager.instance().getLevelIndex(CATEGORY.values()[category]);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SceneStoryLevels implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
     }
 

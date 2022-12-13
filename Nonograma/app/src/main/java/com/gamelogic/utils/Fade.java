@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.gamelogic.utils;
 
 
 import com.engineandroid.Engine;

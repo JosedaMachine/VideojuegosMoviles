@@ -1,18 +1,14 @@
-package com.gamelogic;
+package com.gamelogic.managers;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import com.engineandroid.Engine;
-import com.launcher.MainActivity;
+import com.gamelogic.enums.CATEGORY;
+import com.gamelogic.enums.PALETTE;
 
 import java.util.HashMap;
 
@@ -26,14 +22,16 @@ public class GameManager {
         this.engine = engine;
     }
 
-    private HashMap<Category, Integer> categoryLevelIndexes = new HashMap<>();
+    private HashMap<CATEGORY, Integer> categoryLevelIndexes = new HashMap<>();
     private int money = 0;
+
+    private PALETTE currentPalette = PALETTE.DEFAULT;
 
     public static GameManager instance(){
         return  instance_;
     }
 
-    static boolean init(Engine engine){
+    public static boolean init(Engine engine){
         instance_ = new GameManager(engine);
         return true;
     }
@@ -45,10 +43,10 @@ public class GameManager {
     public int getMaxLevel(){
         return maxLevels;
     }
-    public int getLevelIndex(Category category){
+    public int getLevelIndex(CATEGORY category){
         return categoryLevelIndexes.get(category);
     }
-    public void setLevelIndex(Category category, int index){
+    public void setLevelIndex(CATEGORY category, int index){
         categoryLevelIndexes.put(category, index);
     }
 
@@ -109,5 +107,12 @@ public class GameManager {
             return false;
         }
         return true;
+    }
+
+    public PALETTE getPalette(){
+        return currentPalette;
+    }
+    public void setPalette(int pal){
+        currentPalette = PALETTE.values()[pal];
     }
 }

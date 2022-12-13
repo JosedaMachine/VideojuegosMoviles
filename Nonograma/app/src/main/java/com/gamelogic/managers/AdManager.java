@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.gamelogic.managers;
 
 import android.app.Activity;
 import android.util.Log;

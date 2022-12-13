@@ -7,10 +7,10 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.Button;
-import com.gamelogic.Category;
-import com.gamelogic.Fade;
-import com.gamelogic.GameManager;
+import com.gamelogic.utils.Button;
+import com.gamelogic.enums.CATEGORY;
+import com.gamelogic.utils.Fade;
+import com.gamelogic.managers.GameManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ public class SceneStoryCategories implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
     }
 
@@ -111,7 +111,7 @@ public class SceneStoryCategories implements SceneBase {
                     if(isInside(event_.getX_(),event_.getY_())){
 
                         //Si no esta bloqueado
-                        if(i == 0 || GameManager.instance().getLevelIndex(Category.values()[i-1]) == GameManager.instance().getMaxLevel()){
+                        if(i == 0 || GameManager.instance().getLevelIndex(CATEGORY.values()[i-1]) == GameManager.instance().getMaxLevel()){
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
                             if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -139,7 +139,7 @@ public class SceneStoryCategories implements SceneBase {
 
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage(
-                    (i > 0 && GameManager.instance().getLevelIndex(Category.values()[i-1]) < GameManager.instance().getMaxLevel())?"lock":"category" + i));
+                    (i > 0 && GameManager.instance().getLevelIndex(CATEGORY.values()[i-1]) < GameManager.instance().getMaxLevel())?"lock":"category" + i));
 
         return button;
     }
@@ -163,10 +163,10 @@ public class SceneStoryCategories implements SceneBase {
 
             b.render(graphics);
             int size = b.getSizeX();
-            graphics.drawImage(graphics.getImage("empty"), (int)(b.getX() + size*0.25f),
+            graphics.drawImage(graphics.getImage("empty0"), (int)(b.getX() + size*0.25f),
                     (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
 
-            graphics.drawText(GameManager.instance().getLevelIndex(Category.values()[i]) + "/"
+            graphics.drawText(GameManager.instance().getLevelIndex(CATEGORY.values()[i]) + "/"
                     + GameManager.instance().getMaxLevel(), (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 

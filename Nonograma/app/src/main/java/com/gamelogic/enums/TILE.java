@@ -1,4 +1,4 @@
-package com.gamelogic;
+package com.gamelogic.enums;
 
 //Tipos de Tile
 public enum TILE {

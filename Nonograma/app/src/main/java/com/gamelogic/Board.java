@@ -5,12 +5,12 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
+import com.gamelogic.enums.TILE;
+import com.gamelogic.managers.GameManager;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 import java.util.ArrayList;
@@ -269,16 +269,15 @@ public class Board {
         }
     }
 
-    public void drawBoard(Engine e, int x, int y, boolean win) {
+    public void drawBoard(Engine e, int x, int y, boolean win, int pal) {
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
 
-
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                Image im = tileImage(e, board[i][j]);
+                Image im = tileImage(e, board[i][j], pal);
                 assert im != null;
                 if(!win || board[i][j] == TILE.FILL)
                     e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
@@ -326,16 +325,16 @@ public class Board {
     }
 
     //Coge image dependiendo del tile
-    private Image tileImage(Engine e, TILE t) {
+    private Image tileImage(Engine e, TILE t, int pal) {
         switch (t) {
             case FILL:
-                return e.getGraphics().getImage("fill");
+                return e.getGraphics().getImage("fill" + pal);
             case CROSS:
-                return e.getGraphics().getImage("cross");
+                return e.getGraphics().getImage("cross"+ pal);
             case EMPTY:
-                return e.getGraphics().getImage("empty");
+                return e.getGraphics().getImage("empty"+ pal);
             case WRONG:
-                return e.getGraphics().getImage("wrong");
+                return e.getGraphics().getImage("wrong"+ pal);
         }
         return null;
     }

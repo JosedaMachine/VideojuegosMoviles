@@ -10,6 +10,8 @@ import com.engineandroid.Graphics;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
+import com.gamelogic.enums.CATEGORY;
+import com.gamelogic.managers.GameManager;
 import com.gamelogic.scenes.SceneTitle;
 
 import java.util.Iterator;
@@ -50,11 +52,6 @@ public class Nonograma implements IGame {
     public Nonograma(Engine engine){
         this.engine = engine;
         GameManager.init(engine);
-        //TODO: Esto leerlo de archivo
-        GameManager.instance().setLevelIndex(Category.CAT0, 4);
-        GameManager.instance().setLevelIndex(Category.CAT1, 4);
-        GameManager.instance().setLevelIndex(Category.CAT2, 4);
-        GameManager.instance().setLevelIndex(Category.CAT3, 0);
 
         sceneStack = new Stack();
 
@@ -123,6 +120,11 @@ public class Nonograma implements IGame {
     public void init() {
         if(currScene == null)
             pushScene(new SceneTitle(engine));
+        //TODO: Esto leerlo de archivo
+        GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, 4);
+        GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, 4);
+        GameManager.instance().setLevelIndex(CATEGORY.OCEAN, 4);
+        GameManager.instance().setLevelIndex(CATEGORY.ICON, 0);
     }
 
     @Override

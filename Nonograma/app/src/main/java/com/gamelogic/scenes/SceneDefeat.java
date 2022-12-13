@@ -8,8 +8,8 @@ import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.Button;
-import com.gamelogic.Fade;
+import com.gamelogic.utils.Button;
+import com.gamelogic.utils.Fade;
 
 public class SceneDefeat implements SceneBase {
 
@@ -76,7 +76,7 @@ public class SceneDefeat implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
     }
 
     @Override
@@ -118,8 +118,6 @@ public class SceneDefeat implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        graphics.newImage("crosssquare.png", "cross");
-        graphics.newImage("emptysquare.png", "empty");
         graphics.newImage("skull.png", "skull");
 
         title = graphics.newFont("arcade.TTF",75,true);

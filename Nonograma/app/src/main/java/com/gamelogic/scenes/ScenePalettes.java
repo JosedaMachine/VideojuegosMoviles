@@ -5,14 +5,12 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Engine;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.Button;
-import com.gamelogic.Category;
-import com.gamelogic.Fade;
-import com.gamelogic.GameManager;
+import com.gamelogic.managers.GameManager;
+import com.gamelogic.utils.Button;
+import com.gamelogic.utils.Fade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,8 @@ public class ScenePalettes implements SceneBase {
 
     private Button button;
     List<Button> palettes;
+    int selectedPalette;
+
     private Font title, buttonFont;
     private final String text = "Select a palette";
 
@@ -42,8 +42,9 @@ public class ScenePalettes implements SceneBase {
         fade = new Fade(engine,
                 0, 0,
                 logicWidth, logicHeight,
-                500, 500, Fade.STATE_FADE.Out);
+                500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
+        fade.triggerFade();
 
         palettes = new ArrayList<>();
 
@@ -59,7 +60,10 @@ public class ScenePalettes implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (button.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
-                        fade.triggerFade();
+                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
                     }
                 }
             }
@@ -85,7 +89,7 @@ public class ScenePalettes implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
     }
 
     //Boton de seleccion de paleta
@@ -99,6 +103,8 @@ public class ScenePalettes implements SceneBase {
                         //Si no esta bloqueado //TODO: Cambiar esta condicion
                         if (true/*i == 0 || GameManager.instance().getLevelIndex(Category.values()[i - 1]) == GameManager.instance().getMaxLevel()*/) {
                             engine.getAudio().playSound("click.wav");
+                            setSelected(true);
+                            GameManager.instance().setPalette(i);
                             setBackgroundImage(engine.getGraphics().getImage("spalette" + i));
                         } else
                             engine.getAudio().playSound("wrong.wav");
@@ -108,11 +114,25 @@ public class ScenePalettes implements SceneBase {
 
             @Override
             public void update(double deltaTime) {
+                //quitar seleccion si otra es seleccionada
+                if(isSelected() && GameManager.instance().getPalette().ordinal() != i){
+                    setSelected(false);
+                    setBackgroundImage(engine.getGraphics().getImage("palette" + i));
+                }
             }
         };
 
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("palette" + i));
+        String prefix;
+        if(i == GameManager.instance().getPalette().ordinal()){
+            prefix = "s";
+            button.setSelected(true);
+        }
+        else
+            prefix = "";
+
+
+        button.setBackgroundImage(engine.getGraphics().getImage(prefix+"palette" + i));
 
         return button;
     }
@@ -169,7 +189,7 @@ public class ScenePalettes implements SceneBase {
 
         engine.getAudio().newSound("wrong.wav");
 
-        title = graphics.newFont("arcade.TTF", 75, true);
+        title = graphics.newFont("arcade.TTF", 65, true);
         buttonFont = graphics.newFont("arcade.TTF", 50, true);
     }
 

@@ -7,8 +7,8 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.Button;
-import com.gamelogic.Fade;
+import com.gamelogic.utils.Button;
+import com.gamelogic.utils.Fade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class SceneQuickLevels implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
     }
 
     //Boton de creacion de nivel
@@ -136,7 +136,7 @@ public class SceneQuickLevels implements SceneBase {
 
         button.setFont(titleLittle);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         return button;
     }
@@ -179,8 +179,6 @@ public class SceneQuickLevels implements SceneBase {
 
     @Override
     public void loadResources(Graphics graphics) {
-        graphics.newImage("emptysquare.png", "empty");
-
         int logicHeight = engine.getGraphics().getLogicHeight();
 
         title = graphics.newFont("arcade.TTF",(int)(logicHeight * 0.05f),true);

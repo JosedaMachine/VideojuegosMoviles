@@ -9,11 +9,11 @@ import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.Board;
-import com.gamelogic.Button;
-import com.gamelogic.Category;
-import com.gamelogic.Fade;
-import com.gamelogic.GameManager;
-import com.gamelogic.TILE;
+import com.gamelogic.utils.Button;
+import com.gamelogic.enums.CATEGORY;
+import com.gamelogic.utils.Fade;
+import com.gamelogic.managers.GameManager;
+import com.gamelogic.enums.TILE;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,7 +68,7 @@ public class SceneGame implements SceneBase {
 
     private String levelName = null;
 
-    private Category category = null;
+    private CATEGORY category = null;
     private int lvlIndex = 0;
 
     TileTouched tileTouchedInfo_ = null;
@@ -102,18 +102,18 @@ public class SceneGame implements SceneBase {
 
     }
 
-    public SceneGame(Engine engine, int rows, int cols, Category cat, int index) {
+    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index) {
         this.engine = engine;
         rows_ = rows;
         cols_ = cols;
         category = cat;
         lvlIndex = index;
 
-        if(cat == Category.CAT0)
+        if(cat == CATEGORY.KITCHEN)
             levelName = "kitchen/" + KitchenLevels[index];
-        else if(cat == Category.CAT1)
+        else if(cat == CATEGORY.MEDIEVAL)
             levelName = "medieval/" + MedievalLevels[index];
-        else if(cat == Category.CAT2)
+        else if(cat == CATEGORY.OCEAN)
             levelName = "ocean/" + OceanLevels[index];
         else levelName = "icon/" + IconLevels[index];
     }
@@ -271,7 +271,7 @@ public class SceneGame implements SceneBase {
         };
         bttCheckWin.setFont(numFont);
         bttCheckWin.setColor(ColorWrap.BLACK);
-        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         //Boton Return to menu
         bttReturn = new Button("Coward", logicWidth/2 - bttWidth/2 - offset,
@@ -301,7 +301,7 @@ public class SceneGame implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty0"));
     }
 
     private void createLevel(String levelName, int boardSize) {
@@ -334,11 +334,13 @@ public class SceneGame implements SceneBase {
     public void loadResources(Graphics graphics){
         System.out.println("Loading Resources...");
 
-        graphics.newImage("emptysquare.png", "empty");
-        graphics.newImage("crosssquare.png", "cross");
-        graphics.newImage("tom.png", "tom");
-        graphics.newImage("wrongsquare.png", "wrong");
-        graphics.newImage("fillsquare.png", "fill");
+        int palette = GameManager.instance().getPalette().ordinal();
+        //Carga de cuadrados con paletas/disenos
+        graphics.newImage("emptysquare" + palette + ".png", "empty"+palette);
+        graphics.newImage("crosssquare" + palette + ".png", "cross"+palette);
+        graphics.newImage("wrongsquare" + palette + ".png", "wrong"+palette);
+        graphics.newImage("fillsquare" + palette + ".png", "fill"+palette);
+
         graphics.newImage("heart.png", "heart");
         graphics.newImage("emptyheart.png", "emptyheart");
 
@@ -365,18 +367,19 @@ public class SceneGame implements SceneBase {
     public void render(Graphics graphics) {
         int logicWidth = graphics.getLogicWidth();
         int logicHeight = graphics.getLogicHeight();
+        int palette = GameManager.instance().getPalette().ordinal();
 
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);
         checkBoard.drawInfoRects(engine, logicWidth/2 - gameBoard.getWidth()/2, logicHeight/2 - gameBoard.getHeight()/2, pixelFont);
-        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
+        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
 
         //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if(DEBUG){
-            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
+            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
         }
 
         //Corazones
