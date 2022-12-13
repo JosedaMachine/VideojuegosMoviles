@@ -45,7 +45,7 @@ public class SceneGame implements SceneBase {
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
     private boolean checkWin = false;
-
+    private boolean isHoldingPress = false;
     //Vidas
     private final int maxLives = 3;
     private int lives = maxLives;
@@ -172,9 +172,11 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+            isHoldingPress = false;
             tileTouchedInfo_.touched = false;
         }
-        else if((event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) || event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT){
+        else if((event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) || (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT)){
+            isHoldingPress = true;
             //Input en casillas del tablero
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
 
