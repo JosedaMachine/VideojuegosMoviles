@@ -122,11 +122,11 @@ public class SceneVictory implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         adButton.setFont(buttonFont);
         adButton.setColor(ColorWrap.BLACK);
-        adButton.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        adButton.setBackgroundImage(engine.getGraphics().getImage("empty0"));
 
         shareButton.setFont(buttonFont);
         shareButton.setColor(ColorWrap.BLACK);
@@ -134,10 +134,6 @@ public class SceneVictory implements SceneBase {
 
         //TODO: cambiar de 20 a lo que toque
         GameManager.instance().addMoney(20);
-        if (engine.getGame().getUserInterface().getElement(0) != null) {
-            TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
-            ui.setText(GameManager.instance().getTextMoney());
-        }
     }
 
     @Override
@@ -153,7 +149,7 @@ public class SceneVictory implements SceneBase {
         graphics.drawText(victoryText, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 9 + dime.second / 2));
 
         //Monedas
-        String money = "+" + 17;
+        String money = "+" + 20;
         dime = graphics.getStringDimensions(money);
         graphics.drawText(money, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 5 + dime.second / 2));
 

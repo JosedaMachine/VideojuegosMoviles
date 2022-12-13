@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.engineandroid.Engine;
+import com.engineandroid.Pair;
 import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.enums.PALETTE;
+import com.gamelogic.utils.TextElement;
 
 import java.util.HashMap;
 
@@ -22,10 +24,13 @@ public class GameManager {
         this.engine = engine;
     }
 
+    //Indices de ultimo nivel bloqueado por categoria
     private HashMap<CATEGORY, Integer> categoryLevelIndexes = new HashMap<>();
     private int money = 0;
 
     private PALETTE currentPalette = PALETTE.DEFAULT;
+    //Paletas desbloqueadas
+    private HashMap<PALETTE, Pair<Boolean, Integer>>  unlockedPalettes = new HashMap<>();
 
     public static GameManager instance(){
         return  instance_;
@@ -65,14 +70,15 @@ public class GameManager {
         return "" + money;
     }
 
-    public int setMoney(int m){
-        return money = m;
-    }
-
     public void addMoney(int m) {
         Log.d("MONEY", ""+m);
         money += m;
         money = Math.min(maxMoney, money);
+
+        if (engine.getGame().getUserInterface().getElement(0) != null) {
+            TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
+            ui.setText(Integer.toString(money));
+        }
     }
     // Genera el intent para Twitter.
     // Primero comprueba si tienes Twitter instalado
@@ -115,4 +121,12 @@ public class GameManager {
     public void setPalette(int pal){
         currentPalette = PALETTE.values()[pal];
     }
+
+    public void setPaletteUnlocked(int pal, boolean lock, int price){
+        unlockedPalettes.put(PALETTE.values()[pal], new Pair<>(lock, price));
+    }
+    public Pair<Boolean, Integer> getPaletteUnlocked(int pal){
+        return unlockedPalettes.get(PALETTE.values()[pal]);
+    }
+
 }

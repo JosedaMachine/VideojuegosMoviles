@@ -5,6 +5,7 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Engine;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
+import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
@@ -100,13 +101,22 @@ public class ScenePalettes implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (isInside(event_.getX_(), event_.getY_())) {
 
-                        //Si no esta bloqueado //TODO: Cambiar esta condicion
-                        if (true/*i == 0 || GameManager.instance().getLevelIndex(Category.values()[i - 1]) == GameManager.instance().getMaxLevel()*/) {
+                        GameManager gmInstance = GameManager.instance();
+
+                        Pair<Boolean,Integer> p = gmInstance.getPaletteUnlocked(i);
+
+                        //Si no esta bloqueado
+                        if (p.first) {
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
-                            GameManager.instance().setPalette(i);
+                            gmInstance.setPalette(i);
                             setBackgroundImage(engine.getGraphics().getImage("spalette" + i));
-                        } else
+                        } else if (p.second <= gmInstance.getMoney()){
+                            gmInstance.addMoney(-p.second);
+                            gmInstance.setPaletteUnlocked(i, true, 0);
+                            setBackgroundImage(engine.getGraphics().getImage("palette" + i));
+                        }
+                        else
                             engine.getAudio().playSound("wrong.wav");
                     }
                 }
@@ -123,16 +133,19 @@ public class ScenePalettes implements SceneBase {
         };
 
         button.setColor(ColorWrap.BLACK);
-        String prefix;
-        if(i == GameManager.instance().getPalette().ordinal()){
-            prefix = "s";
-            button.setSelected(true);
+
+        if(GameManager.instance().getPaletteUnlocked(i).first) {
+            String prefix;
+            if (i == GameManager.instance().getPalette().ordinal()) {
+                prefix = "s";
+                button.setSelected(true);
+            } else
+                prefix = "";
+
+            button.setBackgroundImage(engine.getGraphics().getImage(prefix + "palette" + i));
         }
         else
-            prefix = "";
-
-
-        button.setBackgroundImage(engine.getGraphics().getImage(prefix+"palette" + i));
+            button.setBackgroundImage(engine.getGraphics().getImage("lock"));
 
         return button;
     }
@@ -148,7 +161,26 @@ public class ScenePalettes implements SceneBase {
         for (int i = 0; i < palettes.size(); i++) {
             Button b = palettes.get(i);
             b.render(graphics);
+
+            Pair<Boolean, Integer> p = GameManager.instance().getPaletteUnlocked(i);
+
+            if(!p.first) {
+
+                String money = Integer.toString(p.second);
+                Pair<Double, Double> dime = graphics.getStringDimensions(money);
+
+                graphics.drawText(money, (int)(b.getX() +  b.getSizeX()/2 - dime.first / 2), (int)(b.getY() + b.getSizeY() + dime.second));
+
+                Image coin = graphics.getImage("coin");
+                float coinScale = 55 / (float) coin.getWidth();
+                float offsetY = coin.getHeight() * coinScale * 0.2f;
+
+                graphics.drawImage(coin, (int) (b.getX() + b.getSizeX()/2 - (coin.getWidth()*coinScale)/2),
+                        (int)(b.getY() + b.getSizeY() + dime.second + offsetY), coinScale, coinScale);
+            }
         }
+
+
 
         //Texto
         Pair<Double, Double> dime = graphics.getStringDimensions(text);

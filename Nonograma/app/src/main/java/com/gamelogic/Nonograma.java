@@ -22,6 +22,7 @@ TODO: persistencia
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
 TODO: sonido solo una vez cuando se presione, que no suene como una ametralladora
 TODO: marcar casilla X con long press.
+
 TODO: Mejor botón de Twitter, aunque ya funciona
 En el manifest:
 Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
@@ -29,8 +30,6 @@ Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
  .build() ; //Genera la URl https://twitter.com/intent/tweet?text=Este%20es%20mi%20texto%20a%20tweettear
 Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
 startActivity(intent) ; // startActivity es un método de Context
-
-TODO: paletas y estilos desbloqueables mediante dinero de juego
 
 TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
@@ -121,6 +120,10 @@ public class Nonograma implements IGame {
         GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, 4);
         GameManager.instance().setLevelIndex(CATEGORY.OCEAN, 4);
         GameManager.instance().setLevelIndex(CATEGORY.ICON, 0);
+
+        GameManager.instance().setPaletteUnlocked(0, true, 0);
+        GameManager.instance().setPaletteUnlocked(1, false, 40);
+        GameManager.instance().setPaletteUnlocked(2, false, 40);
     }
 
     @Override
