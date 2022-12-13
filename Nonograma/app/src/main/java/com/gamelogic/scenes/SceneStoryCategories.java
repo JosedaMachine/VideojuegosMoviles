@@ -222,4 +222,9 @@ public class SceneStoryCategories implements SceneBase {
     public void processMessage(Message msg) {
 
     }
+
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+
+    }
 }

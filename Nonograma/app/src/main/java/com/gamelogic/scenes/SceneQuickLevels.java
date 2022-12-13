@@ -201,4 +201,9 @@ public class SceneQuickLevels implements SceneBase {
     public void processMessage(Message msg) {
 
     }
+
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+
+    }
 }

@@ -241,5 +241,10 @@ public class ScenePalettes implements SceneBase {
 
     }
 
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+
+    }
+
 
 }

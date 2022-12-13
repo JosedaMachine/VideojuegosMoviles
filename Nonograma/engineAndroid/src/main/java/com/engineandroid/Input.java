@@ -37,15 +37,15 @@ public class Input {
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN){
                     handler.postDelayed(mLongPressed, ViewConfiguration.getLongPressTimeout());
                     event = new TouchEvent(TouchEvent.TouchEventType.TOUCH_EVENT,
-                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
-                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
+                            (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                            (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
                             id);
                 }
                 else if(action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP){
                     handler.removeCallbacks(mLongPressed);
                     event = new TouchEvent(longPress ? TouchEvent.TouchEventType.LONG_EVENT : TouchEvent.TouchEventType.RELEASE_EVENT,
-                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
-                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
+                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
                         id);
 
                     longPress = false;
@@ -54,8 +54,8 @@ public class Input {
                     handler.removeCallbacks(mLongPressed);
                     Log.d("INPUT", "Normal move!");
                     event = new TouchEvent(TouchEvent.TouchEventType.MOVE_EVENT,
-                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactorX()),
-                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactorY()),
+                        (int)((posX - graphics_.getTranslateFactorX())/ graphics_.getScaleFactor()),
+                        (int)((posY - graphics_.getTranslateFactorY())/ graphics_.getScaleFactor()),
                         id);
                 }
                 else

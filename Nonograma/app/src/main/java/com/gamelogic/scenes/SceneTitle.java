@@ -255,6 +255,21 @@ public class SceneTitle implements SceneBase {
 
     }
 
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
+        int sizeX = (int)(logicWidth * 0.8f),
+            sizeY = (int)(logicHeight * 0.111f);
+        if(isHorizontal){
+            quickButton.setX(logicWidth + logicWidth/2  - sizeX/2);
+            quickButton.setY(logicHeight/2 - sizeY/2);
+        }else{
+            quickButton.setX(logicWidth/2 - sizeX/2);
+            quickButton.setY(logicHeight/2 - sizeY/2);
+        }
+    }
+
     private void updateBackground(){
         //TODO funciona pero lo que hace es una tontería, es lo que controla el sensor ahora mismo
         float[] deltas = accelerometerSensor.getDeltaValues();

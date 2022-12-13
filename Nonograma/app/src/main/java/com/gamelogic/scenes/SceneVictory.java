@@ -209,5 +209,10 @@ public class SceneVictory implements SceneBase {
 
     }
 
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+
+    }
+
 
 }

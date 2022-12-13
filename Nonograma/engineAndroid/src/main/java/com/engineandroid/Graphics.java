@@ -22,16 +22,21 @@ public class Graphics {
     HashMap<String, Image> imagesLoaded = new HashMap<>();
 
     int logicWidth, logicHeight;
-    float scaleFactorX, scaleFactorY;
+    float scaleFactor;
     int translateFactorX, translateFactorY;
 
     private int clearColor = ColorWrap.WHITE;
     //TODO: preguntar si esta bien que grafics tenga datos de AdView para que tenga en cuenta su tamaño para pintar.
     private Pair<Integer, Integer> adViewDimensions;
-    Graphics(SurfaceView view, int logicWidth_ , int logicHeight_){
+
+
+
+
+    Graphics(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer> adViewDimensions_){
         this.myView = view;
         this.logicHeight = logicHeight_;
         this.logicWidth = logicWidth_;
+        adViewDimensions = adViewDimensions_;
 
         this.myView.addOnLayoutChangeListener( new View.OnLayoutChangeListener()
         {
@@ -55,10 +60,6 @@ public class Graphics {
         this.paint.setColor(0xFFFFFFFF);
 
         this.assetManager = view.getContext().getAssets();
-    }
-
-    public void setAdBannerDim(Pair<Integer, Integer> dim){
-        adViewDimensions = dim;
     }
 
     public Image newImage(String path, String name) {
@@ -101,8 +102,8 @@ public class Graphics {
 //        fillRect(0,0, getWidth(), translateFactorY);
 //        fillRect(0, getHeight() - translateFactorY, getWidth(), translateFactorY);
 
-        translate(0, 0);
-        scale(scaleFactorX, scaleFactorY);
+        translate(translateFactorX, 0);
+        scale(scaleFactor, scaleFactor);
     }
 
     public void finish(){
@@ -200,25 +201,23 @@ public class Graphics {
     }
 
     public void recalcFactors(int widthWindow, int heightWindow) {
-        System.out.println("Altura Logica:" + logicHeight);
-        System.out.println("Anchura Logica:" + logicWidth);
+//        System.out.println("Altura Logica:" + logicHeight);
+//        System.out.println("Anchura Logica:" + logicWidth);
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
         int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
-        System.out.println("Anchura :" + widthWindow);
-        System.out.println("Anchura Esperada :" + expectedWidth);
+//        System.out.println("Anchura :" + widthWindow);
+//        System.out.println("Anchura Esperada :" + expectedWidth);
 
-        System.out.println("Altura :" + heightWindow);
-        System.out.println("Altura Esperada :" + expectedHeight);
+//        System.out.println("Altura :" + heightWindow);
+//        System.out.println("Altura Esperada :" + expectedHeight);
 
         int bandWidth = 0, bandHeight = 0;
         if(heightWindow >= expectedHeight){
             bandHeight = (heightWindow - expectedHeight)/2;
-            scaleFactorX = (float)widthWindow / (float)logicWidth;
-            scaleFactorY = (float)heightWindow / (float)logicHeight;
+            scaleFactor = (float)widthWindow / (float)logicWidth;
         }else{
             bandWidth = (widthWindow - expectedWidth)/2;
-            scaleFactorX = (float)widthWindow / (float)logicWidth;
-            scaleFactorY = (float)heightWindow / (float)logicHeight;
+            scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
         translateFactorX = bandWidth;
@@ -226,19 +225,15 @@ public class Graphics {
     }
 
     public int getTranslateFactorX() {
-        return 0;
+        return translateFactorX;
     }
 
     public int getTranslateFactorY() {
-        return 0;
+        return translateFactorY;
     }
 
-    public float getScaleFactorX() {
-        return scaleFactorX;
-    }
-
-    public float getScaleFactorY() {
-        return scaleFactorY;
+    public float getScaleFactor() {
+        return scaleFactor;
     }
 
     public Context getContext() {return myView.getContext();}

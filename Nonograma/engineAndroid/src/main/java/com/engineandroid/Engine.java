@@ -29,8 +29,7 @@ public class Engine implements Runnable{
 
     public Engine(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer>adBanSize){
         currGame = null;
-        graphics = new Graphics(view, logicWidth_, logicHeight_);
-        graphics.setAdBannerDim(adBanSize);
+        graphics = new Graphics(view, logicWidth_, logicHeight_, adBanSize);
         input = new Input(view, graphics);
         assetManager_ = view.getContext().getAssets();
         audio = new Audio(assetManager_);
@@ -97,6 +96,10 @@ public class Engine implements Runnable{
         }
     }
 
+    public void orientationChanged(boolean isHorizontal){
+        currGame.orientationChanged(isHorizontal);
+    }
+
     public void processInput() {
         ArrayList<TouchEvent> list =input.getEventList();
         for (int i = 0; i < list.size(); i++){
@@ -116,11 +119,9 @@ public class Engine implements Runnable{
         // Si el Thread se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
         while(this.running && (graphics.getWidth() == 0 || currGame == null));
-        // Espera activa. Sería más elegante al menos dormir un poco.
 
         //Lanzamos aqui el init del game ya que muchos valores de posición van en función del
         //tamaño del dispositivo.
-
         if(!firstRun){
             currGame.init();
             firstRun = true;

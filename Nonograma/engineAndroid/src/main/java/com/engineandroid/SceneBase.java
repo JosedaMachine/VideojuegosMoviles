@@ -17,4 +17,6 @@ public interface SceneBase {
     void onPause();
 
     void processMessage(Message msg);
+
+    void orientationChanged(boolean isHorizontal);
 }

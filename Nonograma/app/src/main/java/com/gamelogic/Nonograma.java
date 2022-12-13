@@ -57,8 +57,6 @@ public class Nonograma implements IGame {
     public void pushScene(SceneBase newScene) {
         newScene.init();
         sceneStack.push(newScene);
-//        currScene = newScene;
-  //      currScene.init();
     }
 
     @Override
@@ -189,6 +187,12 @@ public class Nonograma implements IGame {
             scene.onPause();
 //            currScene.onPause();
         }
+    }
+
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+        SceneBase scene = (SceneBase) sceneStack.peek();
+        scene.orientationChanged(isHorizontal);
     }
 
     @Override

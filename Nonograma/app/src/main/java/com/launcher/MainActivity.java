@@ -122,10 +122,12 @@ public class MainActivity extends AppCompatActivity {
         int orient = getResources().getConfiguration().orientation;
         switch(orient) {
             case Configuration.ORIENTATION_LANDSCAPE:
-
+                System.out.println("Horizontal");
+                this.engine.orientationChanged(true);
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
-
+                System.out.println("Vertical");
+                this.engine.orientationChanged(false);
                 break;
             default:
         }

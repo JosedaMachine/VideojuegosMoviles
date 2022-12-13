@@ -12,7 +12,7 @@ public abstract class Button {
     private final String text;
     private int color;
 
-    private final int posX, posY, sizeX, sizeY;
+    private int posX, posY, sizeX, sizeY;
     private boolean selected;
     public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_){
         text = text_;
@@ -69,6 +69,8 @@ public abstract class Button {
 
     public int getX(){return posX;}
     public int getY(){return posY;}
+    public void setX(int x_){posX = x_;}
+    public void setY(int y_){posY = y_;}
     public int getSizeX(){return sizeX;}
     public int getSizeY(){return sizeY;}
 }

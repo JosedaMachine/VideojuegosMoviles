@@ -15,6 +15,7 @@ public interface IGame {
     void loadImages(Graphics graphics);
     void onResume();
     void onPause();
+    void orientationChanged(boolean isHorizontal);
     void sendMessage(Message message);
     UserInterface getUserInterface();
 }

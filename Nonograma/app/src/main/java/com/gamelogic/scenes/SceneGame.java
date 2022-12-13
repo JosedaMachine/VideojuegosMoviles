@@ -311,6 +311,11 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
+    public void orientationChanged(boolean isHorizontal) {
+
+    }
+
+    @Override
     public void render(Graphics graphics) {
         int logicWidth = graphics.getLogicWidth();
         int logicHeight = graphics.getLogicHeight();
