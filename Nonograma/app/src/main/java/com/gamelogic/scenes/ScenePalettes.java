@@ -73,13 +73,13 @@ public class ScenePalettes implements SceneBase {
         };
 
         int size = (int) (logicWidth * 0.30f);
+        int offset = (int)(logicWidth*0.025f);
 
-        posX = (int) (logicWidth * 0.33f - size) ;
+        posX = (logicWidth - (size*3 + offset*2))/2 ;
         posY = logicHeight / 2 - size/2;
-        int offset = (int)(logicWidth*0.1f);
 
         for (int i = 0; i < 3; i++) {
-            palettes.add(createPalette(posX + size * i + offset, posY, size, size, i));
+            palettes.add(createPalette(posX + size * i + offset*i, posY, size, size, i));
         }
 
 
@@ -99,7 +99,7 @@ public class ScenePalettes implements SceneBase {
                         //Si no esta bloqueado //TODO: Cambiar esta condicion
                         if (true/*i == 0 || GameManager.instance().getLevelIndex(Category.values()[i - 1]) == GameManager.instance().getMaxLevel()*/) {
                             engine.getAudio().playSound("click.wav");
-                            setSelected(true);
+                            setBackgroundImage(engine.getGraphics().getImage("spalette" + i));
                         } else
                             engine.getAudio().playSound("wrong.wav");
                     }
