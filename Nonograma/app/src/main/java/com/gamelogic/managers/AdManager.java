@@ -122,6 +122,7 @@ public class AdManager {
                 public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                     // Handle the reward.
                     Log.d("Reward", "The user earned the reward.");
+                    //TODO añadir la recompensa al ver el puto anuncio
 //                    int rewardAmount = rewardItem.getAmount();
 //                    String rewardType = rewardItem.getType();
                 }
