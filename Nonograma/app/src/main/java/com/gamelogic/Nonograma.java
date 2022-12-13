@@ -19,10 +19,9 @@ import java.util.Stack;
 
 /*
 TODO: persistencia
-TODO: Pedir en el manifest todas las pantallas menos las pequeñas
-
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
-
+TODO: sonido solo una vez cuando se presione, que no suene como una ametralladora
+TODO: marcar casilla X con long press.
 TODO: Mejor botón de Twitter, aunque ya funciona
 En el manifest:
 Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
@@ -31,14 +30,11 @@ Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
 Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
 startActivity(intent) ; // startActivity es un método de Context
 
-
-TODO: Varias paletas (2 por ejemplo) y estilos (cuadrados un poco diferentes o fuentes diferentes)
 TODO: paletas y estilos desbloqueables mediante dinero de juego
 
 TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
-
 TODO: Sensores hagan algo con sentido
 */
 
