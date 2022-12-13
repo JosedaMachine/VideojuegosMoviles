@@ -21,6 +21,7 @@ import android.view.WindowManager;
 
 import com.engineandroid.*;
 import com.engineandroid.Engine;
+import com.gamelogic.AdManager;
 import com.gamelogic.Nonograma;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,7 +35,6 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private Engine engine;
-    private AdView ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +52,9 @@ public class MainActivity extends AppCompatActivity {
         createAlarm();
 
         //Init adds
-        MobileAds.initialize(this, new OnInitializationCompleteListener(){
-
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-
-            }
-        });
-//
-        ad = findViewById(R.id.adView);
-        if(ad != null){
-            AdRequest adR = new AdRequest.Builder().build();
-            ad.loadAd(adR);
-        }
+        AdManager.init(this);
+        AdManager.instance().initializeAds();
+        AdManager.instance().buildBannerAd();
 
         //Init renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);
