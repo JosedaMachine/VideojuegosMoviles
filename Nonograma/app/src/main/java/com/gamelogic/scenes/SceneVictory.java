@@ -9,12 +9,11 @@ import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.managers.AdManager;
+import com.engineandroid.AdManager;
 import com.gamelogic.Board;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 import com.gamelogic.managers.GameManager;
-import com.gamelogic.utils.TextElement;
 
 public class SceneVictory implements SceneBase {
 
@@ -80,8 +79,7 @@ public class SceneVictory implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (adButton.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
-                        AdManager.instance().makeRewardAd();
-//                        AdManager.instance().showRewardedAd();
+                        AdManager.instance().buildAndShowRewardAd();
                     }
                 }
             }

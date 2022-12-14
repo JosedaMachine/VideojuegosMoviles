@@ -1,4 +1,4 @@
-package com.gamelogic.managers;
+package com.engineandroid;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,10 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.engineandroid.Pair;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -21,7 +19,6 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.nonograma.R;
 
 import java.util.Objects;
 
@@ -52,8 +49,8 @@ public class AdManager {
         });
     }
 
-    public void buildBannerAd(){
-        ad = activity.findViewById(R.id.adView);
+    public void buildBannerAd(AdView adView){
+        ad = adView;
         if(ad != null){
             AdRequest adR = new AdRequest.Builder().build();
             ad.loadAd(adR);
@@ -132,7 +129,7 @@ public class AdManager {
         }
     }
 
-    public void makeRewardAd(){
+    public void buildAndShowRewardAd(){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

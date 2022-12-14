@@ -13,15 +13,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.engineandroid.*;
 import com.engineandroid.Engine;
-import com.gamelogic.managers.AdManager;
+import com.engineandroid.AdManager;
 import com.gamelogic.Nonograma;
+import com.google.android.gms.ads.AdView;
 import com.nonograma.R;
 
 import java.util.Objects;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //Init adds
         AdManager.init(this);
         AdManager.instance().initializeAds();
-        AdManager.instance().buildBannerAd();
+        AdManager.instance().buildBannerAd(findViewById(R.id.adView));
 
         //Init renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);
@@ -165,5 +165,4 @@ public class MainActivity extends AppCompatActivity {
         //TODO cambiar el tiempo a 1 semana en milisegundos (ahora está a 30000 que son 30 seg)
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+30000, pendingIntent);
     }
-
 }
