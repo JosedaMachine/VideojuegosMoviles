@@ -3,38 +3,37 @@ package com.engineandroid;
 import static android.content.Context.SENSOR_SERVICE;
 
 import android.content.Context;
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class GyroscopeSensor implements com.engineandroid.Sensor {
+public class MagnetometerSensor implements Sensor{
 
     SensorManager sensorManager;
-    Sensor sensor;
-    SensorEventListener gyroscope;
+    android.hardware.Sensor sensor;
+    SensorEventListener magnetometer;
 
     float[] deltaValues;
 
     public final int NUM_VALUES = 3;
 
-    public GyroscopeSensor(Context context){
+    public MagnetometerSensor(Context context){
         sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sensor = sensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_MAGNETIC_FIELD);
 
         deltaValues = new float[NUM_VALUES];
         //No se hace nada si no tiene giroscopio el dispositivo
         if(sensor == null)
             return;
 
-        gyroscope = new SensorEventListener() {
+        magnetometer = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 deltaValues = event.values.clone();
             }
 
             @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
+            public void onAccuracyChanged(android.hardware.Sensor sensor, int i) {
 
             }
         };
@@ -44,18 +43,17 @@ public class GyroscopeSensor implements com.engineandroid.Sensor {
 
     @Override
     public void onResume() {
-        if(gyroscope != null)
-            sensorManager.registerListener(gyroscope, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if(magnetometer != null)
+            sensorManager.registerListener(magnetometer, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     public void onPause() {
-        if(gyroscope != null)
-            sensorManager.unregisterListener(gyroscope);
+        if(magnetometer != null)
+            sensorManager.unregisterListener(magnetometer);
     }
 
     public float[] getDeltaValues(){
         return deltaValues;
     }
-
 }

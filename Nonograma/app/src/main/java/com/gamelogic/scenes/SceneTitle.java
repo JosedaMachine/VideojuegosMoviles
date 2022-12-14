@@ -1,9 +1,13 @@
 package com.gamelogic.scenes;
 
+import android.util.Log;
+
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
+import com.engineandroid.GyroscopeSensor;
+import com.engineandroid.MagnetometerSensor;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
@@ -24,7 +28,7 @@ public class SceneTitle implements SceneBase {
     private Font title;
     private String titleText = "Nonogram";
 
-    private AccelerometerSensor accelerometerSensor;
+    private MagnetometerSensor magnetometerSensor;
 
     public SceneTitle(Engine engine_) {
 
@@ -175,7 +179,7 @@ public class SceneTitle implements SceneBase {
         }
 
         //Acceleremoter
-        accelerometerSensor = new AccelerometerSensor(engine.getGraphics().getContext());
+        magnetometerSensor = new MagnetometerSensor(engine.getGraphics().getContext());
 
         //Interface
         UserInterface uinterface = engine.getGame().getUserInterface();
@@ -242,12 +246,12 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void onResume() {
-        accelerometerSensor.onResume();
+        magnetometerSensor.onResume();
     }
 
     @Override
     public void onPause() {
-        accelerometerSensor.onPause();
+        magnetometerSensor.onPause();
     }
 
     @Override
@@ -271,22 +275,17 @@ public class SceneTitle implements SceneBase {
     }
 
     private void updateBackground(){
-        //TODO funciona pero lo que hace es una tontería, es lo que controla el sensor ahora mismo
-        float[] deltas = accelerometerSensor.getDeltaValues();
+        //TODO no sé qué estoy haciendo ya aquí, llevo como 3 sensores creados es terrible
+        float[] values = magnetometerSensor.getDeltaValues();
 
-        int i = 0;
-        while(i < 3 && deltas[i] < 10){
-            i++;
-        }
+        Log.d("VALUES", "0: " + values[0] + " 1: " + values[1] + " 2: " + values[2]);
 
         //Si detecta movimiento
-        if(i < 3){
+        if(values[1] > 35){
             engine.getGraphics().setClearColor(ColorWrap.BLACK);
-            System.out.println("Changed to Black");
+        }else{
+            engine.getGraphics().setClearColor(ColorWrap.WHITE);
         }
-//        else{
-//           //engine.getGraphics().setClearColor(ColorWrap.WHITE);
-//            //System.out.println("Es blanco");
-//        }
+
     }
 }
