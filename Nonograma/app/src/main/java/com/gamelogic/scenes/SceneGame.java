@@ -176,17 +176,26 @@ public class SceneGame implements SceneBase {
             isHoldingPress = false;
             tileTouchedInfo_.touched = false;
         }
-        else if((event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) || (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT)){
+        else if(event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT){
             isHoldingPress = true;
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
 
-            if(index.first != -1 && index.second != -1)
+            if(index.first != -1 && index.second != -1) {
                 setTile(index.first, index.second, false);
+                engine.getAudio().playSound("click.wav");
+            }
             //Debug para mostrar el resultado
             if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
                 DEBUG = !DEBUG;
             }
+        }
+        else if(isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT){
+            //Input en casillas del tablero
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
+
+            if(index.first != -1 && index.second != -1)
+                setTile(index.first, index.second, false);
         }
     }
 
