@@ -24,11 +24,11 @@ import java.util.ArrayList;
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
 
-    public class TileTouched{
+    public class TileTouched {
         public int x, y;
         public boolean touched;
 
-        public TileTouched(){
+        public TileTouched() {
             x = -1;
             y = -1;
             touched = false;
@@ -73,25 +73,25 @@ public class SceneGame implements SceneBase {
 
     TileTouched tileTouchedInfo_ = null;
 
-    String[] KitchenLevels = {"fork", "spoon","knife", "plate",
-                              "pan","pot","oven","microwave",
-                              "salt","napkin","pizza","sandwich",
-                              "table","chefhat","restaurant","glass"};
+    String[] KitchenLevels = {"fork", "spoon", "knife", "plate",
+            "pan", "pot", "oven", "microwave",
+            "salt", "napkin", "pizza", "sandwich",
+            "table", "chefhat", "restaurant", "glass"};
 
-    String[] MedievalLevels = {"bow", "sword" , "cat" , "crossbow",
-                               "helmet", "arrow", "shield", "castle",
-                               "banner", "crossingswords","crown","beer",
-                               "dragon", "law", "flail", "gallows"};
+    String[] MedievalLevels = {"bow", "sword", "cat", "crossbow",
+            "helmet", "arrow", "shield", "castle",
+            "banner", "crossingswords", "crown", "beer",
+            "dragon", "law", "flail", "gallows"};
 
     String[] OceanLevels = {"fish", "anchor", "crab", "hook",
-                            "fishnet","fishingrod","helm","prow",
-                            "sailboat","eyepatch","shark","barrel",
-                            "chest","coin","skull","jellyfish"};
+            "fishnet", "fishingrod", "helm", "prow",
+            "sailboat", "eyepatch", "shark", "barrel",
+            "chest", "coin", "skull", "jellyfish"};
 
     String[] IconLevels = {"twitter", "facebook", "google", "whatsapp",
-                            "instagram","gmail","discord","chrome",
-                            "visualstudio","github","twitch","youtibe",
-                            "infojobs","netflix","amazon","ucm"};
+            "instagram", "gmail", "discord", "chrome",
+            "visualstudio", "github", "twitch", "youtibe",
+            "infojobs", "netflix", "amazon", "ucm"};
 
 
     public SceneGame(Engine engine, int rows, int cols) {
@@ -109,11 +109,11 @@ public class SceneGame implements SceneBase {
         category = cat;
         lvlIndex = index;
 
-        if(cat == CATEGORY.KITCHEN)
+        if (cat == CATEGORY.KITCHEN)
             levelName = "kitchen/" + KitchenLevels[index];
-        else if(cat == CATEGORY.MEDIEVAL)
+        else if (cat == CATEGORY.MEDIEVAL)
             levelName = "medieval/" + MedievalLevels[index];
-        else if(cat == CATEGORY.OCEAN)
+        else if (cat == CATEGORY.OCEAN)
             levelName = "ocean/" + OceanLevels[index];
         else levelName = "icon/" + IconLevels[index];
     }
@@ -125,44 +125,44 @@ public class SceneGame implements SceneBase {
     @Override
     public void update(double deltaTime) {
         //Comprueba la victoria
-        if(checkWin) {
+        if (checkWin) {
             hasWon = checkHasWon();
             checkWin = false;
-            if(!hasWon){
+            if (!hasWon) {
                 //Inicia el timer de derrota
                 timer = 0;
                 engine.getAudio().playSound("wrong.wav");
 
                 //Si nivel historia y vidas == 0
-                if(!subtractLife()){
+                if (!subtractLife()) {
                     engine.getGame().pushScene(new SceneDefeat(engine));
                 }
             }
         }
 
         //Avanza timer
-        if(timer < maxTime){
+        if (timer < maxTime) {
             timer += deltaTime;
-            if(timer >= maxTime)
+            if (timer >= maxTime)
                 //Limpiar casillas rojas
                 gameBoard.clearWrongsTiles();
         }
 
         //Victoria
-        if(hasWon){
+        if (hasWon) {
             engine.getAudio().playSound("correct.wav");
 
             //Si modo historia
-            if (category != null){
+            if (category != null) {
                 final int lastLvlIndex = GameManager.instance().getLevelIndex(category);
                 //Si es el ultimo nivel desbloqueado -> desbloquea siguiente
-                if(lastLvlIndex == lvlIndex)
+                if (lastLvlIndex == lvlIndex)
                     GameManager.instance().setLevelIndex(category, lvlIndex + 1);
 
                 //TODO: Guardar nuevo lastLvlIndex en archivo guardado
             }
 
-            engine.getGame().pushScene(new SceneVictory(engine , checkBoard));
+            engine.getGame().pushScene(new SceneVictory(engine, checkBoard));
         }
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
@@ -173,30 +173,40 @@ public class SceneGame implements SceneBase {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
 
-        if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+        if (event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) {
             isHoldingPress = false;
             tileTouchedInfo_.touched = false;
-        }
-        else if(event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT){
+        } else if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
             isHoldingPress = true;
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
-            if(index.first != -1 && index.second != -1) {
-                setTile(index.first, index.second, false);
+            if (index.first != -1 && index.second != -1) {
+                setTile(index.first, index.second, false, false);
                 engine.getAudio().playSound("click.wav");
             }
             //Debug para mostrar el resultado
-            if(event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON){
+            if (event_.getID_() == TouchEvent.ButtonID.MIDDLE_BUTTON) {
                 DEBUG = !DEBUG;
             }
-        }
-        else if(isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT){
+            isHoldingPress = false;
+            tileTouchedInfo_.touched = false;
+        } else if (event_.getType_() == TouchEvent.TouchEventType.LONG_EVENT) {
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(),event_.getY_());
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
-            if(index.first != -1 && index.second != -1)
-                setTile(index.first, index.second, false);
+            if (index.first != -1 && index.second != -1) {
+                setTile(index.first, index.second, false, true);
+                engine.getAudio().playSound("click.wav");
+            }
+            isHoldingPress = false;
+            tileTouchedInfo_.touched = false;
+        } else if (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT) {
+            //Input en casillas del tablero
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
+
+            if (index.first != -1 && index.second != -1)
+                setTile(index.first, index.second, false, false);
         }
     }
 
@@ -215,31 +225,31 @@ public class SceneGame implements SceneBase {
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
-        int boardSize = (int)(logicWidth * 0.6f);
+        int boardSize = (int) (logicWidth * 0.6f);
 
 
-        if(levelName != null){
+        if (levelName != null) {
             createLevel(levelName, boardSize);
-        }else createLevel(boardSize);
+        } else createLevel(boardSize);
 
         //relación respecto a numero de casillas
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
-        float size = (float) (Math.floor(relations.first * 0.7)/1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int)(logicHeight * size), false);
+        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
-        int offset = (int)(logicWidth * 0.16f),
-            bttWidth = (int)(logicWidth * 0.25f),
-            bttHeight = (int)(logicWidth * 0.0833f);
+        int offset = (int) (logicWidth * 0.16f),
+                bttWidth = (int) (logicWidth * 0.25f),
+                bttHeight = (int) (logicWidth * 0.0833f);
 
         //Boton Check Win
-        bttCheckWin = new Button("Check", logicWidth/2 - bttWidth/2 + offset,
-                logicHeight - bttHeight*3, bttWidth, bttHeight) {
+        bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2 + offset,
+                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
-                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(event_.getX_(), event_.getY_())) {
                         checkWin = true;
                     }
                 }
@@ -254,15 +264,15 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         //Boton Return to menu
-        bttReturn = new Button("Coward", logicWidth/2 - bttWidth/2 - offset,
-                logicHeight- bttHeight*3, bttWidth, bttHeight) {
+        bttReturn = new Button("Coward", logicWidth / 2 - bttWidth / 2 - offset,
+                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
-                if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
 
-                        if(fade.getState() != Fade.STATE_FADE.Out) {
+                        if (fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
                         }
@@ -272,7 +282,7 @@ public class SceneGame implements SceneBase {
 
             @Override
             public void update(double deltaTime) {
-                if(fade.getFadeOutComplete()){
+                if (fade.getFadeOutComplete()) {
                     engine.getGame().previousScene();
 //                    engine.getGame().changeScene("SceneLevels");
 //                    engine.getGame().pushScene(new SceneTitle(engine));
@@ -285,21 +295,21 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void loadResources(Graphics graphics){
+    public void loadResources(Graphics graphics) {
         System.out.println("Loading Resources...");
 
         int palette = GameManager.instance().getPalette().ordinal();
         //Carga de cuadrados con paletas/disenos
-        graphics.newImage("emptysquare" + palette + ".png", "empty"+palette);
-        graphics.newImage("crosssquare" + palette + ".png", "cross"+palette);
-        graphics.newImage("wrongsquare" + palette + ".png", "wrong"+palette);
-        graphics.newImage("fillsquare" + palette + ".png", "fill"+palette);
+        graphics.newImage("emptysquare" + palette + ".png", "empty" + palette);
+        graphics.newImage("crosssquare" + palette + ".png", "cross" + palette);
+        graphics.newImage("wrongsquare" + palette + ".png", "wrong" + palette);
+        graphics.newImage("fillsquare" + palette + ".png", "fill" + palette);
 
         graphics.newImage("heart.png", "heart");
         graphics.newImage("emptyheart.png", "emptyheart");
 
-        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
-        pixelFont = graphics.newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * 0.1f), false);
+        numFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
 
         engine.getAudio().newSound("wrong.wav");
         engine.getAudio().newSound("correct.wav");
@@ -343,36 +353,35 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, logicWidth/2 - gameBoard.getWidth()/2, logicHeight/2 - gameBoard.getHeight()/2, pixelFont);
+        checkBoard.drawInfoRects(engine, logicWidth / 2 - gameBoard.getWidth() / 2, logicHeight / 2 - gameBoard.getHeight() / 2, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
 
         //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
-        if(DEBUG){
+        if (DEBUG) {
             checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
         }
 
         //Corazones
         Image heart = graphics.getImage("heart"),
-            emHeart = graphics.getImage("emptyheart");
+                emHeart = graphics.getImage("emptyheart");
 
         float heartScale = 0.1f;
-        float xOffset = logicWidth*0.005f + heart.getWidth()*heartScale,
-                yOffset = logicHeight*0.005f;
+        float xOffset = logicWidth * 0.005f + heart.getWidth() * heartScale,
+                yOffset = logicHeight * 0.005f;
 
-        for (int i = 0; i < maxLives; i++){
+        for (int i = 0; i < maxLives; i++) {
             //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
-            graphics.drawImage((i < lives)?heart:emHeart,
-                    (int)(checkBoard.getPosX() + xOffset*i),
-                    (int)(checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
+            graphics.drawImage((i < lives) ? heart : emHeart,
+                    (int) (checkBoard.getPosX() + xOffset * i),
+                    (int) (checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
         }
 
 
-
         //Texto indicando casillas incorrectas
-        if(!hasWon && timer < maxTime){
+        if (!hasWon && timer < maxTime) {
             graphics.setFont(numFont);
 
             String remainingField = numRemaining + " remaining cells";
@@ -382,9 +391,9 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
             graphics.setColor(ColorWrap.BLUE, 1.0f);
-            graphics.drawText(remainingField, (int) (logicWidth/2 - dime_remaining.first/2), (int) (logicHeight * 0.05 + dime_remaining.second/2));
+            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.05 + dime_remaining.second / 2));
             graphics.setColor(ColorWrap.RED, 1.0f);
-            graphics.drawText(wrongField, (int) (logicWidth/2 - dime_wrong.first/2), (int) (logicHeight * 0.09 + dime_wrong.second/2));
+            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.09 + dime_wrong.second / 2));
 
         }
 
@@ -398,9 +407,8 @@ public class SceneGame implements SceneBase {
     private void createLevel(String levelName, int boardSize) {
         BufferedReader reader_ = null;
         try {
-            reader_ = engine.openAssetFile("levels/" + levelName +  ".txt");
-        }
-        catch (IOException e) {
+            reader_ = engine.openAssetFile("levels/" + levelName + ".txt");
+        } catch (IOException e) {
             System.out.println("Error opening file");
             e.printStackTrace();
         }
@@ -422,43 +430,43 @@ public class SceneGame implements SceneBase {
     }
 
     //Establece la casilla dada por [x][y] al siguiente estado
-    private void setTile(int x, int y, boolean wrong) {
-        if(x < 0 || y < 0) return;
+    private void setTile(int x, int y, boolean wrong, boolean lTouch) {
+        if (x < 0 || y < 0) return;
 
-        if(wrong){
+        if (wrong) {
             gameBoard.setTile(x, y, TILE.WRONG);
             return;
         }
 
-        if(tileTouchedInfo_.x == x && tileTouchedInfo_.y == y && tileTouchedInfo_.touched)
+        if (tileTouchedInfo_.x == x && tileTouchedInfo_.y == y && tileTouchedInfo_.touched)
             return;
 
         TILE tile = gameBoard.getTile(x, y);
 
-        if(tile == TILE.EMPTY)
-            gameBoard.setTile(x,y, TILE.FILL);
-        else if(tile == TILE.FILL)
-            gameBoard.setTile(x,y, TILE.CROSS);
+        if (lTouch && tile == TILE.EMPTY)
+            gameBoard.setTile(x, y, TILE.CROSS);
+        else if (tile == TILE.EMPTY)
+            gameBoard.setTile(x, y, TILE.FILL);
         else
-            gameBoard.setTile(x,y, TILE.EMPTY);
+            gameBoard.setTile(x, y, TILE.EMPTY);
 
         tileTouchedInfo_.x = x;
         tileTouchedInfo_.y = y;
         tileTouchedInfo_.touched = true;
     }
 
-    private boolean subtractLife(){
+    private boolean subtractLife() {
         lives--;
         return lives > 0;
     }
 
-    private boolean checkMaxLives(){
+    private boolean checkMaxLives() {
         return lives == maxLives;
     }
 
     //Anyadir al ver anuncio
-    private void addLife(){
-        if(lives < maxLives)
+    private void addLife() {
+        if (lives < maxLives)
             lives++;
     }
 
@@ -466,9 +474,9 @@ public class SceneGame implements SceneBase {
         ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
         //NO recorremos hasta el final, el último es el nº de tiles
-        for(int i = 0; i < wrongs.size() - 1; i++){
+        for (int i = 0; i < wrongs.size() - 1; i++) {
             //Establecemos a wrong las casillas
-            setTile(wrongs.get(i).first, wrongs.get(i).second, true);
+            setTile(wrongs.get(i).first, wrongs.get(i).second, true, false);
         }
 
         //Numero de incorrectas y que faltan
@@ -476,7 +484,7 @@ public class SceneGame implements SceneBase {
         numWrong = wrongs.size() - 1;
 
         return wrongs.size() == 1 && //Que no haya incorrectas
-               wrongs.get(wrongs.size()-1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
+                wrongs.get(wrongs.size() - 1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
 
     //endregion
