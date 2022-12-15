@@ -11,14 +11,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/GameLogic" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/appDesktop" />
-            <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/engineAndroid" />
-            <option value="$PROJECT_DIR$/enginePC" />
-            <option value="$PROJECT_DIR$/examplePCReal" />
-            <option value="$PROJECT_DIR$/examplepc" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -23,8 +23,7 @@ public class Input {
             final Handler handler = new Handler();
             Runnable mLongPressed = new Runnable() {
                 public void run() {
-                    //TODO poner a true
-                    longPress = false;
+                    longPress = true;
                 }
             };
 
