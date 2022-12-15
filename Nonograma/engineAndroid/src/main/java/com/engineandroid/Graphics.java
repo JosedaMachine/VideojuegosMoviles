@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class Graphics {
 
     public enum ConstraintX{
-        LEFT, CENTER, RIGHT
+        LEFT, CENTER, RIGHT;
     }
 
     public enum ConstraintY{
@@ -128,7 +128,18 @@ public class Graphics {
     }
 
     public void drawImageWithConstraints(Image image, ConstraintX constrX,ConstraintY constrY, int offsetX, int offsetY){
-        drawImage(image, 0, 0);
+        int x = 0,  y = 0;
+        if(constrX == ConstraintX.CENTER)
+            x = getWidth()/2;
+        else if (constrX == ConstraintX.LEFT)
+            x = getWidth();
+
+        if(constrY == ConstraintY.CENTER)
+            y = getHeight()/2;
+        else if (constrY == ConstraintY.BOTTOM)
+            y = getHeight();
+
+        drawImage(image, x + offsetX, y + offsetY);
     }
 
     public void drawImage(Image image) {
