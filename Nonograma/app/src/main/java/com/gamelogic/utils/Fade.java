@@ -14,20 +14,21 @@ public class Fade{
     private double percentageIn, percentageOut;
     private float alpha;
     private int colorFade;
-    private final Engine e_;
-    private Graphics g;
 
     private STATE_FADE state_;
 
-    private final int posX_;
-    private final int posY_;
-    private final int sizeX_;
-    private final int sizeY_;
+    private int posX_;
+    private int posY_;
+    private int sizeX_;
+    private int sizeY_;
+
+    private Graphics.ConstraintX x, width;
+    private Graphics.ConstraintY y, height;
+    boolean usingConstraints;
 
     private boolean fadeOutComplete = false, fadeInComplete = false;
 
     public Fade(Engine e, int posX, int posY, int width, int height, int timeIn, int timeOut, STATE_FADE state){
-        e_ = e;
         if(state == STATE_FADE.Out){
             alpha = 0.0f;
         }else alpha = 1.0f;
@@ -44,14 +45,36 @@ public class Fade{
         timeOut_ = timeOut;
         state_ = state;
         play = false;
+        usingConstraints = false;
+    }
 
-        percentageIn = (1.0f / (float)timeIn_);
-        percentageOut = (1.0f/ (float)timeOut_);
+    public Fade(Engine e, Graphics.ConstraintX posX, Graphics.ConstraintY posY, Graphics.ConstraintX width_, Graphics.ConstraintY height_, int timeIn, int timeOut, STATE_FADE state){
+        if(state == STATE_FADE.Out){
+            alpha = 0.0f;
+        }else alpha = 1.0f;
+
+        colorFade = ColorWrap.BLACK;
+        //Posicion y tamanyo
+        x = posX;
+        y = posY;
+        width = width_;
+        height = height_;
+
+        //Tiempos de fade
+        timeIn_ = timeIn;
+        timeOut_ = timeOut;
+        state_ = state;
+        play = false;
+
+        usingConstraints = true;
+
     }
 
     public void render(Graphics g){
         g.setColor(colorFade, alpha);
-        g.fillRect(posX_, posY_, sizeX_ , sizeY_);
+        if(usingConstraints)
+            g.fillRect(x, y, width , height);
+        else g.fillRect(posX_, posY_, sizeX_ , sizeY_);
     }
 
     public void reset(){
@@ -113,7 +136,6 @@ public class Fade{
     /// <param name="time"> en milisegundos</param>
     public void setTimeIn(int time){
         timeIn_ = time;
-        percentageIn = ((float)1.0f / (float)timeIn_);
     }
 
     /// <summary>
@@ -122,7 +144,6 @@ public class Fade{
     /// <param name="time"> en milisegundos</param>
     public void setTimeOut(int time){
         timeOut_ = time;
-        percentageOut = ((float)1.0f / (float)timeOut_);
     }
 
     public boolean isPlaying(){

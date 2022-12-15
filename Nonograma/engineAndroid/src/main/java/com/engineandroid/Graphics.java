@@ -128,10 +128,10 @@ public class Graphics {
     }
 
     public void drawImageWithConstraints(Image image, ConstraintX constrX,ConstraintY constrY, int offsetX, int offsetY){
-        int x = 0,  y = 0;
+        int x = -translateFactorX,  y = 0;
         if(constrX == ConstraintX.CENTER)
             x = getWidth()/2;
-        else if (constrX == ConstraintX.LEFT)
+        else if (constrX == ConstraintX.RIGHT)
             x = getWidth();
 
         if(constrY == ConstraintY.CENTER)
@@ -174,6 +174,31 @@ public class Graphics {
         drawRect(x, y, size, size);
     }
 
+    public void fillRect(ConstraintX x_, ConstraintY y_, ConstraintX width_, ConstraintY height_){
+        int x = -translateFactorX,  y = 0, width = 0, height = 0;
+        if(x_ == ConstraintX.CENTER)
+            x = getWidth()/2;
+        else if (x_ == ConstraintX.RIGHT)
+            x = getWidth();
+
+        if(y_ == ConstraintY.CENTER)
+            y = getHeight()/2;
+        else if (y_ == ConstraintY.BOTTOM)
+            y = getHeight();
+
+        if(width_ == ConstraintX.CENTER)
+            width = getWidth()/2;
+        else if (width_ == ConstraintX.RIGHT)
+            width = getWidth();
+
+        if(height_ == ConstraintY.CENTER)
+            height= getHeight()/2;
+        else if (height_ == ConstraintY.BOTTOM)
+            height = getHeight();
+
+        drawRect(x, y, width, height);
+    }
+
     public void fillRect(int x, int y, int w, int h) {
         drawRect(x, y, w, h);
     }
@@ -205,7 +230,7 @@ public class Graphics {
     }
 
     public int getHeight() {
-        return myView.getHeight();
+        return myView.getHeight() - adViewDimensions.second;
     }
 
     public int getLogicWidth() {

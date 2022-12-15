@@ -34,8 +34,8 @@ public class SceneDefeat implements SceneBase {
 
         //Fade In
         fade = new Fade(engine,
-                0, 0,
-                logicWidth, logicHeight,
+                Graphics.ConstraintX.LEFT, Graphics.ConstraintY.TOP,
+                Graphics.ConstraintX.RIGHT, Graphics.ConstraintY.BOTTOM,
                 500, 500, Fade.STATE_FADE.Out);
         fade.setColor(ColorWrap.BLACK);
 
