@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     final int height = 900;
     private Engine engine;
     private String sharedPrefFile = "com.example.android.nonogram";
-    SharedPreferences  mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+    SharedPreferences  mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
-
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         //Init Notification
         createNotificationChannel();
 
