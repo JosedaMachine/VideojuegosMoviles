@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceView;
@@ -41,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        if(savedInstanceState != null){
+            //we save data
+        }
+
         setContentView(R.layout.activity_main);
 
         //Init Notification
         createNotificationChannel();
-        //TODO llamar esto al cerrar la app
-        createAlarm();
 
         //Init adds
         AdManager.init(this);
@@ -94,13 +97,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         this.engine.pause();
-        //TODO hacerlo en el destroy pero no me pilla el evento
-
 //        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 //        preferencesEditor.putInt("count", mCount);
 //        preferencesEditor.putBoolean("playing", True);
 //        preferencesEditor.apply(); //también podemos usar .commit()
 
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        System.out.println("Saving...");
+    }
+
+
+    //Somehow this is not called
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState){
+        System.out.println("Restoring...");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -111,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         System.out.println("Destroy");
+        createAlarm();
+        super.onDestroy();
     }
 
     //Voltear movil

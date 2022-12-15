@@ -11,7 +11,16 @@ import android.view.View;
 
 import java.util.HashMap;
 
+
 public class Graphics {
+
+    public enum ConstraintX{
+        LEFT, CENTER, RIGHT
+    }
+
+    public enum ConstraintY{
+        TOP, CENTER, BOTTOM
+    }
 
     private final SurfaceView myView;
     private final SurfaceHolder holder;
@@ -118,6 +127,10 @@ public class Graphics {
 
     }
 
+    public void drawImageWithConstraints(Image image, ConstraintX constrX,ConstraintY constrY, int offsetX, int offsetY){
+        drawImage(image, 0, 0);
+    }
+
     public void drawImage(Image image) {
         drawImage(image, 0, 0);
     }
@@ -220,7 +233,8 @@ public class Graphics {
             scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
-        translateFactorX = bandWidth;
+        //Generally we dont want to move in Y.
+        translateFactorX = 0;
         translateFactorY = bandHeight;
     }
 
