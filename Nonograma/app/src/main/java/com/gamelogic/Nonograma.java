@@ -13,6 +13,8 @@ import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.managers.GameManager;
 import com.gamelogic.scenes.SceneTitle;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -207,5 +209,16 @@ public class Nonograma implements IGame {
         }else {
             currScene.processMessage(message);
         }
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
+        //comprobar si y solo si esta en escena Game guardar el tablero
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+
     }
 }

@@ -378,7 +378,7 @@ public class SceneGame implements SceneBase {
     private void createLevel(String levelName, int boardSize) {
         BufferedReader reader_ = null;
         try {
-            reader_ = engine.openFile("levels/" + levelName +  ".txt");
+            reader_ = engine.openAssetFile("levels/" + levelName +  ".txt");
         }
         catch (IOException e) {
             System.out.println("Error opening file");

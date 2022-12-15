@@ -1,19 +1,18 @@
 package com.engineandroid;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Engine implements Runnable{
@@ -23,6 +22,10 @@ public class Engine implements Runnable{
     Audio audio;
     IGame currGame;
     AssetManager assetManager_;
+
+    private final  String SAVE_FILE_NAME = "userData.txt";
+    private File savingFile;
+
     private Thread engineThread;
 
     boolean running, firstRun;
@@ -57,9 +60,17 @@ public class Engine implements Runnable{
         currGame = game;
     }
 
-    public BufferedReader openFile(String fileName) throws IOException {
+    public BufferedReader openAssetFile(String fileName) throws IOException {
         return new BufferedReader(
                 new InputStreamReader(assetManager_.open(fileName), "UTF-8"));
+    }
+
+    public FileOutputStream openInternalFileWriting(String fileName) throws FileNotFoundException {
+        return getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+    }
+
+    public FileInputStream openInternalFileReading(String fileName) throws FileNotFoundException {
+        return getContext().openFileInput(fileName);
     }
 
     public IGame getGame() {
@@ -123,6 +134,7 @@ public class Engine implements Runnable{
         //Lanzamos aqui el init del game ya que muchos valores de posición van en función del
         //tamaño del dispositivo.
         if(!firstRun){
+            restore();
             currGame.init();
             firstRun = true;
         }
@@ -178,6 +190,116 @@ public class Engine implements Runnable{
     public void sendMessage(Message msg){
         if(currGame != null)
             currGame.sendMessage(msg);
+    }
+
+    public void save(){
+        FileOutputStream fos = null;
+        try {
+            fos = openInternalFileWriting(SAVE_FILE_NAME);
+
+            if(fos != null){
+                currGame.save(fos);
+            }
+
+            fos.close();
+
+        } catch (FileNotFoundException e) {
+            //TODO add message error.
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File(getContext().getFilesDir(), SAVE_FILE_NAME);
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        try {
+            md5Digest = MessageDigest.getInstance("MD5");
+
+            String checksum = getFileChecksum(md5Digest, file);
+
+            //Now open a new file, and write its checkSum?
+            //Do we need to encrypt it?
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void restore(){
+        File file = new File(getContext().getFilesDir(), SAVE_FILE_NAME);
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        try {
+            md5Digest = MessageDigest.getInstance("MD5");
+
+            String checksum = getFileChecksum(md5Digest, file);
+
+            //Now open a new file, and check its checkSum with out checksum Generated so far?
+
+//            if(notEqualsCheckSum)
+//                return;
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileInputStream fos = null;
+        try {
+            fos = openInternalFileReading(SAVE_FILE_NAME);
+            BufferedReader entrada = new BufferedReader(
+                    new InputStreamReader(fos));
+            if(fos != null){
+                currGame.restore(entrada);
+            }
+            fos.close();
+        } catch (FileNotFoundException e) {
+            //TODO add message error.
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static String getFileChecksum(MessageDigest digest, File file) throws IOException{
+        //Get file input stream for reading the file content
+        FileInputStream fis = new FileInputStream(file);
+
+        //Create byte array to read data in chunks
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
+
+        //Read file data and update in message digest
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
+        };
+
+        //close the stream; We don't need it now.
+        fis.close();
+
+        //Get the hash's bytes
+        byte[] bytes = digest.digest();
+
+        //This bytes[] has bytes in decimal format;
+        //Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++)
+        {
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        //return complete hash
+        return sb.toString();
     }
 
 

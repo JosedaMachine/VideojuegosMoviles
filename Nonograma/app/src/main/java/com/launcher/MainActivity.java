@@ -42,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if(savedInstanceState != null){
-            //we save data
-        }
-
         setContentView(R.layout.activity_main);
 
         //Init Notification
@@ -71,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         //Init Game
         IGame game = new Nonograma(engine);
 
+        if(savedInstanceState != null){
+            //we restore data???
+            int m = 0;
+        }
         //Set Game and play
         engine.resume();
         engine.setGame(game);
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         System.out.println("Saving...");
+        engine.save();
     }
 
 
