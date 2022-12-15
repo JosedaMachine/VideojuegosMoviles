@@ -21,7 +21,6 @@ import java.util.Stack;
 /*
 TODO: persistencia
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
-TODO: sonido solo una vez cuando se presione, que no suene como una ametralladora
 TODO: marcar casilla X con long press.
 
 TODO: Mejor botón de Twitter, aunque ya funciona
@@ -36,7 +35,46 @@ TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y perm
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
 TODO: Sensores hagan algo con sentido
+TODO: poner anuncio de ganar vida en Game.
+
+//Uno cargado cuabdo unicias y cuadno acabas cargas otro.
 */
+
+//Preguntas TDOOS
+/*
+ * no podemos jamas almacenar Engine aunque sea mas eficiente?
+ *
+ * Pasar a los metodos en vez Engine la cosa especifica que le haga falta.
+ *
+ * Nonograsma es un SceneManager y va en el motor.
+ * El fade tambien en el motor y que sea mas general como una transicion entre escenas (si tenemos tiempo)
+ * contraints que sean dos archivos separados CONSTRAINT_X
+ *
+ * quitar la barra de notificaciones (esto ya deberia estar)
+ *
+ * esta bien lo de las contraints y el otro layout? Si esta refino
+ *
+ * GameManager se puede hacer desde el lanzador en verdad.
+ *===================
+ * el restore data se hace en el onCreate()
+ *
+ * Por que decian que habia que guardarse datos cuando se cambia la orientacion de la pantalla y que eso en teoria llama al onCreate de nuevo
+ *
+ * para guardar el checksum del fichero de persistencia, deberiamos guardarlo en otro fichero el cual encriptemos?
+ *
+ * para guardar datos, por ejemplo vidas, monedas y cosas pequeñas, renta usar un fichero o hay algo mas eficiente que persista aunque la aplicacion
+ * muera completamente?
+ *
+ * cuando muere la app, si estaba jugando, deberia guardarse solo el estado de ese tablero en concreto
+ * y si el jugador vuelve a iniciar la app y entra en ese tablero deberia estar como lo dejo.
+ * Pero si entra en otro tablero distinto, sale y entra al que estaba guardado, deberia mostrarse su estado como lo dejo la ultima vez)
+ *
+ * no se guarda SOLAMENTE EL ULTIMO.
+ *
+ * >Boton de check automatico cuando gane
+ *
+ *
+ * */
 
 public class Nonograma implements IGame {
     Engine engine;
@@ -139,11 +177,12 @@ public class Nonograma implements IGame {
     @Override
     public void render(Graphics graphics) {
         if(!sceneStack.empty()){
+            userInterface.render(graphics);
+
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.render(graphics);
 
     //        currScene.render(graphics);
-            userInterface.render(graphics);
         }
     }
 
@@ -215,6 +254,9 @@ public class Nonograma implements IGame {
     public void save(FileOutputStream file) {
         //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
         //comprobar si y solo si esta en escena Game guardar el tablero
+
+
+
     }
 
     @Override

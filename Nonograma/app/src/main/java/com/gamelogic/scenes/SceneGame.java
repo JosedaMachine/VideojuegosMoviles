@@ -17,6 +17,7 @@ import com.gamelogic.managers.GameManager;
 import com.gamelogic.enums.TILE;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -322,6 +323,16 @@ public class SceneGame implements SceneBase {
     @Override
     public void orientationChanged(boolean isHorizontal) {
 
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        GameManager.instance().save(file);
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+        GameManager.instance().restore(reader);
     }
 
     @Override

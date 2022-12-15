@@ -21,6 +21,9 @@ import com.gamelogic.managers.GameManager;
 import com.gamelogic.utils.ImageElement;
 import com.gamelogic.utils.TextElement;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+
 public class SceneTitle implements SceneBase {
     private final Engine engine;
     private Fade fade;
@@ -272,6 +275,16 @@ public class SceneTitle implements SceneBase {
             quickButton.setX(logicWidth/2 - sizeX/2);
             quickButton.setY(logicHeight/2 - sizeY/2);
         }
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        GameManager.instance().save(file);
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+        GameManager.instance().restore(reader);
     }
 
     private void updateBackground(){

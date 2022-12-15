@@ -15,6 +15,9 @@ import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 import com.gamelogic.managers.GameManager;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+
 public class SceneVictory implements SceneBase {
 
     private final Engine engine;
@@ -107,8 +110,6 @@ public class SceneVictory implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
-                    //TODO: al titulo si quick game -> a story si historia
-
                     //We know that our scene level selection is 2 Scene below current one.
                     int i = 2;
                     while(i-- > 0){
@@ -210,6 +211,16 @@ public class SceneVictory implements SceneBase {
     @Override
     public void orientationChanged(boolean isHorizontal) {
 
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        GameManager.instance().save(file);
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+        GameManager.instance().restore(reader);
     }
 
 

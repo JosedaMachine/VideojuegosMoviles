@@ -12,6 +12,8 @@ import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.enums.PALETTE;
 import com.gamelogic.utils.TextElement;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class GameManager {
@@ -127,6 +129,14 @@ public class GameManager {
     }
     public Pair<Boolean, Integer> getPaletteUnlocked(int pal){
         return unlockedPalettes.get(PALETTE.values()[pal]);
+    }
+
+    public void save(FileOutputStream file){
+        //save data
+    }
+
+    public void restore(BufferedReader readers){
+        //save data
     }
 
 }

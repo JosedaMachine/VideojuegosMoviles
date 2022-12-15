@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     final int height = 900;
     private Engine engine;
     private String sharedPrefFile = "com.example.android.nonogram";
+    SharedPreferences  mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
             //we restore data???
             int m = 0;
         }
+
+
         //Set Game and play
         engine.resume();
         engine.setGame(game);
@@ -96,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        //preferencesEditor.putInt("count", mCount);
+        //preferencesEditor.putBoolean("playing", True);
+        //preferencesEditor.apply(); //también podemos usar .commit()
         this.engine.pause();
-//        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-//        preferencesEditor.putInt("count", mCount);
-//        preferencesEditor.putBoolean("playing", True);
-//        preferencesEditor.apply(); //también podemos usar .commit()
 
     }
 

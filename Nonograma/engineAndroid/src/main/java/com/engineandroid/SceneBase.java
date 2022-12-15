@@ -1,5 +1,8 @@
 package com.engineandroid;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+
 // Base genérica de las escenas para manejo en Game
 public interface SceneBase {
     void init();
@@ -19,4 +22,8 @@ public interface SceneBase {
     void processMessage(Message msg);
 
     void orientationChanged(boolean isHorizontal);
+
+    void save(FileOutputStream file);
+
+    void restore(BufferedReader reader);
 }

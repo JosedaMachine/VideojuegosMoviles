@@ -14,6 +14,8 @@ import com.gamelogic.managers.GameManager;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -244,6 +246,16 @@ public class ScenePalettes implements SceneBase {
     @Override
     public void orientationChanged(boolean isHorizontal) {
 
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        GameManager.instance().save(file);
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+        GameManager.instance().restore(reader);
     }
 
 

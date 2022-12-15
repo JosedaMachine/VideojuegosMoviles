@@ -13,6 +13,8 @@ import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.utils.Fade;
 import com.gamelogic.managers.GameManager;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,5 +222,15 @@ public class SceneStoryLevels implements SceneBase {
     @Override
     public void orientationChanged(boolean isHorizontal) {
 
+    }
+
+    @Override
+    public void save(FileOutputStream file) {
+        GameManager.instance().save(file);
+    }
+
+    @Override
+    public void restore(BufferedReader reader) {
+        GameManager.instance().restore(reader);
     }
 }
