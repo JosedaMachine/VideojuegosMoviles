@@ -233,9 +233,9 @@ public class Graphics {
             scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
-        //Generally we dont want to move in Y.
-        translateFactorX = 0;
-        translateFactorY = bandHeight;
+        //Generally we dont want to move in Y
+        translateFactorX = bandWidth;
+        translateFactorY = 0;
     }
 
     public int getTranslateFactorX() {
