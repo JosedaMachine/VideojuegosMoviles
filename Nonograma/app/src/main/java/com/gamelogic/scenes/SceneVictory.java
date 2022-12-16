@@ -31,10 +31,12 @@ public class SceneVictory implements SceneBase {
     private Fade fade;
 
     private final Board checkBoard;
+    private int reward;
 
-    public SceneVictory(Engine engine_, Board checkboard) {
+    public SceneVictory(Engine engine_, Board checkboard, int reward) {
         this.checkBoard = checkboard;
         this.engine = engine_;
+        this.reward = reward;
     }
 
     @Override
@@ -131,8 +133,7 @@ public class SceneVictory implements SceneBase {
         shareButton.setColor(ColorWrap.BLACK);
         shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
 
-        //TODO: cambiar de 20 a lo que toque
-        GameManager.instance().addMoney(20);
+        GameManager.instance().addMoney(reward);
     }
 
     @Override
@@ -148,7 +149,7 @@ public class SceneVictory implements SceneBase {
         graphics.drawText(victoryText, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 9 + dime.second / 2));
 
         //Monedas
-        String money = "+" + 20;
+        String money = "+" + reward;
         dime = graphics.getStringDimensions(money);
         graphics.drawText(money, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 5 + dime.second / 2));
 

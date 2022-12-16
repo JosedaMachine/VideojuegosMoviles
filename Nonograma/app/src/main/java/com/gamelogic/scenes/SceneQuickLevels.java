@@ -130,7 +130,7 @@ public class SceneQuickLevels implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
                     setSelected(false);
-                    engine.getGame().pushScene(new SceneGame(engine , i, j));
+                    engine.getGame().pushScene(new SceneGame(engine , i, j, i+j));
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();

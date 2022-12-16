@@ -21,7 +21,7 @@ import java.util.Stack;
 /*
 TODO: persistencia
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
-TODO: marcar casilla X con long press.
+TODO: marcar casilla X con long press. (ESTA HECHO PERO NO ME CONVENCE (A MI EN CONCRETO (SERE DANLLES? (IGUAL SOY CHIKITO (PERO Y SI SOY JOSEDA?))))
 
 TODO: Mejor botón de Twitter, aunque ya funciona
 En el manifest:
@@ -34,23 +34,22 @@ startActivity(intent) ; // startActivity es un método de Context
 TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
+
 TODO: Sensores hagan algo con sentido
+
 TODO: poner anuncio de ganar vida en Game.
 
 //Uno cargado cuabdo unicias y cuadno acabas cargas otro.
-*/
 
-//Preguntas TDOOS
+//Preguntas TODOS
 /*
- * no podemos jamas almacenar Engine aunque sea mas eficiente?
+ * no podemos jamas almacenar Engine aunque sea mas eficiente? No, hay que pasarlo al motor
  *
  * Pasar a los metodos en vez Engine la cosa especifica que le haga falta.
  *
  * Nonograsma es un SceneManager y va en el motor.
  * El fade tambien en el motor y que sea mas general como una transicion entre escenas (si tenemos tiempo)
  * contraints que sean dos archivos separados CONSTRAINT_X
- *
- * quitar la barra de notificaciones (esto ya deberia estar)
  *
  * esta bien lo de las contraints y el otro layout? Si esta refino
  *

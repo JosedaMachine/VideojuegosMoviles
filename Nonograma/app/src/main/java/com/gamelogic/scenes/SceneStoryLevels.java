@@ -140,7 +140,7 @@ public class SceneStoryLevels implements SceneBase {
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
-                    engine.getGame().pushScene(new SceneGame(engine , i, j, category, lvlIndex));
+                    engine.getGame().pushScene(new SceneGame(engine , i, j, category, lvlIndex, i+j));
                 }
             }
         };

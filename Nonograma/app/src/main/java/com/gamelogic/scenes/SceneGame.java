@@ -70,6 +70,7 @@ public class SceneGame implements SceneBase {
 
     private CATEGORY category = null;
     private int lvlIndex = 0;
+    private int reward;
 
     TileTouched tileTouchedInfo_ = null;
 
@@ -94,16 +95,16 @@ public class SceneGame implements SceneBase {
             "infojobs", "netflix", "amazon", "ucm"};
 
 
-    public SceneGame(Engine engine, int rows, int cols) {
+    public SceneGame(Engine engine, int rows, int cols, int reward) {
         this.engine = engine;
         rows_ = rows;
         cols_ = cols;
-
-
+        this.reward = reward;
     }
 
-    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index) {
+    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index, int reward) {
         this.engine = engine;
+        this.reward = reward;
         rows_ = rows;
         cols_ = cols;
         category = cat;
@@ -158,11 +159,9 @@ public class SceneGame implements SceneBase {
                 //Si es el ultimo nivel desbloqueado -> desbloquea siguiente
                 if (lastLvlIndex == lvlIndex)
                     GameManager.instance().setLevelIndex(category, lvlIndex + 1);
-
-                //TODO: Guardar nuevo lastLvlIndex en archivo guardado
             }
 
-            engine.getGame().pushScene(new SceneVictory(engine, checkBoard));
+            engine.getGame().pushScene(new SceneVictory(engine, checkBoard, reward));
         }
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
