@@ -102,9 +102,11 @@ public class SceneGame implements SceneBase {
         this.reward = reward;
     }
 
-    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index, int reward) {
+    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index) {
         this.engine = engine;
-        this.reward = reward;
+
+        //Story mode reward fijo
+        this.reward = 10;
         rows_ = rows;
         cols_ = cols;
         category = cat;

@@ -54,23 +54,23 @@ public class SceneQuickLevels implements SceneBase {
 //
         int posX = (int) (logicWidth/3.5 - sizeX/2);
         int posY = logicHeight/3 -  sizeY/2;
-        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false));
+        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false, 10));
 
         posX = logicWidth/2 - sizeX/2;
-        levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5, false));
+        levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5, false, 12));
 
         posX = (int) (logicWidth/1.38 - sizeX/2);
-        levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10, true));
+        levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10, true, 15));
 
         posY = logicHeight/2 -  sizeY/2;
         posX = (int) (logicWidth/3.5 - sizeX/2);
-        levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8, false) );
+        levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8, false, 15) );
 
         posX = logicWidth/2 - sizeX/2;
-        levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10, true) );
+        levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10, true, 20) );
 
         posX = (int) (logicWidth/1.38 - sizeX/2);
-        levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
+        levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true, 25) );
 
         int offset = (int)(logicWidth * 0.16f),
                 bttWidth = (int)(logicWidth * 0.25f),
@@ -109,7 +109,7 @@ public class SceneQuickLevels implements SceneBase {
     }
 
     //Boton de creacion de nivel
-    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
+    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small, int reward){
         final Button button = new Button(text, x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
@@ -130,7 +130,7 @@ public class SceneQuickLevels implements SceneBase {
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
                     setSelected(false);
-                    engine.getGame().pushScene(new SceneGame(engine , i, j, i+j));
+                    engine.getGame().pushScene(new SceneGame(engine , i, j, reward));
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();

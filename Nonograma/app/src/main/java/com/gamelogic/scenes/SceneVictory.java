@@ -85,6 +85,8 @@ public class SceneVictory implements SceneBase {
                     if (adButton.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         AdManager.instance().buildAndShowRewardAd();
+                        GameManager.instance().addMoney(reward);
+                        reward *= 2;
                     }
                 }
             }
