@@ -56,6 +56,8 @@ public class SceneGame implements SceneBase {
     private int rows_;
     private int cols_;
 
+    private int tileSize;
+
     private int numRemaining = 0, numWrong = 0;
     //Fuentes
     private Font numFont, pixelFont;
@@ -305,6 +307,7 @@ public class SceneGame implements SceneBase {
         graphics.newImage("crosssquare" + palette + ".png", "cross" + palette);
         graphics.newImage("wrongsquare" + palette + ".png", "wrong" + palette);
         graphics.newImage("fillsquare" + palette + ".png", "fill" + palette);
+        tileSize = graphics.getImage("empty" + palette).getWidth();
 
         graphics.newImage("heart.png", "heart");
         graphics.newImage("emptyheart.png", "emptyheart");
@@ -415,19 +418,19 @@ public class SceneGame implements SceneBase {
         }
 
 //        Tablero de solucion
-        checkBoard = new Board(reader_, boardSize, boardSize);
+        checkBoard = new Board(reader_, boardSize, boardSize, tileSize);
 
         cols_ = checkBoard.getCols();
         rows_ = checkBoard.getRows();
 
-        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize, tileSize);
     }
 
     private void createLevel(int boardSize) {
-        checkBoard = new Board(cols_, rows_, boardSize, boardSize);
+        checkBoard = new Board(cols_, rows_, boardSize, boardSize, tileSize);
         checkBoard.generateBoard();
         //Tablero de juego
-        gameBoard = new Board(cols_, rows_, boardSize, boardSize);
+        gameBoard = new Board(cols_, rows_, boardSize, boardSize, tileSize);
     }
 
     //Establece la casilla dada por [x][y] al siguiente estado

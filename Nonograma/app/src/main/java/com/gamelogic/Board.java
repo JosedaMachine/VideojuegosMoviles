@@ -6,7 +6,7 @@ import com.engineandroid.Font;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.gamelogic.enums.TILE;
-import com.gamelogic.managers.GameManager;
+import java.lang.Math;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,12 +26,14 @@ public class Board {
     private final float relationX, relationY;
     private int posX, posY;
 
+    private int tileSize;
+
     private int numCorrectTiles;
     private List<List<Integer>> adyancentsHorizontal;
     private List<List<Integer>> adyancentsVertical;
 
 
-    public Board(int cols, int rows, int sizeX_, int sizeY_) {
+    public Board(int cols, int rows, int sizeX_, int sizeY_, int tileSize) {
         board = new TILE[cols][rows];
         this.rows = rows;
         this.cols = cols;
@@ -51,9 +53,11 @@ public class Board {
                 board[i][j] = TILE.EMPTY;
 
         numCorrectTiles = 0;
+
+        this.tileSize = tileSize;
     }
 
-    public Board(BufferedReader reader, int sizeX_, int sizeY_){
+    public Board(BufferedReader reader, int sizeX_, int sizeY_, int tileSize){
         //Relacion para cuando hay menos filas que columnas
         try {
             String mLine;
@@ -98,6 +102,7 @@ public class Board {
         relationY = (sizeY_ /(float) this.rows) * relationRowCol;
 
         calcAdjyacents();
+        this.tileSize = tileSize;
     }
 
     public void generateBoard() {
@@ -232,13 +237,13 @@ public class Board {
     private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
 
         // dibujar cuadro lateral
-        e.getGraphics().drawLine(alphaX, y + height - 1, x, y + height - 1);
+        e.getGraphics().drawLine(alphaX, y + (int)relationY*rows, x, y + (int)relationY*rows);
         e.getGraphics().drawLine(alphaX, y, x, y);
-        e.getGraphics().drawLine(alphaX, y, alphaX, y + height - 1);
+        e.getGraphics().drawLine(alphaX, y, alphaX, y + (int)relationY*rows);
         //Dibujar cuadro superior
         e.getGraphics().drawLine(x, alphaY, x, y);
-        e.getGraphics().drawLine(x + width - 1, alphaY, x + width - 1, y);
-        e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
+        e.getGraphics().drawLine(x + (int)relationX*cols, alphaY, x + (int)relationX*cols, y);
+        e.getGraphics().drawLine(x, alphaY, x + (int)relationX*cols, alphaY);
     }
 
     private void drawNums(Engine e, int x, int y, int fontSize) {
@@ -251,7 +256,7 @@ public class Board {
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
                             x - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
-                            (int) (i * relationY) + y + (int)(relationY/1.3));
+                            (int) (i * (int)relationY) + y + (int)((int)relationY/1.3));
             }
         }
 
@@ -262,7 +267,7 @@ public class Board {
                 Integer num = adyancentsVertical.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            (int) (i * relationX) + x + (int)(relationX/2),
+                            (int) (i * (int)relationX) + x + ((int)relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
                             y - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
             }
@@ -280,8 +285,8 @@ public class Board {
                 Image im = tileImage(e, board[i][j], pal);
                 assert im != null;
                 if(!win || board[i][j] == TILE.FILL)
-                    e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
-                        relationX / im.getWidth(), (relationY) / im.getHeight());
+                    e.getGraphics().drawImage(im, i * (int)(relationX) + x, j * (int)(relationY) + y ,
+                        relationX / tileSize, relationY / tileSize);
             }
         }
     }

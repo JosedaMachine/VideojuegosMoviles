@@ -62,7 +62,7 @@ TODO: poner anuncio de ganar vida en Game.
  * para guardar el checksum del fichero de persistencia, deberiamos guardarlo en otro fichero el cual encriptemos?
  *
  * para guardar datos, por ejemplo vidas, monedas y cosas pequeñas, renta usar un fichero o hay algo mas eficiente que persista aunque la aplicacion
- * muera completamente?
+ * muera completamente? checksum
  *
  * cuando muere la app, si estaba jugando, deberia guardarse solo el estado de ese tablero en concreto
  * y si el jugador vuelve a iniciar la app y entra en ese tablero deberia estar como lo dejo.
