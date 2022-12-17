@@ -1,6 +1,7 @@
 package com.engineandroid;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.view.SurfaceView;
 
@@ -192,7 +193,7 @@ public class Engine implements Runnable{
             currGame.sendMessage(msg);
     }
 
-    public void save(){
+    public void save(SharedPreferences.Editor preferencesEditor){
         FileOutputStream fos = null;
         try {
             fos = openInternalFileWriting(SAVE_FILE_NAME);

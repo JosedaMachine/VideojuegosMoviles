@@ -253,13 +253,17 @@ public class Nonograma implements IGame {
     public void save(FileOutputStream file) {
         //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
         //comprobar si y solo si esta en escena Game guardar el tablero
-
-
-
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.save(file);
+        }
     }
 
     @Override
     public void restore(BufferedReader reader) {
-
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.restore(reader);
+        }
     }
 }

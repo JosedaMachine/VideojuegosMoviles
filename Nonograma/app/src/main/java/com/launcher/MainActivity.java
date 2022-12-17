@@ -112,7 +112,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         System.out.println("Saving...");
-        engine.save();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        int coins = mPreferences.getInt("coins", 1);
+//        preferencesEditor.putInt("coins", 200);
+        preferencesEditor.putBoolean("savingBoard", true);
+        preferencesEditor.apply(); //también podemos usar .commit()
+        engine.save(preferencesEditor);
     }
 
 
