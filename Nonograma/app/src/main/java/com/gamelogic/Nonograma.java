@@ -162,6 +162,8 @@ public class Nonograma implements IGame {
     @Override
     public void previousScene() {
         sceneStack.pop();
+        SceneBase scene = (SceneBase) sceneStack.peek();
+        scene.init();
     }
 
     @Override
