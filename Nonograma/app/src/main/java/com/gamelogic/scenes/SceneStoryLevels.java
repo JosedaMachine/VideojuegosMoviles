@@ -31,18 +31,14 @@ public class SceneStoryLevels implements SceneBase {
     private Button bttReturn;
 
     private CATEGORY category;
-    private int lockIndex;
 
     public SceneStoryLevels(Engine engine_, int category) {
         this.engine = engine_;
         this.category = CATEGORY.values()[category];
-
-        lockIndex = GameManager.instance().getLevelIndex(CATEGORY.values()[category]);
     }
 
     @Override
     public void init() {
-
         loadResources(engine.getGraphics());
         int logicWidth = engine.getGraphics().getLogicWidth();
         int logicHeight = engine.getGraphics().getLogicHeight();
@@ -84,7 +80,7 @@ public class SceneStoryLevels implements SceneBase {
 
         //Boton Return to category
         bttReturn = new Button("back", logicWidth/2 - bttWidth/2,
-                logicHeight - bttHeight*2, bttWidth, bttHeight) {
+                logicHeight, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -121,7 +117,7 @@ public class SceneStoryLevels implements SceneBase {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
-                        if(lvlIndex <= lockIndex) {
+                        if(lvlIndex <= GameManager.instance().getLevelIndex(category)) {
                             engine.getAudio().playSound("click.wav");
                             setSelected(true);
                             if (fade.getState() != Fade.STATE_FADE.Out) {
@@ -147,6 +143,8 @@ public class SceneStoryLevels implements SceneBase {
                 }
             }
         };
+
+        int lockIndex = GameManager.instance().getLevelIndex(category);
 
         button.setColor(ColorWrap.BLACK);
         //Nivel ya superado

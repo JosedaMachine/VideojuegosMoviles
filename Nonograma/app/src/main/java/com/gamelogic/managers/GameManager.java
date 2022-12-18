@@ -17,13 +17,12 @@ import com.gamelogic.enums.PALETTE;
 import com.gamelogic.utils.ImageElement;
 import com.gamelogic.utils.TextElement;
 
-import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class GameManager {
     private static GameManager instance_;
-    private final int maxLevels = 4;
+    private final int maxLevels = 20;
     private final int maxMoney = 10000;
     private Engine engine;
 
@@ -164,7 +163,7 @@ public class GameManager {
         preferencesEditor.putInt("kitchen", getLevelIndex(CATEGORY.KITCHEN));
         preferencesEditor.putInt("medieval", getLevelIndex(CATEGORY.MEDIEVAL));
         preferencesEditor.putInt("ocean", getLevelIndex(CATEGORY.OCEAN));
-        preferencesEditor.putInt("icon", getLevelIndex(CATEGORY.ICON));
+        preferencesEditor.putInt("animal", getLevelIndex(CATEGORY.ANIMAL));
 
         //Palettes Unlocked and Selected
         preferencesEditor.putInt("paletteSelected", currentPalette.ordinal());
@@ -183,15 +182,15 @@ public class GameManager {
         addMoney(coins);
 
         //Levels Unlocked
-        int kitchenIndex = mPreferences.getInt("kitchen", 4);
-        int medievalIndex =mPreferences.getInt("medieval", 4);
-        int oceanIndex = mPreferences.getInt("ocean", 4);
-        int iconIndex = mPreferences.getInt("icon", 0);
+        int kitchenIndex = mPreferences.getInt("kitchen", 20);
+        int medievalIndex =mPreferences.getInt("medieval", 20);
+        int oceanIndex = mPreferences.getInt("ocean", 20);
+        int animalIndex = mPreferences.getInt("animal", 0);
 
         GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, kitchenIndex);
         GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, medievalIndex);
         GameManager.instance().setLevelIndex(CATEGORY.OCEAN, oceanIndex);
-        GameManager.instance().setLevelIndex(CATEGORY.ICON, iconIndex);
+        GameManager.instance().setLevelIndex(CATEGORY.ANIMAL, animalIndex);
 
         //Palettes Unlocked and Selected
         int palette = mPreferences.getInt("paletteSelected", 0);

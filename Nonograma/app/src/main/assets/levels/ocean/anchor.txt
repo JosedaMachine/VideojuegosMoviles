@@ -10,6 +10,6 @@ ppppp....ppppp
 ..ppp....ppp..
 ..............
 pp..........pp
-pppp.......ppp
+ppp........ppp
 pppp......pppp
 pppppp..pppppp
