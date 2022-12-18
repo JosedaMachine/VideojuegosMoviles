@@ -555,8 +555,11 @@ public class SceneGame implements SceneBase {
             }
         }else if(!Objects.equals(levelQuick, "-")){
             //buscarHasta que haya una x
-            int cols_ =  Integer.parseInt(String.valueOf(levelQuick.charAt(0)));
-            int rows_ =  Integer.parseInt(String.valueOf(levelQuick.charAt(1)));
+
+            String[] size = levelQuick.split("x");
+
+            int cols_ =  Integer.parseInt(size[0]);
+            int rows_ =  Integer.parseInt(size[1]);
 
             if(gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_){
                 lives = mPreferences.getInt("lives", 3);

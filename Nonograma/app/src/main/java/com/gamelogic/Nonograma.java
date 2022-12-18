@@ -337,7 +337,6 @@ public class Nonograma implements IGame {
                 reader = new BufferedReader(new InputStreamReader(fos));
             }
             if(!sceneStack.empty()){
-                GameManager.instance().restore(mPreferences);
                 SceneBase scene = (SceneBase) sceneStack.peek();
                 scene.restore(reader, mPreferences);
             }
