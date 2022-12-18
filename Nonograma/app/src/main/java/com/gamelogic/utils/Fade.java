@@ -1,6 +1,8 @@
 package com.gamelogic.utils;
 
 
+import com.engineandroid.ConstraintX;
+import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
 import com.engineandroid.Graphics;
 import com.engineandroid.ColorWrap;
@@ -22,8 +24,8 @@ public class Fade{
     private int sizeX_;
     private int sizeY_;
 
-    private Graphics.ConstraintX x, width;
-    private Graphics.ConstraintY y, height;
+    private ConstraintX x, width;
+    private ConstraintY y, height;
     boolean usingConstraints;
 
     private boolean fadeOutComplete = false, fadeInComplete = false;
@@ -48,7 +50,7 @@ public class Fade{
         usingConstraints = false;
     }
 
-    public Fade(Engine e, Graphics.ConstraintX posX, Graphics.ConstraintY posY, Graphics.ConstraintX width_, Graphics.ConstraintY height_, int timeIn, int timeOut, STATE_FADE state){
+    public Fade(Engine e, ConstraintX posX, ConstraintY posY, ConstraintX width_, ConstraintY height_, int timeIn, int timeOut, STATE_FADE state){
         if(state == STATE_FADE.Out){
             alpha = 0.0f;
         }else alpha = 1.0f;

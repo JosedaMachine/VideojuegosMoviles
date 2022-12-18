@@ -1,5 +1,7 @@
 package com.gamelogic.utils;
 
+import com.engineandroid.ConstraintX;
+import com.engineandroid.ConstraintY;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
@@ -13,7 +15,12 @@ public abstract class Button {
     private int color;
 
     private int posX, posY, sizeX, sizeY;
+    private int offsetX, offsetY;
+
     private boolean selected;
+
+    private ConstraintX constrX;
+    private ConstraintY constrY;
 
     boolean usingConstraints;
 
@@ -29,8 +36,11 @@ public abstract class Button {
 
     public void render(Graphics graphics){
         //Imagen de fondo
-        if(backgroundImage != null)
-            graphics.drawImage(backgroundImage, posX, posY, sizeX, sizeY);
+        if(backgroundImage != null){
+            if(usingConstraints)
+                graphics.drawImage(backgroundImage, constrX, constrY , offsetX,offsetY,sizeX, sizeY);
+            else graphics.drawImage(backgroundImage, posX, posY, sizeX, sizeY);
+        }
 
         //Texto interior
         if(font != null){
@@ -38,8 +48,21 @@ public abstract class Button {
             graphics.setFont(font);
             Pair<Double, Double> dime = graphics.getStringDimensions(text);
 
-            graphics.drawText(text, (int) (posX +  sizeX/2 - dime.first/2) , (int)(posY + sizeY/2 + dime.second/3));
+            if(usingConstraints)
+                graphics.drawText(text, constrX, constrY , (int) (offsetX +  sizeX/2 - dime.first/2) , (int)(offsetY + sizeY/2 + dime.second/3));
+            else graphics.drawText(text, (int) (posX +  sizeX/2 - dime.first/2) , (int)(posY + sizeY/2 + dime.second/3));
         }
+    }
+
+    public void setConstraints(ConstraintX constrX_,int offsetX_, ConstraintY constrY_, int offsetY_){
+        constrX = constrX_;
+        constrY = constrY_;
+        offsetX = offsetX_;
+        offsetY = offsetY_;
+    }
+
+    public void setUsingConstraints(boolean using){
+        usingConstraints = using;
     }
 
     public void setFont(Font font) {

@@ -3,6 +3,8 @@ package com.gamelogic.scenes;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.engineandroid.ConstraintX;
+import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -46,8 +48,8 @@ public class SceneTitle implements SceneBase {
 
         //Fade In
         fade = new Fade(engine,
-                        Graphics.ConstraintX.LEFT, Graphics.ConstraintY.TOP,
-                        Graphics.ConstraintX.RIGHT, Graphics.ConstraintY.BOTTOM,
+                        ConstraintX.LEFT, ConstraintY.TOP,
+                        ConstraintX.RIGHT, ConstraintY.BOTTOM,
                        500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
@@ -171,6 +173,10 @@ public class SceneTitle implements SceneBase {
         paletteButton.setFont(title);
         paletteButton.setColor(ColorWrap.BLACK);
         paletteButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        if(engine.getGraphics().orientationHorizontal()){
+            horizontalLayout(logicWidth, logicHeight);
+        }
 
         //Musica en loop
         Music music = engine.getAudio().getMusic();

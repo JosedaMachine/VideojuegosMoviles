@@ -2,6 +2,8 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.ConstraintX;
+import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -10,6 +12,7 @@ import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
+import com.gamelogic.enums.PALETTE;
 import com.gamelogic.managers.GameManager;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
@@ -25,6 +28,11 @@ public class SceneQuickLevels implements SceneBase {
     Font titleLittle;
     Engine engine;
     private Fade fade;
+
+    ConstraintX constrX;
+    ConstraintY constrY;
+
+
     public SceneQuickLevels(Engine engine_) {
         this.engine = engine_;
     }
@@ -35,15 +43,14 @@ public class SceneQuickLevels implements SceneBase {
 
     @Override
     public void init() {
-
         loadResources(engine.getGraphics());
 
         int logicWidth = engine.getGraphics().getLogicWidth();
         int logicHeight = engine.getGraphics().getLogicHeight();
         //Fade In
         fade = new Fade(engine,
-                Graphics.ConstraintX.LEFT, Graphics.ConstraintY.TOP,
-                Graphics.ConstraintX.RIGHT, Graphics.ConstraintY.BOTTOM,
+                ConstraintX.LEFT, ConstraintY.TOP,
+                ConstraintX.RIGHT, ConstraintY.BOTTOM,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
@@ -74,8 +81,7 @@ public class SceneQuickLevels implements SceneBase {
         posX = (int) (logicWidth/1.38 - sizeX/2);
         levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true, 25) );
 
-        int offset = (int)(logicWidth * 0.16f),
-                bttWidth = (int)(logicWidth * 0.25f),
+        int bttWidth = (int)(logicWidth * 0.25f),
                 bttHeight = (int)(logicWidth * 0.0833f);
 
         //Boton Return to menu
@@ -100,14 +106,16 @@ public class SceneQuickLevels implements SceneBase {
                 if(fade.getFadeOutComplete() && isSelected()){
                     setSelected(false);
                     engine.getGame().previousScene();
-//                    engine.getGame().changeScene("SceneLevels");
-//                    engine.getGame().pushScene(new SceneTitle(engine));
                 }
             }
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        if(engine.getGraphics().orientationHorizontal()){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
     }
 
     //Boton de creacion de nivel
@@ -207,16 +215,77 @@ public class SceneQuickLevels implements SceneBase {
 
     }
 
-    private void horizontalLayout(int logicWidth, int logicHeight) {
-        int sizeX = (int)(logicWidth * 0.8f),
-                sizeY = (int)(logicHeight * 0.111f);
+    private void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.155f * 3),
+                sizeY = (int)(logicHeight * 0.055f) * 3;
+
+        int[] xOffsets = {sizeX*2, -sizeX/2 , (int) (-sizeX*1.5f * 2)};
+        int[] yOffsets = {-sizeY, sizeY/2};
+
+        int jW = 0;
+        int jH = 0;
+
+
+        ConstraintX a = ConstraintX.values()[0];
+
+        titleLittle = g.newFont("arcade.TTF",(int)(logicHeight * 0.035f * 2),true);
+        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f * 2), false);
+        title = g.newFont("arcade.TTF",(int)(logicHeight * 0.05f) * 2,true);
+        for (int i = 0; i < levels.size(); i++){
+            if(jW >= 3) {
+                jW = 0;
+                jH = 1;
+            }
+            Button b = levels.get(i);
+            b.setFont(titleLittle);
+            b.setSize(sizeX, sizeY);
+            b.setUsingConstraints(true);
+            b.setConstraints(ConstraintX.values()[jW], xOffsets[jW], ConstraintY.CENTER, yOffsets[jH]);
+            jW++;
+        }
+
+        int bttWidth = (int)(logicWidth * 0.25f *2),
+                bttHeight = (int)(logicWidth * 0.0833f * 2);
+
+        bttReturn.setFont(numFont);
+        bttReturn.setSize(bttWidth, bttHeight);
+        bttReturn.setUsingConstraints(true);
+        bttReturn.setConstraints(ConstraintX.CENTER, -bttWidth/2, ConstraintY.BOTTOM, (int) -(bttHeight * 1.25f));
 
     }
 
-    private void verticalLayout(int logicWidth, int logicHeight) {
-        int sizeX = (int)(logicWidth * 0.8f),
-                sizeY = (int)(logicHeight * 0.111f);
+    private void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.155f),
+                sizeY = (int)(logicHeight * 0.055f);
 
+        float[] widthFactors = {3.5f, 2, 1.38f};
+        float[] heightFactors = {3, 2};
+        int jW = 0;
+        int jH = 0;
+        titleLittle = g.newFont("arcade.TTF",(int)(logicHeight * 0.035f),true);
+        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
+        title = g.newFont("arcade.TTF",(int)(logicHeight * 0.05f),true);
+        for (int i = 0; i < levels.size(); i++){
+            if(jW >= 3) {
+                jW = 0;
+                jH = 1;
+            }
+            Button b = levels.get(i);
+            b.setFont(titleLittle);
+            b.setSize(sizeX, sizeY);
+            b.setX((int) (logicWidth/widthFactors[jW] - sizeX/2));
+            b.setY((int) (logicHeight/heightFactors[jH] -  sizeY/2));
+            b.setUsingConstraints(false);
+            jW++;
+        }
+        int bttWidth = (int)(logicWidth * 0.25f),
+                bttHeight = (int)(logicWidth * 0.0833f);
+
+        bttReturn.setUsingConstraints(false);
+        bttReturn.setFont(numFont);
+        bttReturn.setX(logicWidth/2 - bttWidth/2);
+        bttReturn.setY(logicHeight- bttHeight*3);
+        bttReturn.setSize(bttWidth, bttHeight);
     }
 
     @Override
@@ -225,9 +294,9 @@ public class SceneQuickLevels implements SceneBase {
         int logicHeight = engine.getGraphics().getLogicHeight();
 
         if(isHorizontal){
-            horizontalLayout(logicWidth, logicHeight);
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
         }else{
-            verticalLayout(logicWidth, logicHeight);
+            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
         }
     }
 

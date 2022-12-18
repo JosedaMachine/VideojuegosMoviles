@@ -2,6 +2,8 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.ConstraintX;
+import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -39,8 +41,8 @@ public class SceneStoryCategories implements SceneBase {
 
         //Fade In
         fade = new Fade(engine,
-                Graphics.ConstraintX.LEFT, Graphics.ConstraintY.TOP,
-                Graphics.ConstraintX.RIGHT, Graphics.ConstraintY.BOTTOM,
+                ConstraintX.LEFT, ConstraintY.TOP,
+                ConstraintX.RIGHT, ConstraintY.BOTTOM,
                 500, 500, Fade.STATE_FADE.In);
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();

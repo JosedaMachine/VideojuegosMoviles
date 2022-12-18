@@ -14,14 +14,6 @@ import java.util.HashMap;
 
 public class Graphics {
 
-    public enum ConstraintX{
-        LEFT, CENTER, RIGHT;
-    }
-
-    public enum ConstraintY{
-        TOP, CENTER, BOTTOM
-    }
-
     private final SurfaceView myView;
     private final SurfaceHolder holder;
     private Canvas canvas;
@@ -35,11 +27,8 @@ public class Graphics {
     int translateFactorX, translateFactorY;
 
     private int clearColor = ColorWrap.WHITE;
-    //TODO: preguntar si esta bien que grafics tenga datos de AdView para que tenga en cuenta su tamaño para pintar.
     private Pair<Integer, Integer> adViewDimensions;
-
-
-
+    private boolean isHorizontal;
 
     Graphics(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer> adViewDimensions_){
         this.myView = view;
@@ -127,16 +116,8 @@ public class Graphics {
     }
 
     public void drawImageWithConstraints(Image image, ConstraintX constrX,ConstraintY constrY, int offsetX, int offsetY){
-        int x = -translateFactorX,  y = 0;
-        if(constrX == ConstraintX.CENTER)
-            x = getWidth()/2;
-        else if (constrX == ConstraintX.RIGHT)
-            x = getWidth();
-
-        if(constrY == ConstraintY.CENTER)
-            y = getHeight()/2;
-        else if (constrY == ConstraintY.BOTTOM)
-            y = getHeight();
+        int x = getConstraintXValue(constrX);
+        int y = getConstraintYValue(constrY);
 
         drawImage(image, x + offsetX, y + offsetY);
     }
@@ -159,6 +140,35 @@ public class Graphics {
         canvas.drawBitmap(image.getScaledImage(width, height),x, y,paint);
     }
 
+    public void drawImage(Image image, ConstraintX constrX, ConstraintY constrY, int x, int y, int width, int height) {
+        int posX = getConstraintXValue(constrX);
+        int posY = getConstraintYValue(constrY);
+
+        canvas.drawBitmap(image.getScaledImage(width, height), posX + x, posY + y,paint);
+    }
+
+    public int getConstraintXValue(ConstraintX constrX){
+        int posX = -translateFactorX;
+
+        if(constrX == ConstraintX.CENTER)
+            posX = logicWidth/2;
+        else if (constrX == ConstraintX.RIGHT)
+            posX = translateFactorX + logicWidth;
+
+        return posX;
+    }
+
+    public int getConstraintYValue(ConstraintY constrY){
+        int posY = 0;
+
+        if(constrY == ConstraintY.CENTER)
+            posY = logicHeight/2;
+        else if (constrY == ConstraintY.BOTTOM)
+            posY = translateFactorY + logicHeight;
+
+        return posY;
+    }
+
     public void setColor(int color, float alpha) {
         paint.setColor(color);
         paint.setAlpha((int) (alpha * 255));
@@ -174,26 +184,21 @@ public class Graphics {
     }
 
     public void fillRect(ConstraintX x_, ConstraintY y_, ConstraintX width_, ConstraintY height_){
-        int x = -translateFactorX,  y = 0, width = 0, height = 0;
-        if(x_ == ConstraintX.CENTER)
-            x = getWidth()/2;
-        else if (x_ == ConstraintX.RIGHT)
-            x = getWidth();
 
-        if(y_ == ConstraintY.CENTER)
-            y = getHeight()/2;
-        else if (y_ == ConstraintY.BOTTOM)
-            y = getHeight();
+        int x = getConstraintXValue(x_);
+        int y = getConstraintYValue(y_);
+
+        int width = 0, height = 0;
 
         if(width_ == ConstraintX.CENTER)
-            width = getWidth()/2;
+            width = translateFactorX + logicWidth/2;
         else if (width_ == ConstraintX.RIGHT)
-            width = getWidth();
+            width = translateFactorX*2 + logicWidth; //x2 since x variable subtracts translateFactorX
 
         if(height_ == ConstraintY.CENTER)
-            height= getHeight()/2;
+            height= translateFactorY + logicHeight/2;
         else if (height_ == ConstraintY.BOTTOM)
-            height = getHeight();
+            height = translateFactorY + logicHeight;
 
         drawRect(x, y, width, height);
     }
@@ -216,6 +221,13 @@ public class Graphics {
 
     public void drawText(String text, int x, int y) {
         canvas.drawText(text, x, y, paint);
+    }
+
+    public void drawText(String text, ConstraintX constrX, ConstraintY constrY, int x, int y) {
+        int posX = getConstraintXValue(constrX);
+        int posY = getConstraintYValue(constrY);
+
+        canvas.drawText(text, posX + x, posY + y, paint);
     }
 
     public Pair<Double, Double> getStringDimensions(String text) {
@@ -261,24 +273,29 @@ public class Graphics {
 
         int bandWidth = 0, bandHeight = 0;
         if(heightWindow >= expectedHeight){
+            //Vertical
+            isHorizontal = false;
             bandHeight = (heightWindow - expectedHeight)/2;
             scaleFactor = (float)widthWindow / (float)logicWidth;
         }else{
+            //Horizontal
+            isHorizontal = true;
             bandWidth = (widthWindow - expectedWidth)/2;
             scaleFactor = (float)heightWindow / (float)logicHeight;
         }
 
         //Generally we dont want to move in Y
         translateFactorX = bandWidth;
-        translateFactorY = 0;
+        translateFactorY = bandHeight;
     }
 
     public int getTranslateFactorX() {
         return translateFactorX;
     }
 
+    //Since we dont want to use it anymore
     public int getTranslateFactorY() {
-        return translateFactorY;
+        return 0;
     }
 
     public float getScaleFactor() {
@@ -290,4 +307,8 @@ public class Graphics {
     public void setClearColor(int color) {clearColor = color;}
 
     public int getClearColor() {return clearColor;}
+
+    public boolean orientationHorizontal(){
+        return isHorizontal;
+    }
 }
