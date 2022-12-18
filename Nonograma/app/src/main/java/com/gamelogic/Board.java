@@ -72,7 +72,8 @@ public class Board {
 
             //Por cada character de la fila String, asignamos filas de la columna
             int i = 0;
-            while ((mLine = reader.readLine()) != null) {
+            int k = 0;
+            while (k < rows && (mLine = reader.readLine()) != null) {
                 for(int j = 0; j < mLine.length(); j++){
                     if(mLine.charAt(j) == '.'){
                         board[j][i] = TILE.FILL;
@@ -81,17 +82,10 @@ public class Board {
                     else board[j][i] = TILE.EMPTY;
                 }
                 i++;
+                k++;
             }
         } catch (IOException e) {
             System.out.println("Error creating board by plane text");
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    //log the exception
-                }
-            }
         }
 //        numCorrectTiles = 0;
         //Relacion para cuando hay menos filas que columnas
@@ -111,12 +105,13 @@ public class Board {
         try {
             file.write((Integer.toString(this.cols) + "\n").getBytes());
             file.write((Integer.toString(this.rows)+ "\n").getBytes());
-            for (int i = 0; i < this.cols; i++){
+            //Las columnas son filas y filas columnas
+            for (int j = 0; j < this.rows; j++){
                 String line = "";
-                for (int j = 0; j < this.rows; j++){
-                    if( board[j][i] == TILE.FILL){
+                for (int i = 0; i < this.cols; i++){
+                    if( board[i][j] == TILE.FILL || board[i][j] == TILE.WRONG){
                         line =  line + '.';
-                    }else if (board[j][i] == TILE.CROSS){
+                    }else if (board[i][j] == TILE.CROSS){
                         line =  line + 'x';
                     }else{
                         line =  line + 'p';
@@ -124,6 +119,7 @@ public class Board {
                 }
                 file.write((line + "\n").getBytes());
             }
+//            file.write((" \n").getBytes());
         } catch (IOException e) {
             System.out.println("Error saving board state");
         }
@@ -134,8 +130,8 @@ public class Board {
             String mLine;
             //Leemos filas y columnas
             mLine = reader.readLine();
-            mLine = reader.readLine();
             int cols_ = Integer.parseInt(mLine);
+            mLine = reader.readLine();
             int rows_ = Integer.parseInt(mLine);
 
             assert cols_ == cols;
@@ -143,7 +139,8 @@ public class Board {
 
             //Por cada character de la fila String, asignamos filas de la columna
             int i = 0;
-            while ((mLine = reader.readLine()) != null) {
+            int k = 0;
+            while (k < rows_ && (mLine = reader.readLine()) != null) {
                 for(int j = 0; j < mLine.length(); j++){
                     if(mLine.charAt(j) == '.'){
                         board[j][i] = TILE.FILL;
@@ -155,6 +152,7 @@ public class Board {
                     else board[j][i] = TILE.EMPTY;
                 }
                 i++;
+                k++;
             }
         } catch (IOException e) {
             System.out.println("Error updating Board cells");

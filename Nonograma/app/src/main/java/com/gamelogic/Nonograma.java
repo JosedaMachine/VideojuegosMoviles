@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 
 /*
@@ -92,16 +93,69 @@ public class Nonograma implements IGame {
     Stack sceneStack;
 
     private final  String SAVE_FILE_NAME = "boardState.txt";
-
+    private final  String HASH_FILE_NAME = "hash.txt";
     public Nonograma(Engine engine, SharedPreferences pref) {
         this.engine = engine;
 
         mPreferences = pref;
+
         GameManager.init(engine);
 
         sceneStack = new Stack();
 
         userInterface = new UserInterface();
+    }
+
+    //Escena de titulo inicial
+    @Override
+    public void init() {
+        GameManager.instance().restore(mPreferences);
+        assert sceneStack.empty();
+        pushScene(new SceneTitle(engine));
+    }
+
+    @Override
+    public void update(double elapsedTime) {
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.update(elapsedTime);
+
+            //currScene.update(elapsedTime);
+            userInterface.update(elapsedTime);
+        }
+    }
+
+    @Override
+    public void render(Graphics graphics) {
+        if(!sceneStack.empty()){
+            userInterface.render(graphics);
+
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.render(graphics);
+
+            //        currScene.render(graphics);
+        }
+    }
+
+    @Override
+    public void processInput(TouchEvent event) {
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.input(event);
+
+            //        currScene.input(event);
+            userInterface.input(event);
+        }
+    }
+
+    @Override
+    public void loadImages(Graphics graphics) {
+        if(!sceneStack.empty()){
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.loadResources(graphics);
+
+            //        currScene.loadResources(graphics);
+        }
     }
 
     //Iniciar nueva escena
@@ -153,64 +207,11 @@ public class Nonograma implements IGame {
         return true;
     }
 
-
     @Override
     public SceneBase getScene() {
         if(!sceneStack.empty())
             return (SceneBase) sceneStack.peek();
         else return null;
-    }
-
-    //Escena de titulo inicial
-    @Override
-    public void init() {
-        GameManager.instance().restore(mPreferences);
-        assert sceneStack.empty();
-        pushScene(new SceneTitle(engine));
-    }
-
-    @Override
-    public void update(double elapsedTime) {
-        if(!sceneStack.empty()){
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.update(elapsedTime);
-
-            //currScene.update(elapsedTime);
-            userInterface.update(elapsedTime);
-        }
-    }
-
-    @Override
-    public void render(Graphics graphics) {
-        if(!sceneStack.empty()){
-            userInterface.render(graphics);
-
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.render(graphics);
-
-    //        currScene.render(graphics);
-        }
-    }
-
-    @Override
-    public void processInput(TouchEvent event) {
-        if(!sceneStack.empty()){
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.input(event);
-
-    //        currScene.input(event);
-            userInterface.input(event);
-        }
-    }
-
-    @Override
-    public void loadImages(Graphics graphics) {
-        if(!sceneStack.empty()){
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.loadResources(graphics);
-
-    //        currScene.loadResources(graphics);
-        }
     }
 
     @Override
@@ -233,27 +234,6 @@ public class Nonograma implements IGame {
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.onPause();
 //            currScene.onPause();
-        }
-    }
-
-    @Override
-    public void orientationChanged(boolean isHorizontal) {
-        SceneBase scene = (SceneBase) sceneStack.peek();
-        scene.orientationChanged(isHorizontal);
-    }
-
-    @Override
-    public UserInterface getUserInterface(){
-        return userInterface;
-    }
-
-    @Override
-    public void sendMessage(Message message) {
-        if(message.getType() == MESSAGE_TYPE.REWARD_NOTIFICATION){
-            GameManager.instance().addMoney(message.reward);
-        }else {
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.processMessage(message);
         }
     }
 
@@ -289,38 +269,21 @@ public class Nonograma implements IGame {
         try {
             md5Digest = MessageDigest.getInstance("MD5");
 
-            String checksum = engine.getFileChecksum(md5Digest, file);
-            //Now open a new file, and write its checkSum? yes
+            String checksumBoard = engine.getFileChecksum(md5Digest, file);
+
+            fos = engine.openInternalFileWriting(HASH_FILE_NAME);
+            fos.write(checksumBoard.getBytes());
+            fos.close();
             //Do we need to encrypt it? we should but not necessary
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean checkHash(){
-        File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-            String checksum = engine.getFileChecksum(md5Digest, file);
-            //Now open a new file, and check its checkSum with out checksum Generated so far? Yes
-
-//            if(notEqualsCheckSum)
-//                return;
-
-        } catch (NoSuchAlgorithmException e) {
+        }catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        return true;
     }
 
     @Override
@@ -331,10 +294,24 @@ public class Nonograma implements IGame {
     public void restoreScene(boolean openFile) {
         FileInputStream fos = null;
         BufferedReader reader = null;
+        //Esta comprobacion se hace entre escena y escena por si el archivo se cambia en ejecucion.
+        //Si ha cambiado el checkSum del archivo de guardado del tablero no
+        //restauramos nada y se pierde el contenido
+        File hashFile = new File(engine.getContext().getFilesDir(), HASH_FILE_NAME);
+        if(hashFile.exists()) {
+            boolean ret = true;
+            if(openFile)
+              ret = checkHash(new String[]{SAVE_FILE_NAME});
+            if(!ret) openFile = false;
+        }
+
         try {
             if(openFile){
-                fos = engine.openInternalFileReading(SAVE_FILE_NAME);
-                reader = new BufferedReader(new InputStreamReader(fos));
+                File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);
+                if(file.exists()){
+                    fos = engine.openInternalFileReading(SAVE_FILE_NAME);
+                    reader = new BufferedReader(new InputStreamReader(fos));
+                }
             }
             if(!sceneStack.empty()){
                 SceneBase scene = (SceneBase) sceneStack.peek();
@@ -343,11 +320,67 @@ public class Nonograma implements IGame {
             if(fos != null)
                 fos.close();
         } catch (FileNotFoundException e) {
+            System.out.println("Error opening board saving file.");
             //TODO add message error.
             e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    //Dados varios archivos en orden concreto, comprobamos cada checksum con el almacenado en ese mismo orden.
+    public boolean checkHash(String[] filename){
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        FileInputStream fos = null;
+        BufferedReader reader = null;
+
+        try{
+            md5Digest = MessageDigest.getInstance("MD5");
+            //Now open a new file with hashes
+            fos = engine.openInternalFileReading(HASH_FILE_NAME);
+            reader =  new BufferedReader(new InputStreamReader(fos));
+        }catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < filename.length; i++){
+            try {
+                File file = new File(engine.getContext().getFilesDir(), filename[i]);
+                String checksum = engine.getFileChecksum(md5Digest, file);
+                //And check its checkSum with out checksum Generated so far?
+                String hash = hash = reader.readLine();
+                if(!Objects.equals(checksum, hash))
+                    return false;
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+        SceneBase scene = (SceneBase) sceneStack.peek();
+        scene.orientationChanged(isHorizontal);
+    }
+
+    @Override
+    public UserInterface getUserInterface(){
+        return userInterface;
+    }
+
+    @Override
+    public void sendMessage(Message message) {
+        if(message.getType() == MESSAGE_TYPE.REWARD_NOTIFICATION){
+            GameManager.instance().addMoney(message.reward);
+        }else {
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.processMessage(message);
         }
     }
 }

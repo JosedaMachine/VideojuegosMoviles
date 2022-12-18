@@ -61,7 +61,7 @@ public class SceneGame implements SceneBase {
     private int rows_;
     private int cols_;
 
-    private int tileSize;
+    private int tileSize, boardSize;
 
     private int numRemaining = 0, numWrong = 0;
     //Fuentes
@@ -234,7 +234,7 @@ public class SceneGame implements SceneBase {
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
-        int boardSize = (int) (logicWidth * 0.6f);
+        boardSize = (int) (logicWidth * 0.6f);
 
         if (levelName != null) {
             createLevel(levelName, boardSize);
@@ -409,13 +409,19 @@ public class SceneGame implements SceneBase {
         BufferedReader reader_ = null;
         try {
             reader_ = engine.openAssetFile("levels/" + levelName + ".txt");
+            checkBoard = new Board(reader_, boardSize, boardSize, tileSize);
         } catch (IOException e) {
             System.out.println("Error opening file");
             e.printStackTrace();
+        } finally {
+            if (reader_ != null) {
+                try {
+                    reader_.close();
+                } catch (IOException e) {
+                    //log the exception
+                }
+            }
         }
-
-//        Tablero de solucion
-        checkBoard = new Board(reader_, boardSize, boardSize, tileSize);
 
         cols_ = checkBoard.getCols();
         rows_ = checkBoard.getRows();
@@ -517,12 +523,13 @@ public class SceneGame implements SceneBase {
         if(levelName != null){
             int catN = category.ordinal();
             preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
-            preferencesEditor.putString("levelQuick", "-");
+            preferencesEditor.putString("levelQuickSize", "-");
         }else{
             preferencesEditor.putString("levelCat", "-");
             String cols_ = Integer.toString(gameBoard.getCols());
             String rows_ = Integer.toString(gameBoard.getRows());
             preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
+            checkBoard.saveBoardState(file);
         }
 
         gameBoard.saveBoardState(file);
@@ -536,7 +543,7 @@ public class SceneGame implements SceneBase {
         //En caso de que se juegue por primera vez o no se haya guardado, no hacemos nada.
         boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
 
-        if(!boardSaved)
+        if(!boardSaved || reader == null)
             return;
 
         //De lo contrario recuperamos valores
@@ -544,7 +551,7 @@ public class SceneGame implements SceneBase {
         String levelCat = mPreferences.getString("levelCat","-");
         String levelQuick = mPreferences.getString("levelQuickSize","-");
 
-        if(!Objects.equals(levelCat, "-")){
+        if(!Objects.equals(levelCat, "-") && levelName != null){
 
             int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
             int indexLvl =  Integer.parseInt(levelCat.substring(1));
@@ -563,9 +570,8 @@ public class SceneGame implements SceneBase {
 
             if(gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_){
                 lives = mPreferences.getInt("lives", 3);
-                //Aquel que era aleatoria ahora hay que recrearlo aaaa
-                //guardar los dos tableros AAAAAAA
                 //TODO reward en quick???
+                checkBoard = new Board(reader, boardSize, boardSize, tileSize);
                 gameBoard.updateBoardState(reader);
             }
         }

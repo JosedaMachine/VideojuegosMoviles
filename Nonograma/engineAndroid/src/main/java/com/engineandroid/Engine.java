@@ -133,7 +133,6 @@ public class Engine implements Runnable{
         //Lanzamos aqui el init del game ya que muchos valores de posición van en función del
         //tamaño del dispositivo.
         if(!firstRun){
-            restore();
             currGame.init();
             firstRun = true;
         }
@@ -196,10 +195,7 @@ public class Engine implements Runnable{
     }
 
     public void restore(){
-
         currGame.restore();
-
-
     }
 
     public String getFileChecksum(MessageDigest digest, File file) throws IOException{
