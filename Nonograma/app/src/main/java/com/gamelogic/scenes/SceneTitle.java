@@ -184,22 +184,7 @@ public class SceneTitle implements SceneBase {
         //Acceleremoter
         magnetometerSensor = new MagnetometerSensor(engine.getGraphics().getContext());
 
-        //Interface
-        UserInterface uinterface = engine.getGame().getUserInterface();
-        uinterface.clearElements();
-        uinterface.addElement(new TextElement(title, logicWidth - 170, 50, 5, 5, GameManager.instance().getTextMoney()) {
-            @Override
-            public void update(double deltaTime) {}
-            @Override
-            public void input(TouchEvent event_) {}
-        });
-
-        uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), logicWidth - 65, 25, 55, 55) {
-            @Override
-            public void update(double deltaTime) {}
-            @Override
-            public void input(TouchEvent event_) {}
-        });
+        GameManager.instance().updateInterface();
     }
 
     @Override

@@ -8,9 +8,13 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.engineandroid.Engine;
+import com.engineandroid.Font;
 import com.engineandroid.Pair;
+import com.engineandroid.TouchEvent;
+import com.engineandroid.UserInterface;
 import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.enums.PALETTE;
+import com.gamelogic.utils.ImageElement;
 import com.gamelogic.utils.TextElement;
 
 import java.io.BufferedReader;
@@ -77,10 +81,30 @@ public class GameManager {
         Log.d("MONEY", ""+m);
         money += m;
         money = Math.min(maxMoney, money);
+    }
 
-        if (engine.getGame().getUserInterface().getElement(0) != null) {
+    public void updateInterface(){
+        UserInterface uinterface = engine.getGame().getUserInterface();
+        if(uinterface.getElement(0) != null){
             TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
-            ui.setText(Integer.toString(money));
+            ui.setText(getTextMoney());
+        }else{
+            Font title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+            int logicWidth = engine.getGraphics().getLogicWidth();
+            uinterface.clearElements();
+            uinterface.addElement(new TextElement(title, logicWidth - 170, 50, 5, 5, GameManager.instance().getTextMoney()) {
+                @Override
+                public void update(double deltaTime) {}
+                @Override
+                public void input(TouchEvent event_) {}
+            });
+
+            uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), logicWidth - 65, 25, 55, 55) {
+                @Override
+                public void update(double deltaTime) {}
+                @Override
+                public void input(TouchEvent event_) {}
+            });
         }
     }
     // Genera el intent para Twitter.
@@ -94,8 +118,6 @@ public class GameManager {
         if(doesPackageExist("com.twitter.android"))
         {
             shareIntent = new Intent(Intent.ACTION_SEND);
-//            shareIntent.setClassName("com.twitter.android",
-//                    "com.twitter.composer.ComposerShareActivity");
             shareIntent.setType("text/plain");
             shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

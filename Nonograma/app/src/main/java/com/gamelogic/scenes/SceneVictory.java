@@ -143,6 +143,7 @@ public class SceneVictory implements SceneBase {
         shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
 
         GameManager.instance().addMoney(reward);
+        GameManager.instance().updateInterface();
     }
 
     @Override
@@ -217,6 +218,8 @@ public class SceneVictory implements SceneBase {
     public void processMessage(Message msg) {
         if(msg.getType() == MESSAGE_TYPE.REWARD_AD){
             GameManager.instance().addMoney(msg.reward);
+            this.reward *= 2;
+            GameManager.instance().updateInterface();
         }
     }
 
@@ -232,6 +235,5 @@ public class SceneVictory implements SceneBase {
     @Override
     public void restore(BufferedReader reader, SharedPreferences mPreferences) {
     }
-
 
 }
