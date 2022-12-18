@@ -1,0 +1,11 @@
+12
+9
+ppp......ppp
+pp........pp
+ppp......ppp
+pp........pp
+p..ppp.pp..p
+p..ppp..p..p
+p..ppp..pp.p
+..ppppp.pp..
+............

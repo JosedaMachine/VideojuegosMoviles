@@ -34,7 +34,7 @@ TODO: persistencia
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
 TODO: marcar casilla X con long press. (ESTA HECHO PERO NO ME CONVENCE (A MI EN CONCRETO (SERE DANLLES? (IGUAL SOY CHIKITO (PERO Y SI SOY JOSEDA?))))
 
-TODO: Mejor botón de Twitter, aunque ya funciona
+TODO: Mejor botón de Twitter
 En el manifest:
 Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
  .appendQueryParameter( "text", "Este es mi texto a tweettear")

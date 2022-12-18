@@ -83,25 +83,28 @@ public class SceneGame implements SceneBase {
     TileTouched tileTouchedInfo_ = null;
 
     String[] KitchenLevels = {"fork", "spoon", "knife", "plate",
-            "pan", "pot", "oven", "microwave",
+            "pan", "pot", "oven", "table",
             "salt", "napkin", "pizza", "sandwich",
-            "table", "chefhat", "restaurant", "glass"};
+            "chair", "chefhat", "chilli", "glass",
+            "bottle", "candle", "chopsticks", "spatula"};
 
     String[] MedievalLevels = {"bow", "sword", "cat", "crossbow",
             "helmet", "arrow", "shield", "castle",
             "banner", "crossingswords", "crown", "beer",
-            "dragon", "law", "flail", "gallows"};
+            "dragon", "law", "flail", "gallows",
+            "", "", "", ""};
 
     String[] OceanLevels = {"fish", "anchor", "crab", "hook",
             "fishnet", "fishingrod", "helm", "prow",
             "sailboat", "eyepatch", "shark", "barrel",
-            "chest", "coin", "skull", "jellyfish"};
+            "chest", "coin", "skull", "jellyfish",
+            "algae", "saber", "horizon", "shell"};
 
     String[] IconLevels = {"twitter", "facebook", "google", "whatsapp",
             "instagram", "gmail", "discord", "chrome",
-            "visualstudio", "github", "twitch", "youtibe",
-            "infojobs", "netflix", "amazon", "ucm"};
-
+            "visualstudio", "github", "twitch", "youtube",
+            "infojobs", "netflix", "amazon", "ucm",
+            "", "", "", ""};
 
     public SceneGame(Engine engine, int rows, int cols, int reward) {
         this.engine = engine;
@@ -443,7 +446,7 @@ public class SceneGame implements SceneBase {
         //Si ha entrado a este metodo quiere decir que el jugador
         //ha interactuado con el tablero. Perdemos los datos guardados de cualquier tablero
         //que se haya guardado anteriormente
-        if(!boardHasChanged){
+        if (!boardHasChanged) {
             boardHasChanged = true;
             SharedPreferences.Editor preferencesEditor = sharedPreferences.edit();
             preferencesEditor.putBoolean("savingBoard", false);
@@ -511,7 +514,7 @@ public class SceneGame implements SceneBase {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 
         //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
-        if(lives == 3 && !gameBoard.hasChanged()){
+        if (lives == 3 && !gameBoard.hasChanged()) {
             preferencesEditor.putBoolean("savingBoard", false);
             return;
         }
@@ -520,7 +523,7 @@ public class SceneGame implements SceneBase {
         //Vidas
         preferencesEditor.putInt("lives", lives);
         //Nivel en cuestion, si es Historia o partida rapida
-        if(levelName != null){
+        if (levelName != null) {
             int catN = category.ordinal();
             preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
             preferencesEditor.putString("levelQuickSize", "-");
@@ -548,27 +551,27 @@ public class SceneGame implements SceneBase {
 
         //De lo contrario recuperamos valores
 
-        String levelCat = mPreferences.getString("levelCat","-");
-        String levelQuick = mPreferences.getString("levelQuickSize","-");
+        String levelCat = mPreferences.getString("levelCat", "-");
+        String levelQuick = mPreferences.getString("levelQuickSize", "-");
 
         if(!Objects.equals(levelCat, "-") && levelName != null){
 
             int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
-            int indexLvl =  Integer.parseInt(levelCat.substring(1));
+            int indexLvl = Integer.parseInt(levelCat.substring(1));
             //Comprobamos si estamos en el ultimo nivel que se guardó
-            if((catN == category.ordinal()) && indexLvl == lvlIndex){
+            if ((catN == category.ordinal()) && indexLvl == lvlIndex) {
                 lives = mPreferences.getInt("lives", 3);
                 gameBoard.updateBoardState(reader);
             }
-        }else if(!Objects.equals(levelQuick, "-")){
+        } else if (!Objects.equals(levelQuick, "-")) {
             //buscarHasta que haya una x
 
             String[] size = levelQuick.split("x");
 
-            int cols_ =  Integer.parseInt(size[0]);
-            int rows_ =  Integer.parseInt(size[1]);
+            int cols_ = Integer.parseInt(size[0]);
+            int rows_ = Integer.parseInt(size[1]);
 
-            if(gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_){
+            if (gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_) {
                 lives = mPreferences.getInt("lives", 3);
                 //TODO reward en quick???
                 checkBoard = new Board(reader, boardSize, boardSize, tileSize);

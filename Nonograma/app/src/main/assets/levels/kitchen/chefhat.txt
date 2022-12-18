@@ -1,0 +1,9 @@
+14
+7
+pppp......pppp
+.....pppp....p
+..pppppppppp..
+p...p....p...p
+ppp.p....p.ppp
+ppp........ppp
+ppp........ppp
