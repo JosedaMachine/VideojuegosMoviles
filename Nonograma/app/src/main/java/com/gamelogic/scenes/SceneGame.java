@@ -89,10 +89,10 @@ public class SceneGame implements SceneBase {
             "bottle", "candle", "chopsticks", "spatula"};
 
     String[] MedievalLevels = {"bow", "sword", "cat", "crossbow",
-            "helmet", "arrow", "shield", "castle",
+            "helmet", "arrow", "cross", "castle",
             "banner", "crossingswords", "crown", "beer",
             "dragon", "law", "flail", "gallows",
-            "chestplate", "flag", "cross", "cup"};
+            "chestplate", "flag", "shield", "wineglass"};
 
     String[] OceanLevels = {"fish", "anchor", "crab", "hook",
             "fishnet", "fishingrod", "helm", "prow",
