@@ -34,14 +34,6 @@ TODO: persistencia
 TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
 TODO: marcar casilla X con long press. (ESTA HECHO PERO NO ME CONVENCE (A MI EN CONCRETO (SERE DANLLES? (IGUAL SOY CHIKITO (PERO Y SI SOY JOSEDA?))))
 
-TODO: Mejor botón de Twitter
-En el manifest:
-Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
- .appendQueryParameter( "text", "Este es mi texto a tweettear")
- .build() ; //Genera la URl https://twitter.com/intent/tweet?text=Este%20es%20mi%20texto%20a%20tweettear
-Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
-startActivity(intent) ; // startActivity es un método de Context
-
 TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.

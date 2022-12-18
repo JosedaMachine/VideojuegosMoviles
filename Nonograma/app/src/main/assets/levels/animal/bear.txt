@@ -1,0 +1,10 @@
+8
+8
+..pppp..
+........
+p......p
+p.p..p.p
+p......p
+p..pp..p
+pp....pp
+pppppppp

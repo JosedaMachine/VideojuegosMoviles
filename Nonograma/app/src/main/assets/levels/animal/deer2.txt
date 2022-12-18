@@ -1,0 +1,17 @@
+15
+15
+p..ppp.pp.....p
+...ppp....ppppp
+p....p..p.ppppp
+pp.....ppp.pppp
+p........pppppp
+.....pp..pppppp
+ppp...ppppppppp
+ppp...ppppppppp
+pppp........ppp
+ppp...........p
+p.............p
+..pp.pppp....pp
+p.pp..pppp....p
+p.pppp..ppp.p..
+pp.pppppppp.pp.

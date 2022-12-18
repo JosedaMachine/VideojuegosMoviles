@@ -100,11 +100,11 @@ public class SceneGame implements SceneBase {
             "chest", "coin", "skull", "jellyfish",
             "algae", "saber", "horizon", "shell"};
 
-    String[] AnimalLevels = {"twitter", "facebook", "google", "whatsapp",
-            "instagram", "gmail", "discord", "chrome",
-            "visualstudio", "github", "twitch", "youtube",
-            "infojobs", "netflix", "amazon", "ucm",
-            "", "", "", ""};
+    String[] AnimalLevels = {"bunny", "duck", "giraffe", "elephant",
+            "bear", "mouse", "snail", "flamingo",
+            "snake", "deer", "dolphin", "duck2",
+            "giraffe2", "mouse2", "pelican", "dinosaur",
+            "parrot", "squid", "owl", "deer2"};
 
     public SceneGame(Engine engine, int rows, int cols, int reward) {
         this.engine = engine;
