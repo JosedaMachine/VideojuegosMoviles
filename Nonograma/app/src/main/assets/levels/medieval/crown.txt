@@ -1,0 +1,5 @@
+..pppp.p.pppp..
+...ppp.p.ppp...
+p...pp.p.pp.p.p
+pp.ppp.p.ppp.pp
+p.............p
