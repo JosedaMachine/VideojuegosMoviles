@@ -8,6 +8,7 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
+import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
@@ -80,6 +81,8 @@ public class SceneVictory implements SceneBase {
 
         posX = (int)(logicWidth *0.75f - sizeX / 2);
 
+        Message rewardMessage = new Message(MESSAGE_TYPE.REWARD_AD);
+        rewardMessage.reward = this.reward;
         //Boton vuelta al menu
         adButton = new Button("X2 coin", posX, posY, sizeX, sizeY) {
             @Override
@@ -87,9 +90,7 @@ public class SceneVictory implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (adButton.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
-                        AdManager.instance().buildAndShowRewardAd();
-                        GameManager.instance().addMoney(reward);
-                        reward *= 2;
+                        AdManager.instance().showRewardedAd(rewardMessage);
                     }
                 }
             }
@@ -101,6 +102,9 @@ public class SceneVictory implements SceneBase {
 
         posX = logicWidth / 2 - sizeX / 2;
         posY += logicHeight*0.05f + sizeY;
+
+        //Cargamos el ad al inicio
+        AdManager.instance().buildRewardedAd();
 
         //Boton vuelta al menu
         button = new Button("Menu", posX, posY, sizeX, sizeY) {
@@ -211,7 +215,9 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void processMessage(Message msg) {
-
+        if(msg.getType() == MESSAGE_TYPE.REWARD_AD){
+            GameManager.instance().addMoney(msg.reward);
+        }
     }
 
     @Override

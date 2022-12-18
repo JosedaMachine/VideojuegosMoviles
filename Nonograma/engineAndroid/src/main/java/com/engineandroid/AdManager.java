@@ -25,19 +25,21 @@ import java.util.Objects;
 public class AdManager {
     private static AdManager instance_;
     AdView ad;
+    Engine engine;
     AppCompatActivity activity;
     RewardedAd mRewardedAd;
 
-    public AdManager(AppCompatActivity activity){
+    public AdManager(AppCompatActivity activity, Engine engine){
         this.activity = activity;
+        this.engine = engine;
     }
 
     public static AdManager instance(){
         return instance_;
     }
 
-    public static boolean init(AppCompatActivity activity){
-        instance_ = new AdManager(activity);
+    public static boolean init(AppCompatActivity activity, Engine engine){
+        instance_ = new AdManager(activity, engine);
         return true;
     }
 
@@ -111,17 +113,14 @@ public class AdManager {
                 });
     }
 
-    public void showRewardedAd(){
+    private void showRewardAd(Message message){
         if (mRewardedAd != null) {
-            Activity activityContext = activity;
-            mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
+            mRewardedAd.show(activity, new OnUserEarnedRewardListener() {
                 @Override
                 public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                     // Handle the reward.
                     Log.d("Reward", "The user earned the reward.");
-                    //TODO añadir la recompensa al ver el puto anuncio
-//                    int rewardAmount = rewardItem.getAmount();
-//                    String rewardType = rewardItem.getType();
+                    engine.sendMessage(message);
                 }
             });
         } else {
@@ -129,12 +128,21 @@ public class AdManager {
         }
     }
 
-    public void buildAndShowRewardAd(){
+    public void buildAndShowRewardAd(Message message){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 buildRewardedAd();
-                showRewardedAd();
+                showRewardAd(message);
+            }
+        });
+    }
+
+    public void showRewardedAd(Message message){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showRewardAd(message);
             }
         });
     }

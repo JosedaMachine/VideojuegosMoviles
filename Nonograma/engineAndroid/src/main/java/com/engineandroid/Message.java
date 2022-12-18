@@ -3,7 +3,6 @@ package com.engineandroid;
 public class Message {
     MESSAGE_TYPE type;
     public int reward;
-    public boolean vertical;
     public Message(MESSAGE_TYPE type){
         this.type = type;
     }
