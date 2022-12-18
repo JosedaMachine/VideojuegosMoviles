@@ -1,5 +1,6 @@
 package com.gamelogic.scenes;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.engineandroid.Engine;
@@ -34,7 +35,6 @@ public class SceneTitle implements SceneBase {
     private MagnetometerSensor magnetometerSensor;
 
     public SceneTitle(Engine engine_) {
-
         this.engine = engine_;
     }
 
@@ -278,13 +278,12 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void save(FileOutputStream file) {
-        GameManager.instance().save(file);
+    public void save(FileOutputStream file, SharedPreferences mPreferences) {
     }
 
     @Override
-    public void restore(BufferedReader reader) {
-        GameManager.instance().restore(reader);
+    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
+
     }
 
     private void updateBackground(){

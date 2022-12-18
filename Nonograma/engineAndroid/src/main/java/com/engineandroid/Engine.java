@@ -24,15 +24,13 @@ public class Engine implements Runnable{
     IGame currGame;
     AssetManager assetManager_;
 
-    private final  String SAVE_FILE_NAME = "userData.txt";
-    private File savingFile;
-
     private Thread engineThread;
 
     boolean running, firstRun;
 
     public Engine(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer>adBanSize){
         currGame = null;
+        ColorWrap.Init();
         graphics = new Graphics(view, logicWidth_, logicHeight_, adBanSize);
         input = new Input(view, graphics);
         assetManager_ = view.getContext().getAssets();
@@ -193,86 +191,18 @@ public class Engine implements Runnable{
             currGame.sendMessage(msg);
     }
 
-    public void save(SharedPreferences.Editor preferencesEditor){
-        FileOutputStream fos = null;
-        try {
-            fos = openInternalFileWriting(SAVE_FILE_NAME);
-
-            if(fos != null){
-                currGame.save(fos);
-            }
-
-            fos.close();
-
-        } catch (FileNotFoundException e) {
-            //TODO add message error.
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File file = new File(getContext().getFilesDir(), SAVE_FILE_NAME);
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-
-            String checksum = getFileChecksum(md5Digest, file);
-
-            //Now open a new file, and write its checkSum?
-            //Do we need to encrypt it?
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void save(){
+        currGame.save();
     }
 
     public void restore(){
-        File file = new File(getContext().getFilesDir(), SAVE_FILE_NAME);
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
 
-            String checksum = getFileChecksum(md5Digest, file);
-
-            //Now open a new file, and check its checkSum with out checksum Generated so far?
-
-//            if(notEqualsCheckSum)
-//                return;
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        FileInputStream fos = null;
-        try {
-            fos = openInternalFileReading(SAVE_FILE_NAME);
-            BufferedReader entrada = new BufferedReader(
-                    new InputStreamReader(fos));
-            if(fos != null){
-                currGame.restore(entrada);
-            }
-            fos.close();
-        } catch (FileNotFoundException e) {
-            //TODO add message error.
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        currGame.restore();
 
 
     }
 
-    private static String getFileChecksum(MessageDigest digest, File file) throws IOException{
+    public String getFileChecksum(MessageDigest digest, File file) throws IOException{
         //Get file input stream for reading the file content
         FileInputStream fis = new FileInputStream(file);
 

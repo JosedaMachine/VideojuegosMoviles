@@ -46,7 +46,6 @@ public class Graphics {
         this.logicHeight = logicHeight_;
         this.logicWidth = logicWidth_;
         adViewDimensions = adViewDimensions_;
-
         this.myView.addOnLayoutChangeListener( new View.OnLayoutChangeListener()
         {
             public void onLayoutChange( View v,

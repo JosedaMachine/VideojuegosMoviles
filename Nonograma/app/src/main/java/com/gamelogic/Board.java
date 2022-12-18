@@ -6,6 +6,8 @@ import com.engineandroid.Font;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.gamelogic.enums.TILE;
+
+import java.io.FileOutputStream;
 import java.lang.Math;
 
 import java.io.BufferedReader;
@@ -27,7 +29,7 @@ public class Board {
     private int posX, posY;
 
     private int tileSize;
-
+    private boolean hasChanged_ = false;
     private int numCorrectTiles;
     private List<List<Integer>> adyancentsHorizontal;
     private List<List<Integer>> adyancentsVertical;
@@ -81,7 +83,7 @@ public class Board {
                 i++;
             }
         } catch (IOException e) {
-            //log the exception
+            System.out.println("Error creating board by plane text");
         } finally {
             if (reader != null) {
                 try {
@@ -103,6 +105,60 @@ public class Board {
 
         calcAdjyacents();
         this.tileSize = tileSize;
+    }
+
+    public void saveBoardState(FileOutputStream file){
+        try {
+            file.write((Integer.toString(this.cols) + "\n").getBytes());
+            file.write((Integer.toString(this.rows)+ "\n").getBytes());
+            for (int i = 0; i < this.cols; i++){
+                String line = "";
+                for (int j = 0; j < this.rows; j++){
+                    if( board[j][i] == TILE.FILL){
+                        line =  line + '.';
+                    }else if (board[j][i] == TILE.CROSS){
+                        line =  line + 'x';
+                    }else{
+                        line =  line + 'p';
+                    }
+                }
+                file.write((line + "\n").getBytes());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving board state");
+        }
+    }
+
+    public void updateBoardState(BufferedReader reader){
+        try {
+            String mLine;
+            //Leemos filas y columnas
+            mLine = reader.readLine();
+            mLine = reader.readLine();
+            int cols_ = Integer.parseInt(mLine);
+            int rows_ = Integer.parseInt(mLine);
+
+            assert cols_ == cols;
+            assert rows_ == rows;
+
+            //Por cada character de la fila String, asignamos filas de la columna
+            int i = 0;
+            while ((mLine = reader.readLine()) != null) {
+                for(int j = 0; j < mLine.length(); j++){
+                    if(mLine.charAt(j) == '.'){
+                        board[j][i] = TILE.FILL;
+                        numCorrectTiles++;
+                    }
+                    else if(mLine.charAt(j) == 'x'){
+                        board[j][i] = TILE.CROSS;
+                    }
+                    else board[j][i] = TILE.EMPTY;
+                }
+                i++;
+            }
+        } catch (IOException e) {
+            System.out.println("Error updating Board cells");
+        }
     }
 
     public void generateBoard() {
@@ -284,6 +340,10 @@ public class Board {
             for (int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j], pal);
                 assert im != null;
+
+                if(board[i][j] == TILE.FILL && !hasChanged_)
+                    hasChanged_ = true;
+
                 if(!win || board[i][j] == TILE.FILL)
                     e.getGraphics().drawImage(im, i * (int)(relationX) + x, j * (int)(relationY) + y ,
                         relationX / tileSize, relationY / tileSize);
@@ -356,20 +416,11 @@ public class Board {
     }
 
     public int getPosX(){return posX;};
+
     public int getPosY(){return posY;};
 
 
-    public boolean toFile(File file, Scanner reader){
-
-
-
-        return true;
-    }
-
-    public boolean readFile(File file, Scanner reader){
-
-        
-
-        return true;
+    public boolean hasChanged() {
+        return  hasChanged_;
     }
 }

@@ -20,7 +20,7 @@ public interface IGame {
     void onPause();
     void orientationChanged(boolean isHorizontal);
     void sendMessage(Message message);
-    void save(FileOutputStream file);
-    void restore(BufferedReader reader);
+    void save();
+    void restore();
     UserInterface getUserInterface();
 }

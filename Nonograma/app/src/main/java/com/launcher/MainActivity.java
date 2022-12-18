@@ -34,18 +34,13 @@ public class MainActivity extends AppCompatActivity {
     final int height = 900;
     private Engine engine;
     private String sharedPrefFile = "com.example.android.nonogram";
-    SharedPreferences  mPreferences;
 
+    //Game installed at
+    // /data/data/com.nonograma
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FullScreen
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        setContentView(R.layout.activity_main);
-        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        createWindow();
         //Init Notification
         createNotificationChannel();
 
@@ -53,33 +48,31 @@ public class MainActivity extends AppCompatActivity {
         AdManager.init(this);
         AdManager.instance().initializeAds();
         AdManager.instance().buildBannerAd(findViewById(R.id.adView));
-
-        //Init renderer
-        SurfaceView renderView = findViewById(R.id.surfaceView);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        ColorWrap.Init();
-        //Init Engine
-
         Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize(this);
 
+        //Init Engine & renderer
+        SurfaceView renderView = findViewById(R.id.surfaceView);
         this.engine = new Engine(renderView, width, height, dimAd);
+
         //Init Game
-        IGame game = new Nonograma(engine);
-
-        if(savedInstanceState != null){
-            //we restore data???
-            int m = 0;
-        }
-
+        SharedPreferences  mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        IGame game = new Nonograma(engine, mPreferences);
 
         //Set Game and play
         engine.resume();
         engine.setGame(game);
 
         detectIntent(getIntent());
+    }
+
+    private void createWindow(){
+        //FullScreen
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
     }
 
     @Override
@@ -100,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+//        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         //preferencesEditor.putInt("count", mCount);
         //preferencesEditor.putBoolean("playing", True);
         //preferencesEditor.apply(); //también podemos usar .commit()
@@ -112,12 +105,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         System.out.println("Saving...");
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-        int coins = mPreferences.getInt("coins", 1);
-//        preferencesEditor.putInt("coins", 200);
-        preferencesEditor.putBoolean("savingBoard", true);
-        preferencesEditor.apply(); //también podemos usar .commit()
-        engine.save(preferencesEditor);
+        engine.save();
     }
 
 
@@ -130,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-            super.onStop();
+        super.onStop();
         System.out.println("Stop");
     }
 

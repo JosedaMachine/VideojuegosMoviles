@@ -1,5 +1,7 @@
 package com.gamelogic.scenes;
 
+import android.content.SharedPreferences;
+
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -52,6 +54,8 @@ public class SceneGame implements SceneBase {
     private final int maxLives = 3;
     private int lives = maxLives;
 
+
+    SharedPreferences sharedPreferences;
     //Filas y columnas del tablero
     private int rows_;
     private int cols_;
@@ -73,6 +77,7 @@ public class SceneGame implements SceneBase {
     private CATEGORY category = null;
     private int lvlIndex = 0;
     private int reward;
+    private boolean boardHasChanged;
 
     TileTouched tileTouchedInfo_ = null;
 
@@ -230,10 +235,11 @@ public class SceneGame implements SceneBase {
 
         int boardSize = (int) (logicWidth * 0.6f);
 
-
         if (levelName != null) {
             createLevel(levelName, boardSize);
         } else createLevel(boardSize);
+
+        boardHasChanged = gameBoard.hasChanged();
 
         //relación respecto a numero de casillas
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
@@ -340,16 +346,6 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void save(FileOutputStream file) {
-        GameManager.instance().save(file);
-    }
-
-    @Override
-    public void restore(BufferedReader reader) {
-        GameManager.instance().restore(reader);
-    }
-
-    @Override
     public void render(Graphics graphics) {
         int logicWidth = graphics.getLogicWidth();
         int logicHeight = graphics.getLogicHeight();
@@ -437,6 +433,17 @@ public class SceneGame implements SceneBase {
     private void setTile(int x, int y, boolean wrong, boolean lTouch) {
         if (x < 0 || y < 0) return;
 
+        //Si ha entrado a este metodo quiere decir que el jugador
+        //ha interactuado con el tablero. Perdemos los datos guardados de cualquier tablero
+        //que se haya guardado anteriormente
+        if(!boardHasChanged){
+            boardHasChanged = true;
+            SharedPreferences.Editor preferencesEditor = sharedPreferences.edit();
+            preferencesEditor.putBoolean("savingBoard", false);
+            preferencesEditor.apply();
+        }
+
+
         if (wrong) {
             gameBoard.setTile(x, y, TILE.WRONG);
             return;
@@ -491,5 +498,63 @@ public class SceneGame implements SceneBase {
                 wrongs.get(wrongs.size() - 1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
 
+
+    @Override
+    public void save(FileOutputStream file, SharedPreferences mPreferences) {
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+
+        //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
+        if(lives == 3 && !gameBoard.hasChanged()){
+            preferencesEditor.putBoolean("savingBoard", false);
+            return;
+        }
+
+        preferencesEditor.putBoolean("savingBoard", true);
+        //Vidas
+        preferencesEditor.putInt("lives", lives);
+        //Nivel en cuestion, si es Historia o partida rapida
+        if(levelName != null){
+            int catN = category.ordinal();
+            preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
+            preferencesEditor.putString("levelQuick", "-");
+        }else{
+            preferencesEditor.putString("levelCat", "-");
+            preferencesEditor.putString("levelQuick", Integer.toString(lvlIndex));
+        }
+
+        gameBoard.saveBoardState(file);
+
+        preferencesEditor.apply(); //también podemos usar .commit()
+    }
+
+    @Override
+    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
+        sharedPreferences = mPreferences;
+        //En caso de que se juegue por primera vez o no se haya guardado, no hacemos nada.
+        boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
+
+        if(!boardSaved)
+            return;
+
+        //De lo contrario recuperamos valores
+        lives = mPreferences.getInt("lives", 3);
+        String levelCat = mPreferences.getString("levelCat","-");
+        String levelQuick = mPreferences.getString("levelQuick","-");
+
+        if(levelCat != "-"){
+            int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
+            int indexLvl =  Integer.parseInt(levelCat.substring(1));
+            //Comprobamos si estamos en el ultimo nivel que se guardó
+            if((catN == category.ordinal()) && indexLvl == lvlIndex){
+                gameBoard.updateBoardState(reader);
+            }
+        }else if(levelQuick != "-"){
+            int indexLvl =  Integer.parseInt(levelCat);
+
+            if(indexLvl == lvlIndex){
+                gameBoard.updateBoardState(reader);
+            }
+        }
+    }
     //endregion
 }

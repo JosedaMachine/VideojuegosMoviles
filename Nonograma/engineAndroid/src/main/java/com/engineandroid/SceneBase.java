@@ -1,5 +1,7 @@
 package com.engineandroid;
 
+import android.content.SharedPreferences;
+
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 
@@ -23,7 +25,7 @@ public interface SceneBase {
 
     void orientationChanged(boolean isHorizontal);
 
-    void save(FileOutputStream file);
+    void save(FileOutputStream file, SharedPreferences mPreferences);
 
-    void restore(BufferedReader reader);
+    void restore(BufferedReader reader, SharedPreferences mPreferences);
 }

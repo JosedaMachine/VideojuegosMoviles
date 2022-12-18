@@ -1,6 +1,8 @@
 package com.gamelogic.scenes;
 
 
+import android.content.SharedPreferences;
+
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Engine;
 import com.engineandroid.Font;
@@ -249,13 +251,11 @@ public class ScenePalettes implements SceneBase {
     }
 
     @Override
-    public void save(FileOutputStream file) {
-        GameManager.instance().save(file);
+    public void save(FileOutputStream file, SharedPreferences mPreferences) {
     }
 
     @Override
-    public void restore(BufferedReader reader) {
-        GameManager.instance().restore(reader);
+    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
     }
 
 

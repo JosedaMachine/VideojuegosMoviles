@@ -1,6 +1,8 @@
 package com.gamelogic;
 
 
+import android.content.SharedPreferences;
+
 import com.engineandroid.Engine;
 import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
@@ -11,10 +13,18 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
 import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.managers.GameManager;
+import com.gamelogic.scenes.SceneGame;
 import com.gamelogic.scenes.SceneTitle;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -77,13 +87,16 @@ TODO: poner anuncio de ganar vida en Game.
 
 public class Nonograma implements IGame {
     Engine engine;
-    SceneBase currScene;
     UserInterface userInterface;
-
+    SharedPreferences mPreferences;
     Stack sceneStack;
 
-    public Nonograma(Engine engine){
+    private final  String SAVE_FILE_NAME = "boardState.txt";
+
+    public Nonograma(Engine engine, SharedPreferences pref) {
         this.engine = engine;
+
+        mPreferences = pref;
         GameManager.init(engine);
 
         sceneStack = new Stack();
@@ -95,6 +108,8 @@ public class Nonograma implements IGame {
     @Override
     public void pushScene(SceneBase newScene) {
         newScene.init();
+        //Realmente solamente queremos guardar en fichero plano en la escena Game
+        restoreScene(newScene instanceof SceneGame);
         sceneStack.push(newScene);
     }
 
@@ -149,17 +164,9 @@ public class Nonograma implements IGame {
     //Escena de titulo inicial
     @Override
     public void init() {
-        if(currScene == null)
-            pushScene(new SceneTitle(engine));
-        //TODO: Esto leerlo de archivo
-        GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, 4);
-        GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, 4);
-        GameManager.instance().setLevelIndex(CATEGORY.OCEAN, 4);
-        GameManager.instance().setLevelIndex(CATEGORY.ICON, 0);
-
-        GameManager.instance().setPaletteUnlocked(0, true, 0);
-        GameManager.instance().setPaletteUnlocked(1, false, 40);
-        GameManager.instance().setPaletteUnlocked(2, false, 40);
+        GameManager.instance().restore(mPreferences);
+        assert sceneStack.empty();
+        pushScene(new SceneTitle(engine));
     }
 
     @Override
@@ -245,25 +252,103 @@ public class Nonograma implements IGame {
         if(message.getType() == MESSAGE_TYPE.REWARD_NOTIFICATION){
             GameManager.instance().addMoney(message.reward);
         }else {
-            currScene.processMessage(message);
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.processMessage(message);
         }
     }
 
     @Override
-    public void save(FileOutputStream file) {
-        //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
-        //comprobar si y solo si esta en escena Game guardar el tablero
-        if(!sceneStack.empty()){
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.save(file);
+    public void save() {
+        FileOutputStream fos = null;
+        try {
+            fos = engine.openInternalFileWriting(SAVE_FILE_NAME);
+
+            if(fos != null){
+                //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
+                //comprobar si y solo si esta en escena Game guardar el tablero
+                if(!sceneStack.empty()){
+                    GameManager.instance().save(fos, mPreferences);
+                    SceneBase scene = (SceneBase) sceneStack.peek();
+                    scene.save(fos, mPreferences);
+                }
+            }
+
+            fos.close();
+
+        } catch (FileNotFoundException e) {
+            //TODO add message error.
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        try {
+            md5Digest = MessageDigest.getInstance("MD5");
+
+            String checksum = engine.getFileChecksum(md5Digest, file);
+            //Now open a new file, and write its checkSum? yes
+            //Do we need to encrypt it? we should but not necessary
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    public boolean checkHash(){
+        File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        try {
+            md5Digest = MessageDigest.getInstance("MD5");
+            String checksum = engine.getFileChecksum(md5Digest, file);
+            //Now open a new file, and check its checkSum with out checksum Generated so far? Yes
+
+//            if(notEqualsCheckSum)
+//                return;
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
     @Override
-    public void restore(BufferedReader reader) {
-        if(!sceneStack.empty()){
-            SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.restore(reader);
+    public void restore() {
+        restoreScene(true);
+    }
+
+    public void restoreScene(boolean openFile) {
+        FileInputStream fos = null;
+        BufferedReader reader = null;
+        try {
+            if(openFile){
+                fos = engine.openInternalFileReading(SAVE_FILE_NAME);
+                reader = new BufferedReader(new InputStreamReader(fos));
+            }
+            if(!sceneStack.empty()){
+                GameManager.instance().restore(mPreferences);
+                SceneBase scene = (SceneBase) sceneStack.peek();
+                scene.restore(reader, mPreferences);
+            }
+            if(fos != null)
+                fos.close();
+        } catch (FileNotFoundException e) {
+            //TODO add message error.
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

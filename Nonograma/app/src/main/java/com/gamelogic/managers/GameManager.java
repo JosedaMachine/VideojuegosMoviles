@@ -1,6 +1,7 @@
 package com.gamelogic.managers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -131,12 +132,50 @@ public class GameManager {
         return unlockedPalettes.get(PALETTE.values()[pal]);
     }
 
-    public void save(FileOutputStream file){
-        //save data
+    public void save(FileOutputStream file, SharedPreferences mPreferences){
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        //Money
+        preferencesEditor.putInt("money", money);
+
+        //Levels Unlocked
+        preferencesEditor.putInt("kitchen", getLevelIndex(CATEGORY.KITCHEN));
+        preferencesEditor.putInt("medieval", getLevelIndex(CATEGORY.MEDIEVAL));
+        preferencesEditor.putInt("ocean", getLevelIndex(CATEGORY.OCEAN));
+        preferencesEditor.putInt("icon", getLevelIndex(CATEGORY.ICON));
+
+        //Palettes Unlocked and Selected
+        preferencesEditor.putInt("paletteSelected", currentPalette.ordinal());
+        String palettesUnlocked = "";
+        for (int i = 0; i <3; i++)
+            palettesUnlocked =  palettesUnlocked + (getPaletteUnlocked(i).first ? '1' : '0' );
+        preferencesEditor.putString("palettesUnlocked", palettesUnlocked);
+
+//        preferencesEditor.putBoolean("savingBoard", true);
+        preferencesEditor.apply(); //también podemos usar .commit()
     }
 
-    public void restore(BufferedReader readers){
-        //save data
-    }
+    public void restore(SharedPreferences mPreferences){
+        //Money
+        int coins = mPreferences.getInt("money", 0);
+        addMoney(coins);
 
+        //Levels Unlocked
+        int kitchenIndex = mPreferences.getInt("kitchen", 4);
+        int medievalIndex =mPreferences.getInt("medieval", 4);
+        int oceanIndex = mPreferences.getInt("ocean", 4);
+        int iconIndex = mPreferences.getInt("icon", 0);
+
+        GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, kitchenIndex);
+        GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, medievalIndex);
+        GameManager.instance().setLevelIndex(CATEGORY.OCEAN, oceanIndex);
+        GameManager.instance().setLevelIndex(CATEGORY.ICON, iconIndex);
+
+        //Palettes Unlocked and Selected
+        int palette = mPreferences.getInt("paletteSelected", 0);
+        setPalette(palette);
+        String palettesUnlocked = mPreferences.getString("palettesUnlocked", "100");
+        GameManager.instance().setPaletteUnlocked(0, palettesUnlocked.charAt(0) == '1', 0);
+        GameManager.instance().setPaletteUnlocked(1, palettesUnlocked.charAt(1) == '1', 40);
+        GameManager.instance().setPaletteUnlocked(2, palettesUnlocked.charAt(2) == '1', 40);
+    }
 }
