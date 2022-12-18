@@ -94,11 +94,11 @@ public class SceneGame implements SceneBase {
             "dragon", "law", "flail", "gallows",
             "chestplate", "flag", "shield", "wineglass"};
 
-    String[] OceanLevels = {"fish", "anchor", "crab", "hook",
-            "fishnet", "fishingrod", "helm", "prow",
-            "sailboat", "eyepatch", "shark", "barrel",
+    String[] OceanLevels = {"fish", "horizon", "fishnet", "hook",
+            "crab", "fishingrod", "helm", "figurehead",
+            "sailboat", "eyepatch", "algae", "barrel",
             "chest", "coin", "skull", "jellyfish",
-            "algae", "saber", "horizon", "shell"};
+            "shark", "rope", "anchor", "shell"};
 
     String[] AnimalLevels = {"bunny", "duck", "giraffe", "elephant",
             "bear", "mouse", "snail", "flamingo",
