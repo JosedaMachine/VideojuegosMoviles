@@ -100,7 +100,7 @@ public class SceneGame implements SceneBase {
             "chest", "coin", "skull", "jellyfish",
             "algae", "saber", "horizon", "shell"};
 
-    String[] IconLevels = {"twitter", "facebook", "google", "whatsapp",
+    String[] AnimalLevels = {"twitter", "facebook", "google", "whatsapp",
             "instagram", "gmail", "discord", "chrome",
             "visualstudio", "github", "twitch", "youtube",
             "infojobs", "netflix", "amazon", "ucm",
@@ -129,7 +129,7 @@ public class SceneGame implements SceneBase {
             levelName = "medieval/" + MedievalLevels[index];
         else if (cat == CATEGORY.OCEAN)
             levelName = "ocean/" + OceanLevels[index];
-        else levelName = "icon/" + IconLevels[index];
+        else levelName = "animal/" + AnimalLevels[index];
     }
 
     //endregion + Construct y Con
