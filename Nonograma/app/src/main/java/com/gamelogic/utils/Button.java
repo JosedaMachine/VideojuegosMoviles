@@ -14,6 +14,9 @@ public abstract class Button {
 
     private int posX, posY, sizeX, sizeY;
     private boolean selected;
+
+    boolean usingConstraints;
+
     public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_){
         text = text_;
         posX = posX_;
@@ -21,6 +24,7 @@ public abstract class Button {
         sizeX = sizeX_;
         sizeY = sizeY_;
         selected = false;
+        usingConstraints = false;
     }
 
     public void render(Graphics graphics){
@@ -71,6 +75,14 @@ public abstract class Button {
     public int getY(){return posY;}
     public void setX(int x_){posX = x_;}
     public void setY(int y_){posY = y_;}
+
+    public void setSize(int x, int y) {
+        sizeX = x;
+        sizeY = y;
+    }
+    public void setSizeX(int x_){sizeX = x_;}
+    public void setSizeY(int y_){sizeY = y_;}
+
     public int getSizeX(){return sizeX;}
     public int getSizeY(){return sizeY;}
 }
