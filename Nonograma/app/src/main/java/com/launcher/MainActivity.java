@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     final int width = 600;
     final int height = 900;
     private Engine engine;
-    private String sharedPrefFile = "com.example.android.nonogram";
+    private String sharedPrefFile = "com.nonogramPreferences";
 
     //Game installed at
     // /data/data/com.nonograma

@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
@@ -519,7 +520,9 @@ public class SceneGame implements SceneBase {
             preferencesEditor.putString("levelQuick", "-");
         }else{
             preferencesEditor.putString("levelCat", "-");
-            preferencesEditor.putString("levelQuick", Integer.toString(lvlIndex));
+            String cols_ = Integer.toString(gameBoard.getCols());
+            String rows_ = Integer.toString(gameBoard.getRows());
+            preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
         }
 
         gameBoard.saveBoardState(file);
@@ -537,21 +540,29 @@ public class SceneGame implements SceneBase {
             return;
 
         //De lo contrario recuperamos valores
-        lives = mPreferences.getInt("lives", 3);
-        String levelCat = mPreferences.getString("levelCat","-");
-        String levelQuick = mPreferences.getString("levelQuick","-");
 
-        if(levelCat != "-"){
+        String levelCat = mPreferences.getString("levelCat","-");
+        String levelQuick = mPreferences.getString("levelQuickSize","-");
+
+        if(!Objects.equals(levelCat, "-")){
+
             int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
             int indexLvl =  Integer.parseInt(levelCat.substring(1));
             //Comprobamos si estamos en el ultimo nivel que se guardó
             if((catN == category.ordinal()) && indexLvl == lvlIndex){
+                lives = mPreferences.getInt("lives", 3);
                 gameBoard.updateBoardState(reader);
             }
-        }else if(levelQuick != "-"){
-            int indexLvl =  Integer.parseInt(levelCat);
+        }else if(!Objects.equals(levelQuick, "-")){
+            //buscarHasta que haya una x
+            int cols_ =  Integer.parseInt(String.valueOf(levelQuick.charAt(0)));
+            int rows_ =  Integer.parseInt(String.valueOf(levelQuick.charAt(1)));
 
-            if(indexLvl == lvlIndex){
+            if(gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_){
+                lives = mPreferences.getInt("lives", 3);
+                //Aquel que era aleatoria ahora hay que recrearlo aaaa
+                //guardar los dos tableros AAAAAAA
+                //TODO reward en quick???
                 gameBoard.updateBoardState(reader);
             }
         }

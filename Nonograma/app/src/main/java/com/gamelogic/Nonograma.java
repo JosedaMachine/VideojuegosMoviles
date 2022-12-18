@@ -109,8 +109,8 @@ public class Nonograma implements IGame {
     public void pushScene(SceneBase newScene) {
         newScene.init();
         //Realmente solamente queremos guardar en fichero plano en la escena Game
-        restoreScene(newScene instanceof SceneGame);
         sceneStack.push(newScene);
+        restoreScene(newScene instanceof SceneGame);
     }
 
     @Override
