@@ -95,9 +95,10 @@ public class GameManager {
         {
             shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setClassName("com.twitter.android",
-                    "com.twitter.android.PostActivity");
-            shareIntent.setType("text/*");
+                    "com.twitter.composer.ComposerShareActivity");
+            shareIntent.setType("text/plain");
             shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareText);
+            shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         else
         {
