@@ -1,5 +1,6 @@
 package com.gamelogic.scenes;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.engineandroid.Engine;
@@ -66,8 +67,8 @@ public class SceneVictory implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (shareButton.isInside(event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
-                        engine.getContext().startActivity(
-                                GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"));
+                        engine.getContext().startActivity(Intent.createChooser(
+                                GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"), "Share in: "));
                     }
                 }
             }
