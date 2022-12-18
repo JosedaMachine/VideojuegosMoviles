@@ -118,6 +118,7 @@ public class ScenePalettes implements SceneBase {
                             setBackgroundImage(engine.getGraphics().getImage("spalette" + i));
                         } else if (p.second <= gmInstance.getMoney()){
                             gmInstance.addMoney(-p.second);
+                            gmInstance.updateInterface();
                             gmInstance.setPaletteUnlocked(i, true, 0);
                             setBackgroundImage(engine.getGraphics().getImage("palette" + i));
                         }
