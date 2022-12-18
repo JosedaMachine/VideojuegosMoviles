@@ -262,18 +262,55 @@ public class SceneTitle implements SceneBase {
 
     }
 
+    private void horizontalLayout(int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.8f),
+                sizeY = (int)(logicHeight * 0.111f * 1.5f) ;
+        //Izquierda
+        quickButton.setSize(sizeX, sizeY);
+        quickButton.setX(-logicWidth/2  - sizeX/4);
+        quickButton.setY(logicHeight/2 - sizeY/2);
+
+        //Derecha
+        storyButton.setSize(sizeX, sizeY);
+        storyButton.setX((int) (logicWidth + logicWidth/2  - sizeX/1.25f));
+        storyButton.setY(logicHeight/2 - sizeY/2);
+
+        //Medio
+        paletteButton.setSize(sizeX, sizeY);
+        paletteButton.setX(logicWidth/2  - sizeX/2);
+        paletteButton.setY((int) (logicHeight/2 - sizeY/2 + logicHeight * 0.4f));
+
+        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f * 2  ),true);
+    }
+
+    private void verticalLayout(int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.8f),
+                sizeY = (int)(logicHeight * 0.111f);
+
+        quickButton.setSize(sizeX, sizeY);
+        quickButton.setX(logicWidth/2 - sizeX/2);
+        quickButton.setY(logicHeight/2 - sizeY/2);
+
+        storyButton.setSize(sizeX, sizeY);
+        storyButton.setX(logicWidth/2  - sizeX/2);
+        storyButton.setY((int) (logicHeight/2 - sizeY/2 +  logicHeight * 0.2f));
+
+        paletteButton.setSize(sizeX, sizeY);
+        paletteButton.setX(logicWidth/2  - sizeX/2);
+        paletteButton.setY((int) (logicHeight/2 - sizeY/2 +  logicHeight * 0.4f));
+
+        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+    }
+
     @Override
     public void orientationChanged(boolean isHorizontal) {
         int logicWidth = engine.getGraphics().getLogicWidth();
         int logicHeight = engine.getGraphics().getLogicHeight();
-        int sizeX = (int)(logicWidth * 0.8f),
-            sizeY = (int)(logicHeight * 0.111f);
+
         if(isHorizontal){
-            quickButton.setX(logicWidth + logicWidth/2  - sizeX/2);
-            quickButton.setY(logicHeight/2 - sizeY/2);
+            horizontalLayout(logicWidth, logicHeight);
         }else{
-            quickButton.setX(logicWidth/2 - sizeX/2);
-            quickButton.setY(logicHeight/2 - sizeY/2);
+            verticalLayout(logicWidth, logicHeight);
         }
     }
 

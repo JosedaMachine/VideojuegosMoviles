@@ -207,9 +207,28 @@ public class SceneQuickLevels implements SceneBase {
 
     }
 
+    private void horizontalLayout(int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.8f),
+                sizeY = (int)(logicHeight * 0.111f);
+
+    }
+
+    private void verticalLayout(int logicWidth, int logicHeight) {
+        int sizeX = (int)(logicWidth * 0.8f),
+                sizeY = (int)(logicHeight * 0.111f);
+
+    }
+
     @Override
     public void orientationChanged(boolean isHorizontal) {
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
+        if(isHorizontal){
+            horizontalLayout(logicWidth, logicHeight);
+        }else{
+            verticalLayout(logicWidth, logicHeight);
+        }
     }
 
     @Override
