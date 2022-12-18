@@ -271,8 +271,12 @@ public class Nonograma implements IGame {
 
             String checksumBoard = engine.getFileChecksum(md5Digest, file);
 
+            StringBuilder inverse = new StringBuilder();
+            inverse.append(checksumBoard);
+            inverse.reverse();
+
             fos = engine.openInternalFileWriting(HASH_FILE_NAME);
-            fos.write(checksumBoard.getBytes());
+            fos.write(inverse.toString().getBytes());
             fos.close();
             //Do we need to encrypt it? we should but not necessary
 
@@ -353,7 +357,10 @@ public class Nonograma implements IGame {
                 String checksum = engine.getFileChecksum(md5Digest, file);
                 //And check its checkSum with out checksum Generated so far?
                 String hash = hash = reader.readLine();
-                if(!Objects.equals(checksum, hash))
+                StringBuilder inverse = new StringBuilder();
+                inverse.append(hash);
+                inverse.reverse();
+                if(!Objects.equals(checksum, inverse.toString()))
                     return false;
             }
             catch (IOException e) {
