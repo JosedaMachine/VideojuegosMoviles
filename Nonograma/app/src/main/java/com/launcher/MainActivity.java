@@ -48,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
         AdManager.init(this);
         AdManager.instance().initializeAds();
         AdManager.instance().buildBannerAd(findViewById(R.id.adView));
-        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize(this);
+        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize();
 
         //Init Engine & renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);
         this.engine = new Engine(renderView, width, height, dimAd);
+
+        //Reference to Admanager
+        AdManager.instance().setEngine(engine);
 
         //Init Game
         SharedPreferences  mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);

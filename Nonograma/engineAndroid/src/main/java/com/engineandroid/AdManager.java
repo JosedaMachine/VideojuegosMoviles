@@ -29,17 +29,16 @@ public class AdManager {
     AppCompatActivity activity;
     RewardedAd mRewardedAd;
 
-    public AdManager(AppCompatActivity activity, Engine engine){
+    public AdManager(AppCompatActivity activity){
         this.activity = activity;
-        this.engine = engine;
     }
 
     public static AdManager instance(){
         return instance_;
     }
 
-    public static boolean init(AppCompatActivity activity, Engine engine){
-        instance_ = new AdManager(activity, engine);
+    public static boolean init(AppCompatActivity activity){
+        instance_ = new AdManager(activity);
         return true;
     }
 
@@ -59,11 +58,11 @@ public class AdManager {
         }
     }
 
-    public Pair<Integer, Integer> getBannerSize(Context context){
-        return new Pair<Integer, Integer>(Objects.requireNonNull(ad.getAdSize()).getWidthInPixels(context), Objects.requireNonNull(ad.getAdSize()).getHeightInPixels(context));
+    public Pair<Integer, Integer> getBannerSize(){
+        return new Pair<Integer, Integer>(Objects.requireNonNull(ad.getAdSize()).getWidthInPixels(activity), Objects.requireNonNull(ad.getAdSize()).getHeightInPixels(activity));
     }
 
-    public void buildRewardedAd(){
+    public void buildRewardAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
@@ -145,5 +144,18 @@ public class AdManager {
                 showRewardAd(message);
             }
         });
+    }
+
+    public void buildRewardedAd(){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                buildRewardAd();
+            }
+        });
+    }
+
+    public void setEngine(Engine engine){
+        this.engine = engine;
     }
 }
