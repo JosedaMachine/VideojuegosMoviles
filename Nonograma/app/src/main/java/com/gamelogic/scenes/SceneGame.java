@@ -58,6 +58,9 @@ public class SceneGame implements SceneBase {
     private int lives = maxLives;
 
     private float heartScale;
+    private int heartOffsetX, heartOffsetY;
+
+
     private int checkBoardPosX, checkBoardPosY;
 
 
@@ -255,17 +258,14 @@ public class SceneGame implements SceneBase {
         Image heart = graphics.getImage("heart"),
                 emHeart = graphics.getImage("emptyheart");
 
-        heartScale = 0.1f;
-        float xOffset = logicWidth * 0.005f + heart.getWidth() * heartScale,
-                yOffset = logicHeight * 0.005f;
 
         for (int i = 0; i < maxLives; i++) {
             graphics.drawImage((i < lives) ? heart : emHeart,
-                    (int) (checkBoard.getPosX() + xOffset * i),
-                    (int) (checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
+                    (int) (getHeartPosX(logicWidth) + heartOffsetX * i),
+                    (int) (getHeartPosY(logicHeight) + heartOffsetY * i), heartScale, heartScale);
         }
 
-
+        //TODO recolocar y Layout horizontal
         //Texto indicando casillas incorrectas
         if (!hasWon && timer < maxTime) {
             graphics.setFont(numFont);
@@ -409,17 +409,36 @@ public class SceneGame implements SceneBase {
 
     }
 
+    public int getHeartPosX(int logicWidth){
+        if(engine.getGraphics().orientationHorizontal()){
+            return (int) (checkBoard.getPosX() + checkBoard.getWidth() +  logicWidth * 0.4f);
+        }else{
+            return checkBoard.getPosX();
+        }
+    }
+
+    public int getHeartPosY(int logicHeight){
+        if(engine.getGraphics().orientationHorizontal()){
+            return (int) (checkBoard.getPosY() + checkBoard.getHeight()*0.1);
+        }else{
+            return (int) (checkBoard.getPosY() + checkBoard.getHeight() + logicHeight * 0.005f);
+        }
+    }
+
+
     @Override
         //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
     public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
         //Corazones
-        heartScale = 0.2f;
+        Image heart = g.getImage("heart");
+        heartScale = 0.4f;
+
+        heartOffsetX = 0;
+        heartOffsetY = (int) (logicHeight * 0.005f + heart.getHeight() * heartScale);
 
         //Tablero
         boardSize = (int) (logicWidth * 0.85f);
         int palette = GameManager.instance().getPalette().ordinal();
-//        tileSize = g.getImage("empty" + palette).getWidth() * 2;
-//        gameBoard.setTileSize(tileSize);
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
@@ -454,7 +473,11 @@ public class SceneGame implements SceneBase {
     @Override
     public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
         //Corazones
+        Image heart = g.getImage("heart");
         heartScale = 0.1f;
+
+        heartOffsetX = (int) (logicWidth * 0.005f + heart.getWidth() * heartScale);
+        heartOffsetY = 0;
 
         //Tablero
         boardSize = (int) (logicWidth * 0.6f);
