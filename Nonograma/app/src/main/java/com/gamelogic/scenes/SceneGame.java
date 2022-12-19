@@ -412,14 +412,32 @@ public class SceneGame implements SceneBase {
     @Override
         //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
     public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+        //Corazones
+        heartScale = 0.2f;
+
+        //Tablero
+        boardSize = (int) (logicWidth * 0.85f);
+        int palette = GameManager.instance().getPalette().ordinal();
+//        tileSize = g.getImage("empty" + palette).getWidth() * 2;
+//        gameBoard.setTileSize(tileSize);
+        checkBoard.setSize(boardSize, boardSize);
+        gameBoard.setSize(boardSize, boardSize);
+
+        checkBoardPosX =  -gameBoard.getWidth() / 2;
+        checkBoardPosY = (int) (-gameBoard.getHeight() / 7.f);
+
+        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+
+
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f * 3),
                 bttWidth = (int) (logicWidth * 0.25f * 3),
                 bttHeight = (int) (logicWidth * 0.0833f* 3);
 //
         numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f) * 3, false);
-//        pixelFont = g.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
-//
+
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
@@ -440,7 +458,10 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         boardSize = (int) (logicWidth * 0.6f);
-        gameBoard.setTileSize(tileSize);
+        int palette = GameManager.instance().getPalette().ordinal();
+//        tileSize = g.getImage("empty" + palette).getWidth();
+//        gameBoard.setTileSize(tileSize);
+        checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
         checkBoardPosX =  -gameBoard.getWidth() / 2;
