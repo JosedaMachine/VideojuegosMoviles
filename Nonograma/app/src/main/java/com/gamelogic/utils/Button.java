@@ -22,6 +22,9 @@ public abstract class Button {
     private ConstraintX constrX;
     private ConstraintY constrY;
 
+    //Necesitamos una referencia al grafics para obtener valores cuando se usan constraints.
+    Graphics g;
+
     boolean usingConstraints;
 
     public Button(String text_, int posX_, int posY_, int sizeX_, int sizeY_){
@@ -54,7 +57,8 @@ public abstract class Button {
         }
     }
 
-    public void setConstraints(ConstraintX constrX_,int offsetX_, ConstraintY constrY_, int offsetY_){
+    public void setConstraints(Graphics g_, ConstraintX constrX_,int offsetX_, ConstraintY constrY_, int offsetY_){
+        g = g_;
         constrX = constrX_;
         constrY = constrY_;
         offsetX = offsetX_;
@@ -99,8 +103,20 @@ public abstract class Button {
         this.selected = selected;
     }
 
-    public int getX(){return posX;}
-    public int getY(){return posY;}
+    public int getX(){
+        if(usingConstraints){
+            int posX_ = g.getConstraintXValue(constrX);
+            return (posX_ + offsetX);
+        }
+        else return posX;
+    }
+    public int getY(){
+        if(usingConstraints){
+            int posY_ = g.getConstraintYValue(constrY);
+            return (posY_ + offsetY);
+        }
+        return posY;
+    }
     public void setX(int x_){posX = x_;}
     public void setY(int y_){posY = y_;}
 

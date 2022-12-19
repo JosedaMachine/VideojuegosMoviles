@@ -215,7 +215,8 @@ public class SceneQuickLevels implements SceneBase {
 
     }
 
-    private void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+    @Override
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int)(logicWidth * 0.155f * 3),
                 sizeY = (int)(logicHeight * 0.055f) * 3;
 
@@ -240,7 +241,7 @@ public class SceneQuickLevels implements SceneBase {
             b.setFont(titleLittle);
             b.setSize(sizeX, sizeY);
             b.setUsingConstraints(true);
-            b.setConstraints(ConstraintX.values()[jW], xOffsets[jW], ConstraintY.CENTER, yOffsets[jH]);
+            b.setConstraints(g, ConstraintX.values()[jW], xOffsets[jW], ConstraintY.CENTER, yOffsets[jH]);
             jW++;
         }
 
@@ -250,11 +251,12 @@ public class SceneQuickLevels implements SceneBase {
         bttReturn.setFont(numFont);
         bttReturn.setSize(bttWidth, bttHeight);
         bttReturn.setUsingConstraints(true);
-        bttReturn.setConstraints(ConstraintX.CENTER, -bttWidth/2, ConstraintY.BOTTOM, (int) -(bttHeight * 1.25f));
+        bttReturn.setConstraints(g, ConstraintX.CENTER, -bttWidth/2, ConstraintY.BOTTOM, (int) -(bttHeight * 1.25f));
 
     }
 
-    private void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int)(logicWidth * 0.155f),
                 sizeY = (int)(logicHeight * 0.055f);
 

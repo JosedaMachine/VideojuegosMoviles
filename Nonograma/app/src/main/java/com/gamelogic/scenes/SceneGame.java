@@ -581,5 +581,15 @@ public class SceneGame implements SceneBase {
             }
         }
     }
+
+    @Override
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
+
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
     //endregion
 }

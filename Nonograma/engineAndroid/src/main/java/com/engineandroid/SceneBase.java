@@ -28,4 +28,8 @@ public interface SceneBase {
     void save(FileOutputStream file, SharedPreferences mPreferences);
 
     void restore(BufferedReader reader, SharedPreferences mPreferences);
+
+    void horizontalLayout(Graphics g, int logicWidth, int logicHeight);
+
+    void verticalLayout(Graphics g, int logicWidth, int logicHeight);
 }

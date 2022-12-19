@@ -238,4 +238,14 @@ public class SceneVictory implements SceneBase {
     public void restore(BufferedReader reader, SharedPreferences mPreferences) {
     }
 
+    @Override
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
+
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
+
 }

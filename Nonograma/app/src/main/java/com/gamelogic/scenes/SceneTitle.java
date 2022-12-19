@@ -314,6 +314,16 @@ public class SceneTitle implements SceneBase {
 
     }
 
+    @Override
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
+
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+
+    }
+
     private void updateBackground(){
         //TODO no sé qué estoy haciendo ya aquí, llevo como 3 sensores creados es terrible
         float[] values = magnetometerSensor.getDeltaValues();

@@ -107,6 +107,10 @@ public class SceneStoryLevels implements SceneBase {
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
+        if(engine.getGraphics().orientationHorizontal()){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
+
     }
 
     //Boton de creacion de nivel
@@ -221,8 +225,26 @@ public class SceneStoryLevels implements SceneBase {
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f * 2),true);
+    }
 
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+    }
+
+
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
+
+        if(isHorizontal){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }else{
+            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
     }
 
     @Override
