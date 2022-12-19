@@ -93,6 +93,8 @@ public class SceneVictory implements SceneBase {
                     if (adButton.isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         AdManager.instance().showRewardedAd(rewardMessage);
+                        //TODO: esto igual es mas movida hacerlo desde el admanager
+                        setBackgroundImage(engine.getGraphics().getImage("lockedbutt"));
                     }
                 }
             }
