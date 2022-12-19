@@ -387,6 +387,8 @@ public class SceneGame implements SceneBase {
         graphics.newImage("heart.png", "heart");
         graphics.newImage("emptyheart.png", "emptyheart");
 
+        graphics.newImage("lockedbutton.png", "lockedbutt");
+
         numFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
         pixelFont = graphics.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
 
