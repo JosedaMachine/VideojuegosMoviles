@@ -160,7 +160,7 @@ public class SceneGame implements SceneBase {
         fade.setColor(ColorWrap.BLACK);
         fade.triggerFade();
 
-        boardSize = (int) (logicWidth * 0.6f);
+        boardSize = (int) (logicWidth *0.1f);
 
         if (levelName != null) {
             createLevel(levelName, boardSize);
@@ -441,8 +441,8 @@ public class SceneGame implements SceneBase {
         heartOffsetY = (int) (logicHeight * 0.005f + heart.getHeight() * heartScale);
 
         //Tablero
-        boardSize = (int) (logicWidth * 0.85f);
-        int palette = GameManager.instance().getPalette().ordinal();
+        boardSize = (int) (logicWidth);
+        //int palette = GameManager.instance().getPalette().ordinal();
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
@@ -483,13 +483,13 @@ public class SceneGame implements SceneBase {
         heartOffsetY = 0;
 
         //Tablero
-        boardSize = (int) (logicWidth * 0.6f);
-        int palette = GameManager.instance().getPalette().ordinal();
+        boardSize = (int) (logicWidth * 0.65f);
+        //int palette = GameManager.instance().getPalette().ordinal();
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
-        checkBoardPosX =  -gameBoard.getWidth() / 2;
-        checkBoardPosY =  -gameBoard.getHeight() / 6;
+        checkBoardPosX = -gameBoard.getWidth() / 2;
+        checkBoardPosY = -(int)(gameBoard.getHeight() *0.4f);
 
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
@@ -508,14 +508,14 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setSize(bttWidth,bttHeight);
         bttCheckWin.setUsingConstraints(false);
         bttCheckWin.setX(logicWidth / 2 - bttWidth / 2 + offset);
-        bttCheckWin.setY((int) (logicHeight - bttHeight*0.7));
+        bttCheckWin.setY((int) (logicHeight - bttHeight*0.9));
 //
 //        //Boton Return to menu
         bttReturn.setFont(numFont);
         bttReturn.setSize(bttWidth, bttHeight);
         bttReturn.setUsingConstraints(false);
         bttReturn.setX(logicWidth / 2 - bttWidth / 2 - offset);
-        bttReturn.setY((int) (logicHeight - bttHeight*0.7));
+        bttReturn.setY((int) (logicHeight - bttHeight*0.9));
     }
 
     @Override
