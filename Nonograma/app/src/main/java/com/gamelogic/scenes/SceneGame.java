@@ -21,6 +21,7 @@ import com.gamelogic.managers.GameManager;
 import com.gamelogic.enums.TILE;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -530,7 +531,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void save(FileOutputStream file, SharedPreferences mPreferences) {
+    public void save(String filename, SharedPreferences mPreferences) {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 
         //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
@@ -539,25 +540,41 @@ public class SceneGame implements SceneBase {
             return;
         }
 
-        preferencesEditor.putBoolean("savingBoard", true);
-        //Vidas
-        preferencesEditor.putInt("lives", lives);
-        //Nivel en cuestion, si es Historia o partida rapida
-        if (levelName != null) {
-            int catN = category.ordinal();
-            preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
-            preferencesEditor.putString("levelQuickSize", "-");
-        }else{
-            preferencesEditor.putString("levelCat", "-");
-            String cols_ = Integer.toString(gameBoard.getCols());
-            String rows_ = Integer.toString(gameBoard.getRows());
-            preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
-            checkBoard.saveBoardState(file);
+        FileOutputStream file = null;
+        try {
+            file = engine.openInternalFileWriting(filename);
+
+            if(file != null){
+                preferencesEditor.putBoolean("savingBoard", true);
+                //Vidas
+                preferencesEditor.putInt("lives", lives);
+                //Nivel en cuestion, si es Historia o partida rapida
+                if (levelName != null) {
+                    int catN = category.ordinal();
+                    preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
+                    preferencesEditor.putString("levelQuickSize", "-");
+                }else{
+                    preferencesEditor.putString("levelCat", "-");
+                    String cols_ = Integer.toString(gameBoard.getCols());
+                    String rows_ = Integer.toString(gameBoard.getRows());
+                    preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
+                    checkBoard.saveBoardState(file);
+                }
+
+                gameBoard.saveBoardState(file);
+
+                preferencesEditor.apply(); //también podemos usar .commit()
+            }
+
+            file.close();
+
+        } catch (FileNotFoundException e) {
+            //TODO add message error.
+            e.printStackTrace();
         }
-
-        gameBoard.saveBoardState(file);
-
-        preferencesEditor.apply(); //también podemos usar .commit()
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

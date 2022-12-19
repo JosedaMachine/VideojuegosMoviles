@@ -154,7 +154,7 @@ public class GameManager {
         return unlockedPalettes.get(PALETTE.values()[pal]);
     }
 
-    public void save(FileOutputStream file, SharedPreferences mPreferences){
+    public void save(SharedPreferences mPreferences){
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         //Money
         preferencesEditor.putInt("money", money);

@@ -65,7 +65,7 @@ public class Engine implements Runnable{
     }
 
     public FileOutputStream openInternalFileWriting(String fileName) throws FileNotFoundException {
-        return getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+        return getContext().openFileOutput(fileName, Context.MODE_PRIVATE /*| Context.MODE_APPEND*/);
     }
 
     public FileInputStream openInternalFileReading(String fileName) throws FileNotFoundException {

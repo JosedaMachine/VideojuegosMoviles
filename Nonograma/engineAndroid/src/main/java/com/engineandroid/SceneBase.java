@@ -25,7 +25,7 @@ public interface SceneBase {
 
     void orientationChanged(boolean isHorizontal);
 
-    void save(FileOutputStream file, SharedPreferences mPreferences);
+    void save(String filename, SharedPreferences mPreferences);
 
     void restore(BufferedReader reader, SharedPreferences mPreferences);
 

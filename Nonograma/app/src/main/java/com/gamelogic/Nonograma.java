@@ -235,27 +235,12 @@ public class Nonograma implements IGame {
     @Override
     public void save() {
         FileOutputStream fos = null;
-        try {
-            fos = engine.openInternalFileWriting(SAVE_FILE_NAME);
-
-            if(fos != null){
-                //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
-                //comprobar si y solo si esta en escena Game guardar el tablero
-                if(!sceneStack.empty()){
-                    GameManager.instance().save(fos, mPreferences);
-                    SceneBase scene = (SceneBase) sceneStack.peek();
-                    scene.save(fos, mPreferences);
-                }
-            }
-
-            fos.close();
-
-        } catch (FileNotFoundException e) {
-            //TODO add message error.
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        //Por cada escena ir guardando cosas o si el gameManager tiene datos guardar esos datos y
+        //comprobar si y solo si esta en escena Game guardar el tablero
+        if(!sceneStack.empty()){
+            GameManager.instance().save(mPreferences);
+            SceneBase scene = (SceneBase) sceneStack.peek();
+            scene.save(SAVE_FILE_NAME, mPreferences);
         }
 
         File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);

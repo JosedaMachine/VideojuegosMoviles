@@ -306,7 +306,7 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void save(FileOutputStream file, SharedPreferences mPreferences) {
+    public void save(String filename, SharedPreferences mPreferences) {
     }
 
     @Override
