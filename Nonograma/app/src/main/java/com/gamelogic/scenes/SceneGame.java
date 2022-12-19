@@ -73,7 +73,7 @@ public class SceneGame implements SceneBase {
 
     private int numRemaining = 0, numWrong = 0;
     //Fuentes
-    private Font numFont, pixelFont;
+    private Font numFont, pixelFont, checkFont;
 
     private Fade fade;
 
@@ -268,7 +268,7 @@ public class SceneGame implements SceneBase {
         //TODO recolocar y Layout horizontal
         //Texto indicando casillas incorrectas
         if (!hasWon && timer < maxTime) {
-            graphics.setFont(numFont);
+            graphics.setFont(checkFont);
 
             String remainingField = numRemaining + " remaining cells";
             String wrongField = numWrong + " wrong cells";
@@ -277,9 +277,9 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
             graphics.setColor(ColorWrap.BLUE, 1.0f);
-            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.05 + dime_remaining.second / 2));
+            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.12 + dime_remaining.second / 2));
             graphics.setColor(ColorWrap.RED, 1.0f);
-            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.09 + dime_wrong.second / 2));
+            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.16 + dime_wrong.second / 2));
 
         }
 
@@ -390,6 +390,7 @@ public class SceneGame implements SceneBase {
         graphics.newImage("lockedbutton.png", "lockedbutt");
 
         numFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
+        checkFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
         pixelFont = graphics.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
 
         engine.getAudio().newSound("wrong.wav");
@@ -456,9 +457,8 @@ public class SceneGame implements SceneBase {
         int offset = (int) (logicWidth * 0.16f * 3),
                 bttWidth = (int) (logicWidth * 0.25f * 3),
                 bttHeight = (int) (logicWidth * 0.0833f* 3);
-//
         numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f) * 3, false);
-
+        checkFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f * 1.5) , false);
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
@@ -484,13 +484,11 @@ public class SceneGame implements SceneBase {
         //Tablero
         boardSize = (int) (logicWidth * 0.6f);
         int palette = GameManager.instance().getPalette().ordinal();
-//        tileSize = g.getImage("empty" + palette).getWidth();
-//        gameBoard.setTileSize(tileSize);
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
         checkBoardPosX =  -gameBoard.getWidth() / 2;
-        checkBoardPosY =  -gameBoard.getHeight() / 2;
+        checkBoardPosY =  -gameBoard.getHeight() / 6;
 
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
@@ -502,20 +500,21 @@ public class SceneGame implements SceneBase {
                 bttHeight = (int) (logicWidth * 0.0833f);
 //
         numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
+        checkFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
 
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
         bttCheckWin.setUsingConstraints(false);
         bttCheckWin.setX(logicWidth / 2 - bttWidth / 2 + offset);
-        bttCheckWin.setY(logicHeight - bttHeight * 3);
+        bttCheckWin.setY((int) (logicHeight - bttHeight*0.7));
 //
 //        //Boton Return to menu
         bttReturn.setFont(numFont);
         bttReturn.setSize(bttWidth, bttHeight);
         bttReturn.setUsingConstraints(false);
         bttReturn.setX(logicWidth / 2 - bttWidth / 2 - offset);
-        bttReturn.setY(logicHeight - bttHeight * 3);
+        bttReturn.setY((int) (logicHeight - bttHeight*0.7));
     }
 
     @Override
