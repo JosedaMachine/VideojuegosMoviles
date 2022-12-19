@@ -139,6 +139,150 @@ public class SceneGame implements SceneBase {
     //region Override methods
 
     @Override
+    public void init() {
+        tileTouchedInfo_ = new TileTouched();
+        loadResources(engine.getGraphics());
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
+
+        //Fade In
+        fade = new Fade(engine,
+                ConstraintX.LEFT, ConstraintY.TOP,
+                ConstraintX.RIGHT, ConstraintY.BOTTOM,
+                500, 500, Fade.STATE_FADE.In);
+        fade.setColor(ColorWrap.BLACK);
+        fade.triggerFade();
+
+        boardSize = (int) (logicWidth * 0.6f);
+
+        if (levelName != null) {
+            createLevel(levelName, boardSize);
+        } else createLevel(boardSize);
+
+        boardHasChanged = gameBoard.hasChanged();
+
+        //relación respecto a numero de casillas
+        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+
+        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+
+        //Tamaño de los botones
+        int offset = (int) (logicWidth * 0.16f),
+                bttWidth = (int) (logicWidth * 0.25f),
+                bttHeight = (int) (logicWidth * 0.0833f);
+
+        //Boton Check Win
+        bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2 + offset,
+                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                        checkWin = true;
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+        bttCheckWin.setFont(numFont);
+        bttCheckWin.setColor(ColorWrap.BLACK);
+        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        //Boton Return to menu
+        bttReturn = new Button("Coward", logicWidth / 2 - bttWidth / 2 - offset,
+                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(engine.getGraphics(),event_.getX_(), event_.getY_())) {
+                        engine.getAudio().playSound("click.wav");
+
+                        if (fade.getState() != Fade.STATE_FADE.Out) {
+                            fade.setState(Fade.STATE_FADE.Out);
+                            fade.triggerFade();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if (fade.getFadeOutComplete()) {
+                    engine.getGame().previousScene();
+//                    engine.getGame().changeScene("SceneLevels");
+//                    engine.getGame().pushScene(new SceneTitle(engine));
+                }
+            }
+        };
+        bttReturn.setFont(numFont);
+        bttReturn.setColor(ColorWrap.BLACK);
+        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        if(engine.getGraphics().orientationHorizontal()){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
+    }
+
+    @Override
+    public void render(Graphics graphics) {
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
+        int palette = GameManager.instance().getPalette().ordinal();
+
+        //Tablero
+        graphics.setColor(ColorWrap.BLACK, 1.0f);
+        checkBoard.drawInfoRects(engine, logicWidth / 2 - gameBoard.getWidth() / 2, logicHeight / 2 - gameBoard.getHeight() / 2, pixelFont);
+        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+
+        //Botones
+        bttCheckWin.render(graphics);
+        bttReturn.render(graphics);
+
+        if (DEBUG) {
+            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+        }
+
+        //Corazones
+        Image heart = graphics.getImage("heart"),
+                emHeart = graphics.getImage("emptyheart");
+
+        float heartScale = 0.1f;
+        float xOffset = logicWidth * 0.005f + heart.getWidth() * heartScale,
+                yOffset = logicHeight * 0.005f;
+
+        for (int i = 0; i < maxLives; i++) {
+            //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
+            graphics.drawImage((i < lives) ? heart : emHeart,
+                    (int) (checkBoard.getPosX() + xOffset * i),
+                    (int) (checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
+        }
+
+
+        //Texto indicando casillas incorrectas
+        if (!hasWon && timer < maxTime) {
+            graphics.setFont(numFont);
+
+            String remainingField = numRemaining + " remaining cells";
+            String wrongField = numWrong + " wrong cells";
+
+            Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
+            Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
+
+            graphics.setColor(ColorWrap.BLUE, 1.0f);
+            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.05 + dime_remaining.second / 2));
+            graphics.setColor(ColorWrap.RED, 1.0f);
+            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.09 + dime_wrong.second / 2));
+
+        }
+
+        fade.render(graphics);
+    }
+
+    @Override
     public void update(double deltaTime) {
         //Comprueba la victoria
         if (checkWin) {
@@ -225,91 +369,6 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void init() {
-        tileTouchedInfo_ = new TileTouched();
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
-
-        //Fade In
-        fade = new Fade(engine,
-                ConstraintX.LEFT, ConstraintY.TOP,
-                ConstraintX.RIGHT, ConstraintY.BOTTOM,
-                500, 500, Fade.STATE_FADE.In);
-        fade.setColor(ColorWrap.BLACK);
-        fade.triggerFade();
-
-        boardSize = (int) (logicWidth * 0.6f);
-
-        if (levelName != null) {
-            createLevel(levelName, boardSize);
-        } else createLevel(boardSize);
-
-        boardHasChanged = gameBoard.hasChanged();
-
-        //relación respecto a numero de casillas
-        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
-
-        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
-
-        //Tamaño de los botones
-        int offset = (int) (logicWidth * 0.16f),
-                bttWidth = (int) (logicWidth * 0.25f),
-                bttHeight = (int) (logicWidth * 0.0833f);
-
-        //Boton Check Win
-        bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2 + offset,
-                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
-            @Override
-            public void input(TouchEvent event_) {
-                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
-                        checkWin = true;
-                    }
-                }
-            }
-
-            @Override
-            public void update(double deltaTime) {
-            }
-        };
-        bttCheckWin.setFont(numFont);
-        bttCheckWin.setColor(ColorWrap.BLACK);
-        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
-
-        //Boton Return to menu
-        bttReturn = new Button("Coward", logicWidth / 2 - bttWidth / 2 - offset,
-                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
-            @Override
-            public void input(TouchEvent event_) {
-                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (isInside(engine.getGraphics(),event_.getX_(), event_.getY_())) {
-                        engine.getAudio().playSound("click.wav");
-
-                        if (fade.getState() != Fade.STATE_FADE.Out) {
-                            fade.setState(Fade.STATE_FADE.Out);
-                            fade.triggerFade();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void update(double deltaTime) {
-                if (fade.getFadeOutComplete()) {
-                    engine.getGame().previousScene();
-//                    engine.getGame().changeScene("SceneLevels");
-//                    engine.getGame().pushScene(new SceneTitle(engine));
-                }
-            }
-        };
-        bttReturn.setFont(numFont);
-        bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
-    }
-
-    @Override
     public void loadResources(Graphics graphics) {
         System.out.println("Loading Resources...");
 
@@ -347,63 +406,136 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
         //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+        //Tamaño de los botones
+        int offset = (int) (logicWidth * 0.16f * 3),
+                bttWidth = (int) (logicWidth * 0.25f * 3),
+                bttHeight = (int) (logicWidth * 0.0833f* 3);
+//
+        numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f) * 3, false);
+//        pixelFont = g.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
+//
+        //Check Win button
+        bttCheckWin.setFont(numFont);
+        bttCheckWin.setSize(bttWidth,bttHeight);
+        bttCheckWin.setUsingConstraints(true);
+        bttCheckWin.setConstraints(g, ConstraintX.RIGHT, (int) (- bttWidth - offset*0.3), ConstraintY.TOP, bttHeight/2);
+
+//        //Boton Return to menu
+        bttReturn.setFont(numFont);
+        bttReturn.setSize(bttWidth, bttHeight);
+        bttReturn.setUsingConstraints(true);
+        bttReturn.setConstraints(g, ConstraintX.LEFT, (int) ((bttWidth) - offset*1.2), ConstraintY.TOP, bttHeight/2);
     }
 
     @Override
-    public void render(Graphics graphics) {
-        int logicWidth = graphics.getLogicWidth();
-        int logicHeight = graphics.getLogicHeight();
-        int palette = GameManager.instance().getPalette().ordinal();
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
 
-        //Tablero
-        graphics.setColor(ColorWrap.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, logicWidth / 2 - gameBoard.getWidth() / 2, logicHeight / 2 - gameBoard.getHeight() / 2, pixelFont);
-        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+        //Tamaño de los botones
+        int offset = (int) (logicWidth * 0.16f),
+                bttWidth = (int) (logicWidth * 0.25f),
+                bttHeight = (int) (logicWidth * 0.0833f);
+//
+        numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
+//        pixelFont = g.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
+//
+        //Check Win button
+        bttCheckWin.setFont(numFont);
+        bttCheckWin.setSize(bttWidth,bttHeight);
+        bttCheckWin.setUsingConstraints(false);
+        bttCheckWin.setX(logicWidth / 2 - bttWidth / 2 + offset);
+        bttCheckWin.setY(logicHeight - bttHeight * 3);
+//
+//        //Boton Return to menu
+        bttReturn.setFont(numFont);
+        bttReturn.setSize(bttWidth, bttHeight);
+        bttReturn.setUsingConstraints(false);
+        bttReturn.setX(logicWidth / 2 - bttWidth / 2 - offset);
+        bttReturn.setY(logicHeight - bttHeight * 3);
+    }
 
-        //Botones
-        bttCheckWin.render(graphics);
-        bttReturn.render(graphics);
+    @Override
+    public void orientationChanged(boolean isHorizontal) {
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
-        if (DEBUG) {
-            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+        if(isHorizontal){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }else{
+            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
+    }
+
+    @Override
+    public void save(FileOutputStream file, SharedPreferences mPreferences) {
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+
+        //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
+        if (lives == 3 && !gameBoard.hasChanged()) {
+            preferencesEditor.putBoolean("savingBoard", false);
+            return;
         }
 
-        //Corazones
-        Image heart = graphics.getImage("heart"),
-                emHeart = graphics.getImage("emptyheart");
-
-        float heartScale = 0.1f;
-        float xOffset = logicWidth * 0.005f + heart.getWidth() * heartScale,
-                yOffset = logicHeight * 0.005f;
-
-        for (int i = 0; i < maxLives; i++) {
-            //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
-            graphics.drawImage((i < lives) ? heart : emHeart,
-                    (int) (checkBoard.getPosX() + xOffset * i),
-                    (int) (checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
+        preferencesEditor.putBoolean("savingBoard", true);
+        //Vidas
+        preferencesEditor.putInt("lives", lives);
+        //Nivel en cuestion, si es Historia o partida rapida
+        if (levelName != null) {
+            int catN = category.ordinal();
+            preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
+            preferencesEditor.putString("levelQuickSize", "-");
+        }else{
+            preferencesEditor.putString("levelCat", "-");
+            String cols_ = Integer.toString(gameBoard.getCols());
+            String rows_ = Integer.toString(gameBoard.getRows());
+            preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
+            checkBoard.saveBoardState(file);
         }
 
+        gameBoard.saveBoardState(file);
 
-        //Texto indicando casillas incorrectas
-        if (!hasWon && timer < maxTime) {
-            graphics.setFont(numFont);
+        preferencesEditor.apply(); //también podemos usar .commit()
+    }
 
-            String remainingField = numRemaining + " remaining cells";
-            String wrongField = numWrong + " wrong cells";
+    @Override
+    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
+        sharedPreferences = mPreferences;
+        //En caso de que se juegue por primera vez o no se haya guardado, no hacemos nada.
+        boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
 
-            Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
-            Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
+        if(!boardSaved || reader == null)
+            return;
 
-            graphics.setColor(ColorWrap.BLUE, 1.0f);
-            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.05 + dime_remaining.second / 2));
-            graphics.setColor(ColorWrap.RED, 1.0f);
-            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.09 + dime_wrong.second / 2));
+        //De lo contrario recuperamos valores
 
+        String levelCat = mPreferences.getString("levelCat", "-");
+        String levelQuick = mPreferences.getString("levelQuickSize", "-");
+
+        if(!Objects.equals(levelCat, "-") && levelName != null){
+
+            int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
+            int indexLvl = Integer.parseInt(levelCat.substring(1));
+            //Comprobamos si estamos en el ultimo nivel que se guardó
+            if ((catN == category.ordinal()) && indexLvl == lvlIndex) {
+                lives = mPreferences.getInt("lives", 3);
+                gameBoard.updateBoardState(reader);
+            }
+        } else if (!Objects.equals(levelQuick, "-")) {
+            //buscarHasta que haya una x
+
+            String[] size = levelQuick.split("x");
+
+            int cols_ = Integer.parseInt(size[0]);
+            int rows_ = Integer.parseInt(size[1]);
+
+            if (gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_) {
+                lives = mPreferences.getInt("lives", 3);
+                //TODO reward en quick???
+                checkBoard = new Board(reader, boardSize, boardSize, tileSize);
+                gameBoard.updateBoardState(reader);
+            }
         }
-
-        fade.render(graphics);
     }
 
     //endregion
@@ -510,86 +642,5 @@ public class SceneGame implements SceneBase {
                 wrongs.get(wrongs.size() - 1).first == checkBoard.getNumCorrectTiles(); //Que haya todas las correctas
     }
 
-
-    @Override
-    public void save(FileOutputStream file, SharedPreferences mPreferences) {
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-
-        //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
-        if (lives == 3 && !gameBoard.hasChanged()) {
-            preferencesEditor.putBoolean("savingBoard", false);
-            return;
-        }
-
-        preferencesEditor.putBoolean("savingBoard", true);
-        //Vidas
-        preferencesEditor.putInt("lives", lives);
-        //Nivel en cuestion, si es Historia o partida rapida
-        if (levelName != null) {
-            int catN = category.ordinal();
-            preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
-            preferencesEditor.putString("levelQuickSize", "-");
-        }else{
-            preferencesEditor.putString("levelCat", "-");
-            String cols_ = Integer.toString(gameBoard.getCols());
-            String rows_ = Integer.toString(gameBoard.getRows());
-            preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
-            checkBoard.saveBoardState(file);
-        }
-
-        gameBoard.saveBoardState(file);
-
-        preferencesEditor.apply(); //también podemos usar .commit()
-    }
-
-    @Override
-    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
-        sharedPreferences = mPreferences;
-        //En caso de que se juegue por primera vez o no se haya guardado, no hacemos nada.
-        boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
-
-        if(!boardSaved || reader == null)
-            return;
-
-        //De lo contrario recuperamos valores
-
-        String levelCat = mPreferences.getString("levelCat", "-");
-        String levelQuick = mPreferences.getString("levelQuickSize", "-");
-
-        if(!Objects.equals(levelCat, "-") && levelName != null){
-
-            int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
-            int indexLvl = Integer.parseInt(levelCat.substring(1));
-            //Comprobamos si estamos en el ultimo nivel que se guardó
-            if ((catN == category.ordinal()) && indexLvl == lvlIndex) {
-                lives = mPreferences.getInt("lives", 3);
-                gameBoard.updateBoardState(reader);
-            }
-        } else if (!Objects.equals(levelQuick, "-")) {
-            //buscarHasta que haya una x
-
-            String[] size = levelQuick.split("x");
-
-            int cols_ = Integer.parseInt(size[0]);
-            int rows_ = Integer.parseInt(size[1]);
-
-            if (gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_) {
-                lives = mPreferences.getInt("lives", 3);
-                //TODO reward en quick???
-                checkBoard = new Board(reader, boardSize, boardSize, tileSize);
-                gameBoard.updateBoardState(reader);
-            }
-        }
-    }
-
-    @Override
-    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
-
-    }
-
-    @Override
-    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
-
-    }
     //endregion
 }

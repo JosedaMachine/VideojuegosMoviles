@@ -241,7 +241,7 @@ public class Graphics {
     }
 
     public int getHeight() {
-        return myView.getHeight() - adViewDimensions.second;
+        return myView.getHeight();
     }
 
     public int getLogicWidth() {
