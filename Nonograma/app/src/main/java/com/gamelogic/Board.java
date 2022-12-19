@@ -23,9 +23,9 @@ public class Board {
     private TILE[][] board;
     private int rows = 0;
     private int cols = 0;
-    private final int width, height;
+    private int width, height;
     private int maxHorizontalFilled, maxVerticalFilled;
-    private final float relationX, relationY;
+    private float relationX, relationY;
     private int posX, posY;
 
     private int tileSize;
@@ -41,14 +41,7 @@ public class Board {
         this.cols = cols;
 
         //Relacion para cuando hay menos filas que columnas
-        float relationRowCol = this.rows /(float) this.cols;
-
-        width = sizeX_;
-        height = (int)(sizeY_*relationRowCol);
-
-        relationX = sizeX_ /(float) this.cols;
-        relationY = (sizeY_ /(float) this.rows) * relationRowCol;
-
+        setSize(sizeX_, sizeY_);
         //Tablero incialmente vacio
         for (int i = 0; i < this.cols; i++)
             for (int j = 0; j < this.rows; j++)
@@ -56,7 +49,7 @@ public class Board {
 
         numCorrectTiles = 0;
 
-        this.tileSize = tileSize;
+        setTileSize(tileSize);
     }
 
     public Board(BufferedReader reader, int sizeX_, int sizeY_, int tileSize){
@@ -89,16 +82,11 @@ public class Board {
         }
 //        numCorrectTiles = 0;
         //Relacion para cuando hay menos filas que columnas
-        float relationRowCol = this.rows /(float) this.cols;
-
-        width = sizeX_;
-        height = (int)(sizeY_*relationRowCol);
-
-        relationX = sizeX_ /(float) this.cols;
-        relationY = (sizeY_ /(float) this.rows) * relationRowCol;
+        setSize(sizeX_, sizeY_);
 
         calcAdjyacents();
-        this.tileSize = tileSize;
+
+        setTileSize(tileSize);
     }
 
     public void saveBoardState(FileOutputStream file){
@@ -227,6 +215,19 @@ public class Board {
         }
     }
 
+    public void setTileSize(int tileSize_){
+        this.tileSize = tileSize_;
+    }
+
+    public void setSize(int sizeX_, int sizeY_){
+        float relationRowCol = this.rows /(float) this.cols;
+
+        width = sizeX_;
+        height = (int)(sizeY_*relationRowCol);
+
+        relationX = sizeX_ /(float) this.cols;
+        relationY = (sizeY_ /(float) this.rows) * relationRowCol;
+    }
 
     public Pair<Float, Float> getRelationFactorSize(){
         return new Pair<>(relationX, relationY);
@@ -385,6 +386,7 @@ public class Board {
 
         return new Pair<>(-1, -1);
     }
+
 
     //Coge image dependiendo del tile
     private Image tileImage(Engine e, TILE t, int pal) {
