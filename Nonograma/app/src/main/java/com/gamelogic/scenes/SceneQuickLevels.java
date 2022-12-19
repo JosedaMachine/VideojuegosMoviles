@@ -86,11 +86,11 @@ public class SceneQuickLevels implements SceneBase {
 
         //Boton Return to menu
         bttReturn = new Button("menu", logicWidth/2 - bttWidth/2,
-                logicHeight- bttHeight*3, bttWidth, bttHeight) {
+                logicHeight- bttHeight*2, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(),event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -124,7 +124,7 @@ public class SceneQuickLevels implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
@@ -284,7 +284,7 @@ public class SceneQuickLevels implements SceneBase {
         bttReturn.setUsingConstraints(false);
         bttReturn.setFont(numFont);
         bttReturn.setX(logicWidth/2 - bttWidth/2);
-        bttReturn.setY(logicHeight- bttHeight*3);
+        bttReturn.setY(logicHeight- bttHeight*2);
         bttReturn.setSize(bttWidth, bttHeight);
     }
 

@@ -66,7 +66,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(quickButton.isInside(event_.getX_(),event_.getY_())){
+                    if(quickButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -101,7 +101,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(storyButton.isInside(event_.getX_(),event_.getY_())){
+                    if(storyButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -134,7 +134,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(paletteButton.isInside(event_.getX_(),event_.getY_())){
+                    if(paletteButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -259,12 +259,12 @@ public class SceneTitle implements SceneBase {
         //Izquierda
         quickButton.setSize(sizeX, sizeY);
         quickButton.setX(-logicWidth/2  - sizeX/4);
-        quickButton.setY(logicHeight/2 - sizeY/2);
+        quickButton.setY(logicHeight/2);
 
         //Derecha
         storyButton.setSize(sizeX, sizeY);
         storyButton.setX((int) (logicWidth + logicWidth/2  - sizeX/1.25f));
-        storyButton.setY(logicHeight/2 - sizeY/2);
+        storyButton.setY(logicHeight/2);
 
         //Medio
         paletteButton.setSize(sizeX, sizeY);

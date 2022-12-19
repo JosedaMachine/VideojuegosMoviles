@@ -62,7 +62,6 @@ public class SceneStoryCategories implements SceneBase {
 
         int cont = 0;
         for (int i = 0; i < numFils; i++){
-
             for (int j = 0; j < numCols; j++){
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
@@ -72,8 +71,7 @@ public class SceneStoryCategories implements SceneBase {
             }
         }
 
-        int offset = (int)(logicWidth * 0.16f),
-                bttWidth = (int)(logicWidth * 0.25f),
+        int bttWidth = (int)(logicWidth * 0.25f),
                 bttHeight = (int)(logicWidth * 0.0833f);
 
         //Boton Return to menu
@@ -82,7 +80,7 @@ public class SceneStoryCategories implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -107,6 +105,9 @@ public class SceneStoryCategories implements SceneBase {
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
+        if(engine.getGraphics().orientationHorizontal()){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
     }
 
     //Boton de creacion de nivel
@@ -115,7 +116,7 @@ public class SceneStoryCategories implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
 
                         //Si no esta bloqueado
                         if(i == 0 || GameManager.instance().getLevelIndex(CATEGORY.values()[i-1]) == GameManager.instance().getMaxLevel()){
@@ -169,18 +170,137 @@ public class SceneStoryCategories implements SceneBase {
             Button b = levels.get(i);
 
             b.render(graphics);
-            int size = b.getSizeX();
-            graphics.drawImage(graphics.getImage("buttonbox"), (int)(b.getX() + size*0.25f),
-                    (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
-
-            graphics.drawText(GameManager.instance().getLevelIndex(CATEGORY.values()[i]) + "/"
-                    + GameManager.instance().getMaxLevel(), (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
+//            int size = b.getSizeX();
+//            graphics.drawImage(graphics.getImage("buttonbox"), (int)(b.getX() + size*0.25f),
+//                    (int) (b.getY() - size * 0.075f), size/2, (int)(size * 0.15f));
+//
+//            graphics.drawText(GameManager.instance().getLevelIndex(CATEGORY.values()[i]) + "/"
+//                    + GameManager.instance().getMaxLevel(), (int) (b.getX() + dime.first*0.22f), (int) (b.getY() + dime.second*0.3f));
         }
 
         bttReturn.render(graphics);
 
 
         fade.render(graphics);
+    }
+
+    private void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+//        int sizeX = (int)(logicWidth * 0.155f * 3),
+//                sizeY = (int)(logicHeight * 0.055f) * 3;
+//
+//        int[] xOffsets = {sizeX*2, -sizeX/2 , (int) (-sizeX*1.5f * 2)};
+//        int[] yOffsets = {-sizeY, sizeY/2};
+//
+//        int jW = 0;
+//        int jH = 0;
+//
+//        ConstraintX a = ConstraintX.values()[0];
+//
+//        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
+//        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+//        levelLabel = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
+//
+//        for (int i = 0; i < levels.size(); i++){
+//            if(jW >= 3) {
+//                jW = 0;
+//                jH = 1;
+//            }
+//            Button b = levels.get(i);
+//            b.setFont(titleLittle);
+//            b.setSize(sizeX, sizeY);
+//            b.setUsingConstraints(true);
+//            b.setConstraints(ConstraintX.values()[jW], xOffsets[jW], ConstraintY.CENTER, yOffsets[jH]);
+//            jW++;
+//        }
+//
+        int size = (int)(logicWidth * 0.40f);
+        int numCols = 2, numFils = 2;
+
+        int xOffset = (int) (logicWidth * 0.05f),
+                yOffset = (int) (logicWidth * 0.05f);
+
+        int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
+        int posY = (int)(logicHeight/2.5) - size/2;
+
+        int cont = 0;
+        for (int i = 0; i < numFils; i++){
+            for (int j = 0; j < numCols; j++){
+                int newPosX = posX + (j*size) + (j*xOffset),
+                        newPosY = posY + (i*size) + (i*yOffset);
+                Button b = levels.get(cont);
+                b.setSize(size, size);
+                b.setX(newPosX);
+                b.setY(newPosY);
+                b.setUsingConstraints(false);
+                cont++;
+            }
+        }
+
+        int bttWidth = (int)(logicWidth * 0.25f),
+                bttHeight = (int)(logicWidth * 0.0833f);
+
+        bttReturn.setUsingConstraints(false);
+        bttReturn.setFont(numFont);
+        bttReturn.setX(logicWidth/2 - bttWidth/2);
+        bttReturn.setY(logicHeight - bttHeight*2);
+        bttReturn.setSize(bttWidth, bttHeight);
+
+    }
+
+    private void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+//        int sizeX = (int)(logicWidth * 0.155f),
+//                sizeY = (int)(logicHeight * 0.055f);
+//
+//        float[] widthFactors = {3.5f, 2, 1.38f};
+//        float[] heightFactors = {3, 2};
+//        int jW = 0;
+//        int jH = 0;
+//
+//        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
+//        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
+//        levelLabel = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
+//        for (int i = 0; i < levels.size(); i++){
+//            if(jW >= 3) {
+//                jW = 0;
+//                jH = 1;
+//            }
+//            Button b = levels.get(i);
+//            b.setFont(titleLittle);
+//            b.setSize(sizeX, sizeY);
+//            b.setX((int) (logicWidth/widthFactors[jW] - sizeX/2));
+//            b.setY((int) (logicHeight/heightFactors[jH] -  sizeY/2));
+//            b.setUsingConstraints(false);
+//            jW++;
+//        }
+        int size = (int)(logicWidth * 0.7f);
+        int numCols = 2, numFils = 2;
+
+        int xOffset = (int) (logicWidth * 0.05f),
+                yOffset = (int) (logicWidth * 0.05f);
+
+        int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
+        int posY = (int)(logicHeight/2.5) - size/2;
+
+        ConstraintX[] constrX = {ConstraintX.LEFT, ConstraintX.CENTER, ConstraintX.CENTER, ConstraintX.RIGHT};
+        int[] xOffsets = {(int) (size*0.2f), (int) (-size*1.1f), (int) (size*0.005f), (int) (-size*1.3)};
+        for (int i = 0; i < levels.size(); i++){
+//            for (int j = 0; j < numCols; j++){
+//                int newPosX = posX + (j*size) + (j*xOffset),
+//                        newPosY = posY + (i*size) + (i*yOffset);
+            Button b = levels.get(i);
+            b.setSize(size, size);
+            b.setUsingConstraints(true);
+            b.setConstraints(constrX[i], xOffsets[i], ConstraintY.CENTER, -size/2);
+//            }
+        }
+
+        int bttWidth = (int)(logicWidth * 0.25f *2),
+                bttHeight = (int)(logicWidth * 0.0833f * 2);
+
+        bttReturn.setFont(numFont);
+        bttReturn.setSize(bttWidth, bttHeight);
+        bttReturn.setUsingConstraints(true);
+        bttReturn.setConstraints(ConstraintX.CENTER, -bttWidth/2, ConstraintY.BOTTOM, (int) -(bttHeight * 1.25f));
     }
 
     @Override
@@ -231,7 +351,14 @@ public class SceneStoryCategories implements SceneBase {
 
     @Override
     public void orientationChanged(boolean isHorizontal) {
+        int logicWidth = engine.getGraphics().getLogicWidth();
+        int logicHeight = engine.getGraphics().getLogicHeight();
 
+        if(isHorizontal){
+            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }else{
+            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }
     }
 
     @Override

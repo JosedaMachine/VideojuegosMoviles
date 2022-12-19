@@ -74,8 +74,13 @@ public abstract class Button {
     public abstract void update(double deltaTime);
 
     //Comprobacion para gestionar input
-    public boolean isInside(int pixelX, int pixelY){
-        return (pixelX > posX && pixelX <= posX + sizeX) && ( pixelY > posY && pixelY <= posY + sizeY);
+    public boolean isInside(Graphics g, int pixelX, int pixelY){
+        if(usingConstraints){
+            int posX_ = g.getConstraintXValue(constrX);
+            int posY_ = g.getConstraintYValue(constrY);
+            return (pixelX > (posX_ + offsetX) && pixelX <= (posX_ + offsetX) + sizeX) && ( pixelY > (posY_ + offsetY) && pixelY <= (posY_ + offsetY) + sizeY);
+        }
+        else return (pixelX > posX && pixelX <= posX + sizeX) && ( pixelY > posY && pixelY <= posY + sizeY);
     }
 
     public void setBackgroundImage(Image backgroundImage) {

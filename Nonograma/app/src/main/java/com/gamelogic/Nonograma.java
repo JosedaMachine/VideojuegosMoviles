@@ -14,6 +14,7 @@ import com.engineandroid.UserInterface;
 import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.managers.GameManager;
 import com.gamelogic.scenes.SceneGame;
+import com.gamelogic.scenes.SceneStoryCategories;
 import com.gamelogic.scenes.SceneTitle;
 
 import java.io.BufferedReader;

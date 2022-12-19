@@ -84,7 +84,7 @@ public class SceneStoryLevels implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -115,7 +115,7 @@ public class SceneStoryLevels implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(event_.getX_(),event_.getY_())){
+                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
                         if(lvlIndex <= GameManager.instance().getLevelIndex(category)) {
                             engine.getAudio().playSound("click.wav");

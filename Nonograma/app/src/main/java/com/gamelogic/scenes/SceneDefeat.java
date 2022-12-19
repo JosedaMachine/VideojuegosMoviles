@@ -57,7 +57,7 @@ public class SceneDefeat implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(button.isInside(event_.getX_(),event_.getY_())){
+                    if(button.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
 
                         fade.triggerFade();
