@@ -348,7 +348,7 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void orientationChanged(boolean isHorizontal) {
-
+        //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
     }
 
     @Override

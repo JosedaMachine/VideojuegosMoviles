@@ -39,7 +39,7 @@ TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y perm
 TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
 TODO: layout para que el tablero sea el centro de nuestra pantalla.
 
-TODO: Sensores hagan algo con sentido
+TODO: Sensores hagan algo con sentido llevo 3 programados por favor no sé qué hacer con ellos los tengo por castigo ayuda
 
 TODO: poner anuncio de ganar vida en Game.
 
