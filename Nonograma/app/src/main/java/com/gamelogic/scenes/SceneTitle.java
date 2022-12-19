@@ -1,6 +1,7 @@
 package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.engineandroid.ConstraintX;
@@ -90,6 +91,7 @@ public class SceneTitle implements SceneBase {
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
+                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
                 }
             }
         };
@@ -109,6 +111,7 @@ public class SceneTitle implements SceneBase {
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
+                            engine.getGraphics().setClearColor(ColorWrap.WHITE);
                         }
                     }
                 }
@@ -123,6 +126,7 @@ public class SceneTitle implements SceneBase {
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
+                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
                 }
             }
         };
@@ -158,6 +162,7 @@ public class SceneTitle implements SceneBase {
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
+                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
                 }
             }
         };
@@ -325,17 +330,11 @@ public class SceneTitle implements SceneBase {
     }
 
     private void updateBackground(){
-        //TODO no sé qué estoy haciendo ya aquí, llevo como 3 sensores creados es terrible
         float[] values = magnetometerSensor.getDeltaValues();
 
-        Log.d("VALUES", "0: " + values[0] + " 1: " + values[1] + " 2: " + values[2]);
-
-        //Si detecta movimiento
-        if(values[1] > 35){
-            engine.getGraphics().setClearColor(ColorWrap.BLACK);
-        }else{
-            engine.getGraphics().setClearColor(ColorWrap.WHITE);
-        }
-
+        engine.getGraphics().setClearColor(Color.argb(255,
+                (int)values[0]*1000%255,
+                (int)values[1]*1000%255,
+                (int)values[2]*1000%255));
     }
 }

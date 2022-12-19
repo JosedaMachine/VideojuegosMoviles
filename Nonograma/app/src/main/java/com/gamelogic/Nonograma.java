@@ -41,7 +41,7 @@ TODO: layout para que el tablero sea el centro de nuestra pantalla.
 
 TODO: Sensores hagan algo con sentido llevo 3 programados por favor no sé qué hacer con ellos los tengo por castigo ayuda
 
-TODO: poner anuncio de ganar vida en Game.
+TODO: poner anuncio de ganar vida en Game. Preguntad si tenéis dudas sobre algo de los anuncios putos
 
 //Uno cargado cuabdo unicias y cuadno acabas cargas otro.
 
