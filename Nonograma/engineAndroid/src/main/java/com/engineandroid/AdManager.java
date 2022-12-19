@@ -27,7 +27,8 @@ public class AdManager {
     AdView ad;
     Engine engine;
     AppCompatActivity activity;
-    RewardedAd mRewardedAd;
+    RewardedAd mRewardedAd = null;
+    boolean loading = false;
 
     public AdManager(AppCompatActivity activity){
         this.activity = activity;
@@ -63,17 +64,20 @@ public class AdManager {
     }
 
     public void buildRewardAd(){
+        loading = true;
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         mRewardedAd = null;
+                        loading = false;
                     }
 
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedAd = rewardedAd;
+                        loading = false;
                         mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
                             public void onAdClicked() {
@@ -141,7 +145,10 @@ public class AdManager {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(!isRewardBuilt())
+                    buildRewardAd();
                 showRewardAd(message);
+                mRewardedAd = null;
             }
         });
     }
@@ -153,6 +160,10 @@ public class AdManager {
                 buildRewardAd();
             }
         });
+    }
+
+    public boolean isRewardBuilt(){
+        return mRewardedAd != null && !loading;
     }
 
     public void setEngine(Engine engine){
