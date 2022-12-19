@@ -57,6 +57,9 @@ public class SceneGame implements SceneBase {
     private final int maxLives = 3;
     private int lives = maxLives;
 
+    private float heartScale;
+    private int checkBoardPosX, checkBoardPosY;
+
 
     SharedPreferences sharedPreferences;
     //Filas y columnas del tablero
@@ -224,6 +227,8 @@ public class SceneGame implements SceneBase {
 
         if(engine.getGraphics().orientationHorizontal()){
             horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        }else{
+            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
         }
     }
 
@@ -235,7 +240,7 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, logicWidth / 2 - gameBoard.getWidth() / 2, logicHeight / 2 - gameBoard.getHeight() / 2, pixelFont);
+        checkBoard.drawInfoRects(engine, logicWidth / 2 + checkBoardPosX, logicHeight / 2 + checkBoardPosY, pixelFont);
         gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
 
         //Botones
@@ -250,12 +255,11 @@ public class SceneGame implements SceneBase {
         Image heart = graphics.getImage("heart"),
                 emHeart = graphics.getImage("emptyheart");
 
-        float heartScale = 0.1f;
+        heartScale = 0.1f;
         float xOffset = logicWidth * 0.005f + heart.getWidth() * heartScale,
                 yOffset = logicHeight * 0.005f;
 
         for (int i = 0; i < maxLives; i++) {
-            //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
             graphics.drawImage((i < lives) ? heart : emHeart,
                     (int) (checkBoard.getPosX() + xOffset * i),
                     (int) (checkBoard.getPosY() + checkBoard.getHeight() + yOffset), heartScale, heartScale);
@@ -410,14 +414,32 @@ public class SceneGame implements SceneBase {
     @Override
         //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
     public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
+        //Corazones
+        heartScale = 0.2f;
+
+        //Tablero
+        boardSize = (int) (logicWidth * 0.85f);
+        int palette = GameManager.instance().getPalette().ordinal();
+//        tileSize = g.getImage("empty" + palette).getWidth() * 2;
+//        gameBoard.setTileSize(tileSize);
+        checkBoard.setSize(boardSize, boardSize);
+        gameBoard.setSize(boardSize, boardSize);
+
+        checkBoardPosX =  -gameBoard.getWidth() / 2;
+        checkBoardPosY = (int) (-gameBoard.getHeight() / 7.f);
+
+        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+
+
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f * 3),
                 bttWidth = (int) (logicWidth * 0.25f * 3),
                 bttHeight = (int) (logicWidth * 0.0833f* 3);
 //
         numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f) * 3, false);
-//        pixelFont = g.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
-//
+
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
@@ -433,6 +455,23 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
+        //Corazones
+        heartScale = 0.1f;
+
+        //Tablero
+        boardSize = (int) (logicWidth * 0.6f);
+        int palette = GameManager.instance().getPalette().ordinal();
+//        tileSize = g.getImage("empty" + palette).getWidth();
+//        gameBoard.setTileSize(tileSize);
+        checkBoard.setSize(boardSize, boardSize);
+        gameBoard.setSize(boardSize, boardSize);
+
+        checkBoardPosX =  -gameBoard.getWidth() / 2;
+        checkBoardPosY =  -gameBoard.getHeight() / 2;
+
+        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
+        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f),
@@ -440,8 +479,7 @@ public class SceneGame implements SceneBase {
                 bttHeight = (int) (logicWidth * 0.0833f);
 //
         numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
-//        pixelFont = g.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
-//
+
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
