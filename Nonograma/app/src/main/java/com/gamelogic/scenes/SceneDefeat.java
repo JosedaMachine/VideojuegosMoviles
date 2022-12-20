@@ -73,6 +73,7 @@ public class SceneDefeat implements SceneBase {
             }
         };
 
+        //Params iniciales de boton
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));

@@ -20,7 +20,6 @@ import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,11 +109,13 @@ public class ScenePalettes implements SceneBase {
 
                         //Si no esta bloqueado
                         if (p.first) {
+                            //Seleccionado
                             e.getAudio().playSound("click.wav");
                             setSelected(true);
                             gmInstance.setPalette(i);
                             setBackgroundImage(e.getGraphics().getImage("spalette" + i));
                         } else if (p.second <= gmInstance.getMoney()){
+                            //Sin seleccionar
                             gmInstance.addMoney(-p.second);
                             gmInstance.updateInterface();
                             gmInstance.setPaletteUnlocked(i, true, 0);
@@ -138,6 +139,7 @@ public class ScenePalettes implements SceneBase {
 
         button.setColor(ColorWrap.BLACK);
 
+        //Diferente si seleccionado, no seleccionado y bloqueado
         if(GameManager.instance().getPaletteUnlocked(i).first) {
             String prefix;
             if (i == GameManager.instance().getPalette().ordinal()) {
@@ -162,14 +164,15 @@ public class ScenePalettes implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
+        //Botones de paleta
         for (int i = 0; i < palettes.size(); i++) {
             Button b = palettes.get(i);
             b.render(graphics);
 
             Pair<Boolean, Integer> p = GameManager.instance().getPaletteUnlocked(i);
 
+            //Coste de paletas
             if(!p.first) {
-
                 String money = Integer.toString(p.second);
                 Pair<Double, Double> dime = graphics.getStringDimensions(money);
 

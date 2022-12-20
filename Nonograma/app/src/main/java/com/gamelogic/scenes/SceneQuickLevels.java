@@ -216,6 +216,7 @@ public class SceneQuickLevels implements SceneBase {
 
     }
 
+    //Disposicion horizontal
     @Override
     public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int) (logicWidth * 0.155f * 3),
@@ -227,8 +228,6 @@ public class SceneQuickLevels implements SceneBase {
         int jW = 0;
         int jH = 0;
 
-
-        ConstraintX a = ConstraintX.values()[0];
 
         titleLittle = g.newFont("arcade.TTF", (int) (logicHeight * 0.035f * 2), true);
         numFont = g.newFont("arcade.TTF", (int) (g.getLogicHeight() * 0.04f * 2), false);
@@ -256,6 +255,7 @@ public class SceneQuickLevels implements SceneBase {
 
     }
 
+    //Disposicion vertical
     @Override
     public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int) (logicWidth * 0.155f),
@@ -291,6 +291,7 @@ public class SceneQuickLevels implements SceneBase {
         bttReturn.setSize(bttWidth, bttHeight);
     }
 
+    //Cambio de orientacion
     @Override
     public void orientationChanged(Graphics graphics,boolean isHorizontal) {
         int logicWidth = graphics.getLogicWidth();

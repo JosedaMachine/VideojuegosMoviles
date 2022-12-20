@@ -257,6 +257,7 @@ public class SceneGame implements SceneBase {
         adButton.setColor(ColorWrap.BLACK);
         adButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
+        //Layout landscape o portrait
         if(graphics.orientationHorizontal()){
             horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
@@ -492,7 +493,6 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         boardSize = (int) (logicWidth*0.8f);
-        //int palette = GameManager.instance().getPalette().ordinal();
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
@@ -540,7 +540,6 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         boardSize = (int) (logicWidth * 0.65f);
-        //int palette = GameManager.instance().getPalette().ordinal();
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 

@@ -47,10 +47,7 @@ public class GameManager {
         return true;
     }
 
-    static boolean release(){
-        return true;
-    }
-
+    //Gestion de niveles  desbloqueados
     public int getMaxLevel(){
         return maxLevels;
     }
@@ -65,6 +62,7 @@ public class GameManager {
         return money;
     }
 
+    //Obtiene dinero + 0s
     public String getTextMoney() {
         if(money < 10)
             return "000" + money;
@@ -76,6 +74,7 @@ public class GameManager {
         return "" + money;
     }
 
+    //Anyadi dinero al total
     public void addMoney(int m) {
         Log.d("MONEY", ""+m);
         money += m;
