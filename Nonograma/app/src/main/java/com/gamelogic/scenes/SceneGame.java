@@ -397,7 +397,6 @@ public class SceneGame implements SceneBase {
             isHoldingPress = false;
             tileTouchedInfo_.touched = false;
             }
-        //TODO: esto al final no se usa
         else if (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT) {
             //Input en casillas del tablero
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());

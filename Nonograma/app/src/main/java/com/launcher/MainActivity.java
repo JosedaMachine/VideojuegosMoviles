@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         //Elimina una alarma previamente puesta
         alarmManager.cancel(pendingIntent);
 
-        //TODO cambiar el tiempo a 1 semana en milisegundos (ahora está a 30000 que son 30 seg)
+        //El tiempo debería ser 1 semana en milisegundos (ahora está a 30000 que son 30 seg, para mostrar su funcionamiento)
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+30000, pendingIntent);
     }
 }

@@ -109,7 +109,6 @@ public class GameManager {
     // Genera el intent para Twitter.
     // Primero comprueba si tienes Twitter instalado
     // Luego abre la aplicación o te abre el navegador con el tuit preparado
-    //TODO si vemos que tal mover a SceneVictory o yo qué sé
     public Intent getTwitterIntent(String shareText)
     {
         Intent shareIntent;
