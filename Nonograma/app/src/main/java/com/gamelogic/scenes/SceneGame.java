@@ -2,6 +2,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.AdManager;
 import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
@@ -10,6 +11,7 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
+import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
@@ -49,7 +51,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     private Board gameBoard;
 
-    private Button bttCheckWin, bttReturn;
+    private Button bttCheckWin, bttReturn, adButton;
     //True cuando coincidan los tableros
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -175,12 +177,12 @@ public class SceneGame implements SceneBase {
         pixelFont = graphics.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
-        int offset = (int) (logicWidth * 0.16f),
+        int offset = (int) (logicWidth * 0.1f),
                 bttWidth = (int) (logicWidth * 0.25f),
                 bttHeight = (int) (logicWidth * 0.0833f);
 
         //Boton Check Win
-        bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2 + offset,
+        bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2,
                 logicHeight - bttHeight * 3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
@@ -200,7 +202,7 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         //Boton Return to menu
-        bttReturn = new Button("Coward", logicWidth / 2 - bttWidth / 2 - offset,
+        bttReturn = new Button("Coward", offset,
                 logicHeight - bttHeight * 3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
@@ -229,7 +231,33 @@ public class SceneGame implements SceneBase {
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
-        //TODO: si se entra en horizontal como que esto esta raro, pero si se entra en vertical y luego se cambia esta bien
+        Message lifeMessage = new Message(MESSAGE_TYPE.LIFE_AD);
+
+        adButton = new Button("Heal", logicWidth - offset - bttWidth,
+                logicHeight - bttHeight * 3, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (lives < maxLives && event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (adButton.isInside(graphics, event_.getX_(), event_.getY_())) {
+                        engine.getAudio().playSound("click.wav");
+                        AdManager.instance().showRewardedAd(lifeMessage);
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+
+        //Cargamos el ad al inicio
+        AdManager.instance().buildRewardedAd();
+
+        adButton.setFont(numFont);
+        adButton.setColor(ColorWrap.BLACK);
+        adButton.setBackgroundImage(graphics.getImage("buttonbox"));
+
+        //TODO: si se entra en horizontal esta raro, pero si se entra en vertical y luego se cambia esta bien
         if(graphics.orientationHorizontal()){
             horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
@@ -251,6 +279,7 @@ public class SceneGame implements SceneBase {
         //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
+        adButton.render(graphics);
 
         if (DEBUG) {
             checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
@@ -330,12 +359,14 @@ public class SceneGame implements SceneBase {
         }
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
+        adButton.update(deltaTime);
     }
 
     @Override
     public void input(Engine engine, TouchEvent event_) {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
+        adButton.input(event_);
 
         if (event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) {
             isHoldingPress = false;
@@ -365,7 +396,9 @@ public class SceneGame implements SceneBase {
             }
             isHoldingPress = false;
             tileTouchedInfo_.touched = false;
-        } else if (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT) {
+            }
+        //TODO: esto al final no se usa
+        else if (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT) {
             //Input en casillas del tablero
             Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
@@ -410,7 +443,11 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void processMessage(Engine e, Message msg) {
+    public void processMessage(Engine engine, Message msg) {
+        if(msg.getType() == MESSAGE_TYPE.LIFE_AD){
+            addLife();
+            adButton.setBackgroundImage(engine.getGraphics().getImage("lockedbutt"));
+        }
     }
 
     public int getHeartPosX(Graphics g, int  logicWidth){
@@ -496,7 +533,7 @@ public class SceneGame implements SceneBase {
         pixelFont = g.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
-        int offset = (int) (logicWidth * 0.16f),
+        int offset = (int) (logicWidth * 0.1f),
                 bttWidth = (int) (logicWidth * 0.25f),
                 bttHeight = (int) (logicWidth * 0.0833f);
 //
@@ -507,15 +544,22 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
         bttCheckWin.setUsingConstraints(false);
-        bttCheckWin.setX(logicWidth / 2 - bttWidth / 2 + offset);
+        bttCheckWin.setX( offset);
         bttCheckWin.setY((int) (logicHeight - bttHeight*0.9));
 //
 //        //Boton Return to menu
         bttReturn.setFont(numFont);
         bttReturn.setSize(bttWidth, bttHeight);
         bttReturn.setUsingConstraints(false);
-        bttReturn.setX(logicWidth / 2 - bttWidth / 2 - offset);
+        bttReturn.setX(logicWidth / 2 - bttWidth / 2);
         bttReturn.setY((int) (logicHeight - bttHeight*0.9));
+
+        //Boton AD
+        adButton.setFont(numFont);
+        adButton.setSize(bttWidth, bttHeight);
+        adButton.setUsingConstraints(false);
+        adButton.setX(logicWidth - bttWidth - offset);
+        adButton.setY((int) (logicHeight - bttHeight*0.9));
     }
 
     @Override
