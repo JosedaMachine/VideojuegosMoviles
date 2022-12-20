@@ -130,6 +130,7 @@ public class SceneVictory implements SceneBase {
             }
         };
 
+        //Parametros iniciales de botones
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(graphics.getImage("buttonbox"));
@@ -156,19 +157,19 @@ public class SceneVictory implements SceneBase {
 
         //Texto de victoria
         Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
-        graphics.drawText(victoryText, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 9 + dime.second / 2));
+        graphics.drawText(victoryText, (int) (logicWidth*0.05f), (int) (logicHeight / 9 + dime.second / 2));
 
         //Monedas
         String money = "+" + reward;
         dime = graphics.getStringDimensions(money);
-        graphics.drawText(money, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 5 + dime.second / 2));
+        graphics.drawText(money, (int) (logicWidth - dime.first - dime.first*0.75), (int) (logicHeight / 9 + dime.second / 2));
 
         Image coin = graphics.getImage("coin");
         float coinScale = 55 / (float) coin.getWidth();
         float offsetX = coin.getWidth() * coinScale * 0.3f;
         float offsetY = coin.getHeight() * coinScale * 0.2f;
 
-        graphics.drawImage(coin, (int) (logicWidth / 2 + dime.first / 2 + offsetX), (int)(logicHeight / 5 - offsetY), coinScale, coinScale);
+        graphics.drawImage(coin, (int) (logicWidth - coin.getWidth()* coinScale - offsetX), (int)(logicHeight / 9 - offsetY), coinScale, coinScale);
 
         //Tablero correcto
         checkBoard.drawBoard(graphics, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2,
@@ -216,6 +217,7 @@ public class SceneVictory implements SceneBase {
 
     @Override
     public void processMessage(Engine engine,Message msg) {
+        //Duplicacion de recompensa
         if(msg.getType() == MESSAGE_TYPE.REWARD_AD){
             GameManager.instance().addMoney(msg.reward);
             this.reward *= 2;

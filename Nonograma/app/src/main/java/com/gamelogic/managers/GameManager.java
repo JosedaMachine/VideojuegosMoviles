@@ -181,10 +181,12 @@ public class GameManager {
         addMoney(coins);
 
         //Levels Unlocked
-        int kitchenIndex = mPreferences.getInt("kitchen", 20);
-        int medievalIndex =mPreferences.getInt("medieval", 20);
-        int oceanIndex = mPreferences.getInt("ocean", 20);
-        int animalIndex = mPreferences.getInt("animal", 16 );
+        //Poner x de mPreferences.getInt("kitchen", x); de 1 a 20 y reinstalar si se quiere iniciar el juego
+        //con esa cantidad de niveles debloqueados
+        int kitchenIndex = mPreferences.getInt("kitchen", 0);
+        int medievalIndex =mPreferences.getInt("medieval", 0);
+        int oceanIndex = mPreferences.getInt("ocean", 0);
+        int animalIndex = mPreferences.getInt("animal", 0 );
 
         GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, kitchenIndex);
         GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, medievalIndex);
