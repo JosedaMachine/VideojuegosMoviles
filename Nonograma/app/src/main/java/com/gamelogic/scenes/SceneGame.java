@@ -452,7 +452,7 @@ public class SceneGame implements SceneBase {
 
     public int getHeartPosX(Graphics g, int  logicWidth){
         if(g.orientationHorizontal()){
-            return (int) (checkBoard.getPosX() + checkBoard.getWidth() +  logicWidth * 0.4f);
+            return (int) (checkBoard.getPosX() + checkBoard.getWidth() +  logicWidth * 0.2f);
         }else{
             return checkBoard.getPosX();
         }
@@ -468,7 +468,6 @@ public class SceneGame implements SceneBase {
 
 
     @Override
-        //TODO acuerdate joseda que en el game falta el botón de ver un vídeo para recuperar una vida
     public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
         //Corazones
         Image heart = g.getImage("heart");
@@ -501,13 +500,19 @@ public class SceneGame implements SceneBase {
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
         bttCheckWin.setUsingConstraints(true);
-        bttCheckWin.setConstraints(g, ConstraintX.RIGHT, (int) (- bttWidth - offset*0.3), ConstraintY.TOP, bttHeight/2);
+        bttCheckWin.setConstraints(g, ConstraintX.LEFT, (int) ((bttWidth) - offset*1.2), ConstraintY.TOP, bttHeight);
 
-//        //Boton Return to menu
+        //Boton Return to menu
         bttReturn.setFont(numFont);
         bttReturn.setSize(bttWidth, bttHeight);
         bttReturn.setUsingConstraints(true);
-        bttReturn.setConstraints(g, ConstraintX.LEFT, (int) ((bttWidth) - offset*1.2), ConstraintY.TOP, bttHeight/2);
+        bttReturn.setConstraints(g, ConstraintX.LEFT, (int) ((bttWidth) - offset*1.2), ConstraintY.CENTER, 0);
+
+        //Boton Return to menu
+        adButton.setFont(numFont);
+        adButton.setSize(bttWidth, bttHeight);
+        adButton.setUsingConstraints(true);
+        adButton.setConstraints(g, ConstraintX.LEFT, (int) ((bttWidth) - offset*1.2), ConstraintY.BOTTOM, -bttHeight);
     }
 
     @Override
