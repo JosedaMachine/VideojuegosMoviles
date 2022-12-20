@@ -1,6 +1,4 @@
 package com.gamelogic;
-
-
 import android.content.SharedPreferences;
 
 import com.engineandroid.Audio;
@@ -12,10 +10,8 @@ import com.engineandroid.Message;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
-import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.managers.GameManager;
 import com.gamelogic.scenes.SceneGame;
-import com.gamelogic.scenes.SceneStoryCategories;
 import com.gamelogic.scenes.SceneTitle;
 
 import java.io.BufferedReader;
@@ -31,45 +27,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Stack;
 
-/*
-
-
-//Uno cargado cuabdo unicias y cuadno acabas cargas otro.
-
-//Preguntas TODOS
-/*
- * no podemos jamas almacenar Engine aunque sea mas eficiente?
- *
- * Pasar a los metodos en vez Engine la cosa especifica que le haga falta.
- *
- * Nonograsma es un SceneManager y va en el motor.
- * El fade tambien en el motor y que sea mas general como una transicion entre escenas (si tenemos tiempo)
- * contraints que sean dos archivos separados CONSTRAINT_X
- *
- * esta bien lo de las contraints y el otro layout? Si esta refino
- *
- * GameManager se puede hacer desde el lanzador en verdad.
- *===================
- * el restore data se hace en el onCreate()
- *
- * Por que decian que habia que guardarse datos cuando se cambia la orientacion de la pantalla y que eso en teoria llama al onCreate de nuevo
- *
- * para guardar el checksum del fichero de persistencia, deberiamos guardarlo en otro fichero el cual encriptemos?
- *
- * para guardar datos, por ejemplo vidas, monedas y cosas pequeñas, renta usar un fichero o hay algo mas eficiente que persista aunque la aplicacion
- * muera completamente? checksum
- *
- * cuando muere la app, si estaba jugando, deberia guardarse solo el estado de ese tablero en concreto
- * y si el jugador vuelve a iniciar la app y entra en ese tablero deberia estar como lo dejo.
- * Pero si entra en otro tablero distinto, sale y entra al que estaba guardado, deberia mostrarse su estado como lo dejo la ultima vez)
- *
- * no se guarda SOLAMENTE EL ULTIMO.
- *
- * >Boton de check automatico cuando gane
- *
- *
- * */
-
 public class Nonograma implements IGame {
     Engine engine;
     UserInterface userInterface;
@@ -77,20 +34,20 @@ public class Nonograma implements IGame {
     Stack sceneStack;
 
     private final  String SAVE_FILE_NAME = "boardState.txt";
+
     private final  String HASH_FILE_NAME = "hash.txt";
+
     public Nonograma(Engine engine, SharedPreferences pref) {
         this.engine = engine;
-
         mPreferences = pref;
-
         GameManager.init(engine);
-
         sceneStack = new Stack();
-
         userInterface = new UserInterface();
     }
 
-    //Escena de titulo inicial
+    /**
+     * Inicializa el juego con la escena de titulo
+     */
     @Override
     public void init() {
         GameManager.instance().restore(mPreferences);
@@ -98,6 +55,9 @@ public class Nonograma implements IGame {
         pushScene(new SceneTitle());
     }
 
+    /**
+     * Actualiza la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void update(Engine engine, double elapsedTime) {
         if(!sceneStack.empty()){
@@ -109,6 +69,9 @@ public class Nonograma implements IGame {
         }
     }
 
+    /**
+     * Renderiza la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void render(Graphics graphics) {
         if(!sceneStack.empty()){
@@ -116,41 +79,45 @@ public class Nonograma implements IGame {
 
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.render(graphics);
-
-            //        currScene.render(graphics);
         }
     }
 
+    /**
+     * Procesa el input la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void processInput(TouchEvent event) {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.input(engine, event);
-
-            //        currScene.input(event);
             userInterface.input(event);
         }
     }
 
+    /**
+     * Carga los recursos de la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void loadResources(Graphics graphics, Audio audio) {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.loadResources(graphics, audio);
-
-            //        currScene.loadResources(graphics);
         }
     }
 
-    //Iniciar nueva escena
+    /**
+     * Apila una nueva escena y la restaura en caso de haber valores guardados
+     */
     @Override
     public void pushScene(SceneBase newScene) {
         newScene.init(engine);
-        //Realmente solamente queremos guardar en fichero plano en la escena Game
         sceneStack.push(newScene);
         restoreScene(newScene instanceof SceneGame);
     }
 
+    /**
+     * Desapila una escena
+     */
     @Override
     public void previousScene() {
         sceneStack.pop();
@@ -158,12 +125,15 @@ public class Nonograma implements IGame {
         scene.init(engine);
     }
 
+    /**
+     * Cambia a una escena que se encuentra en la pila dado el nombre de su clase.
+     * En caso de no estar, se devuelve false. De lo contrario se realizan varios desapilamientos
+     * hasta llegar a la encontrada y se devuelve true.
+     */
     @Override
     public boolean changeScene(String sceneClassName) {
         Iterator iterator = sceneStack.iterator();
-
         System.out.println("Searching");
-
         boolean hasBeenFound = false;
         int skipped = 0;
         while(iterator.hasNext() && !hasBeenFound){
@@ -193,6 +163,9 @@ public class Nonograma implements IGame {
         return true;
     }
 
+    /**
+     * Devuelve la escena que se encuentra en la cima de la pila
+     */
     @Override
     public SceneBase getScene() {
         if(!sceneStack.empty())
@@ -200,6 +173,9 @@ public class Nonograma implements IGame {
         else return null;
     }
 
+    /**
+     * Reanuda la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void onResume() {
         engine.getAudio().getMusic().play();
@@ -207,11 +183,13 @@ public class Nonograma implements IGame {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
             scene.onResume();
-//            currScene.onResume();
         }
 
     }
 
+    /**
+     * Pausa la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void onPause() {
         engine.getAudio().getMusic().pause();
@@ -223,6 +201,11 @@ public class Nonograma implements IGame {
         }
     }
 
+    /**
+     * Guarda los datos generales de la partida y si se necesita se guarda el contenido
+     * de la escena que se encuentra en la cima de la pila en un fichero de texto.
+     * Para este se genera un hash para la prevención de manipulacion externa.
+     */
     @Override
     public void save() {
         FileOutputStream fos = null;
@@ -261,11 +244,19 @@ public class Nonograma implements IGame {
         }
     }
 
+    /**
+     * Restaura la escena que se encuentra en la cima de la pila
+     */
     @Override
     public void restore() {
         restoreScene(true);
     }
 
+    /**
+     * Reanuda la escena que se encuentra en la cima de la pila. Si se trata de la escena SceneGame
+     * se restaura el estado del tablero mediante un fichero de texto, cuyo hash se ha comprobado
+     * anteriormente para la prevención de manipulación externa.
+     */
     public void restoreScene(boolean openFile) {
         FileInputStream fos = null;
         BufferedReader reader = null;
@@ -303,8 +294,10 @@ public class Nonograma implements IGame {
         }
     }
 
-    //Dados varios archivos en orden concreto, comprobamos cada checksum con el almacenado en ese mismo orden.
+    /*Dados varios archivos en orden concreto, comprobamos cada checksum con el almacenado en ese mismo orden.
+    */
     public boolean checkHash(String[] filename){
+
         //Use MD5 algorithm
         MessageDigest md5Digest = null;
         FileInputStream fos = null;
@@ -340,6 +333,10 @@ public class Nonograma implements IGame {
         return true;
     }
 
+    /**
+     * Informa a la escena que se encuentra en la cima de la pila de que ha habido un giro de
+     * pantalla.
+     */
     @Override
     public void orientationChanged(boolean isHorizontal) {
         SceneBase scene = (SceneBase) sceneStack.peek();
@@ -351,6 +348,10 @@ public class Nonograma implements IGame {
         return userInterface;
     }
 
+    /**
+     * Manda un mensaje a la escena que se encuentra en la cima de la pila o
+     * si se trata de una notificación con recompensa se manda al GameManager.
+     */
     @Override
     public void sendMessage(Message message) {
         if(message.getType() == MESSAGE_TYPE.REWARD_NOTIFICATION){
