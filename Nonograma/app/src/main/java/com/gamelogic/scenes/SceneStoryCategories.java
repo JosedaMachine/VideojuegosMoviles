@@ -2,6 +2,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
@@ -24,20 +25,19 @@ import java.util.List;
 
 public class SceneStoryCategories implements SceneBase {
     Font title, levelLabel, numFont;
-    Engine engine;
     private Fade fade;
 
-    public SceneStoryCategories(Engine engine_) {
-        this.engine = engine_;
+    public SceneStoryCategories() {
     }
 
     List<Button> levels;
     Button bttReturn;
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void init(Engine engine) {
+        Graphics graphics = engine.getGraphics();
+        loadResources(graphics, engine.getAudio());
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
@@ -66,7 +66,7 @@ public class SceneStoryCategories implements SceneBase {
                 int newPosX = posX + (j*size) + (j*xOffset),
                         newPosY = posY + (i*size) + (i*yOffset);
 
-                levels.add(createCategory(newPosX, newPosY, size, size, cont));
+                levels.add(createCategory(engine, newPosX, newPosY, size, size, cont));
                 cont++;
             }
         }
@@ -80,7 +80,7 @@ public class SceneStoryCategories implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
+                    if(isInside(graphics, event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -103,15 +103,15 @@ public class SceneStoryCategories implements SceneBase {
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+        bttReturn.setBackgroundImage(graphics.getImage("buttonbox"));
 
-        if(engine.getGraphics().orientationHorizontal()){
-            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        if(graphics.orientationHorizontal()){
+            horizontalLayout(graphics, logicWidth, logicHeight);
         }
     }
 
     //Boton de creacion de nivel
-    private Button createCategory(int x, int y, int sizeX, int sizeY, final int i){
+    private Button createCategory(Engine engine,int x, int y, int sizeX, int sizeY, final int i){
         final Button button = new Button("", x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
@@ -140,7 +140,7 @@ public class SceneStoryCategories implements SceneBase {
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
-                    engine.getGame().pushScene(new SceneStoryLevels(engine, i));
+                    engine.getGame().pushScene(new SceneStoryLevels(i));
                 }
             }
         };
@@ -196,9 +196,9 @@ public class SceneStoryCategories implements SceneBase {
         int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
         int posY = (int)(logicHeight/2.5) - size/2;
 
-        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
-        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
-        levelLabel = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
+        numFont = g.newFont("arcade.TTF", (int)(g.getLogicHeight() * 0.04f), false);
+        title = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.05f),true);
+        levelLabel = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.04f),true);
         int cont = 0;
         for (int i = 0; i < numFils; i++){
             for (int j = 0; j < numCols; j++){
@@ -235,9 +235,9 @@ public class SceneStoryCategories implements SceneBase {
         int posX = (logicWidth - (size*numCols + xOffset*(numCols-1)))/2;
         int posY = (int)(logicHeight/2.5) - size/2;
 
-        numFont = g.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f * 2), false);
-        title = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f * 2),true);
-        levelLabel = g.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f * 1.3),true);
+        numFont = g.newFont("arcade.TTF", (int)(g.getLogicHeight() * 0.04f * 2), false);
+        title = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.05f * 2),true);
+        levelLabel = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.04f * 1.3),true);
         ConstraintX[] constrX = {ConstraintX.LEFT, ConstraintX.CENTER, ConstraintX.CENTER, ConstraintX.RIGHT};
         int[] xOffsets = {(int) (size*0.2f), (int) (-size*1.1f), (int) (size*0.005f), (int) (-size*1.3)};
         for (int i = 0; i < levels.size(); i++){
@@ -257,7 +257,7 @@ public class SceneStoryCategories implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine engine, double deltaTime) {
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
         for(int i = 0; i < levels.size(); i++){
@@ -266,7 +266,7 @@ public class SceneStoryCategories implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(Engine e, TouchEvent event) {
         bttReturn.input(event);
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).input(event);
@@ -274,17 +274,17 @@ public class SceneStoryCategories implements SceneBase {
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         graphics.newImage("lock.png", "lock");
 
         for(int i = 0; i<4;i++)
             graphics.newImage("category" + i + ".png", "category" + i );
 
-        engine.getAudio().newSound("wrong.wav");
+        audio.newSound("wrong.wav");
 
-        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
-        title = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
-        levelLabel = graphics.newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.04f),true);
+        numFont = graphics.newFont("arcade.TTF", (int)(graphics.getLogicHeight() * 0.04f), false);
+        title = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.05f),true);
+        levelLabel = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.04f),true);
     }
 
     @Override
@@ -298,24 +298,23 @@ public class SceneStoryCategories implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
-
+    public void processMessage(Engine e, Message msg) {
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void orientationChanged(Graphics graphics, boolean isHorizontal) {
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         if(isHorizontal){
-            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+            horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
-            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+            verticalLayout(graphics, logicWidth, logicHeight);
         }
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine e,String filename, SharedPreferences mPreferences) {
     }
 
     @Override

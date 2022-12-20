@@ -3,6 +3,7 @@ package com.gamelogic.scenes;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
@@ -25,9 +26,6 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 
 public class SceneVictory implements SceneBase {
-
-    private final Engine engine;
-
     private Button button,
             shareButton,
             adButton;
@@ -39,17 +37,17 @@ public class SceneVictory implements SceneBase {
     private final Board checkBoard;
     private int reward;
 
-    public SceneVictory(Engine engine_, Board checkboard, int reward) {
+    public SceneVictory(Board checkboard, int reward) {
         this.checkBoard = checkboard;
-        this.engine = engine_;
         this.reward = reward;
     }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void init(Engine engine) {
+        Graphics graphics = engine.getGraphics();
+        loadResources(graphics, engine.getAudio());
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
@@ -68,7 +66,7 @@ public class SceneVictory implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (shareButton.isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                    if (shareButton.isInside(graphics, event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         engine.getContext().startActivity(Intent.createChooser(
                                 GameManager.instance().getTwitterIntent("Just beat a level on NONOGRAM!"), "Share in: "));
@@ -90,7 +88,7 @@ public class SceneVictory implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (adButton.isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                    if (adButton.isInside(graphics, event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         AdManager.instance().showRewardedAd(rewardMessage);
                     }
@@ -113,7 +111,7 @@ public class SceneVictory implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (button.isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                    if (button.isInside(graphics, event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
                         fade.triggerFade();
                     }
@@ -134,15 +132,15 @@ public class SceneVictory implements SceneBase {
 
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+        button.setBackgroundImage(graphics.getImage("buttonbox"));
 
         adButton.setFont(buttonFont);
         adButton.setColor(ColorWrap.BLACK);
-        adButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+        adButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
         shareButton.setFont(buttonFont);
         shareButton.setColor(ColorWrap.BLACK);
-        shareButton.setBackgroundImage(engine.getGraphics().getImage("share"));
+        shareButton.setBackgroundImage(graphics.getImage("share"));
 
         GameManager.instance().addMoney(reward);
         GameManager.instance().updateInterface();
@@ -173,7 +171,7 @@ public class SceneVictory implements SceneBase {
         graphics.drawImage(coin, (int) (logicWidth / 2 + dime.first / 2 + offsetX), (int)(logicHeight / 5 - offsetY), coinScale, coinScale);
 
         //Tablero correcto
-        checkBoard.drawBoard(engine, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2,
+        checkBoard.drawBoard(graphics, logicWidth / 2 - checkBoard.getWidth() / 2, logicHeight / 2 - checkBoard.getHeight() / 2,
                 true, GameManager.instance().getPalette().ordinal());
 
         //Boton de vuelta al menu
@@ -184,21 +182,21 @@ public class SceneVictory implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine e, double deltaTime) {
         fade.update(deltaTime);
         button.update(deltaTime);
         adButton.update(deltaTime);
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(Engine e, TouchEvent event) {
         shareButton.input(event);
         button.input(event);
         adButton.input(event);
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         graphics.newImage("share.png", "share");
 
         title = graphics.newFont("arcade.TTF", 75, true);
@@ -217,7 +215,7 @@ public class SceneVictory implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
+    public void processMessage(Engine engine,Message msg) {
         if(msg.getType() == MESSAGE_TYPE.REWARD_AD){
             GameManager.instance().addMoney(msg.reward);
             this.reward *= 2;
@@ -227,12 +225,12 @@ public class SceneVictory implements SceneBase {
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
+    public void orientationChanged(Graphics g, boolean isHorizontal) {
 
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine engine, String filename, SharedPreferences mPreferences) {
     }
 
     @Override

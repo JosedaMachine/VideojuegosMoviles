@@ -12,10 +12,10 @@ public interface IGame {
     boolean changeScene(String sceneClassName);
     SceneBase getScene();
     void init();
-    void update(double elapsedTime);
+    void update(Engine engine,double elapsedTime);
     void render(Graphics graphics);
     void processInput(TouchEvent event);
-    void loadImages(Graphics graphics);
+    void loadResources(Graphics graphics, Audio audio);
     void onResume();
     void onPause();
     void orientationChanged(boolean isHorizontal);

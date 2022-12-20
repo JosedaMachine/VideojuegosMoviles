@@ -2,6 +2,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
@@ -13,30 +14,24 @@ import com.engineandroid.Message;
 import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.managers.GameManager;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 
 public class SceneDefeat implements SceneBase {
-
-    private final Engine engine;
-
     private Button button;
     private Font title, buttonFont;
     private final String victoryText = "DEFEAT!";
 
     private Fade fade;
 
-    public SceneDefeat(Engine engine_) {
-        this.engine = engine_;
+    public SceneDefeat() {
     }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
+    public void init(Engine engine) {
+        loadResources(engine.getGraphics(), engine.getAudio());
         int logicWidth = engine.getGraphics().getLogicWidth();
         int logicHeight = engine.getGraphics().getLogicHeight();
 
@@ -109,18 +104,18 @@ public class SceneDefeat implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine engine, double deltaTime) {
         fade.update(deltaTime);
         button.update(deltaTime);
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(Engine engine,TouchEvent event) {
         button.input(event);
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         graphics.newImage("skull.png", "skull");
 
         title = graphics.newFont("arcade.TTF",75,true);
@@ -139,17 +134,17 @@ public class SceneDefeat implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
+    public void processMessage(Engine e, Message msg) {
 
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
+    public void orientationChanged(Graphics g,boolean isHorizontal) {
 
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine e, String filename, SharedPreferences mPreferences) {
 
     }
 

@@ -2,6 +2,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
@@ -42,7 +43,7 @@ public class SceneGame implements SceneBase {
     }
 
     //region Variables y Constructora
-    private final Engine engine;
+
     //Tablero chuleta para comprobar
     private Board checkBoard;
     //Tablero que ve el jugador
@@ -115,16 +116,13 @@ public class SceneGame implements SceneBase {
             "giraffe2", "mouse2", "pelican", "dinosaur",
             "parrot", "squid", "owl", "deer2"};
 
-    public SceneGame(Engine engine, int rows, int cols, int reward) {
-        this.engine = engine;
+    public SceneGame(int rows, int cols, int reward) {
         rows_ = rows;
         cols_ = cols;
         this.reward = reward;
     }
 
-    public SceneGame(Engine engine, int rows, int cols, CATEGORY cat, int index) {
-        this.engine = engine;
-
+    public SceneGame(int rows, int cols, CATEGORY cat, int index) {
         //Story mode reward fijo
         this.reward = 10;
         rows_ = rows;
@@ -146,11 +144,13 @@ public class SceneGame implements SceneBase {
     //region Override methods
 
     @Override
-    public void init() {
+    public void init(Engine engine) {
         tileTouchedInfo_ = new TileTouched();
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+        Graphics graphics = engine.getGraphics();
+
+        loadResources(graphics, engine.getAudio());
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
@@ -163,7 +163,7 @@ public class SceneGame implements SceneBase {
         boardSize = (int) (logicWidth *0.1f);
 
         if (levelName != null) {
-            createLevel(levelName, boardSize);
+            createLevel(engine ,levelName, boardSize);
         } else createLevel(boardSize);
 
         boardHasChanged = gameBoard.hasChanged();
@@ -172,7 +172,7 @@ public class SceneGame implements SceneBase {
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f),
@@ -185,7 +185,7 @@ public class SceneGame implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
                         checkWin = true;
                     }
                 }
@@ -205,7 +205,7 @@ public class SceneGame implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (isInside(engine.getGraphics(),event_.getX_(), event_.getY_())) {
+                    if (isInside(graphics,event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
 
                         if (fade.getState() != Fade.STATE_FADE.Out) {
@@ -230,10 +230,10 @@ public class SceneGame implements SceneBase {
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         //TODO: si se entra en horizontal como que esto esta raro, pero si se entra en vertical y luego se cambia esta bien
-        if(engine.getGraphics().orientationHorizontal()){
-            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+        if(graphics.orientationHorizontal()){
+            horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
-            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+            verticalLayout(graphics, logicWidth, logicHeight);
         }
     }
 
@@ -245,15 +245,15 @@ public class SceneGame implements SceneBase {
 
         //Tablero
         graphics.setColor(ColorWrap.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, logicWidth / 2 + checkBoardPosX, logicHeight / 2 + checkBoardPosY, pixelFont);
-        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+        checkBoard.drawInfoRects(graphics, logicWidth / 2 + checkBoardPosX, logicHeight / 2 + checkBoardPosY, pixelFont);
+        gameBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
 
         //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if (DEBUG) {
-            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
+            checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
         }
 
         //Corazones
@@ -263,8 +263,8 @@ public class SceneGame implements SceneBase {
 
         for (int i = 0; i < maxLives; i++) {
             graphics.drawImage((i < lives) ? heart : emHeart,
-                    (int) (getHeartPosX(logicWidth) + heartOffsetX * i),
-                    (int) (getHeartPosY(logicHeight) + heartOffsetY * i), heartScale, heartScale);
+                    (int) (getHeartPosX(graphics, logicWidth) + heartOffsetX * i),
+                    (int) (getHeartPosY(graphics, logicHeight) + heartOffsetY * i), heartScale, heartScale);
         }
 
         //TODO recolocar y Layout horizontal
@@ -289,7 +289,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine engine, double deltaTime) {
         //Comprueba la victoria
         if (checkWin) {
             hasWon = checkHasWon();
@@ -301,7 +301,7 @@ public class SceneGame implements SceneBase {
 
                 //Si nivel historia y vidas == 0
                 if (!subtractLife()) {
-                    engine.getGame().pushScene(new SceneDefeat(engine));
+                    engine.getGame().pushScene(new SceneDefeat());
                 }
             }
         }
@@ -326,14 +326,14 @@ public class SceneGame implements SceneBase {
                     GameManager.instance().setLevelIndex(category, lvlIndex + 1);
             }
 
-            engine.getGame().pushScene(new SceneVictory(engine, checkBoard, reward));
+            engine.getGame().pushScene(new SceneVictory(checkBoard, reward));
         }
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
     }
 
     @Override
-    public void input(TouchEvent event_) {
+    public void input(Engine engine, TouchEvent event_) {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
 
@@ -375,7 +375,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         System.out.println("Loading Resources...");
 
         int palette = GameManager.instance().getPalette().ordinal();
@@ -391,12 +391,12 @@ public class SceneGame implements SceneBase {
 
         graphics.newImage("lockedbutton.png", "lockedbutt");
 
-        numFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
-        checkFont = graphics.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
-        pixelFont = graphics.newFont("upheavtt.ttf", (int) (engine.getGraphics().getLogicHeight() * 0.1f), false);
+        numFont = graphics.newFont("arcade.TTF", (int) (graphics.getLogicHeight() * 0.04f), false);
+        checkFont = graphics.newFont("arcade.TTF", (int) (graphics.getLogicHeight() * 0.04f), false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int) (graphics.getLogicHeight() * 0.1f), false);
 
-        engine.getAudio().newSound("wrong.wav");
-        engine.getAudio().newSound("correct.wav");
+        audio.newSound("wrong.wav");
+        audio.newSound("correct.wav");
 
         System.out.println("Resources Loaded");
     }
@@ -410,20 +410,19 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
-
+    public void processMessage(Engine e, Message msg) {
     }
 
-    public int getHeartPosX(int logicWidth){
-        if(engine.getGraphics().orientationHorizontal()){
+    public int getHeartPosX(Graphics g, int  logicWidth){
+        if(g.orientationHorizontal()){
             return (int) (checkBoard.getPosX() + checkBoard.getWidth() +  logicWidth * 0.4f);
         }else{
             return checkBoard.getPosX();
         }
     }
 
-    public int getHeartPosY(int logicHeight){
-        if(engine.getGraphics().orientationHorizontal()){
+    public int getHeartPosY(Graphics g, int logicHeight){
+        if(g.orientationHorizontal()){
             return (int) (checkBoard.getPosY() + checkBoard.getHeight()*0.1);
         }else{
             return (int) (checkBoard.getPosY() + checkBoard.getHeight() + logicHeight * 0.005f);
@@ -452,15 +451,15 @@ public class SceneGame implements SceneBase {
 
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+        pixelFont = g.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
 
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f * 3),
                 bttWidth = (int) (logicWidth * 0.25f * 3),
                 bttHeight = (int) (logicWidth * 0.0833f* 3);
-        numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f) * 3, false);
-        checkFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f * 1.5) , false);
+        numFont = g.newFont("arcade.TTF", (int) (g.getLogicHeight() * 0.04f) * 3, false);
+        checkFont = g.newFont("arcade.TTF", (int) (g.getLogicHeight() * 0.04f * 1.5) , false);
         //Check Win button
         bttCheckWin.setFont(numFont);
         bttCheckWin.setSize(bttWidth,bttHeight);
@@ -494,15 +493,15 @@ public class SceneGame implements SceneBase {
 
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int) (logicHeight * size), false);
+        pixelFont = g.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.16f),
                 bttWidth = (int) (logicWidth * 0.25f),
                 bttHeight = (int) (logicWidth * 0.0833f);
 //
-        numFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
-        checkFont = g.newFont("arcade.TTF", (int) (engine.getGraphics().getLogicHeight() * 0.04f), false);
+        numFont = g.newFont("arcade.TTF", (int) (g.getLogicHeight() * 0.04f), false);
+        checkFont = g.newFont("arcade.TTF", (int) (g.getLogicHeight() * 0.04f), false);
 
         //Check Win button
         bttCheckWin.setFont(numFont);
@@ -520,19 +519,19 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void orientationChanged(Graphics graphics,boolean isHorizontal) {
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         if(isHorizontal){
-            horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
+            horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
-            verticalLayout(engine.getGraphics(), logicWidth, logicHeight);
+            verticalLayout(graphics, logicWidth, logicHeight);
         }
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine engine,String filename, SharedPreferences mPreferences) {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 
         //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
@@ -621,10 +620,10 @@ public class SceneGame implements SceneBase {
 
     //region methods
 
-    private void createLevel(String levelName, int boardSize) {
+    private void createLevel(Engine eng, String levelName, int boardSize) {
         BufferedReader reader_ = null;
         try {
-            reader_ = engine.openAssetFile("levels/" + levelName + ".txt");
+            reader_ = eng.openAssetFile("levels/" + levelName + ".txt");
             checkBoard = new Board(reader_, boardSize, boardSize, tileSize);
         } catch (IOException e) {
             System.out.println("Error opening file");

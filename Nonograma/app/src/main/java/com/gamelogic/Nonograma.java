@@ -3,6 +3,7 @@ package com.gamelogic;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.Engine;
 import com.engineandroid.IGame;
 import com.engineandroid.Graphics;
@@ -96,14 +97,14 @@ public class Nonograma implements IGame {
     public void init() {
         GameManager.instance().restore(mPreferences);
         assert sceneStack.empty();
-        pushScene(new SceneTitle(engine));
+        pushScene(new SceneTitle());
     }
 
     @Override
-    public void update(double elapsedTime) {
+    public void update(Engine engine, double elapsedTime) {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.update(elapsedTime);
+            scene.update(engine, elapsedTime);
 
             //currScene.update(elapsedTime);
             userInterface.update(elapsedTime);
@@ -126,7 +127,7 @@ public class Nonograma implements IGame {
     public void processInput(TouchEvent event) {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.input(event);
+            scene.input(engine, event);
 
             //        currScene.input(event);
             userInterface.input(event);
@@ -134,10 +135,10 @@ public class Nonograma implements IGame {
     }
 
     @Override
-    public void loadImages(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         if(!sceneStack.empty()){
             SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.loadResources(graphics);
+            scene.loadResources(graphics, audio);
 
             //        currScene.loadResources(graphics);
         }
@@ -146,7 +147,7 @@ public class Nonograma implements IGame {
     //Iniciar nueva escena
     @Override
     public void pushScene(SceneBase newScene) {
-        newScene.init();
+        newScene.init(engine);
         //Realmente solamente queremos guardar en fichero plano en la escena Game
         sceneStack.push(newScene);
         restoreScene(newScene instanceof SceneGame);
@@ -156,7 +157,7 @@ public class Nonograma implements IGame {
     public void previousScene() {
         sceneStack.pop();
         SceneBase scene = (SceneBase) sceneStack.peek();
-        scene.init();
+        scene.init(engine);
     }
 
     @Override
@@ -232,7 +233,7 @@ public class Nonograma implements IGame {
         if(!sceneStack.empty()){
             GameManager.instance().save(mPreferences);
             SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.save(SAVE_FILE_NAME, mPreferences);
+            scene.save(engine, SAVE_FILE_NAME, mPreferences);
         }
 
         File file = new File(engine.getContext().getFilesDir(), SAVE_FILE_NAME);
@@ -344,7 +345,7 @@ public class Nonograma implements IGame {
     @Override
     public void orientationChanged(boolean isHorizontal) {
         SceneBase scene = (SceneBase) sceneStack.peek();
-        scene.orientationChanged(isHorizontal);
+        scene.orientationChanged(engine.getGraphics(),isHorizontal);
     }
 
     @Override
@@ -358,7 +359,7 @@ public class Nonograma implements IGame {
             GameManager.instance().addMoney(message.reward);
         }else {
             SceneBase scene = (SceneBase) sceneStack.peek();
-            scene.processMessage(message);
+            scene.processMessage(engine, message);
         }
     }
 }

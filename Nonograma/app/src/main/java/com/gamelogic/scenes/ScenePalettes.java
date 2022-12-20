@@ -3,6 +3,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
@@ -24,27 +25,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScenePalettes implements SceneBase {
-
-    private Engine engine;
-
     private Button button;
     List<Button> palettes;
-    int selectedPalette;
 
     private Font title, buttonFont;
     private final String text = "Select a palette";
 
     private Fade fade;
 
-    public ScenePalettes(Engine engine_) {
-        this.engine = engine_;
-    }
+    public ScenePalettes() {    }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void init(Engine engine) {
+        Graphics graphics = engine.getGraphics();
+        loadResources(graphics, engine.getAudio());
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
@@ -91,7 +87,7 @@ public class ScenePalettes implements SceneBase {
         posY = logicHeight / 2 - size/2;
 
         for (int i = 0; i < 3; i++) {
-            palettes.add(createPalette(posX + size * i + offset*i, posY, size, size, i));
+            palettes.add(createPalette(engine,posX + size * i + offset*i, posY, size, size, i));
         }
 
 
@@ -101,12 +97,12 @@ public class ScenePalettes implements SceneBase {
     }
 
     //Boton de seleccion de paleta
-    private Button createPalette(int x, int y, int sizeX, int sizeY, final int i) {
+    private Button createPalette(Engine e,int x, int y, int sizeX, int sizeY, final int i) {
         final Button button = new Button("", x, y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
-                    if (isInside(engine.getGraphics(), event_.getX_(), event_.getY_())) {
+                    if (isInside(e.getGraphics(), event_.getX_(), event_.getY_())) {
 
                         GameManager gmInstance = GameManager.instance();
 
@@ -114,18 +110,18 @@ public class ScenePalettes implements SceneBase {
 
                         //Si no esta bloqueado
                         if (p.first) {
-                            engine.getAudio().playSound("click.wav");
+                            e.getAudio().playSound("click.wav");
                             setSelected(true);
                             gmInstance.setPalette(i);
-                            setBackgroundImage(engine.getGraphics().getImage("spalette" + i));
+                            setBackgroundImage(e.getGraphics().getImage("spalette" + i));
                         } else if (p.second <= gmInstance.getMoney()){
                             gmInstance.addMoney(-p.second);
                             gmInstance.updateInterface();
                             gmInstance.setPaletteUnlocked(i, true, 0);
-                            setBackgroundImage(engine.getGraphics().getImage("palette" + i));
+                            setBackgroundImage(e.getGraphics().getImage("palette" + i));
                         }
                         else
-                            engine.getAudio().playSound("wrong.wav");
+                            e.getAudio().playSound("wrong.wav");
                     }
                 }
             }
@@ -135,7 +131,7 @@ public class ScenePalettes implements SceneBase {
                 //quitar seleccion si otra es seleccionada
                 if(isSelected() && GameManager.instance().getPalette().ordinal() != i){
                     setSelected(false);
-                    setBackgroundImage(engine.getGraphics().getImage("palette" + i));
+                    setBackgroundImage(e.getGraphics().getImage("palette" + i));
                 }
             }
         };
@@ -150,10 +146,10 @@ public class ScenePalettes implements SceneBase {
             } else
                 prefix = "";
 
-            button.setBackgroundImage(engine.getGraphics().getImage(prefix + "palette" + i));
+            button.setBackgroundImage(e.getGraphics().getImage(prefix + "palette" + i));
         }
         else
-            button.setBackgroundImage(engine.getGraphics().getImage("lock"));
+            button.setBackgroundImage(e.getGraphics().getImage("lock"));
 
         return button;
     }
@@ -200,7 +196,7 @@ public class ScenePalettes implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine engine,double deltaTime) {
         fade.update(deltaTime);
         button.update(deltaTime);
         for (int i = 0; i < palettes.size(); i++) {
@@ -209,7 +205,7 @@ public class ScenePalettes implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(Engine engine, TouchEvent event) {
         button.input(event);
         for (int i = 0; i < palettes.size(); i++) {
             palettes.get(i).input(event);
@@ -217,7 +213,7 @@ public class ScenePalettes implements SceneBase {
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         graphics.newImage("palette0.png", "palette0");
         graphics.newImage("palette1.png", "palette1");
         graphics.newImage("palette2.png", "palette2");
@@ -227,7 +223,7 @@ public class ScenePalettes implements SceneBase {
 
         graphics.newImage("lock.png", "lock");
 
-        engine.getAudio().newSound("wrong.wav");
+        audio.newSound("wrong.wav");
 
         title = graphics.newFont("arcade.TTF", 65, true);
         buttonFont = graphics.newFont("arcade.TTF", 50, true);
@@ -244,17 +240,17 @@ public class ScenePalettes implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
+    public void processMessage(Engine e, Message msg) {
 
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
+    public void orientationChanged(Graphics graphics, boolean isHorizontal) {
 
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine e, String filename, SharedPreferences mPreferences) {
     }
 
     @Override

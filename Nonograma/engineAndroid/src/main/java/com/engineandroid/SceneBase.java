@@ -7,25 +7,25 @@ import java.io.FileOutputStream;
 
 // Base genérica de las escenas para manejo en Game
 public interface SceneBase {
-    void init();
+    void init(Engine engine);
 
     void render(Graphics graphics);
 
-    void update(double deltaTime);
+    void update(Engine engine, double deltaTime);
 
-    void input(TouchEvent event);
+    void input(Engine e, TouchEvent event);
 
-    void loadResources(Graphics graphics);
+    void loadResources(Graphics graphics, Audio audio);
 
     void onResume();
 
     void onPause();
 
-    void processMessage(Message msg);
+    void processMessage(Engine engine,Message msg);
 
-    void orientationChanged(boolean isHorizontal);
+    void orientationChanged(Graphics graphics, boolean isHorizontal);
 
-    void save(String filename, SharedPreferences mPreferences);
+    void save(Engine engine, String filename, SharedPreferences mPreferences);
 
     void restore(BufferedReader reader, SharedPreferences mPreferences);
 

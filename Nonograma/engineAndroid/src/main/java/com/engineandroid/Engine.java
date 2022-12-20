@@ -169,7 +169,7 @@ public class Engine implements Runnable{
     }
 
     public void update(double elapsedTime) {
-        currGame.update(elapsedTime);
+        currGame.update(this, elapsedTime);
     }
 
     public void render() {

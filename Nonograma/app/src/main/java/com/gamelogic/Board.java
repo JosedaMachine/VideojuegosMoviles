@@ -294,19 +294,19 @@ public class Board {
         return diff;
     }
 
-    private void drawNumRect(Engine e) {
+    private void drawNumRect(Graphics g) {
 
         // dibujar cuadro lateral
-        e.getGraphics().drawLine(alphaX, posY + (int)relationY*rows, posX, posY + (int)relationY*rows);
-        e.getGraphics().drawLine(alphaX, posY, posX, posY);
-        e.getGraphics().drawLine(alphaX, posY, alphaX, posY + (int)relationY*rows);
+        g.drawLine(alphaX, posY + (int)relationY*rows, posX, posY + (int)relationY*rows);
+        g.drawLine(alphaX, posY, posX, posY);
+        g.drawLine(alphaX, posY, alphaX, posY + (int)relationY*rows);
         //Dibujar cuadro superior
-        e.getGraphics().drawLine(posX, alphaY, posX, posY);
-        e.getGraphics().drawLine(posX + (int)relationX*cols, alphaY, posX + (int)relationX*cols, posY);
-        e.getGraphics().drawLine(posX, alphaY, posX + (int)relationX*cols, alphaY);
+        g.drawLine(posX, alphaY, posX, posY);
+        g.drawLine(posX + (int)relationX*cols, alphaY, posX + (int)relationX*cols, posY);
+        g.drawLine(posX, alphaY, posX + (int)relationX*cols, alphaY);
     }
 
-    private void drawNums(Engine e, int fontSize) {
+    private void drawNums(Graphics g, int fontSize) {
         int i, j;
         //Dibujar numero de correctos Horizontal
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -314,7 +314,7 @@ public class Board {
             for (j = size - 1; j >= 0; j--) {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
-                    e.getGraphics().drawText(num.toString(),
+                    g.drawText(num.toString(),
                             posX - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
                             (int) (i * (int)relationY) + posY + (int)((int)relationY/1.3));
             }
@@ -326,7 +326,7 @@ public class Board {
             for (j = size - 1; j >= 0; j--) {
                 Integer num = adyancentsVertical.get(i).get(j);
                 if (num != 0)
-                    e.getGraphics().drawText(num.toString(),
+                    g.drawText(num.toString(),
                             (int) (i * (int)relationX) + posX + ((int)relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
                             posY - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
@@ -334,7 +334,7 @@ public class Board {
         }
     }
 
-    public void drawBoard(Engine e, int x, int y, boolean win, int pal) {
+    public void drawBoard(Graphics g, int x, int y, boolean win, int pal) {
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
@@ -342,22 +342,22 @@ public class Board {
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                Image im = tileImage(e, board[i][j], pal);
+                Image im = tileImage(g, board[i][j], pal);
                 assert im != null;
 
                 if(board[i][j] == TILE.FILL && !hasChanged_)
                     hasChanged_ = true;
 
                 if(!win || board[i][j] == TILE.FILL)
-                    e.getGraphics().drawImage(im, i * (int)(relationX) + x, j * (int)(relationY) + y ,
+                    g.drawImage(im, i * (int)(relationX) + x, j * (int)(relationY) + y ,
                         relationX / tileSize, relationY / tileSize);
             }
         }
     }
 
-    public void drawInfoRects(Engine e, int x, int y, Font font) {
-        e.getGraphics().setFont(font);
-        e.getGraphics().setColor(ColorWrap.BLACK, 1.0f);
+    public void drawInfoRects(Graphics g, int x, int y, Font font) {
+        g.setFont(font);
+        g.setColor(ColorWrap.BLACK, 1.0f);
         int fontSize = font.getSize();
 
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X
@@ -374,9 +374,9 @@ public class Board {
         alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
         alphaY = y - maxVerticalFilled * (fontSize+fontSize/2);
 
-        drawNumRect(e);
+        drawNumRect(g);
 
-        drawNums(e, fontSize);
+        drawNums(g, fontSize);
     }
 
     public Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {
@@ -394,16 +394,16 @@ public class Board {
 
 
     //Coge image dependiendo del tile
-    private Image tileImage(Engine e, TILE t, int pal) {
+    private Image tileImage(Graphics g, TILE t, int pal) {
         switch (t) {
             case FILL:
-                return e.getGraphics().getImage("fill" + pal);
+                return g.getImage("fill" + pal);
             case CROSS:
-                return e.getGraphics().getImage("cross"+ pal);
+                return g.getImage("cross"+ pal);
             case EMPTY:
-                return e.getGraphics().getImage("empty"+ pal);
+                return g.getImage("empty"+ pal);
             case WRONG:
-                return e.getGraphics().getImage("wrong"+ pal);
+                return g.getImage("wrong"+ pal);
         }
         return null;
     }

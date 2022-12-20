@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
 import com.engineandroid.Engine;
@@ -29,7 +30,6 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 
 public class SceneTitle implements SceneBase {
-    private final Engine engine;
     private Fade fade;
     private Button quickButton, storyButton, paletteButton;
     private Font title;
@@ -37,15 +37,14 @@ public class SceneTitle implements SceneBase {
 
     private MagnetometerSensor magnetometerSensor;
 
-    public SceneTitle(Engine engine_) {
-        this.engine = engine_;
-    }
+    public SceneTitle() {    }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void init(Engine engine) {
+        Graphics graphics = engine.getGraphics();;
+        loadResources(graphics, engine.getAudio());
+        int logicWidth = graphics.getLogicWidth();
+        int logicHeight = graphics.getLogicHeight();
 
         //Fade In
         fade = new Fade(engine,
@@ -67,7 +66,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(quickButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
+                    if(quickButton.isInside(graphics, event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -87,11 +86,11 @@ public class SceneTitle implements SceneBase {
 
                     setSelected(false);
 
-                    engine.getGame().pushScene(new SceneQuickLevels(engine));
+                    engine.getGame().pushScene(new SceneQuickLevels());
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
-                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
+                    graphics.setClearColor(ColorWrap.WHITE);
                 }
             }
         };
@@ -103,7 +102,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(storyButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
+                    if(storyButton.isInside(graphics, event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -111,7 +110,7 @@ public class SceneTitle implements SceneBase {
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
-                            engine.getGraphics().setClearColor(ColorWrap.WHITE);
+                            graphics.setClearColor(ColorWrap.WHITE);
                         }
                     }
                 }
@@ -121,12 +120,12 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().pushScene(new SceneStoryCategories(engine));
+                    engine.getGame().pushScene(new SceneStoryCategories());
                     setSelected(false);
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
-                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
+                    graphics.setClearColor(ColorWrap.WHITE);
                 }
             }
         };
@@ -138,7 +137,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
-                    if(paletteButton.isInside(engine.getGraphics(), event_.getX_(),event_.getY_())){
+                    if(paletteButton.isInside(graphics, event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
 
@@ -158,29 +157,29 @@ public class SceneTitle implements SceneBase {
 
                     setSelected(false);
 
-                    engine.getGame().pushScene(new ScenePalettes(engine));
+                    engine.getGame().pushScene(new ScenePalettes());
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
-                    engine.getGraphics().setClearColor(ColorWrap.WHITE);
+                    graphics.setClearColor(ColorWrap.WHITE);
                 }
             }
         };
 
         quickButton.setFont(title);
         quickButton.setColor(ColorWrap.BLACK);
-        quickButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+        quickButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
         storyButton.setFont(title);
         storyButton.setColor(ColorWrap.BLACK);
-        storyButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+        storyButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
         paletteButton.setFont(title);
         paletteButton.setColor(ColorWrap.BLACK);
         paletteButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
-        if(engine.getGraphics().orientationHorizontal()){
-            horizontalLayout(logicWidth, logicHeight);
+        if(graphics.orientationHorizontal()){
+            horizontalLayout(graphics, logicWidth, logicHeight);
         }
 
         //Musica en loop
@@ -193,7 +192,7 @@ public class SceneTitle implements SceneBase {
         }
 
         //Acceleremoter
-        magnetometerSensor = new MagnetometerSensor(engine.getGraphics().getContext());
+        magnetometerSensor = new MagnetometerSensor(graphics.getContext());
 
         GameManager.instance().updateInterface();
     }
@@ -216,31 +215,31 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(Engine e,double deltaTime) {
         //Vacio
         fade.update(deltaTime);
         quickButton.update(deltaTime);
         storyButton.update(deltaTime);
         paletteButton.update(deltaTime);
-        updateBackground();
+        updateBackground(e.getGraphics());
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(Engine e,TouchEvent event) {
         quickButton.input(event);
         storyButton.input(event);
         paletteButton.input(event);
     }
 
     @Override
-    public void loadResources(Graphics graphics) {
+    public void loadResources(Graphics graphics, Audio audio) {
         graphics.newImage("buttonbox.png", "buttonbox");
         graphics.newImage("coin.png", "coin");
 
-        engine.getAudio().setMusic("music.wav");
-        engine.getAudio().newSound("click.wav");
+        audio.setMusic("music.wav");
+        audio.newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+        title = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.088f),true);
     }
 
     @Override
@@ -254,11 +253,11 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void processMessage(Message msg) {
-
+    public void processMessage(Engine e, Message msg) {
     }
 
-    private void horizontalLayout(int logicWidth, int logicHeight) {
+    @Override
+    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int)(logicWidth * 0.8f),
                 sizeY = (int)(logicHeight * 0.111f * 1.5f) ;
         //Izquierda
@@ -276,10 +275,11 @@ public class SceneTitle implements SceneBase {
         paletteButton.setX(logicWidth/2  - sizeX/2);
         paletteButton.setY((int) (logicHeight/2 - sizeY/2 + logicHeight * 0.4f));
 
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f * 2  ),true);
+        title = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.088f * 2  ),true);
     }
 
-    private void verticalLayout(int logicWidth, int logicHeight) {
+    @Override
+    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
         int sizeX = (int)(logicWidth * 0.8f),
                 sizeY = (int)(logicHeight * 0.111f);
 
@@ -295,23 +295,23 @@ public class SceneTitle implements SceneBase {
         paletteButton.setX(logicWidth/2  - sizeX/2);
         paletteButton.setY((int) (logicHeight/2 - sizeY/2 +  logicHeight * 0.4f));
 
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+        title = g.newFont("arcade.TTF",(int)(g.getLogicHeight() * 0.088f),true);
     }
 
     @Override
-    public void orientationChanged(boolean isHorizontal) {
-        int logicWidth = engine.getGraphics().getLogicWidth();
-        int logicHeight = engine.getGraphics().getLogicHeight();
+    public void orientationChanged(Graphics g,boolean isHorizontal) {
+        int logicWidth = g.getLogicWidth();
+        int logicHeight = g.getLogicHeight();
 
         if(isHorizontal){
-            horizontalLayout(logicWidth, logicHeight);
+            horizontalLayout(g,logicWidth, logicHeight);
         }else{
-            verticalLayout(logicWidth, logicHeight);
+            verticalLayout(g, logicWidth, logicHeight);
         }
     }
 
     @Override
-    public void save(String filename, SharedPreferences mPreferences) {
+    public void save(Engine e,String filename, SharedPreferences mPreferences) {
     }
 
     @Override
@@ -319,20 +319,10 @@ public class SceneTitle implements SceneBase {
 
     }
 
-    @Override
-    public void horizontalLayout(Graphics g, int logicWidth, int logicHeight) {
-
-    }
-
-    @Override
-    public void verticalLayout(Graphics g, int logicWidth, int logicHeight) {
-
-    }
-
-    private void updateBackground(){
+    private void updateBackground(Graphics g){
         float[] values = magnetometerSensor.getDeltaValues();
 
-        engine.getGraphics().setClearColor(Color.argb(255,
+        g.setClearColor(Color.argb(255,
                 (int)values[0]*1000%255,
                 (int)values[1]*1000%255,
                 (int)values[2]*1000%255));
