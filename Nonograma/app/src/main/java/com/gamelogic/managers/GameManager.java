@@ -82,12 +82,19 @@ public class GameManager {
         money = Math.min(maxMoney, money);
     }
 
+    // Actualiza o crea la interfaz del juego
+    // Nº de monedas + Imagen de moneda
+    // Llamar después de cambiar el dinero
     public void updateInterface(){
         UserInterface uinterface = engine.getGame().getUserInterface();
+        //Si ya la tenemos creada, se actualiza el dinero
         if(uinterface.getElement(0) != null){
             TextElement ui = (TextElement) engine.getGame().getUserInterface().getElement(0);
             ui.setText(getTextMoney());
-        }else{
+        }
+        //De lo contrario, se crea (y actualiza) de 0
+        else{
+            // Nº de monedas
             Font title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
             int logicWidth = engine.getGraphics().getLogicWidth();
             uinterface.clearElements();
@@ -97,7 +104,7 @@ public class GameManager {
                 @Override
                 public void input(TouchEvent event_) {}
             });
-
+            // Imagen de moneda
             uinterface.addElement(new ImageElement(engine.getGraphics().getImage("coin"), logicWidth - 65, 25, 55, 55) {
                 @Override
                 public void update(double deltaTime) {}
