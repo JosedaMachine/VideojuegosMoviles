@@ -257,7 +257,6 @@ public class SceneGame implements SceneBase {
         adButton.setColor(ColorWrap.BLACK);
         adButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
-        //TODO: si se entra en horizontal esta raro, pero si se entra en vertical y luego se cambia esta bien
         if(graphics.orientationHorizontal()){
             horizontalLayout(graphics, logicWidth, logicHeight);
         }else{
