@@ -296,7 +296,6 @@ public class SceneGame implements SceneBase {
                     (int) (getHeartPosY(graphics, logicHeight) + heartOffsetY * i), heartScale, heartScale);
         }
 
-        //TODO recolocar y Layout horizontal
         //Texto indicando casillas incorrectas
         if (!hasWon && timer < maxTime) {
             graphics.setFont(checkFont);
