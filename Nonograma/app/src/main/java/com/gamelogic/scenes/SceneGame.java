@@ -229,6 +229,7 @@ public class SceneGame implements SceneBase {
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
+        //TODO: si se entra en horizontal como que esto esta raro, pero si se entra en vertical y luego se cambia esta bien
         if(engine.getGraphics().orientationHorizontal()){
             horizontalLayout(engine.getGraphics(), logicWidth, logicHeight);
         }else{
@@ -441,13 +442,13 @@ public class SceneGame implements SceneBase {
         heartOffsetY = (int) (logicHeight * 0.005f + heart.getHeight() * heartScale);
 
         //Tablero
-        boardSize = (int) (logicWidth);
+        boardSize = (int) (logicWidth*0.8f);
         //int palette = GameManager.instance().getPalette().ordinal();
         checkBoard.setSize(boardSize, boardSize);
         gameBoard.setSize(boardSize, boardSize);
 
-        checkBoardPosX =  -gameBoard.getWidth() / 2;
-        checkBoardPosY = (int) (-gameBoard.getHeight() / 7.f);
+        checkBoardPosX = (int) (- (checkBoard.getWidth()* 0.5f));
+        checkBoardPosY = (int) ((checkBoard.getYInfoRect()) - (checkBoard.getHeight()* 0.5f));
 
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
@@ -569,7 +570,7 @@ public class SceneGame implements SceneBase {
             file.close();
 
         } catch (FileNotFoundException e) {
-            //TODO add message error.
+            System.out.println("File not found");
             e.printStackTrace();
         }
         catch (IOException e) {
@@ -610,7 +611,6 @@ public class SceneGame implements SceneBase {
 
             if (gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_) {
                 lives = mPreferences.getInt("lives", 3);
-                //TODO reward en quick???
                 checkBoard = new Board(reader, boardSize, boardSize, tileSize);
                 gameBoard.updateBoardState(reader);
             }

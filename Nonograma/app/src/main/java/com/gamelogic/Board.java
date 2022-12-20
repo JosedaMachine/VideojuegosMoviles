@@ -3,6 +3,7 @@ package com.gamelogic;
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
+import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.Pair;
 import com.gamelogic.enums.TILE;
@@ -27,6 +28,7 @@ public class Board {
     private int maxHorizontalFilled, maxVerticalFilled;
     private float relationX, relationY;
     private int posX, posY;
+    private int alphaX, alphaY;
 
     private int tileSize;
     private boolean hasChanged_ = false;
@@ -241,6 +243,9 @@ public class Board {
         return height;
     }
 
+    public int getXInfoRect() {return posX - alphaX; }
+    public int getYInfoRect() {return posY - alphaY; }
+
     public int getCols() {
         return cols;
     }
@@ -289,19 +294,19 @@ public class Board {
         return diff;
     }
 
-    private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
+    private void drawNumRect(Engine e) {
 
         // dibujar cuadro lateral
-        e.getGraphics().drawLine(alphaX, y + (int)relationY*rows, x, y + (int)relationY*rows);
-        e.getGraphics().drawLine(alphaX, y, x, y);
-        e.getGraphics().drawLine(alphaX, y, alphaX, y + (int)relationY*rows);
+        e.getGraphics().drawLine(alphaX, posY + (int)relationY*rows, posX, posY + (int)relationY*rows);
+        e.getGraphics().drawLine(alphaX, posY, posX, posY);
+        e.getGraphics().drawLine(alphaX, posY, alphaX, posY + (int)relationY*rows);
         //Dibujar cuadro superior
-        e.getGraphics().drawLine(x, alphaY, x, y);
-        e.getGraphics().drawLine(x + (int)relationX*cols, alphaY, x + (int)relationX*cols, y);
-        e.getGraphics().drawLine(x, alphaY, x + (int)relationX*cols, alphaY);
+        e.getGraphics().drawLine(posX, alphaY, posX, posY);
+        e.getGraphics().drawLine(posX + (int)relationX*cols, alphaY, posX + (int)relationX*cols, posY);
+        e.getGraphics().drawLine(posX, alphaY, posX + (int)relationX*cols, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int fontSize) {
+    private void drawNums(Engine e, int fontSize) {
         int i, j;
         //Dibujar numero de correctos Horizontal
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -310,8 +315,8 @@ public class Board {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            x - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
-                            (int) (i * (int)relationY) + y + (int)((int)relationY/1.3));
+                            posX - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
+                            (int) (i * (int)relationY) + posY + (int)((int)relationY/1.3));
             }
         }
 
@@ -322,9 +327,9 @@ public class Board {
                 Integer num = adyancentsVertical.get(i).get(j);
                 if (num != 0)
                     e.getGraphics().drawText(num.toString(),
-                            (int) (i * (int)relationX) + x + ((int)relationX/2),
+                            (int) (i * (int)relationX) + posX + ((int)relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
-                            y - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
+                            posY - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
             }
         }
     }
@@ -357,7 +362,7 @@ public class Board {
 
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X
         int boardMiddle = (width - x)/2;
-        int alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
+        alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
         int newMiddle = (width - alphaX)/2;
         x += newMiddle- boardMiddle;
 
@@ -367,11 +372,11 @@ public class Board {
 
         //Posicion inicial de cuadro numerico
         alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
-        int alphaY = y - maxVerticalFilled * (fontSize+fontSize/2);
+        alphaY = y - maxVerticalFilled * (fontSize+fontSize/2);
 
-        drawNumRect(e, x, y, alphaX, alphaY);
+        drawNumRect(e);
 
-        drawNums(e, x, y, fontSize);
+        drawNums(e, fontSize);
     }
 
     public Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {

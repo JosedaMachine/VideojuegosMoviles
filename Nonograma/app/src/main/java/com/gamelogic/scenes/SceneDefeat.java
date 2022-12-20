@@ -100,7 +100,6 @@ public class SceneDefeat implements SceneBase {
         Image im = graphics.getImage("skull");
 
         float scale = 0.8f;
-        //TODO: igual no se debería multiplicar por la escala la pos x,y desde aqui y hacerlo desde el propio draw image
         graphics.drawImage(im, logicWidth/2 - (int)((im.getWidth()*scale)/2),
                 logicHeight/2 - (int)((im.getHeight()*scale)/2), scale, scale);
 

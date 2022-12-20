@@ -31,14 +31,6 @@ import java.util.Objects;
 import java.util.Stack;
 
 /*
-TODO: persistencia
-TODO: ver un anuncio al final del nivel (En pantalla de victoria boton para tal que salga si dinero al verlo)
-TODO: marcar casilla X con long press. (ESTA HECHO PERO NO ME CONVENCE (A MI EN CONCRETO (SERE DANLLES? (IGUAL SOY CHIKITO (PERO Y SI SOY JOSEDA?))))
-
-TODO: La aplicación se debe adaptar a cualquier resolución de pantalla. Y permitiremos jugar
-TODO: tanto en horizontal como en vertical. En el caso del juego en horizontal adaptaremos el
-TODO: layout para que el tablero sea el centro de nuestra pantalla.
-
 TODO: Sensores hagan algo con sentido llevo 3 programados por favor no sé qué hacer con ellos los tengo por castigo ayuda
 
 TODO: poner anuncio de ganar vida en Game. Preguntad si tenéis dudas sobre algo de los anuncios putos
@@ -47,7 +39,7 @@ TODO: poner anuncio de ganar vida en Game. Preguntad si tenéis dudas sobre algo
 
 //Preguntas TODOS
 /*
- * no podemos jamas almacenar Engine aunque sea mas eficiente? No, hay que pasarlo al motor
+ * no podemos jamas almacenar Engine aunque sea mas eficiente?
  *
  * Pasar a los metodos en vez Engine la cosa especifica que le haga falta.
  *
@@ -305,7 +297,6 @@ public class Nonograma implements IGame {
                 fos.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error opening board saving file.");
-            //TODO add message error.
             e.printStackTrace();
         }
         catch (IOException e) {

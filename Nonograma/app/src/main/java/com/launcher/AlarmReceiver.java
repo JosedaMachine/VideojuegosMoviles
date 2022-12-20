@@ -11,8 +11,7 @@ import androidx.core.app.NotificationManagerCompat;
 public class AlarmReceiver  extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        //TODO hacer esto con sentido (si acaso una recompensa aleatoria o algo) (y que salga en el mensaje)
-        buildRewardNotification("Illo vente", "Juegate unos nonogramas to majos mira mira", context);
+        buildRewardNotification("Nonograms", "Come and play some Nonograms", context);
     }
 
     //Construye y lanza una notificación que abre la app
