@@ -214,14 +214,13 @@ public class SceneTitle implements SceneBase {
         fade.render(graphics);
     }
 
-    @Override
     public void update(Engine e,double deltaTime) {
+        updateBackground(e.getGraphics());
         //Vacio
         fade.update(deltaTime);
         quickButton.update(deltaTime);
         storyButton.update(deltaTime);
         paletteButton.update(deltaTime);
-        updateBackground(e.getGraphics());
     }
 
     @Override
