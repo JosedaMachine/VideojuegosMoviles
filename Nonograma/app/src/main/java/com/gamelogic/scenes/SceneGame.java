@@ -308,10 +308,11 @@ public class SceneGame implements SceneBase {
             Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
             graphics.setColor(ColorWrap.BLUE, 1.0f);
-            graphics.drawText(remainingField, (int) (logicWidth / 2 - dime_remaining.first / 2), (int) (logicHeight * 0.12 + dime_remaining.second / 2));
+            graphics.drawText(remainingField, getCorrectionTextPosX(graphics, logicWidth, dime_remaining),
+                    getCorrectionTextPosY(graphics, logicHeight, 0.08f, dime_remaining));
             graphics.setColor(ColorWrap.RED, 1.0f);
-            graphics.drawText(wrongField, (int) (logicWidth / 2 - dime_wrong.first / 2), (int) (logicHeight * 0.16 + dime_wrong.second / 2));
-
+            graphics.drawText(wrongField, getCorrectionTextPosX(graphics, logicWidth, dime_wrong),
+                    getCorrectionTextPosY(graphics, logicHeight, 0.12f, dime_wrong));
         }
 
         fade.render(graphics);
@@ -462,6 +463,22 @@ public class SceneGame implements SceneBase {
             return (int) (checkBoard.getPosY() + checkBoard.getHeight()*0.1);
         }else{
             return (int) (checkBoard.getPosY() + checkBoard.getHeight() + logicHeight * 0.005f);
+        }
+    }
+
+    public int getCorrectionTextPosX(Graphics g, int  logicWidth, Pair<Double,Double> dimensions){
+        if(g.orientationHorizontal()){
+            return (int) (logicWidth + logicWidth * 0.8f - dimensions.first / 2);
+        }else{
+            return (int) (logicWidth / 2 - dimensions.first / 2);
+        }
+    }
+
+    public int getCorrectionTextPosY(Graphics g, int logicHeight, float pos, Pair<Double,Double> dimensions){
+        if(g.orientationHorizontal()){
+            return (int) (logicHeight* pos + dimensions.second / 2);
+        }else{
+            return (int) (logicHeight + logicHeight* pos + dimensions.second / 2);
         }
     }
 
