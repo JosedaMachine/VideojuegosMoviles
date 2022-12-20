@@ -328,7 +328,7 @@ public class Nonograma implements IGame {
                 File file = new File(engine.getContext().getFilesDir(), filename[i]);
                 String checksum = engine.getFileChecksum(md5Digest, file);
                 //And check its checkSum with out checksum Generated so far?
-                String hash = hash = reader.readLine();
+                String hash = reader.readLine();
                 StringBuilder inverse = new StringBuilder();
                 inverse.append(hash);
                 inverse.reverse();
