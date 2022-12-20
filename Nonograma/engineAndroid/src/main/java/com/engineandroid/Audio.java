@@ -43,14 +43,25 @@ public class Audio {
 
     public void playSound(String name) {
         Sound sound = getSound(name);
+
+        if(sound == null) return;
+
         float volume = sound.getVolume();
+
         soundPool.play(sound.getId(), volume, volume, 1,
                 sound.getLoop(), sound.getRate());
     }
 
     public void pauseSound(String name) {
         Sound sound = getSound(name);
+        if(sound == null) return;
         soundPool.pause(sound.getId());
+    }
+
+    public void resumeSound(String name){
+        Sound sound = getSound(name);
+        if(sound == null) return;
+        soundPool.resume(sound.getId());
     }
 
     public void pauseEverySound() {
