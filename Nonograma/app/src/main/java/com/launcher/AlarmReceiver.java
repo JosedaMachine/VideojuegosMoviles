@@ -19,7 +19,7 @@ public class AlarmReceiver  extends BroadcastReceiver {
     public void buildRewardNotification(String titleText, String contentText, Context context){
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("RewardNotification", 100);
+        intent.putExtra("RewardNotification", 10);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ExampleID")
