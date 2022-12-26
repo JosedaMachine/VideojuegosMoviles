@@ -1,8 +1,10 @@
 package com.gamelogic;
 
+import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
 import java.util.ArrayList;
@@ -162,19 +164,19 @@ public class Board {
         return diff;
     }
 
-    private void drawNumRect(Engine e, int x, int y, int alphaX, int alphaY) {
+    private void drawNumRect(IGraphics g, int x, int y, int alphaX, int alphaY) {
 
         // dibujar cuadro lateral
-        e.getGraphics().drawLine(alphaX, y + height - 1, x, y + height - 1);
-        e.getGraphics().drawLine(alphaX, y, x, y);
-        e.getGraphics().drawLine(alphaX, y, alphaX, y + height - 1);
+        g.drawLine(alphaX, y + height - 1, x, y + height - 1);
+        g.drawLine(alphaX, y, x, y);
+        g.drawLine(alphaX, y, alphaX, y + height - 1);
         //Dibujar cuadro superior
-        e.getGraphics().drawLine(x, alphaY, x, y);
-        e.getGraphics().drawLine(x + width - 1, alphaY, x + width - 1, y);
-        e.getGraphics().drawLine(x, alphaY, x + width - 1, alphaY);
+        g.drawLine(x, alphaY, x, y);
+        g.drawLine(x + width - 1, alphaY, x + width - 1, y);
+        g.drawLine(x, alphaY, x + width - 1, alphaY);
     }
 
-    private void drawNums(Engine e, int x, int y, int fontSize) {
+    private void drawNums(IGraphics g, int x, int y, int fontSize) {
         int i, j;
         //Dibujar numero de correctos Horizontal
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
@@ -182,7 +184,7 @@ public class Board {
             for (j = size - 1; j >= 0; j--) {
                 Integer num = adyancentsHorizontal.get(i).get(j);
                 if (num != 0)
-                    e.getGraphics().drawText(num.toString(),
+                    g.drawText(num.toString(),
                             x - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
                             (int) (i * relationY) + y + (int)(relationY/1.3));
             }
@@ -194,7 +196,7 @@ public class Board {
             for (j = size - 1; j >= 0; j--) {
                 Integer num = adyancentsVertical.get(i).get(j);
                 if (num != 0)
-                    e.getGraphics().drawText(num.toString(),
+                    g.drawText(num.toString(),
                             (int) (i * relationX) + x + (int)(relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
                             y - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
@@ -202,7 +204,7 @@ public class Board {
         }
     }
 
-    public void drawBoard(Engine e, int x, int y, boolean win) {
+    public void drawBoard(IGraphics g, int x, int y, boolean win) {
         //En caso de que se mueva el tablero o reescalado o algo por el estilo
         if (x != posX) posX = x;
         if (y != posY) posY = y;
@@ -216,15 +218,15 @@ public class Board {
                 if(im == null) continue;
 
                 if(!win || board[i][j] == TILE.FILL)
-                    e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
+                    g.drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
                         relationX / im.getWidth(), (relationY) / im.getHeight());
             }
         }
     }
 
-    public void drawInfoRects(Engine e, int x, int y, IFont font) {
-        e.getGraphics().setFont(font);
-        e.getGraphics().setColor(IColor.BLACK, 1.0f);
+    public void drawInfoRects(IGraphics g, int x, int y, IFont font) {
+        g.setFont(font);
+        g.setColor(IColor.BLACK, 1.0f);
         int fontSize = font.getSize();
 
         //Recalculamos X para que el tablero junto al cuadro numerico esten centrados en X
@@ -241,19 +243,19 @@ public class Board {
         alphaX = x - maxHorizontalFilled * (fontSize+fontSize/2);
         int alphaY = y - maxVerticalFilled * (fontSize+fontSize/2);
 
-        drawNumRect(e, x, y, alphaX, alphaY);
+        drawNumRect(g, x, y, alphaX, alphaY);
 
-        drawNums(e, x, y, fontSize);
+        drawNums(g, x, y, fontSize);
     }
 
-    Pair<Integer,Integer> calculcateIndexMatrix(Engine e, int pixelX, int pixelY) {
+    Pair<Integer,Integer> calculcateIndexMatrix(Audio audio, int pixelX, int pixelY) {
         // Comprueba si esta dentro del tablero
         if ((pixelX > posX && pixelX <= posX + width) && (pixelY > posY && pixelY <= posY + height)) {
             // Localiza posicion y selecciona el tile
             int i_index = (int) ((pixelX - posX) / (relationX));
             int j_index = (int) ((pixelY - posY) / (relationY));
 
-            e.getAudio().playSound("click.wav");
+            audio.playSound("click.wav");
             return new Pair<>(i_index, j_index);
         }
 
@@ -261,16 +263,16 @@ public class Board {
     }
 
     //Coge image dependiendo del tile
-    private Image tileImage(Engine e, TILE t) {
+    private Image tileImage(IGraphics g, TILE t) {
         switch (t) {
             case FILL:
-                return e.getGraphics().getImage("fill");
+                return g.getImage("fill");
             case CROSS:
-                return e.getGraphics().getImage("cross");
+                return g.getImage("cross");
             case EMPTY:
-                return e.getGraphics().getImage("empty");
+                return g.getImage("empty");
             case WRONG:
-                return e.getGraphics().getImage("wrong");
+                return g.getImage("wrong");
         }
         return null;
     }

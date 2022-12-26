@@ -61,7 +61,7 @@ public class Nonograma implements IGame {
     @Override
     public void changeScene(SceneBase newScene) {
         currScene = newScene;
-        currScene.init();
+        currScene.init(this, engine.getGraphics(), engine.getAudio());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Nonograma implements IGame {
     //Escena de titulo inicial
     @Override
     public void init() {
-        changeScene(new SceneTitle(engine));
+        changeScene(new SceneTitle());
     }
 
     @Override
@@ -87,11 +87,11 @@ public class Nonograma implements IGame {
 
     @Override
     public void processInput(TouchEvent event) {
-        currScene.input(event);
+        currScene.input(this, engine.getAudio(), event);
     }
 
     @Override
     public void loadImages(IGraphics graphics) {
-        currScene.loadResources(graphics);
+        currScene.loadResources(graphics, engine.getAudio());
     }
 }

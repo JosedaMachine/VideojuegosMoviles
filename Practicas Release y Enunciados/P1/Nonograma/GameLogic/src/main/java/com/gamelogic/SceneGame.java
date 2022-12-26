@@ -1,8 +1,10 @@
 package com.gamelogic;
 
+import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 
 //////////////////////////////// SCENE GAME //////////////////////////////////
 public class SceneGame implements SceneBase {
-    private final Engine engine;
+//    private final Engine engine;
     //Tablero chuleta para comprobar
     private Board checkBoard;
     //Tablero que ve el jugador
@@ -38,8 +40,8 @@ public class SceneGame implements SceneBase {
     private double timer = maxTime;
     private boolean DEBUG = false;
 
-    public SceneGame(Engine engine, int rows, int cols) {
-        this.engine = engine;
+    public SceneGame(int rows, int cols) {
+//        this.engine = engine;
         rows_ = rows;
         cols_ = cols;
     }
@@ -59,7 +61,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event_) {
+    public void input(IGame game, Audio audio, TouchEvent event_) {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
 
@@ -70,19 +72,19 @@ public class SceneGame implements SceneBase {
             if(!hasWon){
                 //Inicia el timer de derrota
                 timer = 0;
-                engine.getAudio().playSound("wrong.wav");
+                audio.playSound("wrong.wav");
             }
         }
 
         //Victoria
         if(hasWon){
-            engine.getAudio().playSound("correct.wav");
-            engine.getGame().changeScene(new SceneVictory(engine , checkBoard));
+            audio.playSound("correct.wav");
+            game.changeScene(new SceneVictory(checkBoard));
         }
 
         if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(engine, event_.getX_(),event_.getY_());
+            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(audio, event_.getX_(),event_.getY_());
 
             setTile(index.first, index.second, false);
             //Debug para mostrar el resultado
@@ -93,18 +95,18 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
+    public void init(final IGame game, IGraphics graphics, final Audio audio) {
+        loadResources(graphics, audio);
 
         //Fade In
         fade = new Fade(
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                graphics.getLogicWidth(), graphics.getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
 
-        int boardSize = (int)(engine.getGraphics().getLogicWidth() * 0.6f);
+        int boardSize = (int)(graphics.getLogicWidth() * 0.6f);
 
         //Tablero de solucion
         checkBoard = new Board(cols_, rows_, boardSize, boardSize);
@@ -116,16 +118,16 @@ public class SceneGame implements SceneBase {
         Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
         float size = (float) (Math.floor(relations.first * 0.7)/1000.0f);
-        pixelFont = engine.getGraphics().newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * size), false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int)(graphics.getLogicHeight() * size), false);
 
         //Tamaño de los botones
-        int offset = (int)(engine.getGraphics().getLogicWidth() * 0.16f),
-            bttWidth = (int)(engine.getGraphics().getLogicWidth() * 0.25f),
-            bttHeight = (int)(engine.getGraphics().getLogicWidth() * 0.0833f);
+        int offset = (int)(graphics.getLogicWidth() * 0.16f),
+            bttWidth = (int)(graphics.getLogicWidth() * 0.25f),
+            bttHeight = (int)(graphics.getLogicWidth() * 0.0833f);
 
         //Boton Check Win
-        bttCheckWin = new Button("Check", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 + offset,
-                engine.getGraphics().getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
+        bttCheckWin = new Button("Check", graphics.getLogicWidth()/2 - bttWidth/2 + offset,
+                graphics.getLogicHeight() - bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
@@ -141,16 +143,16 @@ public class SceneGame implements SceneBase {
         };
         bttCheckWin.setFont(numFont);
         bttCheckWin.setColor(IColor.BLACK);
-        bttCheckWin.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttCheckWin.setBackgroundImage(graphics.getImage("empty"));
 
         //Boton Return to menu
-        bttReturn = new Button("Coward", engine.getGraphics().getLogicWidth()/2 - bttWidth/2 - offset,
-                engine.getGraphics().getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
+        bttReturn = new Button("Coward", graphics.getLogicWidth()/2 - bttWidth/2 - offset,
+                graphics.getLogicHeight()- bttHeight*3, bttWidth, bttHeight) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
-                        engine.getAudio().playSound("click.wav");
+                        audio.playSound("click.wav");
 
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
@@ -163,17 +165,17 @@ public class SceneGame implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete()){
-                    engine.getGame().changeScene(new SceneTitle(engine));
+                    game.changeScene(new SceneTitle());
                 }
             }
         };
         bttReturn.setFont(numFont);
         bttReturn.setColor(IColor.BLACK);
-        bttReturn.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        bttReturn.setBackgroundImage(graphics.getImage("empty"));
     }
 
     @Override
-    public void loadResources(IGraphics graphics){
+    public void loadResources(IGraphics graphics, Audio audio){
         System.out.println("Loading Resources...");
 
        graphics.newImage("emptysquare.png","empty");
@@ -186,12 +188,12 @@ public class SceneGame implements SceneBase {
 
         graphics.newImage("fillsquare.png", "fill");
 
-        numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
+        numFont = graphics.newFont("arcade.TTF", (int)(graphics.getLogicHeight() * 0.04f), false);
 
-        pixelFont = graphics.newFont("upheavtt.ttf", (int)(engine.getGraphics().getLogicHeight() * 0.1f), false);
+        pixelFont = graphics.newFont("upheavtt.ttf", (int)(graphics.getLogicHeight() * 0.1f), false);
 
-        engine.getAudio().newSound("wrong.wav");
-        engine.getAudio().newSound("correct.wav");
+        audio.newSound("wrong.wav");
+        audio.newSound("correct.wav");
 
         System.out.println("Resources Loaded");
     }
@@ -200,15 +202,15 @@ public class SceneGame implements SceneBase {
     public void render(IGraphics graphics) {
         //Tablero
         graphics.setColor(IColor.BLACK, 1.0f);
-        checkBoard.drawInfoRects(engine, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
-        gameBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
+        checkBoard.drawInfoRects(graphics, graphics.getLogicWidth()/2 - gameBoard.getWidth()/2, graphics.getLogicHeight()/2 - gameBoard.getHeight()/2, pixelFont);
+        gameBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false);
 
         //Botones
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
 
         if(DEBUG){
-            checkBoard.drawBoard(engine, checkBoard.getPosX(), checkBoard.getPosY(), false);
+            checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false);
         }
 
         //Texto indicando casillas incorrectas

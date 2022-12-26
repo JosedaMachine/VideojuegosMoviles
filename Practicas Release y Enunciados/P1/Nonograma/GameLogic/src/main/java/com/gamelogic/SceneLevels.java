@@ -1,8 +1,10 @@
 package com.gamelogic;
 
+import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
@@ -16,23 +18,21 @@ public class SceneLevels implements SceneBase {
 
     IFont title;
     IFont titleLittle;
-    Engine engine;
     private Fade fade;
-    public SceneLevels(Engine engine_) {
-        this.engine = engine_;
+    public SceneLevels() {
     }
 
     List<Button> levels;
 
     @Override
-    public void init() {
+    public void init(IGame game, IGraphics graphics, Audio audio) {
 
-        loadResources(engine.getGraphics());
+        loadResources(graphics, audio);
 
         //Fade In
         fade = new Fade(
                 0, 0,
-                engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                graphics.getLogicWidth(), graphics.getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
@@ -40,39 +40,39 @@ public class SceneLevels implements SceneBase {
         //Lista de botones con los diferentes tamanyos de tablero
         levels = new ArrayList<>();
 
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.155f),
-            sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.055f);
+        int sizeX = (int)(graphics.getLogicWidth() * 0.155f),
+            sizeY = (int)(graphics.getLogicHeight() * 0.055f);
 //
-        int posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        int posY = engine.getGraphics().getLogicHeight()/3 -  sizeY/2;
-        levels.add(createLevel("4x4", posX, posY, sizeX, sizeY, 4, 4, false));
+        int posX = (int) (graphics.getLogicWidth()/3.5 - sizeX/2);
+        int posY = graphics.getLogicHeight()/3 -  sizeY/2;
+        levels.add(createLevel(audio, graphics, game, "4x4", posX, posY, sizeX, sizeY, 4, 4, false));
 
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("5x5", posX, posY, sizeX, sizeY, 5, 5, false));
+        posX = graphics.getLogicWidth()/2 - sizeX/2;
+        levels.add(createLevel(audio, graphics, game,"5x5", posX, posY, sizeX, sizeY, 5, 5, false));
 
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("5x10", posX, posY, sizeX, sizeY, 5, 10, true));
+        posX = (int) (graphics.getLogicWidth()/1.38 - sizeX/2);
+        levels.add(createLevel(audio, graphics, game,"5x10", posX, posY, sizeX, sizeY, 5, 10, true));
 
-        posY = engine.getGraphics().getLogicHeight()/2 -  sizeY/2;
-        posX = (int) (engine.getGraphics().getLogicWidth()/3.5 - sizeX/2);
-        levels.add(createLevel("8x8", posX, posY, sizeX, sizeY, 8, 8, false) );
+        posY = graphics.getLogicHeight()/2 -  sizeY/2;
+        posX = (int) (graphics.getLogicWidth()/3.5 - sizeX/2);
+        levels.add(createLevel(audio, graphics, game,"8x8", posX, posY, sizeX, sizeY, 8, 8, false) );
 
-        posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        levels.add(createLevel("10x10", posX, posY, sizeX, sizeY, 10, 10, true) );
+        posX = graphics.getLogicWidth()/2 - sizeX/2;
+        levels.add(createLevel(audio, graphics, game,"10x10", posX, posY, sizeX, sizeY, 10, 10, true) );
 
-        posX = (int) (engine.getGraphics().getLogicWidth()/1.38 - sizeX/2);
-        levels.add(createLevel("10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
+        posX = (int) (graphics.getLogicWidth()/1.38 - sizeX/2);
+        levels.add(createLevel(audio, graphics, game,"10x15", posX, posY, sizeX, sizeY, 10, 15, true) );
     }
 
     //Boton de creacion de nivel
-    private Button createLevel(String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
+    private Button createLevel(final Audio audio, IGraphics g, final IGame game, String text, int x, int y, int sizeX, int sizeY, final int i, final int j, boolean small){
         final Button button = new Button(text, x ,y, sizeX, sizeY) {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(isInside(event_.getX_(),event_.getY_())){
                         //Iniciar nivel con medidas adecuadas
-                        engine.getAudio().playSound("click.wav");
+                        audio.playSound("click.wav");
                         setSelected(true);
                         if(fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
@@ -85,14 +85,14 @@ public class SceneLevels implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if(fade.getFadeOutComplete() && isSelected()){
-                    engine.getGame().changeScene(new SceneGame(engine , i, j));
+                    game.changeScene(new SceneGame(i, j));
                 }
             }
         };
 
         button.setFont(titleLittle);
         button.setColor(IColor.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(g.getImage("empty"));
 
         return button;
     }
@@ -124,17 +124,17 @@ public class SceneLevels implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(IGame game, Audio audio, TouchEvent event) {
         for(int i = 0; i < levels.size(); i++){
             levels.get(i).input(event);
         }
     }
 
     @Override
-    public void loadResources(IGraphics graphics) {
+    public void loadResources(IGraphics graphics, Audio audio) {
         graphics.newImage("emptysquare.png", "empty");
 
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
-        titleLittle = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.035f),true);
+        title = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.05f),true);
+        titleLittle = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.035f),true);
     }
 }

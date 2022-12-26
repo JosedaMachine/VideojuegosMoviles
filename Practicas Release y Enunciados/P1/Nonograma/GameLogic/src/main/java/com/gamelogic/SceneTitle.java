@@ -1,8 +1,10 @@
 package com.gamelogic;
 
+import com.engine.Audio;
 import com.engine.Engine;
 import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
@@ -12,35 +14,32 @@ import com.engine.TouchEvent;
 
 public class SceneTitle implements SceneBase {
 
-    private final Engine engine;
     private Fade fade;
     private Button button;
     private IFont title;
     private String titleText = "Nonogram";
-    public SceneTitle(Engine engine_) {
-
-        this.engine = engine_;
+    public SceneTitle() {
     }
 
     @Override
-    public void init() {
-        loadResources(engine.getGraphics());
+    public void init(final IGame game, IGraphics graphics, final Audio audio) {
+        loadResources(graphics, audio);
 
 
         //Fade In
         fade = new Fade(
                         0, 0,
-                             engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
+                             graphics.getLogicWidth(), graphics.getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
         fade.setColor(IColor.BLACK);
         fade.triggerFade();
 
         //Posicion y tamanyo de boton (290x100)
-        int sizeX = (int)(engine.getGraphics().getLogicWidth() * 0.483f),
-                sizeY = (int)(engine.getGraphics().getLogicHeight() * 0.111f);
+        int sizeX = (int)(graphics.getLogicWidth() * 0.483f),
+                sizeY = (int)(graphics.getLogicHeight() * 0.111f);
 
-        int posX = engine.getGraphics().getLogicWidth()/2 - sizeX/2;
-        int posY = engine.getGraphics().getLogicHeight()/2 - sizeY/2;
+        int posX = graphics.getLogicWidth()/2 - sizeX/2;
+        int posY = graphics.getLogicHeight()/2 - sizeY/2;
 
         //Boton de play
         button = new Button("Play", posX, posY,sizeX, sizeY) {
@@ -48,7 +47,7 @@ public class SceneTitle implements SceneBase {
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
                     if(button.isInside(event_.getX_(),event_.getY_())){
-                        engine.getAudio().playSound("click.wav");
+                        audio.playSound("click.wav");
 
                         //Trigger Fade Out
                         if(fade.getState() != Fade.STATE_FADE.Out) {
@@ -63,17 +62,17 @@ public class SceneTitle implements SceneBase {
             public void update(double deltaTime) {
                 //Cambio de escena al terminar fade
                 if(fade.getFadeOutComplete()){
-                    engine.getGame().changeScene(new SceneLevels(engine));
+                    game.changeScene(new SceneLevels());
                 }
             }
         };
 
         button.setFont(title);
         button.setColor(IColor.BLACK);
-        button.setBackgroundImage(engine.getGraphics().getImage("empty"));
+        button.setBackgroundImage(graphics.getImage("empty"));
 
 
-        engine.getAudio().startMusic();
+        audio.startMusic();
 
     }
 
@@ -100,19 +99,19 @@ public class SceneTitle implements SceneBase {
     }
 
     @Override
-    public void input(TouchEvent event) {
+    public void input(IGame game, Audio audio, TouchEvent event) {
         button.input(event);
     }
 
     @Override
-    public void loadResources(IGraphics graphics) {
+    public void loadResources(IGraphics graphics, Audio audio) {
         graphics.newImage("crosssquare.png", "cross");
 
         graphics.newImage("emptysquare.png", "empty");
 
-        engine.getAudio().setMusic("music.wav");
-        engine.getAudio().newSound("click.wav");
+        audio.setMusic("music.wav");
+        audio.newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
-        title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
+        title = graphics.newFont("arcade.TTF",(int)(graphics.getLogicHeight() * 0.088f),true);
     }
 }
