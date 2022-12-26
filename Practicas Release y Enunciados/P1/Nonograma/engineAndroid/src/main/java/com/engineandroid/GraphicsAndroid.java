@@ -60,8 +60,15 @@ public class GraphicsAndroid implements IGraphics {
     }
 
     @Override
-    public Image newImage(String name) {
-        return new ImageAndroid(assetManager, "images/" + name);
+    public Image newImage(String path, String name) {
+        Image i = imagesLoaded.get(path);
+        if(i == null) {
+            i = new ImageAndroid(assetManager, "images/" + path);
+            if(!i.isLoaded())
+                System.out.println("No se ha encontrado la imagen");
+            loadImage(i, name);
+        }
+        return i;
     }
 
     @Override

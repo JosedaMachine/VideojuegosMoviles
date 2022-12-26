@@ -10,7 +10,7 @@ public interface IGraphics {
 
     // Carga una imagen almacenada en el
     // contenedor de recursos de la aplicación a partir de su nombre
-    Image newImage(String name);
+    Image newImage(String path, String name);
 
     // Crea una nueva fuente del tamaño especificado a partir de un
     // fichero .ttf. Se indica si se desea o no fuente en negrita

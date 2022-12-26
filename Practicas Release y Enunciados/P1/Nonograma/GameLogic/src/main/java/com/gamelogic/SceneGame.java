@@ -175,30 +175,15 @@ public class SceneGame implements SceneBase {
     public void loadResources(IGraphics graphics){
         System.out.println("Loading Resources...");
 
-        Image im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
+       graphics.newImage("emptysquare.png","empty");
 
-        im = graphics.newImage("crosssquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "cross");
+       graphics.newImage("crosssquare.png", "cross");
 
-        im = graphics.newImage("tom.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "tom");
+        graphics.newImage("tom.png", "tom");
 
-        im = graphics.newImage("wrongsquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "wrong");
+        graphics.newImage("wrongsquare.png", "wrong");
 
-        im = graphics.newImage("fillsquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "fill");
+        graphics.newImage("fillsquare.png", "fill");
 
         numFont = graphics.newFont("arcade.TTF", (int)(engine.getGraphics().getLogicHeight() * 0.04f), false);
 
