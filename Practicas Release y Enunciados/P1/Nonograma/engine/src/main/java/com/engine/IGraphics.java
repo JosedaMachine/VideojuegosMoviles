@@ -96,14 +96,6 @@ public interface IGraphics {
     // Obtiene una imagen de la pool de imágenes
     Image getImage(String key);
 
-    /*
-     * Dado un ancho y alto de ventana, calcula el reescalado y traslación necesaria para
-     * adaptar la logica al tamaño actual de la pantalla
-     * @param widthWindow ancho de pantalla
-     * @param heightWindow alto de pantalla
-     * */
-    void recalcFactors(int widthWindow, int heightWindow);
-
     // Obtiene el factor de traslación en X
     int getTranslateFactorX();
 

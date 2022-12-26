@@ -216,8 +216,13 @@ public class GraphicsPC implements IGraphics {
         return imagesLoaded.get(key);
     }
 
-    @Override
-    public void recalcFactors(int widthWindow, int heightWindow) {
+    /*
+     * Dado un ancho y alto de ventana, calcula el reescalado y traslación necesaria para
+     * adaptar la logica al tamaño actual de la pantalla
+     * @param widthWindow ancho de pantalla
+     * @param heightWindow alto de pantalla
+     * */
+    private void recalcFactors(int widthWindow, int heightWindow) {
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
         int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
 
