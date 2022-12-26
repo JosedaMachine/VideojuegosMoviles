@@ -136,27 +136,7 @@ public class EnginePC implements Engine, Runnable{
 
     @Override
     public void render() {
-        do {
-            do {
-                try {
-                    graphics.prepare(IColor.WHITE);
-                    this.currGame.render(graphics);
-                }
-                catch (Exception e){
-
-                }
-                finally{
-                    graphics.finish();
-                }
-            } while(this.graphics.getBufferStrategy().contentsRestored());
-
-            try {
-                graphics.getBufferStrategy().show();
-            }
-            catch (Exception e){
-
-            }
-        } while(this.graphics.getBufferStrategy().contentsLost());
+        this.graphics.renderGame(this.currGame);
     }
 
     @Override

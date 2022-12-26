@@ -1,6 +1,8 @@
 package com.enginepc;
 
+import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
@@ -100,6 +102,18 @@ public class GraphicsPC implements IGraphics {
     @Override
     public void save() {
         //Guardar juego
+    }
+
+    public void renderGame(IGame game){
+        do{
+            do{
+                prepare(IColor.WHITE);
+                game.render(this);
+                finish();
+            }
+            while(getBufferStrategy().contentsRestored());
+            getBufferStrategy().show();
+        }while(getBufferStrategy().contentsLost());
     }
 
     @Override
