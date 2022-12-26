@@ -1,6 +1,8 @@
 package com.enginepc;
 
+import com.engine.IColor;
 import com.engine.IFont;
+import com.engine.IGame;
 import com.engine.IGraphics;
 import com.engine.Image;
 import com.engine.Pair;
@@ -48,8 +50,15 @@ public class GraphicsPC implements IGraphics {
     }
 
     @Override
-    public Image newImage(String name) {
-        return new ImagePC(path + "images/" + name);
+    public Image newImage(String path, String name) {
+        Image i = imagesLoaded.get(path);
+        if(i == null) {
+            i = new ImagePC(this.path + "images/" + path);
+            if(!i.isLoaded())
+                System.out.println("No se ha encontrado la imagen");
+            loadImage(i, name);
+        }
+        return i;
     }
 
     @Override
@@ -100,6 +109,18 @@ public class GraphicsPC implements IGraphics {
     @Override
     public void save() {
         //Guardar juego
+    }
+
+    public void renderGame(IGame game){
+        do{
+            do{
+                prepare(IColor.WHITE);
+                game.render(this);
+                finish();
+            }
+            while(getBufferStrategy().contentsRestored());
+            getBufferStrategy().show();
+        }while(getBufferStrategy().contentsLost());
     }
 
     @Override
@@ -216,8 +237,13 @@ public class GraphicsPC implements IGraphics {
         return imagesLoaded.get(key);
     }
 
-    @Override
-    public void recalcFactors(int widthWindow, int heightWindow) {
+    /*
+     * Dado un ancho y alto de ventana, calcula el reescalado y traslación necesaria para
+     * adaptar la logica al tamaño actual de la pantalla
+     * @param widthWindow ancho de pantalla
+     * @param heightWindow alto de pantalla
+     * */
+    private void recalcFactors(int widthWindow, int heightWindow) {
         int expectedHeight = (int) (( logicHeight * widthWindow)/ (float)logicWidth);
         int expectedWidth = (int) (( logicWidth * heightWindow)/ (float)logicHeight);
 

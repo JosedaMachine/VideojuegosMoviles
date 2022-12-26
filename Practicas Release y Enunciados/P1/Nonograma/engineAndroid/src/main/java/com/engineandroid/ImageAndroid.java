@@ -20,6 +20,7 @@ public class ImageAndroid implements Image {
             e.printStackTrace();
         }
         image = BitmapFactory.decodeStream(is);
+        ass.close();
     }
 
     public Bitmap getImage() {

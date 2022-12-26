@@ -30,7 +30,7 @@ public class SceneLevels implements SceneBase {
         loadResources(engine.getGraphics());
 
         //Fade In
-        fade = new Fade(engine,
+        fade = new Fade(
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.In);
@@ -112,7 +112,7 @@ public class SceneLevels implements SceneBase {
             levels.get(i).render(graphics);
         }
 
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override
@@ -132,10 +132,7 @@ public class SceneLevels implements SceneBase {
 
     @Override
     public void loadResources(IGraphics graphics) {
-        Image im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
+        graphics.newImage("emptysquare.png", "empty");
 
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.05f),true);
         titleLittle = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.035f),true);

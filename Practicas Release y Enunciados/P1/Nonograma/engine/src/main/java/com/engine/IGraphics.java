@@ -10,7 +10,7 @@ public interface IGraphics {
 
     // Carga una imagen almacenada en el
     // contenedor de recursos de la aplicación a partir de su nombre
-    Image newImage(String name);
+    Image newImage(String path, String name);
 
     // Crea una nueva fuente del tamaño especificado a partir de un
     // fichero .ttf. Se indica si se desea o no fuente en negrita
@@ -95,14 +95,6 @@ public interface IGraphics {
 
     // Obtiene una imagen de la pool de imágenes
     Image getImage(String key);
-
-    /*
-     * Dado un ancho y alto de ventana, calcula el reescalado y traslación necesaria para
-     * adaptar la logica al tamaño actual de la pantalla
-     * @param widthWindow ancho de pantalla
-     * @param heightWindow alto de pantalla
-     * */
-    void recalcFactors(int widthWindow, int heightWindow);
 
     // Obtiene el factor de traslación en X
     int getTranslateFactorX();

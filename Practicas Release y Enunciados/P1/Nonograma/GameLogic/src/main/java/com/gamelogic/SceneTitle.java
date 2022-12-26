@@ -28,7 +28,7 @@ public class SceneTitle implements SceneBase {
 
 
         //Fade In
-        fade = new Fade(engine,
+        fade = new Fade(
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
@@ -89,7 +89,7 @@ public class SceneTitle implements SceneBase {
         //Boton
         button.render(graphics);
 
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override
@@ -106,15 +106,9 @@ public class SceneTitle implements SceneBase {
 
     @Override
     public void loadResources(IGraphics graphics) {
-        Image im = graphics.newImage("crosssquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "cross");
+        graphics.newImage("crosssquare.png", "cross");
 
-        im = graphics.newImage("emptysquare.png");
-        if(!im.isLoaded())
-            System.out.println("No se ha encontrado la imagen");
-        graphics.loadImage(im, "empty");
+        graphics.newImage("emptysquare.png", "empty");
 
         engine.getAudio().setMusic("music.wav");
         engine.getAudio().newSound("click.wav");
