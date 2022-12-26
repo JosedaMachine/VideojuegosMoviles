@@ -28,7 +28,7 @@ public class SceneTitle implements SceneBase {
 
 
         //Fade In
-        fade = new Fade(engine,
+        fade = new Fade(
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
@@ -94,7 +94,7 @@ public class SceneTitle implements SceneBase {
         //Boton
         button.render(graphics);
 
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override
