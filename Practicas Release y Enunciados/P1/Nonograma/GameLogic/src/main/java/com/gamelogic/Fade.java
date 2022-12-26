@@ -14,7 +14,6 @@ public class Fade{
     private double percentageIn, percentageOut;
     private float alpha;
     private int colorFade;
-    private final Engine e_;
     private IGraphics g;
 
     private STATE_FADE state_;
@@ -26,8 +25,7 @@ public class Fade{
 
     private boolean fadeOutComplete = false, fadeInComplete = false;
 
-    public Fade(Engine e, int posX, int posY, int width, int height, int timeIn, int timeOut, STATE_FADE state){
-        e_ = e;
+    public Fade(int posX, int posY, int width, int height, int timeIn, int timeOut, STATE_FADE state){
         if(state == STATE_FADE.Out){
             alpha = 0.0f;
         }else alpha = 1.0f;
@@ -49,9 +47,9 @@ public class Fade{
         percentageOut = ((float)1.0f/ (float)timeOut_);
     }
 
-    public void render(){
-        e_.getGraphics().setColor(colorFade, alpha);
-        e_.getGraphics().fillRect(posX_, posY_, sizeX_ , sizeY_);
+    public void render(IGraphics g){
+        g.setColor(colorFade, alpha);
+        g.fillRect(posX_, posY_, sizeX_ , sizeY_);
     }
 
     public void update(double deltaTime){
@@ -61,6 +59,7 @@ public class Fade{
 //              lerpPrecise(alpha, 0, percentageIn)
                 alpha -= deltaTime;
                 if (alpha <= 0){
+                    alpha = 0;
                     fadeInComplete = true;
                     play = false;
                 }
@@ -70,6 +69,7 @@ public class Fade{
 //                lerpPrecise(alpha, 1.0f, percentageOut)
                 alpha += deltaTime;
                 if (alpha >= 1.0f){
+                    alpha = 1.0f;
                     fadeOutComplete = true;
                     play = false;
                 }

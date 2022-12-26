@@ -30,7 +30,7 @@ public class SceneVictory implements SceneBase {
         loadResources(engine.getGraphics());
 
         //Fade In
-        fade = new Fade(engine,
+        fade = new Fade(
                 0, 0,
                 engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                 1000, 1000, Fade.STATE_FADE.Out);
@@ -83,7 +83,7 @@ public class SceneVictory implements SceneBase {
 
         //Boton de vuelta al menu
         button.render(graphics);
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override

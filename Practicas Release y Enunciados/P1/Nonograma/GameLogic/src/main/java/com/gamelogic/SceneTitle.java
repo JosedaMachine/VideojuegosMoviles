@@ -28,7 +28,7 @@ public class SceneTitle implements SceneBase {
 
 
         //Fade In
-        fade = new Fade(engine,
+        fade = new Fade(
                         0, 0,
                              engine.getGraphics().getLogicWidth(), engine.getGraphics().getLogicHeight(),
                        1000, 1000, Fade.STATE_FADE.In);
@@ -72,14 +72,9 @@ public class SceneTitle implements SceneBase {
         button.setColor(IColor.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("empty"));
 
-        //Musica en loop
-        Sound music =  engine.getAudio().getSound("music.wav");
 
-        if(!music.alreadyPlaying()) {
-            engine.getAudio().playSound("music.wav");
-            music.setLoop(true);
-            music.setVolume(-15);
-        }
+        engine.getAudio().startMusic();
+
     }
 
     @Override
@@ -94,7 +89,7 @@ public class SceneTitle implements SceneBase {
         //Boton
         button.render(graphics);
 
-        fade.render();
+        fade.render(graphics);
     }
 
     @Override
@@ -115,7 +110,7 @@ public class SceneTitle implements SceneBase {
 
         graphics.newImage("emptysquare.png", "empty");
 
-        engine.getAudio().newSound("music.wav");
+        engine.getAudio().setMusic("music.wav");
         engine.getAudio().newSound("click.wav");
         //0.88 es el porcentaje que ocupa la fuente arcade en alto de pantalla lógica, es decir un 8%
         title = engine.getGraphics().newFont("arcade.TTF",(int)(engine.getGraphics().getLogicHeight() * 0.088f),true);
