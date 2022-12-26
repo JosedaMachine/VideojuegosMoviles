@@ -66,6 +66,18 @@ public class AudioAndroid implements Audio {
         }
     }
 
+    @Override
+    public void pauseAll() {
+        music.pause();
+        pauseEverySound();
+    }
+
+    @Override
+    public void resumeAll() {
+        music.play();
+        resumeEverySound();
+    }
+
     public void pauseSound(String name) {
         SoundAndroid sound = getSound(name);
         if(sound == null) return;

@@ -62,6 +62,8 @@ public class EngineAndroid implements Engine, Runnable{
             // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
             this.engineThread = new Thread(this);
             this.engineThread.start();
+            if(currGame != null)
+                this.currGame.onResume();
         }
     }
 
@@ -71,6 +73,8 @@ public class EngineAndroid implements Engine, Runnable{
             this.running = false;
             while (true) {
                 try {
+                    if(currGame != null)
+                        this.currGame.onPause();
                     this.engineThread.join();
                     this.engineThread = null;
                     break;

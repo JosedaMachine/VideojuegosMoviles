@@ -48,4 +48,14 @@ public class AudioPC implements Audio {
             music.setVolume(-15);
         }
     }
+
+    @Override
+    public void pauseAll() {
+
+    }
+
+    @Override
+    public void resumeAll() {
+
+    }
 }

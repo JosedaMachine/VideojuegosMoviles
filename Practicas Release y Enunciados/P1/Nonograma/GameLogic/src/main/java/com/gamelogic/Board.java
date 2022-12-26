@@ -213,7 +213,7 @@ public class Board {
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                Image im = tileImage(e, board[i][j]);
+                Image im = tileImage(g, board[i][j]);
 
                 if(im == null) continue;
 

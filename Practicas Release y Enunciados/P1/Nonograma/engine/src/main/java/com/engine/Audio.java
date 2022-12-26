@@ -26,4 +26,8 @@ public interface Audio {
     void setMusic(String name);
 
     void startMusic();
+
+    void pauseAll();
+
+    void resumeAll();
 }
