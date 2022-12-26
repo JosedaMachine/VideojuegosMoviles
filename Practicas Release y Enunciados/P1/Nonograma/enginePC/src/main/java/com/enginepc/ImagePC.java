@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 public class ImagePC implements Image {
     java.awt.Image image;
+    String name;
 
     ImagePC(String name){
         try {
@@ -16,6 +17,11 @@ public class ImagePC implements Image {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

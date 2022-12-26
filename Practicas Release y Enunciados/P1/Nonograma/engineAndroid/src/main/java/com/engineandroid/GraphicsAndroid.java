@@ -63,7 +63,7 @@ public class GraphicsAndroid implements IGraphics {
     public Image newImage(String path, String name) {
         Image i = imagesLoaded.get(path);
         if(i == null) {
-            i = new ImageAndroid(assetManager, "images/" + path);
+            i = new ImageAndroid(assetManager, "images/" + path, name);
             if(!i.isLoaded())
                 System.out.println("No se ha encontrado la imagen");
             loadImage(i, name);
@@ -125,12 +125,13 @@ public class GraphicsAndroid implements IGraphics {
 
     @Override
     public void drawImage(Image image) {
-        drawImage(image, 0, 0);
+       drawImage(image, 0, 0);
     }
 
     @Override
     public void drawImage(Image image, int x, int y) {
-        drawImage(image, x, y, 1.0f, 1.0f);
+        ImageAndroid anImage = (ImageAndroid) image;
+        canvas.drawBitmap(anImage.getImage(), x, y, paint);
     }
 
     @Override

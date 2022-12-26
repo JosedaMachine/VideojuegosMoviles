@@ -212,7 +212,9 @@ public class Board {
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 Image im = tileImage(e, board[i][j]);
-                assert im != null;
+
+                if(im == null) continue;
+
                 if(!win || board[i][j] == TILE.FILL)
                     e.getGraphics().drawImage(im, (int) (i * relationX) + x, (int) (j * relationY) + y,
                         relationX / im.getWidth(), (relationY) / im.getHeight());

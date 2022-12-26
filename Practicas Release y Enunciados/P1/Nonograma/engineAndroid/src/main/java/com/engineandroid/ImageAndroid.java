@@ -11,8 +11,9 @@ import java.io.InputStream;
 
 public class ImageAndroid implements Image {
     Bitmap image;
+    String name;
 
-    ImageAndroid(AssetManager ass, String path){
+    ImageAndroid(AssetManager ass, String path, String name){
         InputStream is = null;
         try {
             is = ass.open(path);
@@ -20,11 +21,16 @@ public class ImageAndroid implements Image {
             e.printStackTrace();
         }
         image = BitmapFactory.decodeStream(is);
-        ass.close();
+        this.name = name;
     }
 
     public Bitmap getImage() {
         return image;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -34,7 +40,7 @@ public class ImageAndroid implements Image {
 
     @Override
     public int getHeight() {
-        return image.getHeight();
+        return  image.getHeight();
     }
 
     @Override
@@ -43,6 +49,6 @@ public class ImageAndroid implements Image {
     }
 
     public Bitmap getScaledImage(int width, int heigth){
-        return Bitmap.createScaledBitmap(image, width, heigth, true);
+        return Bitmap.createScaledBitmap(image, width, heigth, false);
     }
 }
