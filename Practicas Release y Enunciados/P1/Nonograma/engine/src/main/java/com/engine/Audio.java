@@ -22,4 +22,8 @@ public interface Audio {
      * @param name nombre del sonido
      */
     void playSound(String name);
+
+    void setMusic(String name);
+
+    void startMusic();
 }

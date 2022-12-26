@@ -33,16 +33,6 @@ public class SoundPC implements Sound {
     }
 
     @Override
-    public void pause() {
-        clip.stop();
-    }
-
-    @Override
-    public boolean isLoaded() {
-        return clip != null;
-    }
-
-    @Override
     public void setLoop(boolean l) {
         if(l)
             clip.loop(Clip.LOOP_CONTINUOUSLY);

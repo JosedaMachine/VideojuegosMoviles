@@ -1,58 +1,62 @@
 package com.engineandroid;
 
-import com.engine.Sound;
-
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.media.MediaPlayer;
+import android.media.SoundPool;
+
+import com.engine.Sound;
+
 import java.io.IOException;
 
 public class SoundAndroid implements Sound {
 
-    MediaPlayer sound = null;
+    int soundId;
+    float volume;
+    int loop;
+    float rate;
 
-    SoundAndroid(AssetManager ass, String file){
-        sound = new MediaPlayer();
-        sound.reset();
+    SoundAndroid(SoundPool sPool, AssetManager ass, String file){
+        soundId = -1;
         try {
-            AssetFileDescriptor afd = ass.openFd(file);
-            sound.setDataSource(afd.getFileDescriptor(),
-                    afd.getStartOffset(), afd.getLength());
-            sound.prepare();
-            sound.setLooping(false);
-        } catch (IOException e) {
-            System.err.println("Couldn't load audio file");
-            e.printStackTrace();
+            AssetFileDescriptor assetDescriptor = ass.openFd(file);
+            soundId = sPool.load(assetDescriptor, 1);
+            volume = 1;
+            loop = 0;
+            rate = 1;
+
+        }catch (IOException e) {
+            throw new RuntimeException("Couldn't load sound.");
         }
+
     }
 
+    // Obsoleto por uso de SoundPool
     @Override
     public void play() {
-        sound.start();
-    }
 
-    @Override
-    public void pause() {
-        sound.stop();
-    }
-
-    @Override
-    public boolean isLoaded() {
-        return sound != null;
     }
 
     @Override
     public void setLoop(boolean l) {
-        sound.setLooping(l);
+        if(l)
+            loop = 0;
+        else
+            loop = -1;
     }
-
+    public int getLoop() {
+        return loop;
+    }
     @Override
     public void setVolume(int vol) {
-        sound.setVolume(vol,vol);
+        volume = vol;
     }
-
-    @Override
-    public boolean alreadyPlaying() {
-        return sound.isPlaying();
+    public float getVolume() {
+        return volume;
+    }
+    public int getId() {
+        return soundId;
+    }
+    public float getRate(){
+        return rate;
     }
 }
