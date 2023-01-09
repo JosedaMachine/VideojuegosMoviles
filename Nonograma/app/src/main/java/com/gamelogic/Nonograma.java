@@ -12,6 +12,9 @@ import com.engineandroid.SceneBase;
 import com.engineandroid.UserInterface;
 import com.gamelogic.managers.GameManager;
 import com.gamelogic.scenes.SceneGame;
+import com.gamelogic.scenes.SceneQuickLevels;
+import com.gamelogic.scenes.SceneStoryCategories;
+import com.gamelogic.scenes.SceneStoryLevels;
 import com.gamelogic.scenes.SceneTitle;
 
 import java.io.BufferedReader;
@@ -26,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Stack;
+import com.gamelogic.enums.CATEGORY;
 
 public class Nonograma implements IGame {
     Engine engine;
@@ -52,7 +56,42 @@ public class Nonograma implements IGame {
     public void init() {
         GameManager.instance().restore(mPreferences);
         assert sceneStack.empty();
+
+        boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
+
+
         pushScene(new SceneTitle());
+
+        if(boardSaved){
+            String levelCat = mPreferences.getString("levelCat", "-");
+            String levelQuick = mPreferences.getString("levelQuickSize", "-");
+
+            if(!Objects.equals(levelCat, "-")){
+
+                int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
+                int indexLvl = Integer.parseInt(levelCat.substring(1));
+
+                String[] size = levelQuick.split("x");
+
+                int cols_ = Integer.parseInt(size[0]);
+                int rows_ = Integer.parseInt(size[1]);
+
+                CATEGORY cat = CATEGORY.values()[catN];
+                pushScene(new SceneStoryCategories());
+                pushScene(new SceneStoryLevels(cat.ordinal()));
+                pushScene(new SceneGame(rows_, cols_, cat, indexLvl));
+
+            } else if (!Objects.equals(levelQuick, "-")) {
+                //buscarHasta que haya una x
+
+                String[] size = levelQuick.split("x");
+
+                int cols_ = Integer.parseInt(size[0]);
+                int rows_ = Integer.parseInt(size[1]);
+                pushScene(new SceneQuickLevels());
+                pushScene(new SceneGame(rows_, cols_, 0));
+            }
+        }
     }
 
     /**

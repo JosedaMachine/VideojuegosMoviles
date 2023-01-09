@@ -51,7 +51,11 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     private Board gameBoard;
 
-    private Button bttCheckWin, bttReturn, adButton;
+    int numTouchesCheats = 0;
+    double timerCheat = 0;
+    double initTimeCheat = 1.0f;
+
+    private Button bttCheckWin, bttReturn, adButton, cheatButton;
     //True cuando coincidan los tableros
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -178,9 +182,49 @@ public class SceneGame implements SceneBase {
 
         //Tamaño de los botones
         int offset = (int) (logicWidth * 0.1f),
-                bttWidth = (int) (logicWidth * 0.25f),
-                bttHeight = (int) (logicWidth * 0.0833f);
+                bttWidth = (int) (logicWidth /8),
+                bttHeight = (int) (logicHeight /8);
 
+        //Boton Cheat
+        cheatButton = new Button("cheat",  0,
+                0, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
+                        if(numTouchesCheats <= 0){
+                            timerCheat = initTimeCheat;
+                        }
+
+                        numTouchesCheats++;
+
+                        if(timerCheat> 0.0f && numTouchesCheats == 3){
+                            DEBUG = !DEBUG;
+                            numTouchesCheats = 0;
+                        }
+
+                        if(timerCheat <= 0.0f){
+                            numTouchesCheats = 0;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+                if(timerCheat >= 0.0){
+                    timerCheat -= deltaTime;
+                }
+            }
+        };
+//        cheatButton.setFont(numFont);
+//        cheatButton.setColor(ColorWrap.BLACK);
+//        cheatButton.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+
+        offset = (int) (logicWidth * 0.1f);
+        bttWidth = (int) (logicWidth * 0.25f);
+        bttHeight = (int) (logicWidth * 0.0833f);
         //Boton Check Win
         bttCheckWin = new Button("Check", logicWidth / 2 - bttWidth / 2,
                 logicHeight - bttHeight * 3, bttWidth, bttHeight) {
@@ -280,6 +324,7 @@ public class SceneGame implements SceneBase {
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
         adButton.render(graphics);
+        cheatButton.render(graphics);
 
         if (DEBUG) {
             checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
@@ -360,6 +405,7 @@ public class SceneGame implements SceneBase {
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
         adButton.update(deltaTime);
+        cheatButton.update(deltaTime);
     }
 
     @Override
@@ -367,6 +413,7 @@ public class SceneGame implements SceneBase {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
         adButton.input(event_);
+        cheatButton.input(event_);
 
         if (event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) {
             isHoldingPress = false;
@@ -597,10 +644,10 @@ public class SceneGame implements SceneBase {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
 
         //Detectar si hay cambios o si ha perdido vidas, de lo contrario no guardamos nada
-        if (lives == 3 && !gameBoard.hasChanged()) {
-            preferencesEditor.putBoolean("savingBoard", false);
-            return;
-        }
+//        if (lives == 3 && !gameBoard.hasChanged()) {
+//            preferencesEditor.putBoolean("savingBoard", false);
+//            return;
+//        }
 
         FileOutputStream file = null;
         try {
@@ -614,7 +661,9 @@ public class SceneGame implements SceneBase {
                 if (levelName != null) {
                     int catN = category.ordinal();
                     preferencesEditor.putString("levelCat", Integer.toString(catN) + Integer.toString(lvlIndex));
-                    preferencesEditor.putString("levelQuickSize", "-");
+                    String cols_ = Integer.toString(gameBoard.getCols());
+                    String rows_ = Integer.toString(gameBoard.getRows());
+                    preferencesEditor.putString("levelQuickSize", cols_ + "x" + rows_);
                 }else{
                     preferencesEditor.putString("levelCat", "-");
                     String cols_ = Integer.toString(gameBoard.getCols());
