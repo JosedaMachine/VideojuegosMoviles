@@ -64,4 +64,18 @@ public class Nonograma implements IGame {
     public void onPause() {
         engine.getAudio().pauseAll();
     }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        System.out.println("Saving...");
+        engine.save();
+    }
+
+    //Somehow this is not called
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState){
+        System.out.println("Restoring...");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }

@@ -1,5 +1,7 @@
 package com.gamelogic;
 
+import android.service.quicksettings.Tile;
+
 import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
@@ -22,6 +24,7 @@ import java.util.Random;
 
 public class Board {
     private TILE[][] board;
+    private Integer[][] boardColors;
     private int rows = 0;
     private int cols = 0;
     private int width, height;
@@ -33,12 +36,13 @@ public class Board {
     private int tileSize;
     private boolean hasChanged_ = false;
     private int numCorrectTiles;
-    private List<List<Integer>> adyancentsHorizontal;
-    private List<List<Integer>> adyancentsVertical;
+    private List<List<Pair<Integer, Integer>>> adyancentsHorizontal;
+    private List<List<Pair<Integer, Integer>>> adyancentsVertical;
 
 
     public Board(int cols, int rows, int sizeX_, int sizeY_, int tileSize) {
         board = new TILE[cols][rows];
+        boardColors = new Integer[cols][rows];
         this.rows = rows;
         this.cols = cols;
 
@@ -46,8 +50,10 @@ public class Board {
         setSize(sizeX_, sizeY_);
         //Tablero incialmente vacio
         for (int i = 0; i < this.cols; i++)
-            for (int j = 0; j < this.rows; j++)
+            for (int j = 0; j < this.rows; j++) {
                 board[i][j] = TILE.EMPTY;
+                boardColors[i][j] = 0;
+            }
 
         numCorrectTiles = 0;
 
@@ -159,6 +165,9 @@ public class Board {
                 if (random <= 3){
                     board[i][j] = TILE.FILL;
                     numCorrectTiles++;
+
+                    random = r.nextInt(3);
+                    boardColors[i][j] = random;
                 }
             }
         }
@@ -173,21 +182,26 @@ public class Board {
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
         for (int i = 0; i < rows; i++) {
-            List<Integer> adyacents = new ArrayList<>();
+            List<Pair<Integer, Integer>> adyacents = new ArrayList<>();
             int juntas = 0;
+            int color = -1;
             for (int j = 0; j < cols; j++) {
-                if (board[j][i] == TILE.FILL) {
+                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(boardColors[j-1][i]))) {
                     juntas++;
 
+                    if(color == -1)
+                        color = boardColors[j][i];
+
                     if (j + 1 == cols)
-                        adyacents.add(juntas);
+                        adyacents.add(new Pair<>(juntas, color));
                 } else if (juntas != 0) {
-                    adyacents.add(juntas);
+                    adyacents.add(new Pair<>(juntas, color));
                     juntas = 0;
+                    color = -1;
                 }
             }
 
-            if (adyacents.size() == 0) adyacents.add(0);
+            if (adyacents.size() == 0) adyacents.add(new Pair<>(0,-1));
             else if (adyacents.size() > maxHorizontalFilled) {
                 maxHorizontalFilled = adyacents.size();
             }
@@ -196,20 +210,26 @@ public class Board {
 
         //vertical
         for (int j = 0; j < cols; j++) {
-            List<Integer> adyacents = new ArrayList<>();
+            List<Pair<Integer, Integer>> adyacents = new ArrayList<>();
             int juntas = 0;
+            int color = -1;
             for (int i = 0; i < rows; i++) {
-                if (board[j][i] == TILE.FILL) {
+                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(boardColors[j][i-1]))) {
                     juntas++;
 
+
+                    if(color == -1)
+                        color = boardColors[j][i];
+
                     if (i + 1 == rows)
-                        adyacents.add(juntas);
+                        adyacents.add(new Pair<>(juntas, color));
                 } else if (juntas != 0) {
-                    adyacents.add(juntas);
+                    adyacents.add(new Pair<>(juntas, color));
                     juntas = 0;
+                    color = -1;
                 }
             }
-            if (adyacents.size() == 0) adyacents.add(0);
+            if (adyacents.size() == 0) adyacents.add(new Pair<>(0, -1));
             else if (adyacents.size() > maxVerticalFilled) {
                 maxVerticalFilled = adyacents.size();
             }
@@ -262,17 +282,22 @@ public class Board {
         return board[x][y];
     }
 
-    public void setTile(int x, int y, TILE tile) {
+    public void setTile(int x, int y, TILE tile, int a) {
         board[x][y] = tile;
+        boardColors[x][y] = a;
     }
 
     public TILE[][] getBoard() {
         return board;
     }
+    public Integer[][] getBoardColor() {
+        return boardColors;
+    }
 
     // Comprueba si los tableros coinciden
     public ArrayList<Pair<Integer, Integer>> isBoardMatched(Board other) {
         TILE[][] otherBoard = other.getBoard();
+        Integer[][] otherBoardColors = other.getBoardColor();
         ArrayList<Pair<Integer, Integer>> diff = new ArrayList<>();
         int tilesMatched = 0;
         //Assume they are the same size (width and height)
@@ -280,7 +305,7 @@ public class Board {
             for (int j = 0; j < rows; j++) {
                 if(otherBoard[i][j] == TILE.CROSS || otherBoard[i][j] == TILE.EMPTY)
                     continue;
-                if (board[i][j] != otherBoard[i][j])
+                if (board[i][j] != otherBoard[i][j] || boardColors[i][j].equals(otherBoardColors[i][j]))
                     diff.add(new Pair<>(i, j));
                 else
                     tilesMatched++;
@@ -312,7 +337,17 @@ public class Board {
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
             int size = adyancentsHorizontal.get(i).size();
             for (j = size - 1; j >= 0; j--) {
-                Integer num = adyancentsHorizontal.get(i).get(j);
+                Integer num = adyancentsHorizontal.get(i).get(j).first;
+                System.out.println("ADYACENTESTEST: " +num);
+                Integer color = adyancentsHorizontal.get(i).get(j).second;
+                System.out.println("COLORESEWSESE: " +color);
+                if (color == 0)
+                    g.setColor(ColorWrap.BLUE, 1.0f);
+                else if (color == 1)
+                    g.setColor(ColorWrap.RED, 1.0f);
+                else
+                    g.setColor(ColorWrap.GREEN, 1.0f);
+
                 if (num != 0)
                     g.drawText(num.toString(),
                             posX - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
@@ -324,7 +359,16 @@ public class Board {
         for (i = 0; i < adyancentsVertical.size(); i++) {
             int size = adyancentsVertical.get(i).size();
             for (j = size - 1; j >= 0; j--) {
-                Integer num = adyancentsVertical.get(i).get(j);
+                Integer num = adyancentsVertical.get(i).get(j).first;
+                Integer color = adyancentsVertical.get(i).get(j).second;
+                System.out.println("COLORESEWSESE: " +color);
+                if (color == 0)
+                    g.setColor(ColorWrap.BLUE, 1.0f);
+                else if (color == 1)
+                    g.setColor(ColorWrap.RED, 1.0f);
+                else
+                    g.setColor(ColorWrap.RED, 1.0f);
+
                 if (num != 0)
                     g.drawText(num.toString(),
                             (int) (i * (int)relationX) + posX + ((int)relationX/2),
@@ -342,7 +386,9 @@ public class Board {
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                Image im = tileImage(g, board[i][j], pal);
+
+                Image im = tileImage(g, board[i][j], pal, boardColors[i][j]);
+
                 assert im != null;
 
                 if(board[i][j] == TILE.FILL && !hasChanged_)
@@ -394,9 +440,15 @@ public class Board {
 
 
     //Coge image dependiendo del tile
-    private Image tileImage(Graphics g, TILE t, int pal) {
+    private Image tileImage(Graphics g, TILE t, int pal, int tilecol) {
         switch (t) {
             case FILL:
+                if(tilecol == 1)
+                    return g.getImage("fill"+ pal + "red");
+
+                if(tilecol == 2)
+                    return g.getImage("fill"+ pal + "green");
+                else
                 return g.getImage("fill" + pal);
             case CROSS:
                 return g.getImage("cross"+ pal);

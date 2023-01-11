@@ -137,6 +137,7 @@ public class SceneTitle implements SceneBase {
             @Override
             public void input(TouchEvent event_) {
                 if(event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT){
+                    GameManager.instance().addClick();
                     if(paletteButton.isInside(graphics, event_.getX_(),event_.getY_())){
                         engine.getAudio().playSound("click.wav");
                         setSelected(true);
@@ -221,6 +222,8 @@ public class SceneTitle implements SceneBase {
         quickButton.update(deltaTime);
         storyButton.update(deltaTime);
         paletteButton.update(deltaTime);
+
+        System.out.println(GameManager.instance().getTilesClicked());
     }
 
     @Override

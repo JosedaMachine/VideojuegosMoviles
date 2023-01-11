@@ -24,6 +24,7 @@ public class GameManager {
     private static GameManager instance_;
     private final int maxLevels = 20;
     private final int maxMoney = 10000;
+    private final int maxTilesClicked = 10000;
     private Engine engine;
 
     public GameManager(Engine engine){
@@ -33,6 +34,7 @@ public class GameManager {
     //Indices de ultimo nivel bloqueado por categoria
     private HashMap<CATEGORY, Integer> categoryLevelIndexes = new HashMap<>();
     private int money = 0;
+    private int tilesClicked = 0;
 
     private PALETTE currentPalette = PALETTE.DEFAULT;
     //Paletas desbloqueadas
@@ -79,6 +81,10 @@ public class GameManager {
         Log.d("MONEY", ""+m);
         money += m;
         money = Math.min(maxMoney, money);
+    }
+
+    public void addClick() {
+        tilesClicked++;
     }
 
     // Actualiza o crea la interfaz del juego
@@ -159,10 +165,16 @@ public class GameManager {
         return unlockedPalettes.get(PALETTE.values()[pal]);
     }
 
+    public int getTilesClicked(){
+        return tilesClicked;
+    }
+
     public void save(SharedPreferences mPreferences){
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         //Money
         preferencesEditor.putInt("money", money);
+
+        //preferencesEditor.putInt("tilesCl", tilesClicked);
 
         //Levels Unlocked
         preferencesEditor.putInt("kitchen", getLevelIndex(CATEGORY.KITCHEN));
@@ -193,6 +205,8 @@ public class GameManager {
         int medievalIndex =mPreferences.getInt("medieval", 0);
         int oceanIndex = mPreferences.getInt("ocean", 0);
         int animalIndex = mPreferences.getInt("animal", 0 );
+
+        tilesClicked =  mPreferences.getInt("tilesCl", 130);
 
         GameManager.instance().setLevelIndex(CATEGORY.KITCHEN, kitchenIndex);
         GameManager.instance().setLevelIndex(CATEGORY.MEDIEVAL, medievalIndex);

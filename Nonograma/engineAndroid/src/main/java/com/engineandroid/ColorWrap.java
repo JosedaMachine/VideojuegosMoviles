@@ -23,7 +23,11 @@ public class ColorWrap {
     /**
      * Valor entero que representa rgba
      */
-    public static Integer BLACK = null;
+    public static Integer BLACK = null;    /**
+     * Valor entero que representa rgba
+     */
+    public static Integer GREEN = null;
+
 
 
     /**
@@ -35,5 +39,6 @@ public class ColorWrap {
         BLUE = android.graphics.Color.BLUE;
         WHITE = android.graphics.Color.WHITE;
         GRAY = android.graphics.Color.GRAY;
+        GREEN = Color.GREEN;
     }
 }

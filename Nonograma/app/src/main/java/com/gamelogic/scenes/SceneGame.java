@@ -51,7 +51,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     private Board gameBoard;
 
-    private Button bttCheckWin, bttReturn, adButton;
+    private Button bttCheckWin, bttReturn, adButton, bttDebug;
     //True cuando coincidan los tableros
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -91,6 +91,14 @@ public class SceneGame implements SceneBase {
     private int lvlIndex = 0;
     private int reward;
     private boolean boardHasChanged;
+
+    private enum TileColor {BLUE, RED, GREEN}
+
+    TileColor tilecolor = TileColor.BLUE;
+
+    private float timerw;
+    boolean timerwstarted;
+    int debugclicks =0;
 
     TileTouched tileTouchedInfo_ = null;
 
@@ -209,7 +217,7 @@ public class SceneGame implements SceneBase {
                 if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
                     if (isInside(graphics,event_.getX_(), event_.getY_())) {
                         engine.getAudio().playSound("click.wav");
-
+                        timerw = 1;
                         if (fade.getState() != Fade.STATE_FADE.Out) {
                             fade.setState(Fade.STATE_FADE.Out);
                             fade.triggerFade();
@@ -221,8 +229,15 @@ public class SceneGame implements SceneBase {
             @Override
             public void update(double deltaTime) {
                 if (fade.getFadeOutComplete()) {
-                    engine.getGame().previousScene();
+                    //engine.getGame().previousScene();
 //                    engine.getGame().changeScene("SceneLevels");
+                    if (timerw > 0){
+                        timerw -= deltaTime;
+                    }
+                    else{
+                        engine.getGame().changeScene("SceneTitle");
+                    }
+
 //                    engine.getGame().pushScene(new SceneTitle(engine));
                 }
             }
@@ -230,6 +245,35 @@ public class SceneGame implements SceneBase {
         bttReturn.setFont(numFont);
         bttReturn.setColor(ColorWrap.BLACK);
         bttReturn.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        //Boton Return to menu
+        bttDebug = new Button("Debug", 0,
+                0, bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics,event_.getX_(), event_.getY_())) {
+                        engine.getAudio().playSound("click.wav");
+                        tilecolor =  TileColor.values()[(tilecolor.ordinal() + 1) % TileColor.values().length];
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+//                if (timerwstarted && timerw > 0){
+//                    timerw -= deltaTime;
+//
+//                }
+//                else if (timerwstarted && debugclicks < 4){
+//                    timerwstarted = false;
+//                    debugclicks = 0;
+//                }
+            }
+        };
+        bttDebug.setFont(numFont);
+        bttDebug.setColor(ColorWrap.BLACK);
+        bttDebug.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
 
         Message lifeMessage = new Message(MESSAGE_TYPE.LIFE_AD);
 
@@ -280,8 +324,9 @@ public class SceneGame implements SceneBase {
         bttCheckWin.render(graphics);
         bttReturn.render(graphics);
         adButton.render(graphics);
+        bttDebug.render(graphics);
 
-        if (DEBUG) {
+        if (debugclicks > 4) {
             checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
         }
 
@@ -360,6 +405,7 @@ public class SceneGame implements SceneBase {
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
         adButton.update(deltaTime);
+        bttDebug.update(deltaTime);
     }
 
     @Override
@@ -367,6 +413,7 @@ public class SceneGame implements SceneBase {
         bttCheckWin.input(event_);
         bttReturn.input(event_);
         adButton.input(event_);
+        bttDebug.input(event_);
 
         if (event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) {
             isHoldingPress = false;
@@ -416,6 +463,8 @@ public class SceneGame implements SceneBase {
         graphics.newImage("crosssquare" + palette + ".png", "cross" + palette);
         graphics.newImage("wrongsquare" + palette + ".png", "wrong" + palette);
         graphics.newImage("fillsquare" + palette + ".png", "fill" + palette);
+        graphics.newImage("fillsquare" + palette + "red.png", "fill" + palette+"red");
+        graphics.newImage("fillsquare" + palette + "green.png", "fill" + palette+"green");
         tileSize = graphics.getImage("empty" + palette).getWidth();
 
         graphics.newImage("heart.png", "heart");
@@ -729,7 +778,7 @@ public class SceneGame implements SceneBase {
 
 
         if (wrong) {
-            gameBoard.setTile(x, y, TILE.WRONG);
+            gameBoard.setTile(x, y, TILE.WRONG, 0);
             return;
         }
 
@@ -739,11 +788,11 @@ public class SceneGame implements SceneBase {
         TILE tile = gameBoard.getTile(x, y);
 
         if (lTouch && tile == TILE.EMPTY)
-            gameBoard.setTile(x, y, TILE.CROSS);
+            gameBoard.setTile(x, y, TILE.CROSS, 0);
         else if (tile == TILE.EMPTY)
-            gameBoard.setTile(x, y, TILE.FILL);
+            gameBoard.setTile(x, y, TILE.FILL, tilecolor.ordinal());
         else
-            gameBoard.setTile(x, y, TILE.EMPTY);
+            gameBoard.setTile(x, y, TILE.EMPTY, 0);
 
         tileTouchedInfo_.x = x;
         tileTouchedInfo_.y = y;

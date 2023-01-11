@@ -3,6 +3,7 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 
+import com.engineandroid.AccelerometerSensor;
 import com.engineandroid.Audio;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.ConstraintX;
@@ -31,6 +32,7 @@ public class ScenePalettes implements SceneBase {
     private final String text = "Select a palette";
 
     private Fade fade;
+    private AccelerometerSensor accelerometer;
 
     public ScenePalettes() {    }
 
@@ -89,10 +91,11 @@ public class ScenePalettes implements SceneBase {
             palettes.add(createPalette(engine,posX + size * i + offset*i, posY, size, size, i));
         }
 
-
         button.setFont(buttonFont);
         button.setColor(ColorWrap.BLACK);
         button.setBackgroundImage(engine.getGraphics().getImage("buttonbox"));
+
+        accelerometer = new AccelerometerSensor(graphics.getContext());
     }
 
     //Boton de seleccion de paleta
@@ -205,6 +208,12 @@ public class ScenePalettes implements SceneBase {
         for (int i = 0; i < palettes.size(); i++) {
             palettes.get(i).update(deltaTime);
         }
+
+        float[] values = accelerometer.getDeltaValues();
+
+        if(values[0] > 2 || values[1] > 2 || values[2] > 2){
+            engine.getAudio().playSound("wrong.wav");
+        }
     }
 
     @Override
@@ -234,12 +243,12 @@ public class ScenePalettes implements SceneBase {
 
     @Override
     public void onResume() {
-
+        accelerometer.onResume();
     }
 
     @Override
     public void onPause() {
-
+        accelerometer.onPause();
     }
 
     @Override
