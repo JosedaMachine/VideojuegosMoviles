@@ -1,7 +1,5 @@
 package com.engineandroid;
 
-import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -59,8 +57,8 @@ public class AdManager {
         }
     }
 
-    public Pair<Integer, Integer> getBannerSize(){
-        return new Pair<Integer, Integer>(Objects.requireNonNull(ad.getAdSize()).getWidthInPixels(activity), Objects.requireNonNull(ad.getAdSize()).getHeightInPixels(activity));
+    public CustomPair<Integer, Integer> getBannerSize(){
+        return new CustomPair<Integer, Integer>(Objects.requireNonNull(ad.getAdSize()).getWidthInPixels(activity), Objects.requireNonNull(ad.getAdSize()).getHeightInPixels(activity));
     }
 
     public void buildRewardAd(){

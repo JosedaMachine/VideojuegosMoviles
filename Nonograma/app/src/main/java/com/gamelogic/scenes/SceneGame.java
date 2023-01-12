@@ -13,7 +13,7 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.Board;
@@ -51,7 +51,7 @@ public class SceneGame implements SceneBase {
     //Tablero que ve el jugador
     private Board gameBoard;
 
-    private Button bttCheckWin, bttReturn, adButton;
+    private Button bttCheckWin, bttReturn, adButton, bttColorRed, bttColorGRAY, bttColorBLACK, bttColorBLUE;
     //True cuando coincidan los tableros
     private boolean hasWon = false;
     //True cuando ocurra un movimiento y haya que comprobar
@@ -67,6 +67,7 @@ public class SceneGame implements SceneBase {
 
     private int checkBoardPosX, checkBoardPosY;
 
+    Integer colorToPaint;
 
     SharedPreferences sharedPreferences;
     //Filas y columnas del tablero
@@ -147,6 +148,9 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void init(Engine engine) {
+
+        colorToPaint = ColorWrap.BLUE;
+
         tileTouchedInfo_ = new TileTouched();
         Graphics graphics = engine.getGraphics();
 
@@ -171,7 +175,7 @@ public class SceneGame implements SceneBase {
         boardHasChanged = gameBoard.hasChanged();
 
         //relación respecto a numero de casillas
-        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        CustomPair<Float, Float> relations = gameBoard.getRelationFactorSize();
 
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
         pixelFont = graphics.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
@@ -257,6 +261,84 @@ public class SceneGame implements SceneBase {
         adButton.setColor(ColorWrap.BLACK);
         adButton.setBackgroundImage(graphics.getImage("buttonbox"));
 
+
+        offset = (int) (logicWidth * 0.1f);
+        bttWidth = (int) (logicWidth * 0.0833f);
+        bttHeight = (int) (logicWidth * 0.0833f);
+
+        //Color Picker
+        bttColorRed = new Button("", (int) (logicWidth / 2.5 - bttWidth),
+                (int) (logicHeight - bttHeight * 3.5), bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
+                        colorToPaint = ColorWrap.RED;
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+        bttColorRed.setBackgroundImage(engine.getGraphics().getImage("fillRED"));
+
+        //Color Picker
+        bttColorBLUE = new Button("", (int) (logicWidth / 2 - bttWidth),
+                (int) (logicHeight - bttHeight * 3.5), bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
+                        colorToPaint = ColorWrap.BLUE;
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+        bttColorBLUE.setBackgroundImage(engine.getGraphics().getImage("fillBLUE"));
+
+        //Color Picker
+        bttColorGRAY = new Button("", (int) (logicWidth / 1.6 - bttWidth),
+                (int) (logicHeight - bttHeight * 3.5), bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
+                        colorToPaint = ColorWrap.GRAY;
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+        bttColorGRAY.setBackgroundImage(engine.getGraphics().getImage("fillGRAY"));
+
+        //Color Picker
+        bttColorBLACK = new Button("", (int) (logicWidth / 1.3 - bttWidth),
+                (int) (logicHeight - bttHeight * 3.5), bttWidth, bttHeight) {
+            @Override
+            public void input(TouchEvent event_) {
+                if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
+                    if (isInside(graphics, event_.getX_(), event_.getY_())) {
+                        colorToPaint = ColorWrap.BLACK;
+                    }
+                }
+            }
+
+            @Override
+            public void update(double deltaTime) {
+            }
+        };
+        bttColorBLACK.setBackgroundImage(engine.getGraphics().getImage("fillBLACK"));
+
+
         //Layout landscape o portrait
         if(graphics.orientationHorizontal()){
             horizontalLayout(graphics, logicWidth, logicHeight);
@@ -281,6 +363,11 @@ public class SceneGame implements SceneBase {
         bttReturn.render(graphics);
         adButton.render(graphics);
 
+        bttColorRed.render(graphics);
+        bttColorBLUE.render(graphics);
+        bttColorBLACK.render(graphics);
+        bttColorGRAY.render(graphics);
+
         if (DEBUG) {
             checkBoard.drawBoard(graphics, checkBoard.getPosX(), checkBoard.getPosY(), false, palette);
         }
@@ -303,8 +390,8 @@ public class SceneGame implements SceneBase {
             String remainingField = numRemaining + " remaining cells";
             String wrongField = numWrong + " wrong cells";
 
-            Pair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
-            Pair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
+            CustomPair<Double, Double> dime_remaining = graphics.getStringDimensions(remainingField);
+            CustomPair<Double, Double> dime_wrong = graphics.getStringDimensions(wrongField);
 
             graphics.setColor(ColorWrap.BLUE, 1.0f);
             graphics.drawText(remainingField, getCorrectionTextPosX(graphics, logicWidth, dime_remaining),
@@ -360,6 +447,11 @@ public class SceneGame implements SceneBase {
         fade.update(deltaTime);
         bttReturn.update(deltaTime);
         adButton.update(deltaTime);
+
+        bttColorRed.update(deltaTime);
+        bttColorBLUE.update(deltaTime);
+        bttColorBLACK.update(deltaTime);
+        bttColorGRAY.update(deltaTime);
     }
 
     @Override
@@ -368,13 +460,18 @@ public class SceneGame implements SceneBase {
         bttReturn.input(event_);
         adButton.input(event_);
 
+        bttColorRed.input(event_);
+        bttColorBLUE.input(event_);
+        bttColorGRAY.input(event_);
+        bttColorBLACK.input(event_);
+
         if (event_.getType_() == TouchEvent.TouchEventType.TOUCH_EVENT) {
             isHoldingPress = false;
             tileTouchedInfo_.touched = false;
         } else if (event_.getType_() == TouchEvent.TouchEventType.RELEASE_EVENT) {
             isHoldingPress = true;
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
+            CustomPair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
             if (index.first != -1 && index.second != -1) {
                 setTile(index.first, index.second, false, false);
@@ -388,7 +485,7 @@ public class SceneGame implements SceneBase {
             tileTouchedInfo_.touched = false;
         } else if (event_.getType_() == TouchEvent.TouchEventType.LONG_EVENT) {
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
+            CustomPair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
             if (index.first != -1 && index.second != -1) {
                 setTile(index.first, index.second, false, true);
@@ -399,7 +496,7 @@ public class SceneGame implements SceneBase {
             }
         else if (isHoldingPress && event_.getType_() == TouchEvent.TouchEventType.MOVE_EVENT) {
             //Input en casillas del tablero
-            Pair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
+            CustomPair<Integer, Integer> index = gameBoard.calculcateIndexMatrix(event_.getX_(), event_.getY_());
 
             if (index.first != -1 && index.second != -1)
                 setTile(index.first, index.second, false, false);
@@ -416,6 +513,11 @@ public class SceneGame implements SceneBase {
         graphics.newImage("crosssquare" + palette + ".png", "cross" + palette);
         graphics.newImage("wrongsquare" + palette + ".png", "wrong" + palette);
         graphics.newImage("fillsquare" + palette + ".png", "fill" + palette);
+
+        graphics.newImage("fillsquareGRAY.png", "fillGRAY");
+        graphics.newImage("fillsquareRED.png", "fillRED");
+        graphics.newImage("fillsquareBLUE.png", "fillBLUE");
+        graphics.newImage("fillsquareBLACK.png", "fillBLACK");
         tileSize = graphics.getImage("empty" + palette).getWidth();
 
         graphics.newImage("heart.png", "heart");
@@ -465,7 +567,7 @@ public class SceneGame implements SceneBase {
         }
     }
 
-    public int getCorrectionTextPosX(Graphics g, int  logicWidth, Pair<Double,Double> dimensions){
+    public int getCorrectionTextPosX(Graphics g, int  logicWidth, CustomPair<Double,Double> dimensions){
         if(g.orientationHorizontal()){
             return (int) (logicWidth + logicWidth * 0.8f - dimensions.first / 2);
         }else{
@@ -473,7 +575,7 @@ public class SceneGame implements SceneBase {
         }
     }
 
-    public int getCorrectionTextPosY(Graphics g, int logicHeight, float pos, Pair<Double,Double> dimensions){
+    public int getCorrectionTextPosY(Graphics g, int logicHeight, float pos, CustomPair<Double,Double> dimensions){
         if(g.orientationHorizontal()){
             return (int) (logicHeight* pos + dimensions.second / 2);
         }else{
@@ -499,7 +601,7 @@ public class SceneGame implements SceneBase {
         checkBoardPosX = (int) (- (checkBoard.getWidth()* 0.5f));
         checkBoardPosY = (int) ((checkBoard.getYInfoRect()) - (checkBoard.getHeight()* 0.5f));
 
-        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        CustomPair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
         pixelFont = g.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
@@ -546,7 +648,7 @@ public class SceneGame implements SceneBase {
         checkBoardPosX = -gameBoard.getWidth() / 2;
         checkBoardPosY = -(int)(gameBoard.getHeight() *0.4f);
 
-        Pair<Float, Float> relations = gameBoard.getRelationFactorSize();
+        CustomPair<Float, Float> relations = gameBoard.getRelationFactorSize();
         float size = (float) (Math.floor(relations.first * 0.7) / 1000.0f);
         pixelFont = g.newFont("upheavtt.ttf", (int) (logicHeight * size), false);
 
@@ -729,7 +831,7 @@ public class SceneGame implements SceneBase {
 
 
         if (wrong) {
-            gameBoard.setTile(x, y, TILE.WRONG);
+            gameBoard.setTile(x, y, TILE.WRONG, -1);
             return;
         }
 
@@ -739,11 +841,11 @@ public class SceneGame implements SceneBase {
         TILE tile = gameBoard.getTile(x, y);
 
         if (lTouch && tile == TILE.EMPTY)
-            gameBoard.setTile(x, y, TILE.CROSS);
+            gameBoard.setTile(x, y, TILE.CROSS, -1);
         else if (tile == TILE.EMPTY)
-            gameBoard.setTile(x, y, TILE.FILL);
+            gameBoard.setTile(x, y, TILE.FILL, colorToPaint);
         else
-            gameBoard.setTile(x, y, TILE.EMPTY);
+            gameBoard.setTile(x, y, TILE.EMPTY, -1);
 
         tileTouchedInfo_.x = x;
         tileTouchedInfo_.y = y;
@@ -766,7 +868,7 @@ public class SceneGame implements SceneBase {
     }
 
     private boolean checkHasWon() {
-        ArrayList<Pair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
+        ArrayList<CustomPair<Integer, Integer>> wrongs = checkBoard.isBoardMatched(gameBoard);
 
         //NO recorremos hasta el final, el último es el nº de tiles
         for (int i = 0; i < wrongs.size() - 1; i++) {

@@ -1,27 +1,32 @@
 package com.gamelogic;
 
-import com.engineandroid.Engine;
+import androidx.core.util.Pair;
+
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
-import com.engineandroid.Pair;
+
+import com.engineandroid.CustomPair;
+
 import com.gamelogic.enums.TILE;
 
 import java.io.FileOutputStream;
-import java.lang.Math;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.util.Scanner; // Import the Scanner class to read text files
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Board {
+
+
+
     private TILE[][] board;
+    private Integer[][] colors;
     private int rows = 0;
     private int cols = 0;
     private int width, height;
@@ -33,12 +38,13 @@ public class Board {
     private int tileSize;
     private boolean hasChanged_ = false;
     private int numCorrectTiles;
-    private List<List<Integer>> adyancentsHorizontal;
-    private List<List<Integer>> adyancentsVertical;
+    private List<List<Pair<Integer,Integer>>> adyancentsHorizontal;
+    private List<List<Pair<Integer,Integer>>> adyancentsVertical;
 
 
     public Board(int cols, int rows, int sizeX_, int sizeY_, int tileSize) {
         board = new TILE[cols][rows];
+        colors = new Integer[cols][rows];
         this.rows = rows;
         this.cols = cols;
 
@@ -46,8 +52,10 @@ public class Board {
         setSize(sizeX_, sizeY_);
         //Tablero incialmente vacio
         for (int i = 0; i < this.cols; i++)
-            for (int j = 0; j < this.rows; j++)
+            for (int j = 0; j < this.rows; j++){
                 board[i][j] = TILE.EMPTY;
+                colors[i][j] = -1;
+            }
 
         numCorrectTiles = 0;
 
@@ -86,9 +94,46 @@ public class Board {
         //Relacion para cuando hay menos filas que columnas
         setSize(sizeX_, sizeY_);
 
+        assignColors();
+
         calcAdjyacents();
 
         setTileSize(tileSize);
+    }
+
+    private void assignColors(){
+        ArrayList<Pair<Integer, Integer>> directions = new ArrayList<Pair<Integer, Integer>>();
+        directions.add(new Pair<Integer, Integer>(1, 0));
+        directions.add(new Pair<Integer, Integer>(-1, 0));
+        directions.add(new Pair<Integer, Integer>(0, 1));
+        directions.add(new Pair<Integer, Integer>(0, -1));
+
+        Random r = new Random();
+        //Seleccionamos entre 4 colores
+        Integer[] colors;
+        colors = new Integer[]{ColorWrap.BLACK,ColorWrap.BLUE,ColorWrap.RED, ColorWrap.GRAY};
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int indexColor = r.nextInt(colors.length);
+                assignColorsAux(i, j, directions, colors[indexColor]);
+            }
+        }
+
+    }
+
+    private void assignColorsAux(int rows , int cols, ArrayList<Pair<Integer, Integer>> dirs, int color){
+        if(rows < 0 || cols < 0 || rows >= this.rows || cols >= this.cols)
+            return;
+
+        //Seleccionamos entre 4 colores
+        // Preguntamos si es sol y si no se le ha asignado ningun color
+        if (board[cols][rows] == TILE.FILL && colors[cols][rows] == -1) {
+            colors[cols][rows] = color;
+            for(int i = 0; i< dirs.size(); i++){
+                assignColorsAux(rows +  dirs.get(i).first, cols +  dirs.get(i).second, dirs, color);
+            }
+        }
     }
 
     public void saveBoardState(FileOutputStream file){
@@ -163,6 +208,8 @@ public class Board {
             }
         }
 
+        assignColors();
+
         calcAdjyacents();
     }
 
@@ -173,21 +220,21 @@ public class Board {
         maxHorizontalFilled = 0;
         maxVerticalFilled = 0;
         for (int i = 0; i < rows; i++) {
-            List<Integer> adyacents = new ArrayList<>();
+            List<Pair<Integer,Integer>> adyacents = new ArrayList<>();
             int juntas = 0;
             for (int j = 0; j < cols; j++) {
                 if (board[j][i] == TILE.FILL) {
                     juntas++;
 
                     if (j + 1 == cols)
-                        adyacents.add(juntas);
+                        adyacents.add(new Pair<Integer, Integer>(juntas, this.colors[j][i]));
                 } else if (juntas != 0) {
-                    adyacents.add(juntas);
+                    adyacents.add(new Pair<Integer, Integer>(juntas, this.colors[j][i]));
                     juntas = 0;
                 }
             }
 
-            if (adyacents.size() == 0) adyacents.add(0);
+            if (adyacents.size() == 0) adyacents.add(new Pair<Integer, Integer>(0,-1));
             else if (adyacents.size() > maxHorizontalFilled) {
                 maxHorizontalFilled = adyacents.size();
             }
@@ -196,20 +243,20 @@ public class Board {
 
         //vertical
         for (int j = 0; j < cols; j++) {
-            List<Integer> adyacents = new ArrayList<>();
+            List<Pair<Integer,Integer>> adyacents = new ArrayList<>();
             int juntas = 0;
             for (int i = 0; i < rows; i++) {
                 if (board[j][i] == TILE.FILL) {
                     juntas++;
 
                     if (i + 1 == rows)
-                        adyacents.add(juntas);
+                        adyacents.add(new Pair<Integer, Integer>(juntas, this.colors[j][i]));
                 } else if (juntas != 0) {
-                    adyacents.add(juntas);
+                    adyacents.add(new Pair<Integer, Integer>(juntas, this.colors[j][i]));
                     juntas = 0;
                 }
             }
-            if (adyacents.size() == 0) adyacents.add(0);
+            if (adyacents.size() == 0) adyacents.add(new Pair<Integer, Integer>(0,-1));
             else if (adyacents.size() > maxVerticalFilled) {
                 maxVerticalFilled = adyacents.size();
             }
@@ -231,8 +278,8 @@ public class Board {
         relationY = (sizeY_ /(float) this.rows) * relationRowCol;
     }
 
-    public Pair<Float, Float> getRelationFactorSize(){
-        return new Pair<>(relationX, relationY);
+    public CustomPair<Float, Float> getRelationFactorSize(){
+        return new CustomPair<>(relationX, relationY);
     }
 
     public int getWidth() {
@@ -262,26 +309,32 @@ public class Board {
         return board[x][y];
     }
 
-    public void setTile(int x, int y, TILE tile) {
+    public void setTile(int x, int y, TILE tile, Integer color) {
         board[x][y] = tile;
+        colors[x][y] = color;
     }
 
     public TILE[][] getBoard() {
         return board;
     }
 
+    public Integer[][] getBoardColors() {
+        return colors;
+    }
+
     // Comprueba si los tableros coinciden
-    public ArrayList<Pair<Integer, Integer>> isBoardMatched(Board other) {
+    public ArrayList<CustomPair<Integer, Integer>> isBoardMatched(Board other) {
         TILE[][] otherBoard = other.getBoard();
-        ArrayList<Pair<Integer, Integer>> diff = new ArrayList<>();
+        Integer[][] otherBoardColors = other.getBoardColors();
+        ArrayList<CustomPair<Integer, Integer>> diff = new ArrayList<>();
         int tilesMatched = 0;
         //Assume they are the same size (width and height)
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 if(otherBoard[i][j] == TILE.CROSS || otherBoard[i][j] == TILE.EMPTY)
                     continue;
-                if (board[i][j] != otherBoard[i][j])
-                    diff.add(new Pair<>(i, j));
+                if (board[i][j] != otherBoard[i][j] && colors[i][j] != otherBoardColors[i][j] )
+                    diff.add(new CustomPair<>(i, j));
                 else
                     tilesMatched++;
 
@@ -289,7 +342,7 @@ public class Board {
         }
 
         //Metemos al final el nº de tiles que coinciden
-        diff.add(new Pair<>(tilesMatched, -1));
+        diff.add(new CustomPair<>(tilesMatched, -1));
 
         return diff;
     }
@@ -312,11 +365,16 @@ public class Board {
         for (i = 0; i < adyancentsHorizontal.size(); i++) {
             int size = adyancentsHorizontal.get(i).size();
             for (j = size - 1; j >= 0; j--) {
-                Integer num = adyancentsHorizontal.get(i).get(j);
-                if (num != 0)
+
+                Pair<Integer, Integer> cell = adyancentsHorizontal.get(i).get(j);
+                Integer num = cell.first;
+                if (num != 0){
+
+                    g.setColor(cell.second, 1.0f);
                     g.drawText(num.toString(),
                             posX - ((size-1 - j) * (fontSize+fontSize/2)) - fontSize,
                             (int) (i * (int)relationY) + posY + (int)((int)relationY/1.3));
+                }
             }
         }
 
@@ -324,12 +382,16 @@ public class Board {
         for (i = 0; i < adyancentsVertical.size(); i++) {
             int size = adyancentsVertical.get(i).size();
             for (j = size - 1; j >= 0; j--) {
-                Integer num = adyancentsVertical.get(i).get(j);
-                if (num != 0)
+                Pair<Integer, Integer> cell = adyancentsVertical.get(i).get(j);
+                Integer num = cell.first;
+                if (num != 0){
+
+                    g.setColor(cell.second, 1.0f);
                     g.drawText(num.toString(),
                             (int) (i * (int)relationX) + posX + ((int)relationX/2),
                             // se suma fontsize/2 porque el punto inicial del texto es la esquina inferior izquierda
                             posY - ((size-1-j) * (fontSize+fontSize/2)) - fontSize/2);
+                }
             }
         }
     }
@@ -342,7 +404,7 @@ public class Board {
         //Dibujar cada tile teniendo en cuenta el tamanyo total del tablero
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                Image im = tileImage(g, board[i][j], pal);
+                Image im = tileImage(g, board[i][j], colors[i][j], pal);
                 assert im != null;
 
                 if(board[i][j] == TILE.FILL && !hasChanged_)
@@ -379,25 +441,34 @@ public class Board {
         drawNums(g, fontSize);
     }
 
-    public Pair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {
+    public CustomPair<Integer,Integer> calculcateIndexMatrix(int pixelX, int pixelY) {
         // Comprueba si esta dentro del tablero
         if ((pixelX > posX && pixelX <= posX + width) && (pixelY > posY && pixelY <= posY + height)) {
             // Localiza posicion y selecciona el tile
             int i_index = (int) ((pixelX - posX) / (relationX));
             int j_index = (int) ((pixelY - posY) / (relationY));
 
-            return new Pair<>(i_index, j_index);
+            return new CustomPair<>(i_index, j_index);
         }
 
-        return new Pair<>(-1, -1);
+        return new CustomPair<>(-1, -1);
     }
 
 
     //Coge image dependiendo del tile
-    private Image tileImage(Graphics g, TILE t, int pal) {
+    private Image tileImage(Graphics g, TILE t, Integer Color, int pal) {
         switch (t) {
             case FILL:
-                return g.getImage("fill" + pal);
+                if(Objects.equals(Color, ColorWrap.BLACK))
+                    return g.getImage("fillBLACK");
+                else if(Objects.equals(Color, ColorWrap.RED))
+                    return g.getImage("fillRED");
+                else if(Objects.equals(Color, ColorWrap.BLUE))
+                    return g.getImage("fillBLUE");
+                else if(Objects.equals(Color, ColorWrap.GRAY))
+                    return g.getImage("fillGRAY");
+
+//                return g.getImage("fill" + pal);
             case CROSS:
                 return g.getImage("cross"+ pal);
             case EMPTY:

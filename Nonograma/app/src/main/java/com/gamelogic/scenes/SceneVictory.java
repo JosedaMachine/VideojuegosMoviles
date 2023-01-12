@@ -13,7 +13,7 @@ import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.AdManager;
@@ -23,7 +23,6 @@ import com.gamelogic.utils.Fade;
 import com.gamelogic.managers.GameManager;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 
 public class SceneVictory implements SceneBase {
     private Button button,
@@ -156,7 +155,7 @@ public class SceneVictory implements SceneBase {
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto de victoria
-        Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(victoryText);
         graphics.drawText(victoryText, (int) (logicWidth*0.05f), (int) (logicHeight / 9 + dime.second / 2));
 
         //Monedas

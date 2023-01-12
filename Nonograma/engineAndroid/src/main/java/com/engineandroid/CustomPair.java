@@ -7,7 +7,7 @@ import java.util.Objects;
  * implementation of equals(), returning true if equals() is true on each of the contained
  * objects.
  */
-public class Pair<F, S> {
+public class CustomPair<F, S> {
     public final F first;
     public final S second;
 
@@ -17,7 +17,7 @@ public class Pair<F, S> {
      * @param first the first object in the Pair
      * @param second the second object in the pair
      */
-    public Pair(F first, S second) {
+    public CustomPair(F first, S second) {
         this.first = first;
         this.second = second;
     }
@@ -26,16 +26,16 @@ public class Pair<F, S> {
      * Checks the two objects for equality by delegating to their respective
      * {@link Object#equals(Object)} methods.
      *
-     * @param o the {@link Pair} to which this one is to be checked for equality
+     * @param o the {@link CustomPair} to which this one is to be checked for equality
      * @return true if the underlying objects of the Pair are both considered
      *         equal
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof CustomPair)) {
             return false;
         }
-        Pair<?, ?> p = (Pair<?, ?>) o;
+        CustomPair<?, ?> p = (CustomPair<?, ?>) o;
         return Objects.equals(p.first, first) && Objects.equals(p.second, second);
     }
 
@@ -55,7 +55,7 @@ public class Pair<F, S> {
      * @param b the second object in the pair
      * @return a Pair that is templatized with the types of a and b
      */
-    public static <A, B> Pair <A, B> create(A a, B b) {
-        return new Pair<A, B>(a, b);
+    public static <A, B> CustomPair<A, B> create(A a, B b) {
+        return new CustomPair<A, B>(a, b);
     }
 }

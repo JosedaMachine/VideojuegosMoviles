@@ -5,7 +5,7 @@ import com.engineandroid.ConstraintY;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.TouchEvent;
 
 public abstract class Button {
@@ -49,7 +49,7 @@ public abstract class Button {
         if(font != null){
             graphics.setColor(color, 1.0f);
             graphics.setFont(font);
-            Pair<Double, Double> dime = graphics.getStringDimensions(text);
+            CustomPair<Double, Double> dime = graphics.getStringDimensions(text);
 
             if(usingConstraints)
                 graphics.drawText(text, constrX, constrY , (int) (offsetX +  sizeX/2 - dime.first/2) , (int)(offsetY + sizeY/2 + dime.second/3));

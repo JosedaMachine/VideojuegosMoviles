@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.engineandroid.Engine;
 import com.engineandroid.Font;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.TouchEvent;
 import com.engineandroid.UserInterface;
 import com.gamelogic.enums.CATEGORY;
@@ -17,7 +17,6 @@ import com.gamelogic.enums.PALETTE;
 import com.gamelogic.utils.ImageElement;
 import com.gamelogic.utils.TextElement;
 
-import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class GameManager {
@@ -36,7 +35,7 @@ public class GameManager {
 
     private PALETTE currentPalette = PALETTE.DEFAULT;
     //Paletas desbloqueadas
-    private HashMap<PALETTE, Pair<Boolean, Integer>>  unlockedPalettes = new HashMap<>();
+    private HashMap<PALETTE, CustomPair<Boolean, Integer>>  unlockedPalettes = new HashMap<>();
 
     public static GameManager instance(){
         return  instance_;
@@ -153,9 +152,9 @@ public class GameManager {
     }
 
     public void setPaletteUnlocked(int pal, boolean lock, int price){
-        unlockedPalettes.put(PALETTE.values()[pal], new Pair<>(lock, price));
+        unlockedPalettes.put(PALETTE.values()[pal], new CustomPair<>(lock, price));
     }
-    public Pair<Boolean, Integer> getPaletteUnlocked(int pal){
+    public CustomPair<Boolean, Integer> getPaletteUnlocked(int pal){
         return unlockedPalettes.get(PALETTE.values()[pal]);
     }
 

@@ -27,10 +27,10 @@ public class Graphics {
     int translateFactorX, translateFactorY;
 
     private int clearColor = ColorWrap.WHITE;
-    private Pair<Integer, Integer> adViewDimensions;
+    private CustomPair<Integer, Integer> adViewDimensions;
     private boolean isHorizontal;
 
-    Graphics(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer> adViewDimensions_){
+    Graphics(SurfaceView view, int logicWidth_ , int logicHeight_, CustomPair<Integer, Integer> adViewDimensions_){
         this.myView = view;
         this.logicHeight = logicHeight_;
         this.logicWidth = logicWidth_;
@@ -230,10 +230,10 @@ public class Graphics {
         canvas.drawText(text, posX + x, posY + y, paint);
     }
 
-    public Pair<Double, Double> getStringDimensions(String text) {
+    public CustomPair<Double, Double> getStringDimensions(String text) {
         Rect bounds = new Rect();
         paint.getTextBounds(text,0,text.length(), bounds);
-        return new Pair<>((double) bounds.width(), (double) bounds.height()*2);
+        return new CustomPair<>((double) bounds.width(), (double) bounds.height()*2);
     }
 
     public int getWidth() {

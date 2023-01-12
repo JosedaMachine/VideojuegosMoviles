@@ -1,7 +1,6 @@
 package com.engineandroid;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.view.SurfaceView;
 
@@ -13,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Engine implements Runnable{
@@ -28,7 +26,7 @@ public class Engine implements Runnable{
 
     boolean running, firstRun;
 
-    public Engine(SurfaceView view, int logicWidth_ , int logicHeight_, Pair<Integer, Integer>adBanSize){
+    public Engine(SurfaceView view, int logicWidth_ , int logicHeight_, CustomPair<Integer, Integer> adBanSize){
         currGame = null;
         ColorWrap.Init();
         graphics = new Graphics(view, logicWidth_, logicHeight_, adBanSize);

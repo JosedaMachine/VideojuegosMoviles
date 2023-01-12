@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.SurfaceView;
@@ -23,7 +22,6 @@ import com.engineandroid.*;
 import com.engineandroid.Engine;
 import com.engineandroid.AdManager;
 import com.gamelogic.Nonograma;
-import com.google.android.gms.ads.AdView;
 import com.nonograma.R;
 
 import java.util.Objects;
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         AdManager.init(this);
         AdManager.instance().initializeAds();
         AdManager.instance().buildBannerAd(findViewById(R.id.adView));
-        Pair<Integer, Integer> dimAd = AdManager.instance().getBannerSize();
+        CustomPair<Integer, Integer> dimAd = AdManager.instance().getBannerSize();
 
         //Init Engine & renderer
         SurfaceView renderView = findViewById(R.id.surfaceView);

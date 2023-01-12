@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneElement;
 import com.engineandroid.TouchEvent;
 
@@ -69,7 +69,7 @@ public abstract class TextElement implements SceneElement {
     public void render(Graphics graphics){
         graphics.setColor(color, 1.0f);
         graphics.setFont(getTextFont());
-        Pair<Double, Double> dime = graphics.getStringDimensions(getText());
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(getText());
 
         graphics.drawText(text, (int) (posX +  sizeX/2 - dime.first/2) ,
                 (int)(posY + sizeY/2 + dime.second/3));

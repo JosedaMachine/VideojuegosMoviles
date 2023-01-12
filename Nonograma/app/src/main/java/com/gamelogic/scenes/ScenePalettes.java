@@ -12,7 +12,7 @@ import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.managers.GameManager;
@@ -105,7 +105,7 @@ public class ScenePalettes implements SceneBase {
 
                         GameManager gmInstance = GameManager.instance();
 
-                        Pair<Boolean,Integer> p = gmInstance.getPaletteUnlocked(i);
+                        CustomPair<Boolean,Integer> p = gmInstance.getPaletteUnlocked(i);
 
                         //Si no esta bloqueado
                         if (p.first) {
@@ -169,12 +169,12 @@ public class ScenePalettes implements SceneBase {
             Button b = palettes.get(i);
             b.render(graphics);
 
-            Pair<Boolean, Integer> p = GameManager.instance().getPaletteUnlocked(i);
+            CustomPair<Boolean, Integer> p = GameManager.instance().getPaletteUnlocked(i);
 
             //Coste de paletas
             if(!p.first) {
                 String money = Integer.toString(p.second);
-                Pair<Double, Double> dime = graphics.getStringDimensions(money);
+                CustomPair<Double, Double> dime = graphics.getStringDimensions(money);
 
                 graphics.drawText(money, (int)(b.getX() +  b.getSizeX()/2 - dime.first / 2), (int)(b.getY() + b.getSizeY() + dime.second));
 
@@ -190,7 +190,7 @@ public class ScenePalettes implements SceneBase {
 
 
         //Texto
-        Pair<Double, Double> dime = graphics.getStringDimensions(text);
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(text);
         graphics.drawText(text, (int) (logicWidth / 2 - dime.first / 2), (int) (logicHeight / 9 + dime.second / 2));
 
         //Boton de vuelta al menu

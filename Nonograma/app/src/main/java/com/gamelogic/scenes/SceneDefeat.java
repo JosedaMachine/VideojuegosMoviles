@@ -11,7 +11,7 @@ import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.utils.Button;
@@ -89,7 +89,7 @@ public class SceneDefeat implements SceneBase {
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
         //Texto de derrota
-        Pair<Double, Double> dime = graphics.getStringDimensions(victoryText);
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(victoryText);
         graphics.drawText(victoryText, (int) (logicWidth/2 - dime.first/2), (int) (logicHeight/8 + dime.second/2));
 
         //Imagen Derrota

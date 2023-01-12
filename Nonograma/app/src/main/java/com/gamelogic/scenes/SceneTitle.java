@@ -2,7 +2,6 @@ package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
@@ -11,23 +10,17 @@ import com.engineandroid.Engine;
 import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
-import com.engineandroid.GyroscopeSensor;
 import com.engineandroid.MagnetometerSensor;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.Music;
 import com.engineandroid.TouchEvent;
-import com.engineandroid.AccelerometerSensor;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
-import com.engineandroid.UserInterface;
 import com.gamelogic.managers.GameManager;
-import com.gamelogic.utils.ImageElement;
-import com.gamelogic.utils.TextElement;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 
 public class SceneTitle implements SceneBase {
     private Fade fade;
@@ -202,7 +195,7 @@ public class SceneTitle implements SceneBase {
         graphics.setFont(title);
         graphics.setColor(ColorWrap.BLACK, 1.0f);
 
-        Pair<Double, Double> dime = graphics.getStringDimensions(titleText);
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(titleText);
         //Texto del titulo
         graphics.drawText(titleText, (int) (graphics.getLogicWidth()/2 - dime.first/2), (int) (graphics.getLogicHeight()*0.25 + dime.second/2));
 

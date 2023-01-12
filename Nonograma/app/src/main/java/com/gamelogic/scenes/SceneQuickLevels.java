@@ -10,16 +10,13 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Message;
-import com.engineandroid.Pair;
+import com.engineandroid.CustomPair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
-import com.gamelogic.enums.PALETTE;
-import com.gamelogic.managers.GameManager;
 import com.gamelogic.utils.Button;
 import com.gamelogic.utils.Fade;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,7 +160,7 @@ public class SceneQuickLevels implements SceneBase {
 
         //Texto
         String title = "Select puzzle size";
-        Pair<Double, Double> dime = graphics.getStringDimensions(title);
+        CustomPair<Double, Double> dime = graphics.getStringDimensions(title);
         graphics.drawText(title, (int) (graphics.getLogicWidth() / 2 - dime.first / 2), (int) (graphics.getLogicHeight() * 0.15 + dime.second / 2));
 
         //Botones
