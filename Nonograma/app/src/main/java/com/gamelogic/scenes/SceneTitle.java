@@ -86,7 +86,7 @@ public class SceneTitle implements SceneBase {
 
                     setSelected(false);
 
-                    engine.getGame().pushScene(new SceneQuickLevels());
+                    engine.getGame().pushScene(new SceneExtra());
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
