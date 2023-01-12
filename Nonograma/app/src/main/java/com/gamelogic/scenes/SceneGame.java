@@ -17,6 +17,7 @@ import com.engineandroid.Pair;
 import com.engineandroid.SceneBase;
 import com.engineandroid.TouchEvent;
 import com.gamelogic.Board;
+import com.gamelogic.Lives;
 import com.gamelogic.utils.Button;
 import com.gamelogic.enums.CATEGORY;
 import com.gamelogic.utils.Fade;
@@ -24,9 +25,13 @@ import com.gamelogic.managers.GameManager;
 import com.gamelogic.enums.TILE;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -67,6 +72,8 @@ public class SceneGame implements SceneBase {
 
     private int checkBoardPosX, checkBoardPosY;
 
+
+    private final String FILE_SAVE = "lives.ser";
 
     SharedPreferences sharedPreferences;
     //Filas y columnas del tablero
@@ -118,6 +125,8 @@ public class SceneGame implements SceneBase {
             "giraffe2", "mouse2", "pelican", "dinosaur",
             "parrot", "squid", "owl", "deer2"};
 
+    private Lives vidas;
+
     public SceneGame(int rows, int cols, int reward) {
         rows_ = rows;
         cols_ = cols;
@@ -147,6 +156,8 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void init(Engine engine) {
+        vidas = new Lives(3);
+
         tileTouchedInfo_ = new TileTouched();
         Graphics graphics = engine.getGraphics();
 
@@ -329,6 +340,8 @@ public class SceneGame implements SceneBase {
                 engine.getAudio().playSound("wrong.wav");
 
                 //Si nivel historia y vidas == 0
+                vidas.subtract(1);
+
                 if (!subtractLife()) {
                     engine.getGame().pushScene(new SceneDefeat());
                 }
@@ -592,6 +605,49 @@ public class SceneGame implements SceneBase {
         }
     }
 
+    public void SaveSerializable (Engine eng, Serializable object, String fileName){
+        FileOutputStream fos = null;
+        try{
+            fos = eng.openInternalFileWriting(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(object);
+            out.close() ;
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+            fos = null;
+        }
+    }
+
+    public Serializable RecoverSerializable (Engine eng, String fileName){
+        Serializable object = null;
+        FileInputStream fos = null;
+        try{
+            fos = eng.openInternalFileReading(FILE_SAVE);
+            ObjectInputStream in = new ObjectInputStream(fos);
+
+            object = (Serializable) in.readObject();
+            in.close() ;
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally{
+            fos = null;
+        }
+
+        return object;
+    }
+
+
     @Override
     public void save(Engine engine,String filename, SharedPreferences mPreferences) {
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
@@ -601,6 +657,8 @@ public class SceneGame implements SceneBase {
             preferencesEditor.putBoolean("savingBoard", false);
             return;
         }
+
+        SaveSerializable(engine, vidas, FILE_SAVE);
 
         FileOutputStream file = null;
         try {
@@ -640,7 +698,7 @@ public class SceneGame implements SceneBase {
     }
 
     @Override
-    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
+    public void restore(Engine engine, BufferedReader reader, SharedPreferences mPreferences) {
         sharedPreferences = mPreferences;
         //En caso de que se juegue por primera vez o no se haya guardado, no hacemos nada.
         boolean boardSaved = mPreferences.getBoolean("savingBoard", false);
@@ -648,29 +706,31 @@ public class SceneGame implements SceneBase {
         if(!boardSaved || reader == null)
             return;
 
+
+
         //De lo contrario recuperamos valores
 
         String levelCat = mPreferences.getString("levelCat", "-");
         String levelQuick = mPreferences.getString("levelQuickSize", "-");
 
         if(!Objects.equals(levelCat, "-") && levelName != null){
-
             int catN = Integer.parseInt(String.valueOf(levelCat.charAt(0)));
             int indexLvl = Integer.parseInt(levelCat.substring(1));
             //Comprobamos si estamos en el ultimo nivel que se guardó
             if ((catN == category.ordinal()) && indexLvl == lvlIndex) {
+                vidas = (Lives) RecoverSerializable(engine, FILE_SAVE);
                 lives = mPreferences.getInt("lives", 3);
                 gameBoard.updateBoardState(reader);
             }
         } else if (!Objects.equals(levelQuick, "-")) {
             //buscarHasta que haya una x
-
             String[] size = levelQuick.split("x");
 
             int cols_ = Integer.parseInt(size[0]);
             int rows_ = Integer.parseInt(size[1]);
 
             if (gameBoard.getCols() == cols_ && gameBoard.getRows() == rows_) {
+                vidas = (Lives) RecoverSerializable(engine, FILE_SAVE);
                 lives = mPreferences.getInt("lives", 3);
                 checkBoard = new Board(reader, boardSize, boardSize, tileSize);
                 gameBoard.updateBoardState(reader);

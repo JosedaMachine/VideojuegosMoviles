@@ -252,6 +252,6 @@ public class SceneStoryLevels implements SceneBase {
     }
 
     @Override
-    public void restore(BufferedReader reader, SharedPreferences mPreferences) {
+    public void restore(Engine engine,BufferedReader reader, SharedPreferences mPreferences) {
     }
 }

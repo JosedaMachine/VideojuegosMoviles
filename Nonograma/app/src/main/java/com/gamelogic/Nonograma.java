@@ -281,7 +281,7 @@ public class Nonograma implements IGame {
             }
             if(!sceneStack.empty()){
                 SceneBase scene = (SceneBase) sceneStack.peek();
-                scene.restore(reader, mPreferences);
+                scene.restore(engine, reader, mPreferences);
             }
             if(fos != null)
                 fos.close();

@@ -27,7 +27,7 @@ public interface SceneBase {
 
     void save(Engine engine, String filename, SharedPreferences mPreferences);
 
-    void restore(BufferedReader reader, SharedPreferences mPreferences);
+    void restore(Engine engine, BufferedReader reader, SharedPreferences mPreferences);
 
     void horizontalLayout(Graphics g, int logicWidth, int logicHeight);
 
