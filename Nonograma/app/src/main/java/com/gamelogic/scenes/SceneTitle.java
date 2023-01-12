@@ -12,6 +12,7 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.GyroscopeSensor;
+import com.engineandroid.LightSensor;
 import com.engineandroid.MagnetometerSensor;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
@@ -36,6 +37,7 @@ public class SceneTitle implements SceneBase {
     private String titleText = "Nonogram";
 
     private MagnetometerSensor magnetometerSensor;
+
 
     public SceneTitle() {    }
 
@@ -193,6 +195,7 @@ public class SceneTitle implements SceneBase {
 
         //Acceleremoter
         magnetometerSensor = new MagnetometerSensor(graphics.getContext());
+
 
         GameManager.instance().updateInterface();
     }

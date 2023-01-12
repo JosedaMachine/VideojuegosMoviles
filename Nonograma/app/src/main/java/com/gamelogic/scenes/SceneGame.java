@@ -1,6 +1,7 @@
 package com.gamelogic.scenes;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 
 import com.engineandroid.AdManager;
 import com.engineandroid.Audio;
@@ -11,6 +12,7 @@ import com.engineandroid.ColorWrap;
 import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.Image;
+import com.engineandroid.LightSensor;
 import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
@@ -50,7 +52,7 @@ public class SceneGame implements SceneBase {
     }
 
     //region Variables y Constructora
-
+    private LightSensor LightSensor_;
     //Tablero chuleta para comprobar
     private Board checkBoard;
     //Tablero que ve el jugador
@@ -160,6 +162,8 @@ public class SceneGame implements SceneBase {
 
         tileTouchedInfo_ = new TileTouched();
         Graphics graphics = engine.getGraphics();
+
+        LightSensor_ = new LightSensor(graphics.getContext());
 
         loadResources(graphics, engine.getAudio());
         int logicWidth = graphics.getLogicWidth();
@@ -330,6 +334,11 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void update(Engine engine, double deltaTime) {
+        int values = LightSensor_.getDeltaValues();
+
+        values = 255 - values;
+        engine.getGraphics().setClearColor(Color.argb(255,(int)values,(int)values, (int)values));
+
         //Comprueba la victoria
         if (checkWin) {
             hasWon = checkHasWon();
@@ -448,10 +457,12 @@ public class SceneGame implements SceneBase {
 
     @Override
     public void onResume() {
+        LightSensor_.onResume();
     }
 
     @Override
     public void onPause() {
+        LightSensor_.onPause();
     }
 
     @Override
