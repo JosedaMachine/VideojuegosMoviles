@@ -186,7 +186,7 @@ public class Board {
             int juntas = 0;
             int color = -1;
             for (int j = 0; j < cols; j++) {
-                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(boardColors[j-1][i]))) {
+                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(color))) {
                     juntas++;
 
                     if(color == -1)
@@ -214,9 +214,8 @@ public class Board {
             int juntas = 0;
             int color = -1;
             for (int i = 0; i < rows; i++) {
-                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(boardColors[j][i-1]))) {
+                if (board[j][i] == TILE.FILL && (color == -1 || boardColors[j][i].equals(color))) {
                     juntas++;
-
 
                     if(color == -1)
                         color = boardColors[j][i];
@@ -367,7 +366,7 @@ public class Board {
                 else if (color == 1)
                     g.setColor(ColorWrap.RED, 1.0f);
                 else
-                    g.setColor(ColorWrap.RED, 1.0f);
+                    g.setColor(ColorWrap.GREEN, 1.0f);
 
                 if (num != 0)
                     g.drawText(num.toString(),
