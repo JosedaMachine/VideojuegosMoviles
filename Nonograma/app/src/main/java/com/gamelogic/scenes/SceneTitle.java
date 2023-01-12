@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.engineandroid.AdManager;
 import com.engineandroid.Audio;
 import com.engineandroid.ConstraintX;
 import com.engineandroid.ConstraintY;
@@ -13,6 +14,7 @@ import com.engineandroid.Font;
 import com.engineandroid.Graphics;
 import com.engineandroid.GyroscopeSensor;
 import com.engineandroid.LightSensor;
+import com.engineandroid.MESSAGE_TYPE;
 import com.engineandroid.MagnetometerSensor;
 import com.engineandroid.Message;
 import com.engineandroid.Pair;
@@ -63,6 +65,8 @@ public class SceneTitle implements SceneBase {
         int posX = logicWidth/2 - sizeX/2,
                 posY = logicHeight/2 - sizeY/2;
 
+        Message interMessage = new Message(MESSAGE_TYPE.INTERST_AD);
+
         //Boton de play
         quickButton = new Button("Quick Game", posX, posY,sizeX, sizeY) {
             @Override
@@ -88,7 +92,8 @@ public class SceneTitle implements SceneBase {
 
                     setSelected(false);
 
-                    engine.getGame().pushScene(new SceneQuickLevels());
+                    AdManager.instance().showInterstitialAd(interMessage);
+//                    engine.getGame().pushScene(new SceneQuickLevels());
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();
@@ -96,6 +101,9 @@ public class SceneTitle implements SceneBase {
                 }
             }
         };
+
+        //Cargamos el ad al inicio
+        AdManager.instance().buildInterestingAd();
 
         posY += logicHeight * 0.2f;
 
