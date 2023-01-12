@@ -93,7 +93,7 @@ public class SceneTitle implements SceneBase {
                     setSelected(false);
 
                     AdManager.instance().showInterstitialAd(interMessage);
-//                    engine.getGame().pushScene(new SceneQuickLevels());
+                    engine.getGame().pushScene(new SceneQuickLevels());
                     fade.reset();
                     fade.setState(Fade.STATE_FADE.In);
                     fade.triggerFade();

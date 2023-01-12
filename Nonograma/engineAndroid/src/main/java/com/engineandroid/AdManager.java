@@ -193,16 +193,10 @@ public class AdManager {
     }
 
     private void showInterstitialAdAux(Message message){
-        if (mRewardedAd != null) {
-            mRewardedAd.show(activity, new OnUserEarnedRewardListener() {
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    // Handle the reward.
-                    engine.sendMessage(message);
-                }
-            });
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(activity);
         } else {
-            Log.d("Reward", "The rewarded ad wasn't ready yet.");
+            Log.d("InterstitialAd", "The insterstitial ad wasn't ready yet.");
         }
     }
 
