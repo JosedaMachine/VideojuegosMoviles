@@ -15,6 +15,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -51,6 +55,20 @@ public class GraphicsPC implements IGraphics {
 
     @Override
     public Image newImage(String path, String name) {
+
+        File file = new File(this.path+ "/prueba.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(("hola" + "\n").getBytes());
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         Image i = imagesLoaded.get(path);
         if(i == null) {
             i = new ImagePC(this.path + "images/" + path);

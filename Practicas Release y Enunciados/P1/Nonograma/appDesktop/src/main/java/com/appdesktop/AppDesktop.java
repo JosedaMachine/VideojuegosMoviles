@@ -9,10 +9,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class AppDesktop {
+
+    private static JFrame renderView;
+
     public static void main(String[] args) {
-        JFrame renderView = new JFrame("Mi aplicación");
+        renderView = new JFrame("Mi aplicación");
 
         //Tamanyo ventana
         int width = 600;
@@ -34,5 +38,20 @@ public class AppDesktop {
 
         engine.setGame(game);
         engine.resume();
+
+
+
+        renderView.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(renderView,
+                        "Are you sure you want to close this window?", "Close Window?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
+            }
+        });
+
     }
 }
